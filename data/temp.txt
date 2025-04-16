@@ -1,0 +1,3 @@
+data we save/load needs to be in data folder
+can't create empty data folder
+when we commit first changes we need to delete this
