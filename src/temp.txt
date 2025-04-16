@@ -1,0 +1,3 @@
+code needs to be in src folder
+can't create empty src folder
+when we commit first changes we need to delete this
