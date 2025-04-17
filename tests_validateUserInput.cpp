@@ -107,3 +107,27 @@ TEST(secInputTest, inValidInput){
     EXPECT_FALSE(isChoiceSpaceURLInputValid("2https://www.example.com"));
     EXPECT_FALSE(isChoiceSpaceURLInputValid("1www.example.com11"));
 }
+
+
+//PGAPP-44: Tests for isStringNaturalNumber (GPAPP-43)
+//Sanity:
+TEST(naturalNumberStringTest, naturalString){
+    EXPECT_TRUE(isStringNaturalNumber("1"));
+    EXPECT_TRUE(isStringNaturalNumber("10"));
+    EXPECT_TRUE(isStringNaturalNumber("100"));
+}
+//Negative + edge_cases
+TEST(naturalNumberStringTest, notNaturalString){
+    EXPECT_FALSE(isStringNaturalNumber(""));
+    EXPECT_FALSE(isStringNaturalNumber(" "));
+    EXPECT_FALSE(isStringNaturalNumber("0"));
+    EXPECT_FALSE(isStringNaturalNumber("01"));
+    EXPECT_FALSE(isStringNaturalNumber("-1"));
+    EXPECT_FALSE(isStringNaturalNumber("0.1"));
+    EXPECT_FALSE(isStringNaturalNumber("1.0"));
+    EXPECT_FALSE(isStringNaturalNumber("a"));
+    EXPECT_FALSE(isStringNaturalNumber("א"));
+    EXPECT_FALSE(isStringNaturalNumber("fsk"));
+    EXPECT_FALSE(isStringNaturalNumber("-3.6"));
+    EXPECT_FALSE(isStringNaturalNumber("!"));
+}
