@@ -74,3 +74,19 @@ bool isChoiceSpaceURLInputValid(const std::string &input) {
 
     return false;
 }
+
+
+//PGAPP-43:
+//The function returns true if the number is natural (=1 or bigger)
+bool isStringNaturalNumber(const std::string &num){
+    if (num.empty() || num.find_first_not_of("0123456789") != std::string::npos) {
+        return false;
+    }
+
+    //If the num starts with zero (0)
+    if (num[0] == '0') {
+        return false;
+    }
+    std::regex naturalNumberPattern(R"(^[1-9][0-9]*$)"); 
+    return std::regex_match(num, naturalNumberPattern);
+}

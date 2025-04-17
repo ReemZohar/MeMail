@@ -12,4 +12,7 @@ bool isMenuChoiceValid(const std::string &choice, const std::vector<std::string>
 //PGAPP-30
 bool isChoiceSpaceURLInputValid(const std::string &input);
 
+//PGAPP-43
+bool isStringNaturalNumber(const std::string &num);
+
 #endif
