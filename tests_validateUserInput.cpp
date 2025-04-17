@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
-#include "isMenuChoiceValid_GPAPP23.h"
+#include "validateUserInput.h"
 #include <string>
 #include <vector>
 
-//GPAPP-29: Tests for isMenuChoiceValid (for sprint 1 is 1/2) (GPAPP-23)
+//PGAPP-29: Tests for isMenuChoiceValid (for sprint 1 is 1/2) (PGAPP-23)
 //Sanity:
 TEST(choiceTest, validChoice){
     std::vector<std::string> choices = {"1", "2"};
