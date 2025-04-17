@@ -20,7 +20,6 @@ TEST(URLTest, validURL){
     EXPECT_TRUE(isURLValid("http://example.com/page?Search=Exam#PLE"));
     // EXPECT_TRUE(isURLValid("git+ssh://www.example.com/index.html"));  //לבדוק מה תקן הURL הנדרש
 }
-
 //Negative + Egde cases:
 //mention - a valid URL is in a template: "schema://[username[:password]@]server[:port]/path[?query][#anchor]"
 TEST(URLTest, invalidURL){
@@ -76,4 +75,35 @@ TEST(choiceTest, inValidChoice){
     EXPECT_FALSE(isMenuChoiceValid("01", choices));  //invalid num
     EXPECT_FALSE(isMenuChoiceValid("-1111", choices));  //invalid num
     EXPECT_FALSE(isMenuChoiceValid("1.0", choices)); //float num
+}
+
+
+//PGAPP-40: Tests for isChoiceSpaceURLInputValid (GPAPP-39)
+//Sanity:
+TEST(secInputTest, validInput){
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("1 www.example.com0"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("2 www.example.com0"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("1 https://example.com"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("2 https://www.example.com"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("1 www.example.com11"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("2 http://www.example.com/index.html"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("1 https://example.com:1000/path?query=test#anchor"));
+}
+//Negative + Egde cases:
+TEST(secInputTest, inValidInput){
+    EXPECT_FALSE(isChoiceSpaceURLInputValid(""));
+    EXPECT_FALSE(isChoiceSpaceURLInputValid(" "));
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("1"));
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("17"));
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("173"));
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("www.example.com0"));
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("3 www.example.com0")); //invalid function
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("a www.example.com0")); //invalid function
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("? www.example.com0")); //invalid function
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("1 www.example.com0 4"));
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("1 www.examp le.com0"));
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("1 a")); //invalid URL
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("? a")); //invalid combination
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("2https://www.example.com"));
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("1www.example.com11"));
 }
