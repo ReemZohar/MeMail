@@ -3,6 +3,55 @@
 #include <string>
 #include <vector>
 
+//GPAPP-25: Tests for isURLValid (GPAPP-20)
+//Sanity:
+TEST(URLTest, validURL){
+    EXPECT_TRUE(isURLValid("https://example.com"));
+    EXPECT_TRUE(isURLValid("www.example.com0"));
+    EXPECT_TRUE(isURLValid("https://www.example.com"));
+    EXPECT_TRUE(isURLValid("ftp://ftp.example.com/file.txt"));
+    EXPECT_TRUE(isURLValid("http://www.example.com/index.html"));
+    EXPECT_TRUE(isURLValid("https://example.com:1000/path?query=test#anchor"));
+    EXPECT_TRUE(isURLValid("http://example.com/Page.html"));
+    EXPECT_TRUE(isURLValid("http://example.com/page.html"));
+    EXPECT_TRUE(isURLValid("http://example.com/PAGE.HTML"));
+    EXPECT_TRUE(isURLValid("http://example.com/page?search=Exam#ple"));
+    EXPECT_TRUE(isURLValid("http://example.com/page?search=exam#ple"));
+    EXPECT_TRUE(isURLValid("http://example.com/page?Search=Exam#PLE"));
+    // EXPECT_TRUE(isURLValid("git+ssh://www.example.com/index.html"));  //לבדוק מה תקן הURL הנדרש
+}
+
+//Negative + Egde cases:
+//mention - a valid URL is in a template: "schema://[username[:password]@]server[:port]/path[?query][#anchor]"
+TEST(URLTest, invalidURL){
+    EXPECT_FALSE(isURLValid("")); //empty string
+    EXPECT_FALSE(isURLValid("  ")); //spaces string
+    EXPECT_FALSE(isURLValid("not a URL")); //just a string
+    EXPECT_FALSE(isURLValid("a")); //just a char
+    EXPECT_FALSE(isURLValid("http://")); //missing host
+    EXPECT_FALSE(isURLValid("https://")); //missing host
+    EXPECT_FALSE(isURLValid("http!://example.com")); //invalid scheme
+    EXPECT_FALSE(isURLValid("http://example.com:abc")); //invalid port (not a number)
+    EXPECT_FALSE(isURLValid("http://exam ple.com"));  //spaces
+    EXPECT_FALSE(isURLValid("http:// example.com"));  //spaces
+    EXPECT_FALSE(isURLValid("http://example .com"));  //spaces
+    EXPECT_FALSE(isURLValid("ht tp://example.com"));  //spaces
+    EXPECT_FALSE(isURLValid("http://example.com/<script>"));  //invalid chars
+    EXPECT_FALSE(isURLValid("http://example.com/\"quote\"")); //invalid chars
+    EXPECT_FALSE(isURLValid("http")); //invalid
+    EXPECT_FALSE(isURLValid("http://")); //invalid
+    EXPECT_FALSE(isURLValid("כתובת")); //invalid
+    //EXPECT_FALSE(isURLValid("example.com"));   //missing scheme
+}
+
+//Boundary:
+TEST(URLTest, MaxURLLength){
+    string base = "https://example.com/path?";
+    string longURL = base + string(2048 - base.length() + 1, 'a');
+    EXPECT_FALSE(isURLValid(longURL));
+}
+
+
 //PGAPP-29: Tests for isMenuChoiceValid (for sprint 1 is 1/2) (PGAPP-23)
 //Sanity:
 TEST(choiceTest, validChoice){
