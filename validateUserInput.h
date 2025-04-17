@@ -9,4 +9,7 @@ bool isURLValid(const std::string& url);
 //PGAPP-23
 bool isMenuChoiceValid(const std::string &choice, const std::vector<std::string>& validChoices);
 
+//PGAPP-30
+bool isChoiceSpaceURLInputValid(const std::string &input);
+
 #endif

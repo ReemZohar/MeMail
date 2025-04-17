@@ -36,3 +36,41 @@ bool isMenuChoiceValid(const std::string &choice, const std::vector<std::string>
     }
     return std::find(validChoices.begin(), validChoices.end(), choice) != validChoices.end();
 }
+
+
+//PGAPP-39:
+// The function gets a user input that has to be in the syntax: function - space - URL and checks if it's valid
+bool isChoiceSpaceURLInputValid(const std::string &input) {
+    std::vector<std::string> choices = {"1", "2"}; // The possible function options - MODULARITY
+
+    if (input.empty() || input[0] == ' ' || input[input.length()-1] == ' ') {
+        return false;
+    }
+
+    // Count the number of spaces in the input
+    int countSpaces = 0;
+    for (char c : input) {
+        if (c == ' ') {
+            countSpaces++;
+        }
+    }
+
+    // If there are more than one space, return false
+    if (countSpaces != 1) {
+        return false;
+    }
+
+    // Find the 1st space (" ")
+    size_t spacePos = input.find(' ');
+    
+    // Split the input into 2 strings
+    std::string s1 = input.substr(0, spacePos);
+    std::string s2 = input.substr(spacePos + 1);
+
+    // Check if s1 is a valid menu choice and s2 is a valid URL
+    if (isMenuChoiceValid(s1, choices) == true && isURLValid(s2) == true) {
+        return true;
+    }
+
+    return false;
+}
