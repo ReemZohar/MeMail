@@ -153,6 +153,36 @@ TEST(secInputTest, inValidInput){
 }
 
 
+//PGAPP-42: Tests for isBLSizeSpaceHashsInputValid (GPAPP-41)
+//Sanity:
+TEST(firstInputTest, validInput){
+    EXPECT_TRUE(isBLSizeSpaceHashsInputValid("8 1 2"));
+    EXPECT_TRUE(isBLSizeSpaceHashsInputValid("8 1"));
+    EXPECT_TRUE(isBLSizeSpaceHashsInputValid("8 2"));
+    EXPECT_TRUE(isBLSizeSpaceHashsInputValid("1 1"));
+    EXPECT_TRUE(isBLSizeSpaceHashsInputValid(" 8 1 2"));
+    EXPECT_TRUE(isBLSizeSpaceHashsInputValid("8 1 2 "));
+    EXPECT_TRUE(isBLSizeSpaceHashsInputValid("8  1 2"));
+    EXPECT_TRUE(isBLSizeSpaceHashsInputValid("8  1   2  "));
+    EXPECT_TRUE(isBLSizeSpaceHashsInputValid(" 8  2 "));
+}
+//Negative + Egde cases:
+TEST(firstInputTest, inValidInput){
+    EXPECT_FALSE(isBLSizeSpaceHashsInputValid(""));
+    EXPECT_FALSE(isBLSizeSpaceHashsInputValid(" "));
+    EXPECT_FALSE(isBLSizeSpaceHashsInputValid("  "));
+    EXPECT_FALSE(isBLSizeSpaceHashsInputValid("a 1 2"));
+    EXPECT_FALSE(isBLSizeSpaceHashsInputValid("8 1 a"));
+    EXPECT_FALSE(isBLSizeSpaceHashsInputValid("8 a 1"));
+    EXPECT_FALSE(isBLSizeSpaceHashsInputValid("8 "));
+    EXPECT_FALSE(isBLSizeSpaceHashsInputValid("8  "));
+    EXPECT_FALSE(isBLSizeSpaceHashsInputValid(" 8"));
+    EXPECT_FALSE(isBLSizeSpaceHashsInputValid("  8"));
+    EXPECT_FALSE(isBLSizeSpaceHashsInputValid("8 !"));
+    EXPECT_FALSE(isBLSizeSpaceHashsInputValid("! 8"));
+}
+
+
 //PGAPP-44: Tests for isStringNaturalNumber (GPAPP-43)
 //Sanity:
 TEST(naturalNumberStringTest, naturalString){
