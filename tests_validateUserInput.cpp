@@ -73,7 +73,6 @@ TEST(BLSizeTest, inValidBLSize){
 }
 
 
-
 //PGAPP-29: Tests for isMenuChoiceValid (for sprint 1 is 1/2) (PGAPP-23)
 //Sanity:
 TEST(choiceTest, validChoice){
