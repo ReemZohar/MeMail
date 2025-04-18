@@ -1,0 +1,27 @@
+#ifndef VALIDATE_USER_INPUT
+#define VALIDATE_USER_INPUT
+#include <string>
+#include <vector>
+
+//PGAPP-20
+bool isURLValid(const std::string& url);
+
+//PGAPP-21
+bool isBLSizeValid(const std::string &input);
+
+//PGAPP-22
+bool isHashInputValid(const std::string &hashsList);
+
+//PGAPP-23
+bool isMenuChoiceValid(const std::string &choice, const std::vector<std::string>& validChoices);
+
+//PGAPP-30
+bool isChoiceSpaceURLInputValid(const std::string &input);
+
+//PGAPP-41
+bool isBLSizeSpaceHashsInputValid(const std::string &input);
+
+//PGAPP-43
+bool isStringNaturalNumber(const std::string &num);
+
+#endif
