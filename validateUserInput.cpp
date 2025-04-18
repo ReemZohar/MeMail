@@ -36,16 +36,6 @@ bool isBLSizeValid(const std::string &input) {
 }
 
 
-//PGAPP-23:
-//The function gets a user's choice and a valid choices vector and checks if the user's choice is valid
-bool isMenuChoiceValid(const std::string &choice, const std::vector<std::string>& validChoices) {
-    if(choice.empty()){
-        return false;
-    }
-    return std::find(validChoices.begin(), validChoices.end(), choice) != validChoices.end();
-}
-
-
 //PGAPP-22:
 //The function gets an input substring and check if each one of the arguments is a legal hash function number (natural number)
 bool isHashInputValid(const std::string &hashsList) {
@@ -63,6 +53,16 @@ bool isHashInputValid(const std::string &hashsList) {
     }
 
     return check;
+}
+
+
+//PGAPP-23:
+//The function gets a user's choice and a valid choices vector and checks if the user's choice is valid
+bool isMenuChoiceValid(const std::string &choice, const std::vector<std::string>& validChoices) {
+    if(choice.empty()){
+        return false;
+    }
+    return std::find(validChoices.begin(), validChoices.end(), choice) != validChoices.end();
 }
 
 
@@ -101,6 +101,43 @@ bool isChoiceSpaceURLInputValid(const std::string &input) {
     }
 
     return false;
+}
+
+
+//PGAPP-41:
+//The function gets the 1st user's input and checks if it's in the right syntax: BlackList length - space - hash functions
+bool isBLSizeSpaceHashsInputValid(const std::string &input){
+    if (input.empty() || input.length()<3) {
+        return false;
+    }
+
+    // Count the number of spaces in the input
+    int countSpaces = 0;
+    for (char c : input) {
+        if (c == ' ') {
+            countSpaces++;
+        }
+    }
+
+        // Ignore spaces at the start
+       size_t firstNonSpace = input.find_first_not_of(' ');
+       if (firstNonSpace == std::string::npos) {
+           return false;
+       }
+   
+       size_t spacePos = input.find(' ', firstNonSpace);
+       if (spacePos == std::string::npos) {
+           return false;  // If there is no space, return false
+       }
+   
+       std::string s1 = input.substr(firstNonSpace, spacePos - firstNonSpace);
+       std::string s2 = input.substr(spacePos + 1);
+   
+       if (s1.empty() || s2.empty()) {
+           return false;
+       }
+   
+       return isBLSizeValid(s1) && isHashInputValid(s2);
 }
 
 
