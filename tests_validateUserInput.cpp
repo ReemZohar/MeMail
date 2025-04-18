@@ -73,7 +73,29 @@ TEST(BLSizeTest, inValidBLSize){
 }
 
 
-//PGAPP-29: Tests for isMenuChoiceValid (for sprint 1 is 1/2) (PGAPP-23)
+//PGAPP-27: Tests for isHashInputValid (PGAPP-22)
+//Sanity:
+TEST(hashsListTest, validHashsList){
+    EXPECT_TRUE(isHashInputValid("1"));
+    EXPECT_TRUE(isHashInputValid("1 2"));
+    EXPECT_TRUE(isHashInputValid("1 2 3"));
+    EXPECT_TRUE(isHashInputValid(" 1 2"));
+    EXPECT_TRUE(isHashInputValid(" 1 2 "));
+    EXPECT_TRUE(isHashInputValid(" 1  2 "));
+    EXPECT_TRUE(isHashInputValid(" 1"));
+}
+TEST(hashsListTest, inValidHashsList){
+    EXPECT_FALSE(isHashInputValid(""));
+    EXPECT_FALSE(isHashInputValid(" "));
+    EXPECT_FALSE(isHashInputValid("-1"));
+    EXPECT_FALSE(isHashInputValid("0.5"));
+    EXPECT_FALSE(isHashInputValid("a"));
+    EXPECT_FALSE(isHashInputValid(" 1 2 a"));
+    EXPECT_FALSE(isHashInputValid(" 1 2a"));
+    EXPECT_FALSE(isHashInputValid("!"));
+}
+
+//PGAPP-29: Tests for isMenuChoiceValid (for sprint 1 it's 1/2) (PGAPP-23)
 //Sanity:
 TEST(choiceTest, validChoice){
     std::vector<std::string> choices = {"1", "2"};
