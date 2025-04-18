@@ -9,6 +9,9 @@ bool isURLValid(const std::string& url);
 //PGAPP-21
 bool isBLSizeValid(const std::string &input);
 
+//PGAPP-22
+bool isHashInputValid(const std::string &hashsList);
+
 //PGAPP-23
 bool isMenuChoiceValid(const std::string &choice, const std::vector<std::string>& validChoices);
 

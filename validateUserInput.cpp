@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <regex>
+#include <sstream>
 
 //PGAPP-20
 //The function gets a string and checks if it is a valid URL
@@ -34,6 +35,7 @@ bool isBLSizeValid(const std::string &input) {
     return isStringNaturalNumber(input);
 }
 
+
 //PGAPP-23:
 //The function gets a user's choice and a valid choices vector and checks if the user's choice is valid
 bool isMenuChoiceValid(const std::string &choice, const std::vector<std::string>& validChoices) {
@@ -41,6 +43,26 @@ bool isMenuChoiceValid(const std::string &choice, const std::vector<std::string>
         return false;
     }
     return std::find(validChoices.begin(), validChoices.end(), choice) != validChoices.end();
+}
+
+
+//PGAPP-22:
+//The function gets an input substring and check if each one of the arguments is a legal hash function number (natural number)
+bool isHashInputValid(const std::string &hashsList) {
+    if(hashsList.empty()){
+        return false;
+    }
+    std::istringstream iss(hashsList);
+    std::string sub;
+    bool check = false;
+    while (iss >> sub) {
+        check = true;
+        if (!isStringNaturalNumber(sub)) {
+            return false;
+        }
+    }
+
+    return check;
 }
 
 
