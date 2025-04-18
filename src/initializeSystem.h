@@ -3,8 +3,6 @@
 using namespace std;
 #include <vector>
 
-
-
 //PGAPP-53
 vector<int> createZerosIntVec(int length);
 
