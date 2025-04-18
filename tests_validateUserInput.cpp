@@ -51,6 +51,29 @@ TEST(URLTest, MaxURLLength){
 }
 
 
+//GPAPP-26: Tests for isURLValid (GPAPP-21)
+//Sanity:
+TEST(BLSizeTest, validBLSize){
+    EXPECT_TRUE(isBLSizeValid("1"));
+    EXPECT_TRUE(isBLSizeValid("8"));
+    EXPECT_TRUE(isBLSizeValid("10"));
+}
+//Negative + Egde cases:
+TEST(BLSizeTest, inValidBLSize){
+    EXPECT_FALSE(isBLSizeValid(""));
+    EXPECT_FALSE(isBLSizeValid(" "));
+    EXPECT_FALSE(isBLSizeValid("0"));
+    EXPECT_FALSE(isBLSizeValid("01"));
+    EXPECT_FALSE(isBLSizeValid("-1"));
+    EXPECT_FALSE(isBLSizeValid("0.1"));
+    EXPECT_FALSE(isBLSizeValid("1.0"));
+    EXPECT_FALSE(isBLSizeValid("a"));
+    EXPECT_FALSE(isBLSizeValid("fsjk"));
+    EXPECT_FALSE(isBLSizeValid("-3.6"));
+    EXPECT_FALSE(isBLSizeValid("!"));
+}
+
+
 //PGAPP-29: Tests for isMenuChoiceValid (for sprint 1 is 1/2) (PGAPP-23)
 //Sanity:
 TEST(choiceTest, validChoice){
