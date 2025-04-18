@@ -132,6 +132,8 @@ TEST(secInputTest, validInput){
     EXPECT_TRUE(isChoiceSpaceURLInputValid("1 www.example.com11"));
     EXPECT_TRUE(isChoiceSpaceURLInputValid("2 http://www.example.com/index.html"));
     EXPECT_TRUE(isChoiceSpaceURLInputValid("1 https://example.com:1000/path?query=test#anchor"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("2  https://www.example.com"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid(" 2  https://www.example.com  "));
 }
 //Negative + Egde cases:
 TEST(secInputTest, inValidInput){
