@@ -68,39 +68,40 @@ bool isMenuChoiceValid(const std::string &choice, const std::vector<std::string>
 
 //PGAPP-39:
 // The function gets a user input that has to be in the syntax: function - space - URL and checks if it's valid
+
 bool isChoiceSpaceURLInputValid(const std::string &input) {
-    std::vector<std::string> choices = {"1", "2"}; // The possible function options - MODULARITY
+    std::vector<std::string> choices = {"1", "2"};
 
-    if (input.empty() || input[0] == ' ' || input[input.length()-1] == ' ') {
+    if (input.empty() || input.length()<2){
         return false;
     }
 
-    // Count the number of spaces in the input
-    int countSpaces = 0;
-    for (char c : input) {
-        if (c == ' ') {
-            countSpaces++;
-        }
-    }
+    // Find the first non-space character
+    size_t temp = input.find_first_not_of(' ');
+    if (temp == std::string::npos) return false;
 
-    // If there are more than one space, return false
-    if (countSpaces != 1) {
-        return false;
-    }
+    // Find the first space after the choice (separator between choice and URL)
+    size_t spacePos = input.find(' ', temp);
+    if (spacePos == std::string::npos) return false;
 
-    // Find the 1st space (" ")
-    size_t spacePos = input.find(' ');
-    
-    // Split the input into 2 strings
-    std::string s1 = input.substr(0, spacePos);
-    std::string s2 = input.substr(spacePos + 1);
+    // Get the start and end positions of the choice part
+    size_t choiceStart = input.find_first_not_of(' ', temp);
+    size_t choiceEnd = input.find_last_not_of(' ', spacePos - 1);
+    if (choiceStart == std::string::npos || choiceEnd == std::string::npos || choiceEnd < choiceStart) return false;
 
-    // Check if s1 is a valid menu choice and s2 is a valid URL
-    if (isMenuChoiceValid(s1, choices) == true && isURLValid(s2) == true) {
-        return true;
-    }
+    std::string choice = input.substr(choiceStart, choiceEnd - choiceStart + 1);
 
-    return false;
+    // Find the start of the URL part
+    size_t urlStart = input.find_first_not_of(' ', spacePos);
+    if (urlStart == std::string::npos) return false;
+
+    // Find the end of the URL part
+    size_t urlEnd = input.find_last_not_of(' ');
+    if (urlEnd == std::string::npos || urlEnd < urlStart) return false;
+
+    std::string url = input.substr(urlStart, urlEnd - urlStart + 1);
+
+    return isMenuChoiceValid(choice, choices) && isURLValid(url);
 }
 
 
@@ -120,17 +121,17 @@ bool isBLSizeSpaceHashsInputValid(const std::string &input){
     }
 
         // Ignore spaces at the start
-       size_t firstNonSpace = input.find_first_not_of(' ');
-       if (firstNonSpace == std::string::npos) {
+       size_t temp = input.find_first_not_of(' ');
+       if (temp == std::string::npos) {
            return false;
        }
    
-       size_t spacePos = input.find(' ', firstNonSpace);
+       size_t spacePos = input.find(' ', temp);
        if (spacePos == std::string::npos) {
            return false;  // If there is no space, return false
        }
    
-       std::string s1 = input.substr(firstNonSpace, spacePos - firstNonSpace);
+       std::string s1 = input.substr(temp, spacePos - temp);
        std::string s2 = input.substr(spacePos + 1);
    
        if (s1.empty() || s2.empty()) {
