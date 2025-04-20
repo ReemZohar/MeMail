@@ -8,8 +8,6 @@
 using namespace std;
 namespace fs = std::filesystem; 
 
-//PGAPP 46 (tests for PGAPP-35)
-//Sanity:
 TEST(CreateNewBLArrTest, ReturnsCorrectVectorAndCreatesFile) {
     string length = "4";
     vector<int> result = createNewBLArr(length);
@@ -18,8 +16,8 @@ TEST(CreateNewBLArrTest, ReturnsCorrectVectorAndCreatesFile) {
     for (int val : result) {
         EXPECT_EQ(val, 0);
     }
-
-    fs::path filePath = fs::current_path().parent_path() / "data" / "BLFile.txt";
+    fs::path currentPath = fs::current_path();
+    fs::path filePath = currentPath.parent_path().parent_path() / "data" / "BLFile.txt";
     ifstream file(filePath);
     ASSERT_TRUE(file.is_open());
 
@@ -35,11 +33,9 @@ TEST(CreateNewBLArrTest, ReturnsCorrectVectorAndCreatesFile) {
 
     //Clean
     fs::remove(filePath);
-    fs::remove(filePath.parent_path());
 }
 
-
-//PGAPP 54 (tests for PGAPP-53)
+//PGAPP46 (tests for PGAPP-35)
 //Sanity:
 TEST(createZerosIntVecTest, CorrectSize) {
     EXPECT_EQ(createZerosIntVec(5).size(), 5);
@@ -52,6 +48,7 @@ TEST(createZerosIntVecTest, InitializedWithZero) {
         EXPECT_EQ(arr[i], 0);
     }
 }
+
 // Edge:
 TEST(createZerosIntVecTest, EmptyArray) {
     vector<int> arr = createZerosIntVec(0);
@@ -63,13 +60,13 @@ TEST(createZerosIntVecTest, EmptyArray) {
 //Sanity:
 TEST(createNewBLFileTest, CreatesCorrectFile) {
     string testLength = "8";
-    string expectedPath = "../data/BLFile.txt";
 
-    // Run the function
     createNewBLFile(testLength);
 
-    // Check if the file exists and can be opened
-    ifstream file(expectedPath);
+    fs::path currentPath = fs::current_path();
+    fs::path filePath = currentPath.parent_path().parent_path() / "data" / "BLFile.txt";
+
+    ifstream file(filePath);
     ASSERT_TRUE(file.is_open()) << "Failed to open the output file.";
 
     string line1, line2;
@@ -77,10 +74,8 @@ TEST(createNewBLFileTest, CreatesCorrectFile) {
     getline(file, line2);
     file.close();
 
-    //First line should match the input length
     EXPECT_EQ(line1, testLength);
 
-    //Second line should contain '0' separated by spaces
     stringstream st(line2);
     vector<string> values;
     string temp;
@@ -93,17 +88,19 @@ TEST(createNewBLFileTest, CreatesCorrectFile) {
         EXPECT_EQ(val, "0");
     }
 
-    //Clean
-    remove(expectedPath.c_str());
+    fs::remove(filePath);
 }
+
 //Edge:
 TEST(createNewBLFileTest, HandlesZeroLength) {
     string testLength = "0";
-    string expectedPath = "../data/BLFile.txt";
 
     createNewBLFile(testLength);
 
-    ifstream file(expectedPath);
+    fs::path currentPath = fs::current_path();
+    fs::path filePath = currentPath.parent_path().parent_path() / "data" / "BLFile.txt";
+
+    ifstream file(filePath);
     ASSERT_TRUE(file.is_open());
 
     string line1, line2;
@@ -114,5 +111,5 @@ TEST(createNewBLFileTest, HandlesZeroLength) {
     EXPECT_EQ(line1, testLength);
     EXPECT_TRUE(line2.empty());
 
-    remove(expectedPath.c_str());
+    fs::remove(filePath);
 }
