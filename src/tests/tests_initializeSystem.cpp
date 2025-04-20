@@ -8,6 +8,34 @@
 using namespace std;
 namespace fs = std::filesystem; 
 
+//PGAPP-45 (tests for PGAPP-34)
+TEST(getBLFromBLFileTest, ReadsCorrectBlacklist) {
+    //Get the path
+    fs::path filePath = fs::current_path().parent_path() / "data" / "BLFile.txt";
+
+    //Create the directory if it doesn't exist
+    fs::create_directories(filePath.parent_path());
+
+    //Create a test file
+    ofstream testFile(filePath);
+    testFile << "3\n";
+    testFile << "2 45 6\n";
+    testFile.close();
+
+    vector<int> expected = {2, 45, 6};
+    vector<int> result = getBLFromBLFile("BLFile.txt");
+
+    ASSERT_EQ(result.size(), expected.size());
+    for (size_t i = 0; i < expected.size(); ++i) {
+        EXPECT_EQ(result[i], expected[i]);
+    }
+
+    //Clean
+    remove(filePath.string().c_str());
+}
+
+
+//PGAPP-46 (tests for PGAPP-35)
 TEST(CreateNewBLArrTest, ReturnsCorrectVectorAndCreatesFile) {
     string length = "4";
     vector<int> result = createNewBLArr(length);
