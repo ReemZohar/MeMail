@@ -77,7 +77,7 @@ void createNewBLFile(const string& length, const fs::path& filePath) {
 
 //PGAPP-57:
 //The function gets a string and a path and load the BL fron the file accordingly. If the file doesn't exists it creates one
-vector<int> LoadBLFromFile(const string& length, const fs::path& filePath) {
+vector<int> loadBLFromFile(const string& length, const fs::path& filePath) {
     if (fs::exists(filePath) && fs::is_regular_file(filePath)) {
         return getBLFromBLFile(filePath);
     }

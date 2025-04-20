@@ -138,7 +138,7 @@ TEST(createNewBLFileTest, HandlesZeroLength) {
 
 // PGAPP-58 (tests for PGAPP-57)
 //Sanity:
-TEST(LoadBLFromFileTest, LoadsFromFile) {
+TEST(loadBLFromFileTest, LoadsFromFile) {
     fs::path testDir = fs::temp_directory_path() / "test_data";
     fs::create_directories(testDir);
     fs::path filePath = testDir / "BLFile.txt";
@@ -148,7 +148,7 @@ TEST(LoadBLFromFileTest, LoadsFromFile) {
     file << "0 0 0 0 0\n";
     file.close();
 
-    vector<int> result = LoadBLFromFile("5", filePath);
+    vector<int> result = loadBLFromFile("5", filePath);
 
     EXPECT_EQ(result.size(), 5);
     for (int val : result) {
@@ -157,14 +157,14 @@ TEST(LoadBLFromFileTest, LoadsFromFile) {
 
     fs::remove_all(testDir);
 }
-TEST(LoadBLFromFileTest, CreatesNewFile) {
+TEST(loadBLFromFileTest, CreatesNewFile) {
     fs::path testDir = fs::temp_directory_path() / "test_data";
     fs::create_directories(testDir);
     fs::path filePath = testDir / "BLFile.txt";
 
     if (fs::exists(filePath)) fs::remove(filePath);
 
-    vector<int> result = LoadBLFromFile("5", filePath);
+    vector<int> result = loadBLFromFile("5", filePath);
 
     EXPECT_TRUE(fs::exists(filePath));
 
