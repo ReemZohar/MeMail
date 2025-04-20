@@ -5,12 +5,19 @@ using namespace std;
 #include <iostream>
 #include <fstream>
 #include <filesystem>
+//PGAPP-35
+//The function gets a length and crear=te
+vector<int> createNewBLArr(string length) {
+    int len=stoi(length);
+    createNewBLFile(length);
+   return createZerosIntVec(len);
+}
+
 
 //PGAPP-53:
 //The function gets a length and create a new vector of the defined length initialized with zeros
-vector<int> createZerosIntArr(string length) {
-    int len=stoi(length);
-    return vector<int>(len, 0);
+vector<int> createZerosIntVec(int length) {
+    return vector<int>(length, 0);
 }
 
 
