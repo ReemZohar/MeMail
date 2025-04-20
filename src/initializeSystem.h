@@ -16,4 +16,7 @@ vector<int> createZerosIntVec(int length);
 //PGAPP-55
 void createNewBLFile(string length);
 
+//PGAPP-57
+std::vector<int> LoadBLFromFile(const std::string& length, const fs::path& filePath);
+
 #endif
