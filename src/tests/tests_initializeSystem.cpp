@@ -8,22 +8,53 @@
 using namespace std;
 
 
+//PGAPP 46 (tests for PGAPP-35)
+//Sanity:
+TEST(CreateNewBLArrTest, ReturnsCorrectVectorAndCreatesFile) {
+    string length = "4";
+    vector<int> result = createNewBLArr(length);
+
+    ASSERT_EQ(result.size(), 4);
+    for (int val : result) {
+        EXPECT_EQ(val, 0);
+    }
+
+    fs::path filePath = fs::current_path().parent_path() / "data" / "BLFile.txt";
+    ifstream file(filePath);
+    ASSERT_TRUE(file.is_open());
+
+    string firstLine;
+    getline(file, firstLine);
+    EXPECT_EQ(firstLine, length);
+
+    string secondLine;
+    getline(file, secondLine);
+    EXPECT_EQ(secondLine, "0 0 0 0");
+
+    file.close();
+
+    //Clean
+    fs::remove(filePath);
+    fs::remove(filePath.parent_path());
+}
+
+
 //PGAPP 54 (tests for PGAPP-53)
 //Sanity:
-TEST(createZerosIntArrTest, CorrectSize) {
-    EXPECT_EQ(createZerosIntArr("5").size(), 5);
-    EXPECT_EQ(createZerosIntArr("0").size(), 0);
-    EXPECT_EQ(createZerosIntArr("10").size(), 10);
+TEST(createZerosIntVecTest, CorrectSize) {
+    EXPECT_EQ(createZerosIntVec(5).size(), 5);
+    EXPECT_EQ(createZerosIntVec(0).size(), 0);
+    EXPECT_EQ(createZerosIntVec(10).size(), 10);
 }
-TEST(createZerosIntArrTest, InitializedWithZero) {
-    vector<int> arr = createZerosIntArr("5");
+TEST(createZerosIntVecTest, InitializedWithZero) {
+    vector<int> arr = createZerosIntVec(5);
     for (int i = 0; i < 5; ++i) {
         EXPECT_EQ(arr[i], 0);
     }
 }
 // Edge:
-TEST(createZerosIntArrTest, EmptyArray) {
-    vector<int> arr = createZerosIntArr("0");
+TEST(createZerosIntVecTest, EmptyArray) {
+    vector<int> arr = createZerosIntVec(0);
     EXPECT_TRUE(arr.empty());
 }
 
