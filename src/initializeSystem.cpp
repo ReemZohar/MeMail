@@ -10,7 +10,7 @@ using namespace std;
 // The function gets an existing file name and returns the BlackList from there as a vector
 vector<int> getBLFromBLFile(string fileName) {
     fs::path currentPath = fs::current_path();
-    fs::path dataDir = currentPath.parent_path() / "data"; 
+    fs::path dataDir = currentPath.parent_path().parent_path() / "data"; 
 
     string path = (dataDir / fileName).string();
     ifstream file(path);
