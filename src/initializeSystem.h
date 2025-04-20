@@ -3,7 +3,9 @@
 using namespace std;
 #include <vector>
 #include <string>
-
+//PGAPP-34
+vector<int> getBLFromBLFile(string fileNam
+    
 //PGAPP-35
 vector<int> createNewBLArr(string length);
 

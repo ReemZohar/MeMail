@@ -6,6 +6,37 @@ using namespace std;
 #include <fstream>
 #include <filesystem>
 
+// PGAPP-34
+// The function gets an existing file name and returns the BlackList from there as a vector
+vector<int> getBLFromBLFile(string fileName) {
+    fs::path currentPath = fs::current_path();
+    fs::path dataDir = currentPath.parent_path() / "data"; 
+
+    string path = (dataDir / fileName).string();
+    ifstream file(path);
+
+    // If the file couldn't open return an empty vector
+    if (!file.is_open()) {
+        cerr << "Error: Could not open file " << path << endl;
+        return {};
+    }
+
+    vector<int> blacklist;
+    string line1, line2;
+    getline(file, line1); //Skip the 1st line
+    getline(file, line2); //Get the BlackList
+
+    stringstream secLine(line2);
+    int value;
+    while (secLine >> value) {
+        blacklist.push_back(value);
+    }
+
+    file.close();
+    return blacklist;
+}
+
+
 //PGAPP-35
 //The function gets a length and crear=te
 vector<int> createNewBLArr(string length) {
