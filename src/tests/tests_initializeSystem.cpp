@@ -65,10 +65,9 @@ TEST(createNewBLFileTest, CreatesCorrectFile) {
     string testLength = "8";
     string expectedPath = "../data/BLFile.txt";
 
-    // Run the function
     createNewBLFile(testLength);
 
-    // Check if the file exists and can be opened
+    //Check if the file exists and can be opened
     ifstream file(expectedPath);
     ASSERT_TRUE(file.is_open()) << "Failed to open the output file.";
 
@@ -115,4 +114,54 @@ TEST(createNewBLFileTest, HandlesZeroLength) {
     EXPECT_TRUE(line2.empty());
 
     remove(expectedPath.c_str());
+}
+
+
+// PGAPP-58 (tests for PGAPP-57)
+//Sanity:
+TEST(LoadBLFromFileTest, LoadsFromFile) {
+    fs::path testDir = fs::temp_directory_path() / "test_data";
+    fs::create_directories(testDir);
+    fs::path filePath = testDir / "BLFile.txt";
+
+    ofstream file(filePath);
+    file << "5\n";
+    file << "0 0 0 0 0\n";
+    file.close();
+
+    vector<int> result = LoadBLFromFile("5", filePath);
+
+    EXPECT_EQ(result.size(), 5);
+    for (int val : result) {
+        EXPECT_EQ(val, 0);
+    }
+
+    fs::remove_all(testDir);
+}
+TEST(LoadBLFromFileTest, CreatesNewFile) {
+    fs::path testDir = fs::temp_directory_path() / "test_data";
+    fs::create_directories(testDir);
+    fs::path filePath = testDir / "BLFile.txt";
+
+    if (fs::exists(filePath)) fs::remove(filePath);
+
+    vector<int> result = LoadBLFromFile("5", filePath);
+
+    EXPECT_TRUE(fs::exists(filePath));
+
+    ifstream file(filePath);
+    string line1, line2;
+    getline(file, line1);
+    getline(file, line2);
+    file.close();
+
+    EXPECT_EQ(line1, "5");
+    EXPECT_EQ(line2, "0 0 0 0 0");
+
+    EXPECT_EQ(result.size(), 5);
+    for (int val : result) {
+        EXPECT_EQ(val, 0);
+    }
+
+    fs::remove_all(testDir);
 }
