@@ -87,7 +87,7 @@ vector<int> loadBLFromFile(const string& length, const fs::path& filePath) {
 
 // PGAPP-59:
 //The function gets a file path and returns the URLs Black List from there as a set.
-std::set<string> getBLURLsSet(const fs::path& filePath){
+std::set<string> getBLURLsSetFromFile (const fs::path& filePath){
     ifstream file(filePath);
     if (!file.is_open()) {
         cerr << "Error: Could not open file " << filePath << endl;

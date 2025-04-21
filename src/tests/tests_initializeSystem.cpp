@@ -194,21 +194,21 @@ TEST(loadBLFromFileTest, CreatesNewFile) {
         }
         file.close();
     }
-    TEST(GetBLURLsSetTest, EmptyFileReturnsEmptySet) {
+    TEST(getBLURLsSetFromFile Test, EmptyFileReturnsEmptySet) {
         fs::path path = "temp_empty.txt";
         createTempFile(path, {});  //An empty file
-        auto result = getBLURLsSet(path);
+        auto result = getBLURLsSetFromFile (path);
         EXPECT_TRUE(result.empty());
         fs::remove(path);
     }
-    TEST(GetBLURLsSetTest, OnlyTwoLinesReturnsEmptySet) {
+    TEST(getBLURLsSetFromFile Test, OnlyTwoLinesReturnsEmptySet) {
         fs::path path = "temp_two_lines.txt";
         createTempFile(path, {"header line", "another header"});
-        auto result = getBLURLsSet(path);
+        auto result = getBLURLsSetFromFile (path);
         EXPECT_TRUE(result.empty());
         fs::remove(path);
     }
-    TEST(GetBLURLsSetTest, URLsParsedCorrectly) {
+    TEST(getBLURLsSetFromFile Test, URLsParsedCorrectly) {
         fs::path path = "temp_urls.txt";
         createTempFile(path, {
             "Header1", "Header2", 
@@ -220,11 +220,11 @@ TEST(loadBLFromFileTest, CreatesNewFile) {
             "http://bad.com",
             "https://evil.org"
         };
-        std::set<std::string> result = getBLURLsSet(path);
+        std::set<std::string> result = getBLURLsSetFromFile (path);
         EXPECT_EQ(result, expected);
         fs::remove(path);
     }
-    TEST(GetBLURLsSetTest, SkipsEmptyLines) {
+    TEST(getBLURLsSetFromFile Test, SkipsEmptyLines) {
         fs::path path = "temp_with_empty_lines.txt";
         createTempFile(path, {
             "Header1", "Header2",
@@ -238,12 +238,12 @@ TEST(loadBLFromFileTest, CreatesNewFile) {
             "http://example.com",
             "http://example.org"
         };
-        std::set<std::string> result = getBLURLsSet(path);
+        std::set<std::string> result = getBLURLsSetFromFile (path);
         EXPECT_EQ(result, expected);
         fs::remove(path);
     }
-    TEST(GetBLURLsSetTest, FileNotFoundReturnsEmptySet) {
+    TEST(getBLURLsSetFromFile Test, FileNotFoundReturnsEmptySet) {
         fs::path tempPath = "non_existing_file.txt";
-        std::set<std::string> result = getBLURLsSet(tempPath);
+        std::set<std::string> result = getBLURLsSetFromFile (tempPath);
         EXPECT_TRUE(result.empty());
     }
