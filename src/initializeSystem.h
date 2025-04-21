@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <filesystem>
+using namespace std;
 
 // PGAPP-34
 std::vector<int> getBLFromBLFile(const fs::path& filePath);
@@ -20,4 +21,6 @@ void createNewBLFile(const std::string& length, const fs::path& filePath);
 // PGAPP-57
 std::vector<int> loadBLFromFile(const std::string& length, const fs::path& filePath);
 
+// PGAPP-59
+std::set<string> getBLURLsSet(const fs::path& filePath);
 #endif
