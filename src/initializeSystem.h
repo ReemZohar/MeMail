@@ -22,5 +22,6 @@ void createNewBLFile(const std::string& length, const fs::path& filePath);
 std::vector<int> loadBLFromFile(const std::string& length, const fs::path& filePath);
 
 // PGAPP-59
-std::set<string> getBLURLsSet(const fs::path& filePath);
+std::set<string> getBLURLsSetFromFile (const fs::path& filePath);
+
 #endif
