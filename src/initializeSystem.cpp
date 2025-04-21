@@ -83,3 +83,24 @@ vector<int> loadBLFromFile(const string& length, const fs::path& filePath) {
     }
     return createNewBLArr(length, filePath);
 }
+
+
+// PGAPP-59:
+//The function gets a file path and returns the URLs Black List from there as a set.
+std::set<string> getBLURLsSet(const fs::path& filePath){
+    ifstream file(filePath);
+    if (!file.is_open()) {
+        cerr << "Error: Could not open file " << filePath << endl;
+        return {};
+    }
+    set<string> URLBlackList;
+    string line1, line2, urlLine;
+    getline(file, line1); //Skip the 1st line
+    getline(file, line2); //Skip the 1st line
+    while (getline(file, urlLine)) {
+        if (!urlLine.empty()) {
+            URLBlackList.insert(urlLine);
+        }
+    }
+    return URLBlackList;
+}
