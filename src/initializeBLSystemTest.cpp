@@ -249,7 +249,7 @@ TEST(loadBLFromFileTest, CreatesNewFile) {
     }
 
     
-//PGAPP - 64(tests for PGAPP-63)
+//PGAPP-64(tests for PGAPP-63)
 // Sanity Test: Valid file with integer length in first line
 TEST(GetBitArrLengthTest, ValidFile) {
     fs::path filePath = "temp_valid.txt";

@@ -104,3 +104,18 @@ std::set<string> getBLURLsSetFromFile (const fs::path& filePath){
     }
     return URLBlackList;
 }
+
+
+// PGAPP-63
+//The function gets a file path and returns the bits array length (which is in the 1st line of the file)
+//returns -1 if there's a problem
+int getBitArrLengthFromFile(const fs::path& filePath){
+    ifstream file(filePath);
+    if (!file.is_open()) {
+        cerr << "Error: Could not open file " << filePath << endl;
+        return -1;
+    }
+    string line1;
+    getline(file, line1); //Get the 1st line
+    return stoi(line1);
+}

@@ -24,4 +24,7 @@ std::vector<int> loadBLFromFile(const std::string& length, const fs::path& fileP
 // PGAPP-59
 std::set<string> getBLURLsSetFromFile (const fs::path& filePath);
 
+// PGAPP-63
+int getBitArrLengthFromFile(const fs::path& filePath);
+
 #endif
