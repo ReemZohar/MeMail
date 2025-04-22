@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <regex>
 #include <sstream>
+using namespace std;
 
 //PGAPP-20
 //The function gets a string and checks if it is a valid URL

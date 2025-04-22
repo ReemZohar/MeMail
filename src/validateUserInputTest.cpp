@@ -2,6 +2,7 @@
 #include "validateUserInput.h"
 #include <string>
 #include <vector>
+using namespace std;
 
 //GPAPP-25: Tests for isURLValid (GPAPP-20)
 //Sanity:
