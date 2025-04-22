@@ -247,3 +247,25 @@ TEST(loadBLFromFileTest, CreatesNewFile) {
         std::set<std::string> result = getBLURLsSetFromFile (tempPath);
         EXPECT_TRUE(result.empty());
     }
+
+    
+//PGAPP-64(tests for PGAPP-63)
+// Sanity Test: Valid file with integer length in first line
+TEST(GetBitArrLengthTest, ValidFile) {
+    fs::path filePath = "temp_valid.txt";
+    createTempFile(filePath, {"8", "0 0 1 0 1 0 0 1"});
+    EXPECT_EQ(getBitArrLengthFromFile(filePath), 8);
+    fs::remove(filePath);
+}
+TEST(GetBitArrLengthTest, FileDoesNotExist) {
+    fs::path filePath = "nonexistent.txt";
+    EXPECT_EQ(getBitArrLengthFromFile(filePath), -1);
+}
+TEST(GetBitArrLengthTest, EmptyFile) {
+    fs::path filePath = "empty.txt";
+    createTempFile(filePath, {});
+    EXPECT_THROW({
+        getBitArrLengthFromFile(filePath);
+    }, std::invalid_argument);
+    fs::remove(filePath);
+}
