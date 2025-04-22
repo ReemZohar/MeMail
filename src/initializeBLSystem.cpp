@@ -1,10 +1,12 @@
-#include "initializeSystem.h"
+#include "initializeBLSystem.h"
 using namespace std;
 #include <vector>
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <filesystem>
+#include <set>
+namespace fs = std::filesystem; 
 
 // PGAPP-34
 // The function gets an existing file path and returns the BlackList from there as a vector
@@ -96,7 +98,7 @@ std::set<string> getBLURLsSetFromFile (const fs::path& filePath){
     set<string> URLBlackList;
     string line1, line2, urlLine;
     getline(file, line1); //Skip the 1st line
-    getline(file, line2); //Skip the 1st line
+    getline(file, line2); //Skip the 2nd line
     while (getline(file, urlLine)) {
         if (!urlLine.empty()) {
             URLBlackList.insert(urlLine);
