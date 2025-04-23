@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 
 project(Gmail)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(FetchContent)
@@ -15,8 +15,12 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 add_executable(runTests 
+initializeBLSystem.cpp
+initializeBLSystemTest.cpp
 validateUserInput.cpp
-validateUserInputTest.cpp) #write here the files you wish to test, the format is: <file_name>.cpp
+validateUserInputTest.cpp
+) #write here the files you wish to test, the format is: <file_name>.cpp
+
 # add_executable(runProg ) #write here the files you wish to run, the format is: <file_name>.cpp
 
 target_link_libraries(runTests gtest_main)
