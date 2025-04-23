@@ -14,4 +14,8 @@ std::vector<int> convStringToArr(const std::string& userInput);
 //returns the line of input given by the user in the format: [blacklistSize] [hash1 repetitions] ... [hashN repetitions]
 std::string firstUserSelection();
 
+//PGAPP-76
+//saves the URL from the action input line to a string and returns it.
+std::string getURL(std::string actionLine);
+
 #endif
