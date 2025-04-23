@@ -3,7 +3,7 @@
 
 using namespace std;
 
-//PGAPP 68: convStringToArr tests
+//PGAPP-68
 /*there are string validations made before this function,
  so there's no need to test invalid strings since the string passed as an argument is always valid*/
 TEST(convStringToArrTest, standardArrTest) {
@@ -59,4 +59,42 @@ TEST(convStringToArrTest, largeValOrArrTest) {
     EXPECT_EQ(convStringToArr(s1), v1); //vector with large values
     EXPECT_EQ(convStringToArr(s2), v2); //vector with large values
     EXPECT_EQ(convStringToArr(sLong), vLong); //large vector
+}
+
+//PGAPP-75
+//we can assume the input line is valid since it's checked beforehand
+TEST(getURLTest, validInputLines) {
+    //expected outcomes
+    string url1 = "https://example.com";
+    string url2 = "https://www.alpha-beta.com/login";
+    string url3 = "https://my-site.net/profile?id=93";
+
+    //valid user input lines
+    string s1 = "2 https://example.com";
+    string s2 = "1 https://www.alpha-beta.com/login";
+    string s3 = "1 https://my-site.net/profile?id=93";
+
+    EXPECT_EQ(getURL(s1), url1);
+    EXPECT_EQ(getURL(s2), url2);
+    EXPECT_EQ(getURL(s3), url3);
+}
+
+//tests valid input lines with different amount of spaces
+TEST(getURLTest, validSpacesInputLines) {
+    //expected outcomes
+    string url1 = "https://example.com";
+    string url2 = "https://www.alpha-beta.com/login";
+    string url3 = "https://my-site.net/profile?id=93";
+    string url4 = "https://example4.com";
+
+    //valid user input lines
+    string s1 = "    2 https://example.com";
+    string s2 = "1  https://www.alpha-beta.com/login";
+    string s3 = "1 https://my-site.net/profile?id=93"   ;
+    string s4 = "  2    https://example4.com ";
+
+    EXPECT_EQ(getURL(s1), url1); //extra spaces at the start
+    EXPECT_EQ(getURL(s2), url2); //extra spaces at the middle
+    EXPECT_EQ(getURL(s3), url3); //extra spaces at the end
+    EXPECT_EQ(getURL(s4), url4); //extra spaces at the start, middle and end
 }
