@@ -12,8 +12,8 @@ class HashRepeats {
     //getter    
     int getRepeatCount() const;
 
-    //activates the hash function on the given integer and returns the result
-    std::size_t hash(std::size_t target) const;
+    //activates the hash function on the given string and returns the result
+    std::size_t hash(const std::string& target) const;
 
     private:
     //class fields    
