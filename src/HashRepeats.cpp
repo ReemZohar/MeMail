@@ -9,8 +9,8 @@ int HashRepeats::getRepeatCount() const {
     return repeatCount;
 }
 
-size_t HashRepeats::hash(size_t target) const{
-    size_t result = target, skipFirstStr = 1;
+size_t HashRepeats::hash(const string& target) const{
+    size_t result = std::hash<string>{}(target), skipFirstStr = 1;
     
     //loop hashes the URL (which is hashed once already) for as many times as passed by the user
     for(int i = 0; i < HashRepeats::repeatCount - skipFirstStr; i++) {
