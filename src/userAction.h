@@ -18,4 +18,7 @@ std::string firstUserSelection();
 //saves the URL from the action input line to a string and returns it.
 std::string getURL(std::string actionLine);
 
+//finds the index of the URL start within the action line string
+int findURLStartIndex(std::string actionLine);
+
 #endif
