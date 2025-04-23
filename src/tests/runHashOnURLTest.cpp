@@ -34,10 +34,10 @@ TEST(hashTests, hashTest) {
     HashRepeats obj3 = HASH_REPEATS::HashRepeats(hash<size_t>{}, size3);
     HashRepeats obj4 = HASH_REPEATS::HashRepeats(hash<size_t>{}, size4);
 
-    EXPECT_EQ(obj1.hash(hash<string>{}(url1)), hashTarget(hash<string>{}(url1), size1 - 1));
-    EXPECT_EQ(obj2.hash(hash<string>{}(url2)), hashTarget(hash<string>{}(url2), size2 - 1));
-    EXPECT_EQ(obj3.hash(hash<string>{}(url3)), hashTarget(hash<string>{}(url3), size3 - 1));
-    EXPECT_EQ(obj4.hash(hash<string>{}(url4)), hashTarget(hash<string>{}(url4), size4 - 1));
+    EXPECT_EQ((obj1.hash(url1)), hashTarget(hash<string>{}(url1), size1 - 1));
+    EXPECT_EQ((obj2.hash(url2)), hashTarget(hash<string>{}(url2), size2 - 1));
+    EXPECT_EQ((obj3.hash(url3)), hashTarget(hash<string>{}(url3), size3 - 1));
+    EXPECT_EQ((obj4.hash(url4)), hashTarget(hash<string>{}(url4), size4 - 1));
 }
 
 //PGAPP-80
