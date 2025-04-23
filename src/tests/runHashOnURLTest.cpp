@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "../HashRepeats.h"
+#include "../runHashOnURL.h"
 
 using namespace std;
 
@@ -44,7 +45,7 @@ TEST(hashTests, hashTest) {
 vector<int> getRepeatCountVec(vector<HashRepeats> hashRepeats) {
     vector<int> repeatCountVec;
 
-    for(HashRepeat obj : hashRepeats) {
+    for(HashRepeats obj : hashRepeats) {
         repeatCountVec.push_back(obj.getRepeatCount());
     }
 
@@ -59,6 +60,9 @@ TEST(convInputToHRVecTest, convValidInputTest) {
     string input4 = "   2 33 11 ";
     string input5 = "1   7 4  6";
 
+    //number of hash functions for each user input
+    int size1 = 1, size2 = 6, size3 = 10, size4 = 2, size5 = 3;
+
     //expected output doesn't include the first number since it's the desired blacklist size
     vector<int> expectedOutput1 = {5};
     vector<int> expectedOutput2 = {1, 2, 3, 4, 5, 6};
@@ -69,11 +73,11 @@ TEST(convInputToHRVecTest, convValidInputTest) {
     vector<HashRepeats> v1, v2, v3, v4, v5;
 
     //converts the input to HashRepeats vector
-    v1 = convInputToHashRepeatsVec(input1);
-    v2 = convInputToHashRepeatsVec(input2);
-    v3 = convInputToHashRepeatsVec(input3);
-    v4 = convInputToHashRepeatsVec(input4);
-    v5 = convInputToHashRepeatsVec(input5);
+    v1 = convInputToHashRepeatsVec(input1, RUN_HASH_ON_URL::createHashVec(size1));
+    v2 = convInputToHashRepeatsVec(input2, RUN_HASH_ON_URL::createHashVec(size2));
+    v3 = convInputToHashRepeatsVec(input3, RUN_HASH_ON_URL::createHashVec(size3));
+    v4 = convInputToHashRepeatsVec(input4, RUN_HASH_ON_URL::createHashVec(size4));
+    v5 = convInputToHashRepeatsVec(input5, RUN_HASH_ON_URL::createHashVec(size5));
 
     //vectors of repetition numbers stored within each HashRepeats vector's object
     realOutput1 = getRepeatCountVec(v1);
