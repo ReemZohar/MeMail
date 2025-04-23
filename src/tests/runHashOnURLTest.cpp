@@ -38,3 +38,53 @@ TEST(hashTests, hashTest) {
     EXPECT_EQ(obj3.hash(hash<string>{}(url3)), hashTarget(hash<string>{}(url3), size3 - 1));
     EXPECT_EQ(obj4.hash(hash<string>{}(url4)), hashTarget(hash<string>{}(url4), size4 - 1));
 }
+
+//PGAPP-80
+//returns a vector of all hash repetitions of HashRepeats objects in the passed vector
+vector<int> getRepeatCountVec(vector<HashRepeats> hashRepeats) {
+    vector<int> repeatCountVec;
+
+    for(HashRepeat obj : hashRepeats) {
+        repeatCountVec.push_back(obj.getRepeatCount());
+    }
+
+    return repeatCountVec;
+}
+
+//tests the conversion of the first valid user input into a vector of HashRepeats objects
+TEST(convInputToHRVecTest, convValidInputTest) {
+    string input1 = "14 5";
+    string input2 = "100 1 2 3 4 5 6";
+    string input3 = "10 10 10 10 10 10 10 10 10 10 10";
+    string input4 = "   2 33 11 ";
+    string input5 = "1   7 4  6";
+
+    //expected output doesn't include the first number since it's the desired blacklist size
+    vector<int> expectedOutput1 = {5};
+    vector<int> expectedOutput2 = {1, 2, 3, 4, 5, 6};
+    vector<int> expectedOutput3 = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
+    vector<int> expectedOutput4 = {33, 11};
+    vector<int> expectedOutput5 = {7, 4, 6};
+    vector<int> realOutput1, realOutput2, realOutput3, realOutput4, realOutput5;
+    vector<HashRepeats> v1, v2, v3, v4, v5;
+
+    //converts the input to HashRepeats vector
+    v1 = convInputToHashRepeatsVec(input1);
+    v2 = convInputToHashRepeatsVec(input2);
+    v3 = convInputToHashRepeatsVec(input3);
+    v4 = convInputToHashRepeatsVec(input4);
+    v5 = convInputToHashRepeatsVec(input5);
+
+    //vectors of repetition numbers stored within each HashRepeats vector's object
+    realOutput1 = getRepeatCountVec(v1);
+    realOutput2 = getRepeatCountVec(v2);
+    realOutput3 = getRepeatCountVec(v3);
+    realOutput4 = getRepeatCountVec(v4);
+    realOutput5 = getRepeatCountVec(v5);
+
+    EXPECT_EQ(realOutput1, expectedOutput1); //regular valid input
+    EXPECT_EQ(realOutput2, expectedOutput2); //regular valid input
+    EXPECT_EQ(realOutput3, expectedOutput3); //regular valid input
+    EXPECT_EQ(realOutput4, expectedOutput4); //valid input with spaces
+    EXPECT_EQ(realOutput5, expectedOutput5); //valid input with spaces
+}
