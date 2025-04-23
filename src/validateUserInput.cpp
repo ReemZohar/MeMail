@@ -1,9 +1,5 @@
 #include "validateUserInput.h"
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <regex>
-#include <sstream>
+
 using namespace std;
 
 //PGAPP-20

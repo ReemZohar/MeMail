@@ -2,6 +2,9 @@
 #define VALIDATE_USER_INPUT
 #include <string>
 #include <vector>
+#include <algorithm>
+#include <regex>
+#include <sstream>
 
 //PGAPP-20
 bool isURLValid(const std::string& url);

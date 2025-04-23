@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "validateUserInput.h"
+#include "../validateUserInput.h"
 #include <string>
 #include <vector>
 using namespace std;
