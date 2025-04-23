@@ -5,6 +5,8 @@
 #include <string>
 #include <filesystem>
 #include <set>
+#include <iostream>
+#include <fstream>
 
 // PGAPP-34
 std::vector<int> getBLFromBLFile(const std::filesystem::path& filePath);
