@@ -2,6 +2,7 @@
 #define RUN_HASH_ON_URL
 
 #include "HashRepeats.h"
+#include "IHasher.h"
 #include "userAction.h"
 #include <vector>
 #include <string>
@@ -17,6 +18,6 @@ std::vector<std::function<std::size_t(std::size_t)>> createHashVec(int size);
 
 //PGAPP-30
 //filters a URL and returns a vector containing the filtered URL
-std::vector<bool> runHashOnURL(const std::string& url, const std::vector<HashRepeats>& hashRepeats, int BLSize);
+std::vector<bool> runHashOnURL(const std::string& url, const std::vector<IHasher>& hashRepeats, int BLSize);
 
 #endif
