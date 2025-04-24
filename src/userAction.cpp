@@ -2,34 +2,6 @@
 
 using namespace std;
 
-void selectAction() {
-    string action;
-    int actionIndex = 0;
-
-    //loop take a line of input representing the chosen user action and iterates until the choice is valid.
-    do {
-        getline(cin, action);
-    } while(VALIDATE_USER_INPUT::isChoiceSpaceURLInputValid(action) == false);
-
-    //performs the chosen action, which is the first character of the action string.
-    performAction(action.at(actionIndex), getURL(action));
-}
-
-void performAction(size_t action, const string& url) {
-    switch(action) {
-        //TODO
-        case ADD_URL_TO_BL:
-            break;
-
-        //TODO
-        case CHECK_IF_URL_IS_BL:
-            break;
-
-        default:
-            break;
-    }
-}
-
 vector<int> convStringToArr(const string& userInput) {
     vector<int> userChoices;
     string n = "", init = "";
