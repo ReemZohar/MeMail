@@ -8,5 +8,5 @@ class IUserInput {
     virtual void takeInput() = 0;
 
     //gets the current input from the class
-    virtual std::string getInput() = 0;
+    virtual std::string getInput() const = 0;
 };
