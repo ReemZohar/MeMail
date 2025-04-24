@@ -7,6 +7,9 @@
 #include <iostream>
 
 class FirstUserInput : public IUserInput {
+    //constructor
+    FirstUserInput();
+    
     /*saves the line of input given by the user in the format:
      [blacklistSize] [hash1 repetitions] ... [hashN repetitions] to the currInput class field*/
     void takeInput() override;
