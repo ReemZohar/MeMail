@@ -27,15 +27,15 @@ vector<function<size_t(size_t)>> createHashVec(int size) {
     return hashFuncsVec;
 }
 
-vector<bool> runHashOnURL(const string& url, const vector<HashRepeats>& hashFuncs, int BLSize) {
+vector<bool> runHashOnURL(const string& url, const vector<IHasher>& hashFuncs, int BLSize) {
     vector<bool> result(BLSize, false); // Initialize the bit array to 0 using the chosen blacklist size
     int ind = 0;
 
     /*the loops filters the given URL. first the outer loop prepares an HashRepeats object.
     then, the inner loop repeats the current hash function as many times as defined in the HashRepeats object,
     and map it to the resuly vector using modulo of the blacklist size.*/
-    for (HashRepeats hashRepeat : hashFuncs) {
-        ind = hashRepeat.hash(url) % BLSize;
+    for (int i = 0; i < hashFuncs.size(); i++) {
+        ind = hashFuncs.at(i).hash(url) % BLSize;
         result[ind] = true;
     }
 

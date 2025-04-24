@@ -1,3 +1,6 @@
+#ifndef IHASHER
+#define IHASHER
+
 #include <string>
 
 //PGAPP-84
@@ -5,5 +8,6 @@
 class IHasher {
     public:
     //hashes a string
-    virtual std::size_t hash(const std::string& url) = 0;
+    virtual std::size_t hash(const std::string& target) const = 0;
 };
+#endif
