@@ -1,6 +1,6 @@
 #include "FirstUserInput.h"
 
-using namespace std;\
+using namespace std;
 
 FirstUserInput::FirstUserInput() : currInput("") {};
 
