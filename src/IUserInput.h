@@ -9,4 +9,4 @@ class IUserInput {
 
     //gets the current input from the class
     virtual std::string getInput() = 0;
-}
+};
