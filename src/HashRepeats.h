@@ -3,17 +3,18 @@
 
 #include <string>
 #include <functional>
+#include "IHasher.h"
 
-class HashRepeats {
+class HashRepeats : public IHasher {
     public:
     //constructor
     HashRepeats(std::function<std::size_t(std::size_t)> hashFunc, int count);
 
-    //getter    
-    int getRepeatCount() const;
-
     //activates the hash function on the given string and returns the result
-    std::size_t hash(const std::string& target) const;
+    std::size_t hash(const std::string& target) const override;
+
+    //class getter
+    int getRepeatCount();
 
     private:
     //class fields    
