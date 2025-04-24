@@ -21,6 +21,9 @@ add_executable(runTests
   ../tests/validateUserInputTest.cpp
   userAction.cpp
   ../tests/userActionTest.cpp
+  HashRepeats.cpp
+  ../tests/runHashOnURLTest.cpp
+  runHashOnURL.cpp
 ) #write here the files you wish to test, the format is: <file_name>.cpp
 
 # add_executable(runProg ) #write here the files you wish to run, the format is: <file_name>.cpp
