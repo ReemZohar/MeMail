@@ -3,8 +3,8 @@ using namespace std;
 namespace fs = std::filesystem; 
 
 // PGAPP-34
-// The function gets an existing file path and returns the BlackList from there as a vector
-vector<int> getBLFromBLFile(const fs::path& filePath) {
+// The function gets an existing file path and returns the BlackList from there as a boolean vector
+vector<bool> getBLFromBLFile(const fs::path& filePath) {
     ifstream file(filePath);
 
     if (!file.is_open()) {
@@ -12,7 +12,7 @@ vector<int> getBLFromBLFile(const fs::path& filePath) {
         return {};
     }
 
-    vector<int> blacklist;
+    vector<bool> blacklist;
     string line1, line2;
     getline(file, line1); //Skip the 1st line
     getline(file, line2); //Blacklist values
@@ -20,7 +20,13 @@ vector<int> getBLFromBLFile(const fs::path& filePath) {
     stringstream secLine(line2);
     int value;
     while (secLine >> value) {
-        blacklist.push_back(value);
+        if(value == 1)
+        {
+            blacklist.push_back(true);
+        }
+        else {        
+            blacklist.push_back(false);
+        }
     }
 
     return blacklist;
@@ -29,9 +35,9 @@ vector<int> getBLFromBLFile(const fs::path& filePath) {
 
 //PGAPP-35
 //The function gets a length and a filepath, creates a new BL file and a new BL vector and returns it
-vector<int> createNewBLArr(const string& length, const fs::path& filePath) {
+vector<bool> createNewBLArr(const string& length, const fs::path& filePath) {
     createNewBLFile(length, filePath);
-    return createZerosIntVec(stoi(length));
+    return createFalseBoolVec(stoi(length));
 }
 
 
@@ -53,7 +59,7 @@ void createNewBLFile(const string& length, const fs::path& filePath) {
             return;
         }
     }
-
+    bool temp = false;
     ofstream file(filePath);
     int len = stoi(length);
 
@@ -64,7 +70,7 @@ void createNewBLFile(const string& length, const fs::path& filePath) {
 
     file << length << endl;
     for (int i = 0; i < len; i++) {
-        file << "0";
+        file << temp;
         if (i != len - 1) file << " ";
     }
     file << endl;
@@ -73,7 +79,7 @@ void createNewBLFile(const string& length, const fs::path& filePath) {
 
 //PGAPP-57:
 //The function gets a string and a path and load the BL fron the file accordingly. If the file doesn't exists it creates one
-vector<int> loadBLFromFile(const string& length, const fs::path& filePath) {
+vector<bool> loadBLFromFile(const string& length, const fs::path& filePath) {
     if (fs::exists(filePath) && fs::is_regular_file(filePath)) {
         return getBLFromBLFile(filePath);
     }
@@ -115,3 +121,8 @@ int getBitArrLengthFromFile(const fs::path& filePath){
     getline(file, line1); //Get the 1st line
     return stoi(line1);
 }
+
+// PGAPP-94
+std::vector<bool> createFalseBoolVec(int length){
+    return vector<bool>(length, false);
+    }

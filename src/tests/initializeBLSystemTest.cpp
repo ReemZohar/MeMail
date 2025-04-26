@@ -18,17 +18,18 @@ TEST(getBLFromBLFileTest, ReadsCorrectBlacklist) {
     fs::path filePath = testDir / "BLFile.txt";
 
     ofstream testFile(filePath);
-    testFile << "3\n";
-    testFile << "2 45 6\n";
+    testFile << "3\n"; 
+    testFile << "1 0 1\n"; 
     testFile.close();
 
-    vector<int> expected = {2, 45, 6};
-    vector<int> result = getBLFromBLFile(filePath);
+    vector<bool> expected = {true, false, true};
+    vector<bool> result = getBLFromBLFile(filePath);
 
     ASSERT_EQ(result, expected);
 
     fs::remove_all(testDir);
 }
+
 
 //PGAPP 46 (tests for PGAPP-35)
 //Sanity:
@@ -38,11 +39,10 @@ TEST(CreateNewBLArrTest, ReturnsCorrectVectorAndCreatesFile) {
     fs::path filePath = testDir / "BLFile.txt";
 
     string length = "4";
-    vector<int> result = createNewBLArr(length, filePath);
-
+    vector<bool> result = createNewBLArr(length, filePath); 
     ASSERT_EQ(result.size(), 4);
-    for (int val : result) {
-        EXPECT_EQ(val, 0);
+    for (bool val : result) {
+        EXPECT_FALSE(val); 
     }
 
     ifstream file(filePath);
@@ -139,7 +139,7 @@ TEST(createNewBLFileTest, HandlesZeroLength) {
 
 
 // PGAPP-58 (tests for PGAPP-57)
-//Sanity:
+// Sanity:
 TEST(loadBLFromFileTest, LoadsFromFile) {
     fs::path testDir = fs::temp_directory_path() / "test_data";
     fs::create_directories(testDir);
@@ -150,11 +150,11 @@ TEST(loadBLFromFileTest, LoadsFromFile) {
     file << "0 0 0 0 0\n";
     file.close();
 
-    vector<int> result = loadBLFromFile("5", filePath);
+    vector<bool> result = loadBLFromFile("5", filePath);
 
     EXPECT_EQ(result.size(), 5);
-    for (int val : result) {
-        EXPECT_EQ(val, 0);
+    for (bool val : result) {
+        EXPECT_FALSE(val); 
     }
 
     fs::remove_all(testDir);
@@ -166,7 +166,7 @@ TEST(loadBLFromFileTest, CreatesNewFile) {
 
     if (fs::exists(filePath)) fs::remove(filePath);
 
-    vector<int> result = loadBLFromFile("5", filePath);
+    vector<bool> result = loadBLFromFile("5", filePath);
 
     EXPECT_TRUE(fs::exists(filePath));
 
@@ -180,12 +180,14 @@ TEST(loadBLFromFileTest, CreatesNewFile) {
     EXPECT_EQ(line2, "0 0 0 0 0");
 
     EXPECT_EQ(result.size(), 5);
-    for (int val : result) {
-        EXPECT_EQ(val, 0);
+    for (bool val : result) {
+        EXPECT_FALSE(val); 
     }
 
     fs::remove_all(testDir);
 }
+
+
 
 //PGAPP-60 (tests for PGAPP-59)
     //Make the file
@@ -270,4 +272,24 @@ TEST(GetBitArrLengthTest, EmptyFile) {
         getBitArrLengthFromFile(filePath);
     }, std::invalid_argument);
     fs::remove(filePath);
+}
+
+
+//PGAPP-95 (tests for PGAPP-94)
+// Sanity:
+TEST(CreateFalseBoolVecTest, CorrectSize) {
+    EXPECT_EQ(createFalseBoolVec(5).size(), 5);
+    EXPECT_EQ(createFalseBoolVec(0).size(), 0);
+    EXPECT_EQ(createFalseBoolVec(10).size(), 10);
+}
+TEST(CreateFalseBoolVecTest, InitializedWithFalse) {
+    vector<bool> arr = createFalseBoolVec(5);
+    for (bool val : arr) {
+        EXPECT_FALSE(val);
+    }
+}
+// Edge:
+TEST(CreateFalseBoolVecTest, EmptyArray) {
+    vector<bool> arr = createFalseBoolVec(0);
+    EXPECT_TRUE(arr.empty());
 }
