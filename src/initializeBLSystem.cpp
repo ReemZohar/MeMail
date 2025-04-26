@@ -115,3 +115,8 @@ int getBitArrLengthFromFile(const fs::path& filePath){
     getline(file, line1); //Get the 1st line
     return stoi(line1);
 }
+
+// PGAPP-94
+std::vector<bool> createFalseBoolVec(int length){
+    return vector<bool>(length, false);
+    }
