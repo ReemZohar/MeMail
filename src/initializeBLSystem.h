@@ -20,6 +20,10 @@ std::vector<int> createNewBLArr(const std::string& length, const std::filesystem
 //The function gets a length and create a new vector of the defined length initialized with zeros
 std::vector<int> createZerosIntVec(int length);
 
+// PGAPP-94
+//The function gets a length and create a new vector of the defined length initialized with 'false''
+std::vector<bool> createFalseBoolVec(int length);
+
 // PGAPP-55
 //The function gets a length of a new BL and a file path and creates a new file initialized with this length and a new zeros BL
 void createNewBLFile(const std::string& length, const std::filesystem::path& filePath);
