@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../userAction.h"
+#include "userAction.h"
 
 using namespace std;
 

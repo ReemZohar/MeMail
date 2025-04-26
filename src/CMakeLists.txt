@@ -15,17 +15,25 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 add_executable(runTests 
-  initializeBLSystem.cpp
+  ../initialization/initializeBLSystem.cpp
   ../tests/initializeBLSystemTest.cpp
-  validateUserInput.cpp
+  ../validations/validateUserInput.cpp
   ../tests/validateUserInputTest.cpp
-  userAction.cpp
+  ../user/actions/userAction.cpp
   ../tests/userActionTest.cpp
-  HashRepeats.cpp
+  ../hash/HashRepeats.cpp
   ../tests/runHashOnURLTest.cpp
-  runHashOnURL.cpp
+  ../hash/runHashOnURL.cpp
 ) #write here the files you wish to test, the format is: <file_name>.cpp
 
 # add_executable(runProg ) #write here the files you wish to run, the format is: <file_name>.cpp
+target_include_directories(runTests
+  PRIVATE
+    ${PROJECT_SOURCE_DIR}/hash
+    ${PROJECT_SOURCE_DIR}/initialization
+    ${PROJECT_SOURCE_DIR}/user/user_input
+    ${PROJECT_SOURCE_DIR}/user/actions
+    ${PROJECT_SOURCE_DIR}/validations
+)
 
 target_link_libraries(runTests gtest_main)

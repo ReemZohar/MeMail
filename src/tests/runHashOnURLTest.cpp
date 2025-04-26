@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../HashRepeats.h"
-#include "../runHashOnURL.h"
+#include "HashRepeats.h"
+#include "runHashOnURL.h"
 
 using namespace std;
 
