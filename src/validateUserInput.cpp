@@ -73,26 +73,21 @@ bool isChoiceSpaceURLInputValid(const std::string &input) {
         return false;
     }
 
-    // Find the first non-space character
     size_t temp = input.find_first_not_of(' ');
     if (temp == std::string::npos) return false;
 
-    // Find the first space after the choice (separator between choice and URL)
     size_t spacePos = input.find(' ', temp);
     if (spacePos == std::string::npos) return false;
 
-    // Get the start and end positions of the choice part
     size_t choiceStart = input.find_first_not_of(' ', temp);
     size_t choiceEnd = input.find_last_not_of(' ', spacePos - 1);
     if (choiceStart == std::string::npos || choiceEnd == std::string::npos || choiceEnd < choiceStart) return false;
 
     std::string choice = input.substr(choiceStart, choiceEnd - choiceStart + 1);
 
-    // Find the start of the URL part
     size_t urlStart = input.find_first_not_of(' ', spacePos);
     if (urlStart == std::string::npos) return false;
 
-    // Find the end of the URL part
     size_t urlEnd = input.find_last_not_of(' ');
     if (urlEnd == std::string::npos || urlEnd < urlStart) return false;
 
@@ -109,7 +104,6 @@ bool isBLSizeSpaceHashsInputValid(const std::string &input){
         return false;
     }
 
-    // Count the number of spaces in the input
     int countSpaces = 0;
     for (char c : input) {
         if (c == ' ') {
@@ -125,7 +119,7 @@ bool isBLSizeSpaceHashsInputValid(const std::string &input){
    
        size_t spacePos = input.find(' ', temp);
        if (spacePos == std::string::npos) {
-           return false;  // If there is no space, return false
+           return false;  //If there is no space, return false
        }
    
        std::string s1 = input.substr(temp, spacePos - temp);
