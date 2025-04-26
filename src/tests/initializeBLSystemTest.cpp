@@ -271,3 +271,23 @@ TEST(GetBitArrLengthTest, EmptyFile) {
     }, std::invalid_argument);
     fs::remove(filePath);
 }
+
+
+//PGAPP-95 (tests for PGAPP-94)
+// Sanity:
+TEST(CreateFalseBoolVecTest, CorrectSize) {
+    EXPECT_EQ(createFalseBoolVec(5).size(), 5);
+    EXPECT_EQ(createFalseBoolVec(0).size(), 0);
+    EXPECT_EQ(createFalseBoolVec(10).size(), 10);
+}
+TEST(CreateFalseBoolVecTest, InitializedWithFalse) {
+    vector<bool> arr = createFalseBoolVec(5);
+    for (bool val : arr) {
+        EXPECT_FALSE(val);
+    }
+}
+// Edge:
+TEST(CreateFalseBoolVecTest, EmptyArray) {
+    vector<bool> arr = createFalseBoolVec(0);
+    EXPECT_TRUE(arr.empty());
+}
