@@ -16,10 +16,6 @@ std::vector<bool> getBLFromBLFile(const std::filesystem::path& filePath);
 //The function gets a length and a filepath, creates a new BL file and a new BL vector and returns it
 std::vector<bool> createNewBLArr(const std::string& length, const std::filesystem::path& filePath);
 
-// PGAPP-53
-//The function gets a length and create a new vector of the defined length initialized with zeros
-std::vector<int> createZerosIntVec(int length);
-
 // PGAPP-55
 //The function gets a length of a new BL and a file path and creates a new file initialized with this length and a new zeros BL
 void createNewBLFile(const std::string& length, const std::filesystem::path& filePath);

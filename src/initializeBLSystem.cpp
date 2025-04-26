@@ -41,13 +41,6 @@ vector<bool> createNewBLArr(const string& length, const fs::path& filePath) {
 }
 
 
-//PGAPP-53:
-//The function gets a length and create a new vector of the defined length initialized with zeros
-vector<int> createZerosIntVec(int length) {
-    return vector<int>(length, 0);
-}
-
-
 //PGAPP-55:
 //The function gets a length of a new BL and a file path and creates a new file initialized with this length and a new zeros BL
 void createNewBLFile(const string& length, const fs::path& filePath) {
