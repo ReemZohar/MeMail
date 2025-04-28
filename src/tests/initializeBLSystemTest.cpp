@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../initializeBLSystem.h"
+#include "initializeBLSystem.h"
 #include <vector>
 #include <string>
 #include <fstream>
