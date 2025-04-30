@@ -2,7 +2,7 @@
 
 using namespace std;
 
-AddURLToBL::AddURLToBL(const std::vector<bool>& blacklist, const fs::path& filePath) :
+AddURLToBL::AddURLToBL(vector<bool>& blacklist, const fs::path& filePath) :
     blacklist(blacklist), filePath(filePath) {}
 
 void AddURLToBL::performAction(const IUserInput& userInput) {} //to be added
