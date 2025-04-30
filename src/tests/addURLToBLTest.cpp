@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <fstream>
 #include <string>
+#include <set>
 #include <filesystem>
 #include "initializeBLSystem.h"
 
@@ -51,9 +52,9 @@ TEST(saveBLToFileTest, fileUpdateTest) {
     ibls::createNewBLFile(size3, path3);
 
     //files should be updated successfully
-    EXPECT_TRUE(obj1.saveBLToFile());
-    EXPECT_TRUE(obj2.saveBLToFile());
-    EXPECT_TRUE(obj3.saveBLToFile());
+    EXPECT_TRUE(obj1.AddURLToBL::saveBLToFile());
+    EXPECT_TRUE(obj2.AddURLToBL::saveBLToFile());
+    EXPECT_TRUE(obj3.AddURLToBL::saveBLToFile());
 
     //we get the updated blacklists from the bloom filter file
     fileBL1 = ibls::getBLFromBLFile(path1);
@@ -64,4 +65,75 @@ TEST(saveBLToFileTest, fileUpdateTest) {
     EXPECT_EQUAL(fileBL1, bl1);
     EXPECT_EQUAL(fileBL2, bl2);
     EXPECT_EQUAL(fileBL3, bl3);
+}
+
+//PGAPP-100
+/*tests the function abillity to successfully save a URL to the bloom filter file.
+there's no need for URL validation checks since it already happens before this function is used.*/
+TEST(saveURLToFileTest, saveURLToFileTest) {
+    fs::path testDir = fs::temp_directory_path() / "url_file_update_test";
+    fs::create_directories(testDir);
+    //bloomfilter paths
+    fs::path path1 = testDir / "test1";
+    fs::path path2 = testDir / "test2";
+    fs::path path3 = testDir / "test3";
+    //URL's to be added to the files
+    string url1 = "https://example.com1";
+    string url2 = "https://example.com2";
+    string url3 = "https://example.com3";
+    string url4 = "https://example.com4";
+    string url5 = "https://example.com5";
+    string url6 = "https://example.com6";
+    string url7 = "https://example.com7";
+    //sets of the strings as they should be after the first URL addition
+    set<string> firstURL1 = {"https://example.com1"};
+    set<string> firstURL2 = {"https://example.com7"};
+    set<string> firstURL3 = {"https://example.com2"};
+    //sets of the strings that should be included in the final file of each path
+    set<string> finalURL1 = {"https://example.com1", "https://example.com4"};
+    set<string> finalURL3 = {"https://example.com2", "https://example.com3", "https://example.com5", "https://example.com6"};
+    //sets of the bloom filter files URL's
+    set<string> realFirstURL1, realFirstURL1, realFirstURL1, realFinalURL1, realFinalURL3;
+    //blacklist size (only needed for object creation)
+    string size = "1"
+    //vector that represent a blacklist
+    vector<bool> bl = {false};
+    //action objects
+    AddURLToBL obj1 = AddURLToBL::AddURLToBL(bl, path1);
+    AddURLToBL obj2 = AddURLToBL::AddURLToBL(bl, path2);
+    AddURLToBL obj3 = AddURLToBL::AddURLToBL(bl, path3);
+
+    //initializes the bloom filter files
+    ibls::createNewBLFile(size, path1);
+    ibls::createNewBLFile(size, path2);
+    ibls::createNewBLFile(size, path3);
+
+    //saves 1 URL to each bloom filter file, should save successfully
+    EXPECT_TRUE(obj1.AddURLToBL::saveURLToFile(url1));
+    EXPECT_TRUE(obj2.AddURLToBL::saveURLToFile(url7));
+    EXPECT_TRUE(obj3.AddURLToBL::saveURLToFile(url2));
+
+    //updates the sets to contain the URL's in each file
+    realFirstURL1 = ibls::getBLURLsSetFromFile(path1);
+    realFirstURL2 = ibls::getBLURLsSetFromFile(path2);
+    realFirstURL3 = ibls::getBLURLsSetFromFile(path3);
+
+    //testing if the first URL addition was executed successfully
+    EXPECT_EQUAL(realFirstURL1, firstURL1);
+    EXPECT_EQUAL(realFirstURL2, firstURL2);
+    EXPECT_EQUAL(realFirstURL3, firstURL3);
+
+    //saving all remaining URL's to the files, should work successfully
+    EXPECT_TRUE(obj1.AddURLToBL::saveURLToFile(url4));
+    EXPECT_TRUE(obj3.AddURLToBL::saveURLToFile(url3));
+    EXPECT_TRUE(obj3.AddURLToBL::saveURLToFile(url5));
+    EXPECT_TRUE(obj3.AddURLToBL::saveURLToFile(url6));
+
+    //updates the sets to contain the URL's in each file
+    realFinalURL1 = ibls::getBLURLsSetFromFile(path1);
+    realFinalURL3 = ibls::getBLURLsSetFromFile(path3);
+
+    //testing if the URL additions were executed successfully
+    EXPECT_EQUAL(realFinalURL1, finalURL1);
+    EXPECT_EQUAL(realFinalURL3, finalURL3);
 }
