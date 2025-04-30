@@ -3,6 +3,7 @@
 
 #include "IAction.h"
 #include "IUserInput.h"
+#include "initializeBLSystem.h"
 #include <fstream>
 #include <string>
 #include <fstream>
@@ -28,6 +29,9 @@ class AddURLToBL : public IAction {
     private:
     const std::vector<bool> blacklist;
     const fs::path filePath;
+
+    //converts the blacklist's boolean vector into a string representation
+    std::string convBLToString();
 };
 
 #endif
