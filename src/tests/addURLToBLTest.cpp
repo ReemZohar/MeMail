@@ -123,11 +123,11 @@ TEST(saveURLToFileTest, saveURLToFileTest) {
     EXPECT_EQUAL(realFirstURL2, firstURL2);
     EXPECT_EQUAL(realFirstURL3, firstURL3);
 
-    //saving all remaining URL's to the files
-    obj1.AddURLToBL::saveURLToFile(url4);
-    obj3.AddURLToBL::saveURLToFile(url3);
-    obj3.AddURLToBL::saveURLToFile(url5);
-    obj3.AddURLToBL::saveURLToFile(url6);
+    //saving all remaining URL's to the files, should work successfully
+    EXPECT_TRUE(obj1.AddURLToBL::saveURLToFile(url4));
+    EXPECT_TRUE(obj3.AddURLToBL::saveURLToFile(url3));
+    EXPECT_TRUE(obj3.AddURLToBL::saveURLToFile(url5));
+    EXPECT_TRUE(obj3.AddURLToBL::saveURLToFile(url6));
 
     //updates the sets to contain the URL's in each file
     realFinalURL1 = ibls::getBLURLsSetFromFile(path1);
