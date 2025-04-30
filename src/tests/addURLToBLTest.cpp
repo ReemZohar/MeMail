@@ -4,6 +4,7 @@
 #include <set>
 #include <filesystem>
 #include "initializeBLSystem.h"
+#include "AddURLToBL.h"
 
 using namespace std;
 namespace fs = std::filesystem; 
