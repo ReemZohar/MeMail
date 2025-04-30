@@ -8,7 +8,6 @@
 
 using namespace std;
 namespace fs = std::filesystem; 
-namespace ibls = initializeBLSystem;
 
 //PGAPP-7
 /*tests if saveBLToFile funciton succefully saves a blacklist to the bloom filter file when receiving a valid path,
@@ -17,10 +16,10 @@ TEST(saveBLToFileTest, fileExistanceTest) {
     fs::path testDir = fs::temp_directory_path() / "existing_file_test";
     fs::create_directories(testDir);
     fs::path validPath = testDir / "non_exist_file_test";
-    fs::path nonExistPath = NULL; //non existing path
+    fs::path nonExistPath = "fake_path.txt"; //non existing path
     vector<bool> blacklist = {true};
-    AddURLToBL validObj = AddURLToBL::AddURLToBL(blacklist, validPath);
-    AddURLToBL invalidObj = AddURLToBL::AddURLToBL(blacklist, nonExistPath);
+    AddURLToBL validObj = AddURLToBL(blacklist, validPath);
+    AddURLToBL invalidObj = AddURLToBL(blacklist, nonExistPath);
 
 
     EXPECT_TRUE(validObj.saveBLToFile()); //should save the blacklist to the file successfully
@@ -43,14 +42,14 @@ TEST(saveBLToFileTest, fileUpdateTest) {
     vector<bool> bl3 = {false, false, false ,false, true, false, true};
     vector<bool> fileBL1, fileBL2, fileBL3;
     //action objects
-    AddURLToBL obj1 = AddURLToBL::AddURLToBL(bl1, path1);
-    AddURLToBL obj2 = AddURLToBL::AddURLToBL(bl2, path2);
-    AddURLToBL obj3 = AddURLToBL::AddURLToBL(bl3, path3);
+    AddURLToBL obj1 = AddURLToBL(bl1, path1);
+    AddURLToBL obj2 = AddURLToBL(bl2, path2);
+    AddURLToBL obj3 = AddURLToBL(bl3, path3);
     
     //initializes the bloom filter files
-    ibls::createNewBLFile(size1, path1);
-    ibls::createNewBLFile(size2, path2);
-    ibls::createNewBLFile(size3, path3);
+    createNewBLFile(size1, path1);
+    createNewBLFile(size2, path2);
+    createNewBLFile(size3, path3);
 
     //files should be updated successfully
     EXPECT_TRUE(obj1.AddURLToBL::saveBLToFile());
@@ -58,14 +57,14 @@ TEST(saveBLToFileTest, fileUpdateTest) {
     EXPECT_TRUE(obj3.AddURLToBL::saveBLToFile());
 
     //we get the updated blacklists from the bloom filter file
-    fileBL1 = ibls::getBLFromBLFile(path1);
-    fileBL2 = ibls::getBLFromBLFile(path2);
-    fileBL3 = ibls::getBLFromBLFile(path3);
+    fileBL1 = getBLFromBLFile(path1);
+    fileBL2 = getBLFromBLFile(path2);
+    fileBL3 = getBLFromBLFile(path3);
 
     //blacklists from the file should be the same as the blacklists we created after the save was made
-    EXPECT_EQUAL(fileBL1, bl1);
-    EXPECT_EQUAL(fileBL2, bl2);
-    EXPECT_EQUAL(fileBL3, bl3);
+    EXPECT_EQ(fileBL1, bl1);
+    EXPECT_EQ(fileBL2, bl2);
+    EXPECT_EQ(fileBL3, bl3);
 }
 
 //PGAPP-100
@@ -94,20 +93,20 @@ TEST(saveURLToFileTest, saveURLToFileTest) {
     set<string> finalURL1 = {"https://example.com1", "https://example.com4"};
     set<string> finalURL3 = {"https://example.com2", "https://example.com3", "https://example.com5", "https://example.com6"};
     //sets of the bloom filter files URL's
-    set<string> realFirstURL1, realFirstURL1, realFirstURL1, realFinalURL1, realFinalURL3;
+    set<string> realFirstURL1, realFirstURL2, realFirstURL3, realFinalURL1, realFinalURL3;
     //blacklist size (only needed for object creation)
-    string size = "1"
+    string size = "1";
     //vector that represent a blacklist
     vector<bool> bl = {false};
     //action objects
-    AddURLToBL obj1 = AddURLToBL::AddURLToBL(bl, path1);
-    AddURLToBL obj2 = AddURLToBL::AddURLToBL(bl, path2);
-    AddURLToBL obj3 = AddURLToBL::AddURLToBL(bl, path3);
+    AddURLToBL obj1 = AddURLToBL(bl, path1);
+    AddURLToBL obj2 = AddURLToBL(bl, path2);
+    AddURLToBL obj3 = AddURLToBL(bl, path3);
 
     //initializes the bloom filter files
-    ibls::createNewBLFile(size, path1);
-    ibls::createNewBLFile(size, path2);
-    ibls::createNewBLFile(size, path3);
+    createNewBLFile(size, path1);
+    createNewBLFile(size, path2);
+    createNewBLFile(size, path3);
 
     //saves 1 URL to each bloom filter file, should save successfully
     EXPECT_TRUE(obj1.AddURLToBL::saveURLToFile(url1));
@@ -115,14 +114,14 @@ TEST(saveURLToFileTest, saveURLToFileTest) {
     EXPECT_TRUE(obj3.AddURLToBL::saveURLToFile(url2));
 
     //updates the sets to contain the URL's in each file
-    realFirstURL1 = ibls::getBLURLsSetFromFile(path1);
-    realFirstURL2 = ibls::getBLURLsSetFromFile(path2);
-    realFirstURL3 = ibls::getBLURLsSetFromFile(path3);
+    realFirstURL1 = getBLURLsSetFromFile(path1);
+    realFirstURL2 = getBLURLsSetFromFile(path2);
+    realFirstURL3 = getBLURLsSetFromFile(path3);
 
     //testing if the first URL addition was executed successfully
-    EXPECT_EQUAL(realFirstURL1, firstURL1);
-    EXPECT_EQUAL(realFirstURL2, firstURL2);
-    EXPECT_EQUAL(realFirstURL3, firstURL3);
+    EXPECT_EQ(realFirstURL1, firstURL1);
+    EXPECT_EQ(realFirstURL2, firstURL2);
+    EXPECT_EQ(realFirstURL3, firstURL3);
 
     //saving all remaining URL's to the files, should work successfully
     EXPECT_TRUE(obj1.AddURLToBL::saveURLToFile(url4));
@@ -131,10 +130,10 @@ TEST(saveURLToFileTest, saveURLToFileTest) {
     EXPECT_TRUE(obj3.AddURLToBL::saveURLToFile(url6));
 
     //updates the sets to contain the URL's in each file
-    realFinalURL1 = ibls::getBLURLsSetFromFile(path1);
-    realFinalURL3 = ibls::getBLURLsSetFromFile(path3);
+    realFinalURL1 = getBLURLsSetFromFile(path1);
+    realFinalURL3 = getBLURLsSetFromFile(path3);
 
     //testing if the URL additions were executed successfully
-    EXPECT_EQUAL(realFinalURL1, finalURL1);
-    EXPECT_EQUAL(realFinalURL3, finalURL3);
+    EXPECT_EQ(realFinalURL1, finalURL1);
+    EXPECT_EQ(realFinalURL3, finalURL3);
 }

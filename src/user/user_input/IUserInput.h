@@ -1,3 +1,6 @@
+#ifndef I_USER_INPUT
+#define I_USER_INPUT
+
 #include <string>
 
 //PGAPP-83
@@ -10,3 +13,5 @@ class IUserInput {
     //gets the current input from the class
     virtual std::string getInput() const = 0;
 };
+
+#endif
