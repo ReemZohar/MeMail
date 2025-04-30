@@ -9,7 +9,7 @@ void AddURLToBL::performAction(const IUserInput& userInput) {} //to be added
 
 bool AddURLToBL::saveBLToFile() {return false;} //to be added
 
-bool AddURLToBL::saveURLToFile(string URL) {
+bool AddURLToBL::saveURLToFile(const string& URL) {
     fstream file;
     
     //opens the file in appending mode

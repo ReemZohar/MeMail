@@ -24,7 +24,7 @@ class AddURLToBL : public IAction {
     bool saveBLToFile();
 
     //updates the bloom filter file to contain the newly blacklisted URL
-    bool saveURLToFile(std::string URL);
+    bool saveURLToFile(const std::string& URL);
 
     private:
     const std::vector<bool> blacklist;
