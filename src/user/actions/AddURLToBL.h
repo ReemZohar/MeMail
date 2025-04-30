@@ -25,7 +25,7 @@ class AddURLToBL : public IAction {
     bool saveURLToFile(std::string URL);
 
     private:
-    const std::vector<bool> blacklist
+    const std::vector<bool> blacklist;
     const fs::path filePath;
 };
 
