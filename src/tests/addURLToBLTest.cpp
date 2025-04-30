@@ -7,7 +7,7 @@
 #include "AddURLToBL.h"
 
 using namespace std;
-namespace fs = std::filesystem; 
+namespace fs = std::filesystem;
 
 //PGAPP-7
 /*tests if saveBLToFile funciton succefully saves a blacklist to the bloom filter file when receiving a valid path,
@@ -18,9 +18,11 @@ TEST(saveBLToFileTest, fileExistanceTest) {
     fs::path validPath = testDir / "non_exist_file_test";
     fs::path nonExistPath = "fake_path.txt"; //non existing path
     vector<bool> blacklist = {true};
+    string size = "1"; //blacklist's size
     AddURLToBL validObj = AddURLToBL(blacklist, validPath);
     AddURLToBL invalidObj = AddURLToBL(blacklist, nonExistPath);
 
+    createNewBLFile(size, validPath);
 
     EXPECT_TRUE(validObj.saveBLToFile()); //should save the blacklist to the file successfully
     EXPECT_FALSE(invalidObj.saveBLToFile()); //should not save to blacklist successully since the file doesn't exist 
