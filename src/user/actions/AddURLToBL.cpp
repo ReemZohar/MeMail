@@ -5,7 +5,20 @@ namespace fs = std::filesystem;
 
 AddURLToBL::AddURLToBL(BloomFilter& bf) : bf(bf) {}
 
-void AddURLToBL::performAction(const IUserInput& userInput) {} //to be added
+void AddURLToBL::performAction(const IUserInput& userInput) {
+    string url = userInput.getInput();
+    vector<bool> blacklist = bf.getBlackList();
+    vector<bool> blacklistedURL = RUN_HASH_ON_URL::runHashOnURL(url, bf.getHasher(), blacklist.size());
+
+    //loop updates the blacklist to have the value true wherever there is a bit turned on in one of the vectors
+    for(int i = 0; i < blacklist.size(); i++) {
+        blacklist.at(i) = blacklist.at(i) | blacklistedURL.at(i);
+    }
+
+    bf.setBlackList(blacklist); //updates the blacklist vector in our bloomfilter object
+    saveBLToFile(); //updates our bloomfilter file to contain the updated blacklist
+    saveURLToFile(url); //updates our bloomfilter file's URL list to contain the newly blacklisted URL
+}
 
 bool AddURLToBL::saveBLToFile() {
     //blacklist's string representation

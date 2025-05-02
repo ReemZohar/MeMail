@@ -5,6 +5,7 @@
 #include "IUserInput.h"
 #include "initializeBLSystem.h"
 #include "BloomFilter.h"
+#include "runHashOnURL.h"
 #include <fstream>
 #include <string>
 #include <fstream>
