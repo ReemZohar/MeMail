@@ -16,7 +16,7 @@ namespace fs = std::filesystem;
 class AddURLToBL : public IAction {
     public:
     //constructor
-    AddURLToBL(const BloomFilter& bf);
+    AddURLToBL(BloomFilter& bf);
     
     //adds a URL to the blacklist
     void performAction(const IUserInput& userInput) override;
@@ -28,7 +28,7 @@ class AddURLToBL : public IAction {
     bool saveURLToFile(const std::string& URL);
 
     private:
-    const BloomFilter bf;
+    BloomFilter bf;
 
     //converts the blacklist's boolean vector into a string representation
     std::string convBLToString();

@@ -17,12 +17,12 @@ class BloomFilter {
 
 
     //class getters
-    std::vector<bool> getBlackList() const;
-    std::filesystem::path getFilePath() const;
-    std::vector<std::shared_ptr<IHasher>> getHasher() const;
+    std::vector<bool> getBlackList();
+    std::filesystem::path getFilePath();
+    std::vector<std::shared_ptr<IHasher>> getHasher();
 
     //class setters
-    void setBlackList(const std::vector<bool>& newBlackList);
+    void setBlackList(std::vector<bool> newBlackList);
 
 
 private:

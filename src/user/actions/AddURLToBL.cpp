@@ -3,7 +3,7 @@
 using namespace std;
 namespace fs = std::filesystem;
 
-AddURLToBL::AddURLToBL(const BloomFilter& bf) : bf(bf) {}
+AddURLToBL::AddURLToBL(BloomFilter& bf) : bf(bf) {}
 
 void AddURLToBL::performAction(const IUserInput& userInput) {} //to be added
 
