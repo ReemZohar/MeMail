@@ -3,8 +3,12 @@
 #include <string>
 #include <set>
 #include <filesystem>
+#include <functional>
 #include "initializeBLSystem.h"
 #include "AddURLToBL.h"
+#include "BloomFilter.h"
+#include "IHasher.h"
+#include "HashRepeats.h"
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -19,8 +23,13 @@ TEST(saveBLToFileTest, fileExistanceTest) {
     fs::path nonExistPath = "fake_path.txt"; //non existing path
     vector<bool> blacklist = {true};
     string size = "1"; //blacklist's size
-    AddURLToBL validObj = AddURLToBL(blacklist, validPath);
-    AddURLToBL invalidObj = AddURLToBL(blacklist, nonExistPath);
+    vector<shared_ptr<IHasher>> hashVec;
+    hashVec.push_back(make_shared<HashRepeats>(hash<size_t>{}, 1));
+    //the matching bloom filter objects
+    BloomFilter bf1 = BloomFilter(blacklist, validPath, hashVec);
+    BloomFilter bf2 = BloomFilter(blacklist, nonExistPath, hashVec);
+    AddURLToBL validObj = AddURLToBL(bf1);
+    AddURLToBL invalidObj = AddURLToBL(bf2);
 
     createNewBLFile(size, validPath);
 
@@ -43,10 +52,16 @@ TEST(saveBLToFileTest, fileUpdateTest) {
     vector<bool> bl2 = {true, true, true};
     vector<bool> bl3 = {false, false, false ,false, true, false, true};
     vector<bool> fileBL1, fileBL2, fileBL3;
+    vector<shared_ptr<IHasher>> hashVec;
+    hashVec.push_back(make_shared<HashRepeats>(hash<size_t>{}, 1));
+    //the matching bloom filter objects
+    BloomFilter bf1 = BloomFilter(bl1, path1, hashVec);
+    BloomFilter bf2 = BloomFilter(bl2, path2, hashVec);
+    BloomFilter bf3 = BloomFilter(bl3, path3, hashVec);
     //action objects
-    AddURLToBL obj1 = AddURLToBL(bl1, path1);
-    AddURLToBL obj2 = AddURLToBL(bl2, path2);
-    AddURLToBL obj3 = AddURLToBL(bl3, path3);
+    AddURLToBL obj1 = AddURLToBL(bf1);
+    AddURLToBL obj2 = AddURLToBL(bf2);
+    AddURLToBL obj3 = AddURLToBL(bf3);
     
     //initializes the bloom filter files
     createNewBLFile(size1, path1);
@@ -100,10 +115,16 @@ TEST(saveURLToFileTest, saveURLToFileTest) {
     string size = "1";
     //vector that represent a blacklist
     vector<bool> bl = {false};
+    vector<shared_ptr<IHasher>> hashVec;
+    hashVec.push_back(make_shared<HashRepeats>(hash<size_t>{}, 1));
+    //the matching bloom filter objects
+    BloomFilter bf1 = BloomFilter(bl, path1, hashVec);
+    BloomFilter bf2 = BloomFilter(bl, path2, hashVec);
+    BloomFilter bf3 = BloomFilter(bl, path3, hashVec);
     //action objects
-    AddURLToBL obj1 = AddURLToBL(bl, path1);
-    AddURLToBL obj2 = AddURLToBL(bl, path2);
-    AddURLToBL obj3 = AddURLToBL(bl, path3);
+    AddURLToBL obj1 = AddURLToBL(bf1);
+    AddURLToBL obj2 = AddURLToBL(bf2);
+    AddURLToBL obj3 = AddURLToBL(bf3);
 
     //initializes the bloom filter files
     createNewBLFile(size, path1);

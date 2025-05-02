@@ -37,6 +37,7 @@ target_include_directories(runTests
     ${PROJECT_SOURCE_DIR}/user/user_input
     ${PROJECT_SOURCE_DIR}/user/actions
     ${PROJECT_SOURCE_DIR}/validations
+    ${PROJECT_SOURCE_DIR}/user
 )
 
 target_link_libraries(runTests gtest_main)
