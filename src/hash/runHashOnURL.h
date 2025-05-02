@@ -18,6 +18,6 @@ std::vector<std::function<std::size_t(std::size_t)>> createHashVec(int size);
 
 //PGAPP-30
 //filters a URL and returns a vector containing the filtered URL
-std::vector<bool> runHashOnURL(const std::string& url, const std::vector<IHasher>& hashRepeats, int BLSize);
+std::vector<bool> runHashOnURL(const std::string& url, const std::vector<std::shared_ptr<IHasher>>& hashRepeats, int BLSize);
 
 #endif
