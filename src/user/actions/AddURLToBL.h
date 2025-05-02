@@ -4,6 +4,7 @@
 #include "IAction.h"
 #include "IUserInput.h"
 #include "initializeBLSystem.h"
+#include "BloomFilter.h"
 #include <fstream>
 #include <string>
 #include <fstream>
@@ -15,7 +16,7 @@ namespace fs = std::filesystem;
 class AddURLToBL : public IAction {
     public:
     //constructor
-    AddURLToBL(const std::vector<bool>& blacklist, const fs::path& filePath);
+    AddURLToBL(BloomFilter& bf);
     
     //adds a URL to the blacklist
     void performAction(const IUserInput& userInput) override;
@@ -27,8 +28,7 @@ class AddURLToBL : public IAction {
     bool saveURLToFile(const std::string& URL);
 
     private:
-    const std::vector<bool> blacklist;
-    const fs::path filePath;
+    BloomFilter bf;
 
     //converts the blacklist's boolean vector into a string representation
     std::string convBLToString();

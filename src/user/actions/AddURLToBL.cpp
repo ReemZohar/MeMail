@@ -3,8 +3,7 @@
 using namespace std;
 namespace fs = std::filesystem;
 
-AddURLToBL::AddURLToBL(const vector<bool>& blacklist, const fs::path& filePath) :
-    blacklist(blacklist), filePath(filePath) {}
+AddURLToBL::AddURLToBL(BloomFilter& bf) : bf(bf) {}
 
 void AddURLToBL::performAction(const IUserInput& userInput) {} //to be added
 
@@ -17,12 +16,12 @@ bool AddURLToBL::saveBLToFile() {
     vector<string> fileLines;
     
     //file path doesn't exist scenario, therefore a save can't be made
-    if(!fs::exists(filePath)) {
+    if(!fs::exists(bf.getFilePath())) {
         return false;
     }
 
     //opens the file in reading mode
-    blFile.open(filePath, ios::in);
+    blFile.open(bf.getFilePath(), ios::in);
     if(blFile.is_open()) {
         //loop pushes all the lines in the file to the fileLines vector
         while(getline(blFile, line)) {
@@ -32,7 +31,7 @@ bool AddURLToBL::saveBLToFile() {
     }
 
     //opens the file in writing mode
-    blFile.open(filePath, ios::out);
+    blFile.open(bf.getFilePath(), ios::out);
     //file opened successfully scenario
     if(blFile.is_open()) {
         //loop writes all the file previous lines aside from the blacklist line, which we update to the current one.
@@ -56,7 +55,7 @@ bool AddURLToBL::saveURLToFile(const string& URL) {
     fstream file;
     
     //opens the file in appending mode
-    file.open(filePath, ios::app);
+    file.open(bf.getFilePath(), ios::app);
     //file opens successfully scenario
     if(file.is_open()) {
         file << URL << endl;
@@ -70,7 +69,8 @@ bool AddURLToBL::saveURLToFile(const string& URL) {
 
 string AddURLToBL::convBLToString() {
     string blStr = "", isTrue = "1", isFalse = "0";
-    int blSize = getBitArrLengthFromFile(filePath);
+    int blSize = getBitArrLengthFromFile(bf.getFilePath());
+    vector<bool> blacklist = bf.getBlackList();
 
     for(int i = 0; i < blSize; i++) {
         //blacklist's ith elements is true scenario
