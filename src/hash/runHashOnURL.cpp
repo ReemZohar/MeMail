@@ -27,7 +27,7 @@ vector<function<size_t(size_t)>> createHashVec(int size) {
     return hashFuncsVec;
 }
 
-vector<bool> runHashOnURL(const string& url, const std::vector<std::shared_ptr<IHasher>>& hashRepeats, int BLSize) {
+vector<bool> runHashOnURL(const string& url, const vector<shared_ptr<IHasher>>& hashRepeats, int BLSize) {
     vector<bool> result(BLSize, false); // Initialize the bit array to 0 using the chosen blacklist size
     int ind = 0;
 
