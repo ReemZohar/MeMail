@@ -18,12 +18,11 @@ namespace fs = std::filesystem;
 // Implements IAction interface to check if a given URL is blacklisted
 class CheckBlacklistAction : public IAction {
 private:
-    int BLSize;
     BloomFilter& blFilter;
 
 public:
     // Constructor
-    CheckBlacklistAction(int blSize, BloomFilter& blFilter);
+    CheckBlacklistAction(BloomFilter& blFilter);
 
     // Overrides performAction from IAction
     void performAction(const IUserInput& userInput) override;

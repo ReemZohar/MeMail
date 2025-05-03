@@ -22,10 +22,8 @@ TEST(CheckBlacklistActionTest, WorksWithNewBLFile) {
     dummyHashFuncs.push_back(make_shared<HashRepeats>(hash<size_t>{}, 1));
 
     vector<bool> dummyBL = getBLFromBLFile(filePath); 
-    int blSize = dummyBL.size();
-
     BloomFilter bl(dummyBL,filePath,dummyHashFuncs);
-    CheckBlacklistAction action(blSize,bl);
+    CheckBlacklistAction action(bl);
 
     //The file is empty so the URL is not in the black list
     EXPECT_FALSE(action.isBlackListedByFile("2 www.something.com"));
@@ -51,10 +49,9 @@ TEST(CheckBlacklistActionTest, WorksWithAddingToFile) {
     dummyHashFuncs.push_back(make_shared<HashRepeats>(hash<size_t>{}, 1));
 
     vector<bool> dummyBL = getBLFromBLFile(filePath); 
-    int blSize = dummyBL.size();
 
     BloomFilter bl(dummyBL,filePath,dummyHashFuncs);
-    CheckBlacklistAction action(blSize,bl);
+    CheckBlacklistAction action(bl);
 
     //The file is empty so the URL is not in the black list
     EXPECT_FALSE(action.isBlackListedByFile("2 www.something.com"));

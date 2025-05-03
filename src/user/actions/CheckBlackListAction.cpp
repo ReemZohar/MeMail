@@ -2,8 +2,8 @@
 #include <iostream>
 
 //Constructor for the class
-CheckBlacklistAction::CheckBlacklistAction(int blSize, BloomFilter& blFilter): 
- BLSize(blSize), blFilter(blFilter) {}
+CheckBlacklistAction::CheckBlacklistAction(BloomFilter& blFilter): 
+blFilter(blFilter) {}
 
 //PGAPP-8 - Check if URL is black listed
 //Implement prformAction of IAction
@@ -50,7 +50,7 @@ std::string CheckBlacklistAction::getURLFromInput(const std::string &input) {
 
 //Help function for performAction: check if the given URL is Black listd by the inner list  
 bool CheckBlacklistAction::isBlackListedByInnerList(const string& url) {
-    vector<bool> result = RUN_HASH_ON_URL::runHashOnURL(url, blFilter.getHasher(), BLSize);
+    vector<bool> result = RUN_HASH_ON_URL::runHashOnURL(url, blFilter.getHasher(), blFilter.getBlackList().size());
     // Print the result vector
     for (int i = 0; i < result.size(); i++) {
         //If there turnned on bit in the result but not in the BL - it means that it is not Black listted URL
