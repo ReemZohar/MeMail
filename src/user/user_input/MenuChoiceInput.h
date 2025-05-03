@@ -7,6 +7,7 @@
 #include <iostream>
 
 class MenuChoiceInput : public IUserInput {
+    public:
     //constructor
     MenuChoiceInput();
     

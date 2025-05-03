@@ -23,6 +23,7 @@ add_executable(runTests
   ../user/actions/userAction.cpp
   ../user/user_output/UserOutput.cpp
   ../user/user_input/FirstUserInput.cpp
+  ../user/user_input/MenuChoiceInput.cpp
   ../tests/userActionTest.cpp
   ../hash/HashRepeats.cpp
   ../tests/runHashOnURLTest.cpp
@@ -33,6 +34,7 @@ add_executable(runTests
   ../user/actions/CheckBlackListAction.cpp
   ../user/BloomFilter.cpp
   ../tests/ActionFactoryTest.cpp
+  ../user/actions/ActionFactory.cpp
 ) #write here the files you wish to test, the format is: <file_name>.cpp
 
 # add_executable(runProg ) #write here the files you wish to run, the format is: <file_name>.cpp
