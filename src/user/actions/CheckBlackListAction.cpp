@@ -1,0 +1,73 @@
+#include "CheckBlackListAction.h"
+#include <iostream>
+
+//Constructor for the class
+CheckBlacklistAction::CheckBlacklistAction(vector<HashRepeats> hf, int blSize, vector<bool> bl, const fs::path& path)
+    : hashFuncs(std::move(hf)), BLSize(blSize), BlkList(std::move(bl)), filePath(path) {}
+
+//PGAPP-8 - Check if URL is black listed
+//Implement prformAction of IAction
+void CheckBlacklistAction::performAction(const IUserInput& userInput) {
+    const std::string &url = getURLFromInput(userInput.getInput());
+    bool isBLByInnerList = isBlackListedByInnerList(url);
+    if(isBLByInnerList == false) {
+        UserOutput::printToConsole("false");
+    }
+    else{
+        UserOutput::printToConsole("true");
+        bool isBLByFile = CheckBlacklistAction::isBlackListedByFile(url);
+        UserOutput::printToConsole(isBLByFile ? "true" : "false");
+    }
+}
+
+// This function is written for use in CheckBlackListAction.
+std::string CheckBlacklistAction::getURLFromInput(const std::string &input) {
+    if (!isChoiceSpaceURLInputValid(input)) {
+        throw std::runtime_error("Invalid input for choice-space-URL");
+    }
+
+    // Find the first space that separates the number and the URL
+    size_t spacePos = input.find(' ');
+    if (spacePos == std::string::npos) {
+        throw std::runtime_error("Input does not contain a space separating the number and the URL.");
+    }
+
+    // Find the start of the URL part (skip any additional spaces)
+    size_t urlStart = input.find_first_not_of(' ', spacePos);
+    if (urlStart == std::string::npos) {
+        throw std::runtime_error("No URL found after the number.");
+    }
+
+    // The URL continues until the end (trim any trailing spaces if needed)
+    size_t urlEnd = input.find_last_not_of(' ');
+
+    // Extract the URL substring
+    std::string url = input.substr(urlStart, urlEnd - urlStart + 1);
+
+    return url;
+}
+
+
+//Help function for performAction: check if the given URL is Black listd by the inner list  
+bool CheckBlacklistAction::isBlackListedByInnerList(const string& url) {
+    std::vector<std::shared_ptr<IHasher>> hashPtrVec;
+    for (const auto& hf : hashFuncs) {
+        hashPtrVec.push_back(std::make_shared<HashRepeats>(hf));
+    }
+    vector<bool> result = RUN_HASH_ON_URL::runHashOnURL(url, hashPtrVec, BLSize);
+
+    for (int i = 0; i < result.size(); i++) {
+        //If there turnned on bit in the result but not in the BL - it means that it is not Black listted URL
+        if (result[i] && !BlkList[i]) {
+            return false;
+        }
+    }
+    //If all the bits are on the BL it means that the URL is in the BL. (It might be false positive, So considr check in isBlackListedByFile)
+    return true;
+}
+
+//Help function for performAction: check if the given URL is Black listd by the file in which the URLS  
+bool CheckBlacklistAction::isBlackListedByFile(const string& url){
+    std::set<string> setOfBLURLS = getBLURLsSetFromFile(filePath);
+    return setOfBLURLS.find(url) != setOfBLURLS.end();
+}

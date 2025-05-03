@@ -28,6 +28,7 @@ add_executable(runTests
   ../hash/runHashOnURL.cpp
   ../tests/addURLToBLTest.cpp
   ../user/actions/AddURLToBL.cpp
+  ../user/actions/CheckBlackListAction.cpp
   ../user/BloomFilter.cpp
 ) #write here the files you wish to test, the format is: <file_name>.cpp
 
