@@ -19,8 +19,10 @@ add_executable(runTests
   ../tests/initializeBLSystemTest.cpp
   ../validations/validateUserInput.cpp
   ../tests/validateUserInputTest.cpp
+  ../tests/CheckBlackListActionTest.cpp
   ../user/actions/userAction.cpp
   ../user/user_output/UserOutput.cpp
+  ../user/user_input/FirstUserInput.cpp
   ../tests/userActionTest.cpp
   ../hash/HashRepeats.cpp
   ../tests/runHashOnURLTest.cpp
@@ -28,6 +30,7 @@ add_executable(runTests
   ../hash/runHashOnURL.cpp
   ../tests/addURLToBLTest.cpp
   ../user/actions/AddURLToBL.cpp
+  ../user/actions/CheckBlackListAction.cpp
   ../user/BloomFilter.cpp
 ) #write here the files you wish to test, the format is: <file_name>.cpp
 
