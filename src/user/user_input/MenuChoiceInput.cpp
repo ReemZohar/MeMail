@@ -4,6 +4,8 @@ using namespace std;
 
 MenuChoiceInput::MenuChoiceInput() : currInput("") {};
 
+MenuChoiceInput::MenuChoiceInput(const string& input) : currInput(input) {}
+
 void MenuChoiceInput::takeInput() {
     string action;
 

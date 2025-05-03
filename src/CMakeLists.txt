@@ -32,6 +32,7 @@ add_executable(runTests
   ../user/actions/AddURLToBL.cpp
   ../user/actions/CheckBlackListAction.cpp
   ../user/BloomFilter.cpp
+  ../tests/ActionFactoryTest.cpp
 ) #write here the files you wish to test, the format is: <file_name>.cpp
 
 # add_executable(runProg ) #write here the files you wish to run, the format is: <file_name>.cpp
