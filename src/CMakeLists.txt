@@ -22,6 +22,7 @@ add_executable(runTests
   ../tests/CheckBlackListActionTest.cpp
   ../user/actions/userAction.cpp
   ../user/user_output/UserOutput.cpp
+  ../user/user_input/FirstUserInput.cpp
   ../tests/userActionTest.cpp
   ../hash/HashRepeats.cpp
   ../tests/runHashOnURLTest.cpp

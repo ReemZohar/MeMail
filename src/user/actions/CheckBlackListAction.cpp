@@ -2,8 +2,8 @@
 #include <iostream>
 
 //Constructor for the class
-CheckBlacklistAction::CheckBlacklistAction(vector<HashRepeats> hf, int blSize, vector<bool> bl, const fs::path& path)
-    : hashFuncs(std::move(hf)), BLSize(blSize), BlkList(std::move(bl)), filePath(path) {}
+CheckBlacklistAction::CheckBlacklistAction(int blSize, BloomFilter& blFilter): 
+ BLSize(blSize), blFilter(blFilter) {}
 
 //PGAPP-8 - Check if URL is black listed
 //Implement prformAction of IAction
@@ -50,15 +50,12 @@ std::string CheckBlacklistAction::getURLFromInput(const std::string &input) {
 
 //Help function for performAction: check if the given URL is Black listd by the inner list  
 bool CheckBlacklistAction::isBlackListedByInnerList(const string& url) {
-    std::vector<std::shared_ptr<IHasher>> hashPtrVec;
-    for (const auto& hf : hashFuncs) {
-        hashPtrVec.push_back(std::make_shared<HashRepeats>(hf));
-    }
-    vector<bool> result = RUN_HASH_ON_URL::runHashOnURL(url, hashPtrVec, BLSize);
-
+    vector<bool> result = RUN_HASH_ON_URL::runHashOnURL(url, blFilter.getHasher(), BLSize);
+    // Print the result vector
     for (int i = 0; i < result.size(); i++) {
         //If there turnned on bit in the result but not in the BL - it means that it is not Black listted URL
-        if (result[i] && !BlkList[i]) {
+        if (result[i]==true && blFilter.getBlackList()[i]==false) {
+            std::cout << "Bit mismatch at index " << i << ": result[i] = true, but blacklist[i] = false\n";
             return false;
         }
     }
@@ -68,6 +65,6 @@ bool CheckBlacklistAction::isBlackListedByInnerList(const string& url) {
 
 //Help function for performAction: check if the given URL is Black listd by the file in which the URLS  
 bool CheckBlacklistAction::isBlackListedByFile(const string& url){
-    std::set<string> setOfBLURLS = getBLURLsSetFromFile(filePath);
+    std::set<string> setOfBLURLS = getBLURLsSetFromFile(blFilter.getFilePath());
     return setOfBLURLS.find(url) != setOfBLURLS.end();
 }

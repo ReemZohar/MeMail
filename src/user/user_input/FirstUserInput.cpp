@@ -2,7 +2,11 @@
 
 using namespace std;
 
-FirstUserInput::FirstUserInput() : currInput("") {};
+FirstUserInput::FirstUserInput() : currInput("") {}
+
+FirstUserInput::FirstUserInput(const std::string& input) {
+    currInput = input;
+}
 
 void FirstUserInput::takeInput() {
     string userSelection;

@@ -7,9 +7,11 @@
 #include <iostream>
 
 class FirstUserInput : public IUserInput {
+    public:
     //constructor
     FirstUserInput();
-    
+    FirstUserInput(const std::string& input);
+
     /*saves the line of input given by the user in the format:
      [blacklistSize] [hash1 repetitions] ... [hashN repetitions] to the currInput class field*/
     void takeInput() override;

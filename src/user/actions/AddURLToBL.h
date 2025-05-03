@@ -11,6 +11,7 @@
 #include <fstream>
 #include <filesystem>
 #include <vector>
+#include "userAction.h"
 
 namespace fs = std::filesystem;
 
@@ -29,7 +30,7 @@ class AddURLToBL : public IAction {
     bool saveURLToFile(const std::string& URL);
 
     private:
-    BloomFilter bf;
+    BloomFilter& bf;
 
     //converts the blacklist's boolean vector into a string representation
     std::string convBLToString();

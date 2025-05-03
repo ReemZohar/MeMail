@@ -1,18 +1,16 @@
+
 #ifndef CHECKBLACKLISTACTION_H
 #define CHECKBLACKLISTACTION_H
 #include "IAction.h"
 #include "userAction.h"
 #include "runHashOnURL.h"
-#include "initializeBLSystem.h"
 #include <string>
 #include <vector>
 #include <filesystem>
-#include "../user_output/UserOutput.h"
-//#include "../user_input/FirstUserInput.h"
-#include "../initialization/initializeBLSystem.h"
-//#include "FirstUserInput.h"
+#include "UserOutput.h"
+#include "BloomFilter.h"
+#include "initializeBLSystem.h"
 
-//#include "IUserInput.h"
 using namespace std;
 namespace fs = std::filesystem;
 
@@ -20,14 +18,12 @@ namespace fs = std::filesystem;
 // Implements IAction interface to check if a given URL is blacklisted
 class CheckBlacklistAction : public IAction {
 private:
-    vector<HashRepeats> hashFuncs;
     int BLSize;
-    vector<bool> BlkList;
-    fs::path filePath;
+    BloomFilter& blFilter;
 
 public:
     // Constructor
-    CheckBlacklistAction(vector<HashRepeats> hf, int blSize, vector<bool> bl, const fs::path& path);
+    CheckBlacklistAction(int blSize, BloomFilter& blFilter);
 
     // Overrides performAction from IAction
     void performAction(const IUserInput& userInput) override;
