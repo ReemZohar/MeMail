@@ -55,7 +55,6 @@ bool CheckBlacklistAction::isBlackListedByInnerList(const string& url) {
     for (int i = 0; i < result.size(); i++) {
         //If there turnned on bit in the result but not in the BL - it means that it is not Black listted URL
         if (result[i]==true && blFilter.getBlackList()[i]==false) {
-            std::cout << "Bit mismatch at index " << i << ": result[i] = true, but blacklist[i] = false\n";
             return false;
         }
     }
