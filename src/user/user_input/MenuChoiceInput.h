@@ -7,9 +7,13 @@
 #include <iostream>
 
 class MenuChoiceInput : public IUserInput {
+    public:
     //constructor
     MenuChoiceInput();
     
+    //constructor for tests
+    MenuChoiceInput(const std::string& input);
+
     //lets the user to select the action he'd like to perform
     void takeInput() override;
 
