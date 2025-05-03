@@ -19,6 +19,7 @@ add_executable(runTests
   ../tests/initializeBLSystemTest.cpp
   ../validations/validateUserInput.cpp
   ../tests/validateUserInputTest.cpp
+  ../tests/CheckBlackListActionTest.cpp
   ../user/actions/userAction.cpp
   ../user/user_output/UserOutput.cpp
   ../tests/userActionTest.cpp
