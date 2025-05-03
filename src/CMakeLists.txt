@@ -20,9 +20,11 @@ add_executable(runTests
   ../validations/validateUserInput.cpp
   ../tests/validateUserInputTest.cpp
   ../user/actions/userAction.cpp
+  ../user/user_output/UserOutput.cpp
   ../tests/userActionTest.cpp
   ../hash/HashRepeats.cpp
   ../tests/runHashOnURLTest.cpp
+  ../tests/userOutputTest.cpp
   ../hash/runHashOnURL.cpp
   ../tests/addURLToBLTest.cpp
   ../user/actions/AddURLToBL.cpp
@@ -35,6 +37,7 @@ target_include_directories(runTests
     ${PROJECT_SOURCE_DIR}/hash
     ${PROJECT_SOURCE_DIR}/initialization
     ${PROJECT_SOURCE_DIR}/user/user_input
+    ${PROJECT_SOURCE_DIR}/user/user_output
     ${PROJECT_SOURCE_DIR}/user/actions
     ${PROJECT_SOURCE_DIR}/validations
     ${PROJECT_SOURCE_DIR}/user
