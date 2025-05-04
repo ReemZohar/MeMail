@@ -43,11 +43,11 @@ TEST(hashTests, hashTest) {
 
 //PGAPP-80
 //returns a vector of all hash repetitions of HashRepeats objects in the passed vector
-vector<int> getRepeatCountVec(shared_ptr<vector<IHasher>> hashRepeats) {
+vector<int> getRepeatCountVec(vector<shared_ptr<IHasher>> hashRepeats) {
     vector<int> repeatCountVec;
 
-    for(int i=0;i<hashRepeats->size();i++){
-        repeatCountVec.push_back(hashRepeats->at(i).getRepeatCount());
+    for(int i=0;i<hashRepeats.size();i++){
+        repeatCountVec.push_back(hashRepeats.at(i).getRepeatCount());
     }
 
     return repeatCountVec;
@@ -71,7 +71,7 @@ TEST(convInputToHRVecTest, convValidInputTest) {
     vector<int> expectedOutput4 = {33, 11};
     vector<int> expectedOutput5 = {7, 4, 6};
     vector<int> realOutput1, realOutput2, realOutput3, realOutput4, realOutput5;
-    shared_ptr<vector<IHasher>> v1, v2, v3, v4, v5;
+    vector<shared_ptr<IHasher>> v1, v2, v3, v4, v5;
 
     //converts the input to HashRepeats vector
     v1 = convInputToHashRepeatsVec(input1, RUN_HASH_ON_URL::createHashVec(size1));

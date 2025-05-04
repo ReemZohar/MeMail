@@ -2,8 +2,8 @@
 
 using namespace std;
 
-shared_ptr<vector<IHasher>> convInputToHashRepeatsVec(const string& userInput, vector<function<size_t(size_t)>>hashFuncs) {
-    shared_ptr<vector<IHasher>> hashRepeatsVec;
+vector<shared_ptr<IHasher>> convInputToHashRepeatsVec(const string& userInput, vector<function<size_t(size_t)>>hashFuncs) {
+    vector<shared_ptr<IHasher>> hashRepeatsVec;
     //creates a vector of all the integers in the user input
     vector<int> inputIntVec = USER_ACTION::convStringToArr(userInput);
     int skipBLSize = 1;
