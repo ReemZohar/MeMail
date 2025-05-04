@@ -19,7 +19,6 @@ TEST(URLTest, validURL){
     EXPECT_TRUE(isURLValid("http://example.com/page?search=Exam#ple"));
     EXPECT_TRUE(isURLValid("http://example.com/page?search=exam#ple"));
     EXPECT_TRUE(isURLValid("http://example.com/page?Search=Exam#PLE"));
-    // EXPECT_TRUE(isURLValid("git+ssh://www.example.com/index.html"));  //לבדוק מה תקן הURL הנדרש
 }
 //Negative + Egde cases:
 //mention - a valid URL is in a template: "schema://[username[:password]@]server[:port]/path[?query][#anchor]"
@@ -41,7 +40,6 @@ TEST(URLTest, invalidURL){
     EXPECT_FALSE(isURLValid("http")); //invalid
     EXPECT_FALSE(isURLValid("http://")); //invalid
     EXPECT_FALSE(isURLValid("כתובת")); //invalid
-    //EXPECT_FALSE(isURLValid("example.com"));   //missing scheme
 }
 //Boundary:
 TEST(URLTest, MaxURLLength){
