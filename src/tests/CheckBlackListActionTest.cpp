@@ -19,7 +19,7 @@ TEST(CheckBlacklistActionTest, WorksWithNewBLFile) {
 
     //initialize HashRepeats vector 
     vector<shared_ptr<IHasher>> dummyHashFuncs;
-    dummyHashFuncs.push_back(make_shared<HashRepeats>(hash<size_t>{}, 1));
+    dummyHashFuncs.push_back(make_shared<HashRepeats>(hash<string>{}, 1));
 
     vector<bool> dummyBL = getBLFromBLFile(filePath); 
     BloomFilter bl(dummyBL,filePath,dummyHashFuncs);
@@ -46,7 +46,7 @@ TEST(CheckBlacklistActionTest, WorksWithAddingToFile) {
 
     //initialize HashRepeats vector 
     vector<shared_ptr<IHasher>> dummyHashFuncs;
-    dummyHashFuncs.push_back(make_shared<HashRepeats>(hash<size_t>{}, 1));
+    dummyHashFuncs.push_back(make_shared<HashRepeats>(hash<string>{}, 1));
 
     vector<bool> dummyBL = getBLFromBLFile(filePath); 
 

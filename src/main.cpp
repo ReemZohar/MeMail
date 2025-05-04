@@ -21,12 +21,12 @@ int main() {
     vector <int> firstInputVec= USER_ACTION::convStringToArr(inputLine);
 
     //initialize system
-    fs::path BlFilePath = fs::current_path() / "data"/ "BLFile.txt";  //The path to the file we want to handle
+    fs::path BlFilePath = fs::path("/data") / "BLFile.txt";  //The path to the file we want to handle
     int sizeBl = firstInputVec.at(0);
 
     vector<bool> blackList = INITIALIZE_SYSTEM::loadBLFromFile(to_string(sizeBl),BlFilePath);
 
-    vector<function<size_t(size_t)>> funcs = createHashVec(firstInputVec.size()-1);
+    vector<function<size_t(string)>> funcs = createHashVec(firstInputVec.size()-1);
     vector<shared_ptr<IHasher>> hasher = convInputToHashRepeatsVec(inputLine, funcs);
  
     //Create bloomFilter object

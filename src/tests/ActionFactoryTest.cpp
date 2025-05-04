@@ -32,7 +32,7 @@ TEST(ActionFactoryTest, objectCreationTest) {
     fs::path path = testDir / "bloomfilter_path";
     vector<bool> blacklist = {false};
     vector<shared_ptr<IHasher>> hashVec;
-    hashVec.push_back(make_shared<HashRepeats>(hash<size_t>{}, 1));
+    hashVec.push_back(make_shared<HashRepeats>(hash<string>{}, 1));
     BloomFilter bf(blacklist, path, hashVec);
     //matching action objects
     shared_ptr<IAction> firstAction = make_shared<AddURLToBL>(bf);

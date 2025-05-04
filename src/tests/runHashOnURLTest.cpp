@@ -6,13 +6,16 @@
 using namespace std;
 
 //PGAPP-79
-//hashes a integer for the passed amount of repeats
+//hashes a string for the passed amount of repeats
 size_t hashTarget(size_t target, int repeats) {
     size_t result = target;
+    string temp = to_string(result);
 
     for(int i = 0; i < repeats; i++) {
-        result = hash<size_t>{}(result);
+        temp = to_string(hash<string>{}(temp));
     }
+
+    result = static_cast<size_t>(stoull(temp));
 
     return result;
 }
@@ -30,10 +33,10 @@ TEST(hashTests, hashTest) {
     int size4 = 48;
 
     //creating the matching HashRepeats objects
-    HashRepeats obj1 = HASH_REPEATS::HashRepeats(hash<size_t>{}, size1);
-    HashRepeats obj2 = HASH_REPEATS::HashRepeats(hash<size_t>{}, size2);
-    HashRepeats obj3 = HASH_REPEATS::HashRepeats(hash<size_t>{}, size3);
-    HashRepeats obj4 = HASH_REPEATS::HashRepeats(hash<size_t>{}, size4);
+    HashRepeats obj1 = HASH_REPEATS::HashRepeats(hash<string>{}, size1);
+    HashRepeats obj2 = HASH_REPEATS::HashRepeats(hash<string>{}, size2);
+    HashRepeats obj3 = HASH_REPEATS::HashRepeats(hash<string>{}, size3);
+    HashRepeats obj4 = HASH_REPEATS::HashRepeats(hash<string>{}, size4);
 
     EXPECT_EQ((obj1.hash(url1)), hashTarget(hash<string>{}(url1), size1 - 1));
     EXPECT_EQ((obj2.hash(url2)), hashTarget(hash<string>{}(url2), size2 - 1));

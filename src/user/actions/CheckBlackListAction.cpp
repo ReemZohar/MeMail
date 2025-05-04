@@ -53,7 +53,7 @@ std::string CheckBlacklistAction::getURLFromInput(const std::string &input) {
 //Help function for performAction: check if the given URL is Black listd by the inner list  
 bool CheckBlacklistAction::isBlackListedByInnerList(const string& url) {
     vector<bool> result = RUN_HASH_ON_URL::runHashOnURL(url, blFilter.getHasher(), blFilter.getBlackList().size());
-    // Print the result vector
+    
     for (int i = 0; i < result.size(); i++) {
         //If there turnned on bit in the result but not in the BL - it means that it is not Black listted URL
         if (result[i]==true && blFilter.getBlackList()[i]==false) {

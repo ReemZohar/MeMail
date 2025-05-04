@@ -2,7 +2,7 @@
 
 using namespace std;
 
-vector<shared_ptr<IHasher>> convInputToHashRepeatsVec(const string& userInput, vector<function<size_t(size_t)>>hashFuncs) {
+vector<shared_ptr<IHasher>> convInputToHashRepeatsVec(const string& userInput, vector<function<size_t(string)>>hashFuncs) {
     vector<shared_ptr<IHasher>> hashRepeatsVec;
     //creates a vector of all the integers in the user input
     vector<int> inputIntVec = USER_ACTION::convStringToArr(userInput);
@@ -16,12 +16,12 @@ vector<shared_ptr<IHasher>> convInputToHashRepeatsVec(const string& userInput, v
     return hashRepeatsVec;
 }
 
-vector<function<size_t(size_t)>> createHashVec(int size) {
-    vector<function<size_t(size_t)>> hashFuncsVec;
+vector<function<size_t(string)>> createHashVec(int size) {
+    vector<function<size_t(string)>> hashFuncsVec;
 
     //loop creates a vector of hash function in a matching order to their HashRepeats objects
     for(int i = 0; i < size; i++) {
-        hashFuncsVec.push_back(hash<size_t>{});
+        hashFuncsVec.push_back(hash<string>{});
     }
 
     return hashFuncsVec;
