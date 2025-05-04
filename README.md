@@ -88,7 +88,7 @@ The program has generated a new file named "BLFile.txt" with a 8-bits BlackList 
 7. IHasher Interface- for creating custom hash logic, used in HashRepeats.
 
 
-## 📁 File Structure Overview
+## File Structure Overview
 
 ```
 Src/
