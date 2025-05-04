@@ -4,14 +4,16 @@
 #include "IAction.h"
 #include "userAction.h"
 #include "runHashOnURL.h"
-#include <string>
-#include <vector>
-#include <filesystem>
 #include "UserOutput.h"
 #include "BloomFilter.h"
 #include "initializeBLSystem.h"
+#include <string>
+#include <vector>
+#include <iostream>
+#include <filesystem>
+#include <set>
+#include <stdexcept>
 
-using namespace std;
 namespace fs = std::filesystem;
 
 // PGAPP-89
@@ -25,14 +27,14 @@ public:
     CheckBlacklistAction(BloomFilter& blFilter);
 
     // Overrides performAction from IAction
-    void performAction(const IUserInput& userInput) override;
+    void performAction(const std::shared_ptr<IUserInput>& userInput) override;
     bool isBlackListedByFile(const std::string& url);
     bool isBlackListedByInnerList(const std::string& url);
     std::string getURLFromInput(const std::string &input);
 
 private:
     // Checks whether the given URL is blacklisted
-    bool isBlackListed(const string& url);
+    bool isBlackListed(const std::string& url);
 };
 
 #endif // CHECKBLACKLISTACTION_H

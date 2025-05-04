@@ -14,7 +14,7 @@
 class ActionFactory {
     public:
     //creates an action object based on the user's input
-    static shared_ptr<IAction> create(BloomFilter& bf, const shared_ptr<IUserInput>& userInput);
+    static std::shared_ptr<IAction> create(BloomFilter& bf, const std::shared_ptr<IUserInput>& userInput);
 
     private:
     //we don't want this class to have any object instances, so we set it's constructor to be private

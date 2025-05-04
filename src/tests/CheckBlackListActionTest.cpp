@@ -1,10 +1,13 @@
 #include <gtest/gtest.h>
+#include <filesystem>
 #include "CheckBlackListAction.h"
 #include "initializeBLSystem.h"
 #include "AddURLToBL.h"
 #include "FirstUserInput.h"
 
 using namespace std;
+namespace fs = std::filesystem;
+
 //AGAPP - 10
 //Write tests for CheckBlackListAction class 
 //Sanity test - should check if the black list file contains URL
@@ -19,7 +22,7 @@ TEST(CheckBlacklistActionTest, WorksWithNewBLFile) {
 
     //initialize HashRepeats vector 
     vector<shared_ptr<IHasher>> dummyHashFuncs;
-    dummyHashFuncs.push_back(make_shared<HashRepeats>(hash<size_t>{}, 1));
+    dummyHashFuncs.push_back(make_shared<HashRepeats>(hash<string>{}, 1));
 
     vector<bool> dummyBL = getBLFromBLFile(filePath); 
     BloomFilter bl(dummyBL,filePath,dummyHashFuncs);
@@ -28,7 +31,6 @@ TEST(CheckBlacklistActionTest, WorksWithNewBLFile) {
     //The file is empty so the URL is not in the black list
     EXPECT_FALSE(action.isBlackListedByFile("2 www.something.com"));
     EXPECT_FALSE(action.isBlackListedByInnerList("2 www.something.com"));
-
 
     // cleaning
     fs::remove_all(testDir);
@@ -46,7 +48,7 @@ TEST(CheckBlacklistActionTest, WorksWithAddingToFile) {
 
     //initialize HashRepeats vector 
     vector<shared_ptr<IHasher>> dummyHashFuncs;
-    dummyHashFuncs.push_back(make_shared<HashRepeats>(hash<size_t>{}, 1));
+    dummyHashFuncs.push_back(make_shared<HashRepeats>(hash<string>{}, 1));
 
     vector<bool> dummyBL = getBLFromBLFile(filePath); 
 
@@ -58,14 +60,12 @@ TEST(CheckBlacklistActionTest, WorksWithAddingToFile) {
     EXPECT_FALSE(action.isBlackListedByInnerList("2 www.something.com"));
 
     AddURLToBL obj1 = AddURLToBL(bl);
-
-    FirstUserInput uinput("1 www.something.com");
+    shared_ptr<IUserInput> uinput = make_shared<FirstUserInput>("1 www.something.com");
 
     obj1.AddURLToBL::performAction(uinput);
 
     EXPECT_TRUE(action.isBlackListedByFile("www.something.com"));
     EXPECT_TRUE(action.isBlackListedByInnerList("www.something.com"));
-
 
     // cleaning
     fs::remove_all(testDir);

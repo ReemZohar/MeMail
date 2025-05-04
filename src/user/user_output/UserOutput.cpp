@@ -1,14 +1,14 @@
 #include "UserOutput.h"
-#include <iostream>
-#include <fstream>
+
+using namespace std;
 
 //PGAPP-97-UserOutput-class
-void UserOutput::printToConsole(const std::string& message) {
-    std::cout << message << std::endl;
+void UserOutput::printToConsole(const string& message) {
+    cout << message;
 }
 
-void UserOutput::writeToFile(const std::string& filepath, const std::string& content) {
-    std::ofstream outFile(filepath, std::ios::out | std::ios::app);
+void UserOutput::writeToFile(const string& filepath, const string& content) {
+    ofstream outFile(filepath, std::ios::out | std::ios::app);
     if (outFile.is_open()) {
         outFile << content;
         outFile.close();

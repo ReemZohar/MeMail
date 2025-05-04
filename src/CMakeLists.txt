@@ -37,8 +37,35 @@ add_executable(runTests
   ../user/actions/ActionFactory.cpp
 ) #write here the files you wish to test, the format is: <file_name>.cpp
 
-# add_executable(runProg ) #write here the files you wish to run, the format is: <file_name>.cpp
+add_executable(runProg main.cpp
+../initialization/initializeBLSystem.cpp
+  ../validations/validateUserInput.cpp
+  ../user/actions/userAction.cpp
+  ../user/user_output/UserOutput.cpp
+  ../user/user_input/FirstUserInput.cpp
+  ../user/user_input/MenuChoiceInput.cpp
+  ../hash/HashRepeats.cpp
+  ../hash/runHashOnURL.cpp
+  ../user/actions/AddURLToBL.cpp
+  ../user/actions/CheckBlackListAction.cpp
+  ../user/BloomFilter.cpp
+  ../user/actions/ActionFactory.cpp
+  ../initialization/Program.cpp
+) #write here the files you wish to run, the format is: <file_name>.cpp
+
 target_include_directories(runTests
+  PRIVATE
+    ${PROJECT_SOURCE_DIR}/hash
+    ${PROJECT_SOURCE_DIR}/initialization
+    ${PROJECT_SOURCE_DIR}/user/user_input
+    ${PROJECT_SOURCE_DIR}/user/user_output
+    ${PROJECT_SOURCE_DIR}/user/actions
+    ${PROJECT_SOURCE_DIR}/validations
+    ${PROJECT_SOURCE_DIR}/user
+    
+)
+
+target_include_directories(runProg
   PRIVATE
     ${PROJECT_SOURCE_DIR}/hash
     ${PROJECT_SOURCE_DIR}/initialization

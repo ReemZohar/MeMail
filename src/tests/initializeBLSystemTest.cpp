@@ -1,14 +1,14 @@
 #include <gtest/gtest.h>
-#include "initializeBLSystem.h"
 #include <vector>
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <cstdio>
 #include <set>
+#include "initializeBLSystem.h"
+
 using namespace std;
 namespace fs = std::filesystem; 
-
 
 //PGAPP 45 (tests for PGAPP-34)
 //Sanity:
@@ -29,7 +29,6 @@ TEST(getBLFromBLFileTest, ReadsCorrectBlacklist) {
 
     fs::remove_all(testDir);
 }
-
 
 //PGAPP 46 (tests for PGAPP-35)
 //Sanity:
@@ -58,7 +57,6 @@ TEST(CreateNewBLArrTest, ReturnsCorrectVectorAndCreatesFile) {
 
     fs::remove_all(testDir);
 }
-
 
 //PGAPP-56: Tests for createNewBLFile (PGAPP-55)
 //Sanity:
@@ -94,6 +92,7 @@ TEST(createNewBLFileTest, CreatesCorrectFile) {
 
     fs::remove_all(testDir);
 }
+
 //Edge:
 TEST(createNewBLFileTest, HandlesZeroLength) {
     fs::path testDir = fs::temp_directory_path() / "test_data";
@@ -117,7 +116,6 @@ TEST(createNewBLFileTest, HandlesZeroLength) {
     fs::remove_all(testDir);
 }
 
-
 // PGAPP-58 (tests for PGAPP-57)
 // Sanity:
 TEST(loadBLFromFileTest, LoadsFromFile) {
@@ -139,6 +137,7 @@ TEST(loadBLFromFileTest, LoadsFromFile) {
 
     fs::remove_all(testDir);
 }
+
 TEST(loadBLFromFileTest, CreatesNewFile) {
     fs::path testDir = fs::temp_directory_path() / "test_data";
     fs::create_directories(testDir);
@@ -167,72 +166,74 @@ TEST(loadBLFromFileTest, CreatesNewFile) {
     fs::remove_all(testDir);
 }
 
-
-
 //PGAPP-60 (tests for PGAPP-59)
-    //Make the file
-    void createTempFile(const fs::path& path, const std::vector<std::string>& lines) {
-        std::ofstream file(path);
-        for (const auto& line : lines) {
-            file << line << "\n";
-        }
-        file.close();
+//Make the file
+void createTempFile(const fs::path& path, const vector<string>& lines) {
+    ofstream file(path);
+    for (const auto& line : lines) {
+        file << line << "\n";
     }
-    TEST(getBLURLsSetFromFileTest, EmptyFileReturnsEmptySet) {
-        fs::path path = "temp_empty.txt";
-        createTempFile(path, {});  //An empty file
-        auto result = getBLURLsSetFromFile (path);
-        EXPECT_TRUE(result.empty());
-        fs::remove(path);
-    }
-    TEST(getBLURLsSetFromFileTest, OnlyTwoLinesReturnsEmptySet) {
-        fs::path path = "temp_two_lines.txt";
-        createTempFile(path, {"header line", "another header"});
-        auto result = getBLURLsSetFromFile (path);
-        EXPECT_TRUE(result.empty());
-        fs::remove(path);
-    }
-    TEST(getBLURLsSetFromFileTest, URLsParsedCorrectly) {
-        fs::path path = "temp_urls.txt";
-        createTempFile(path, {
-            "Header1", "Header2", 
-            "http://bad.com", 
-            "https://evil.org", 
-            "http://bad.com" //double URL
-        });
-        std::set<std::string> expected = {
-            "http://bad.com",
-            "https://evil.org"
-        };
-        std::set<std::string> result = getBLURLsSetFromFile (path);
-        EXPECT_EQ(result, expected);
-        fs::remove(path);
-    }
-    TEST(getBLURLsSetFromFileTest, SkipsEmptyLines) {
-        fs::path path = "temp_with_empty_lines.txt";
-        createTempFile(path, {
-            "Header1", "Header2",
-            "",
-            "http://example.com",
-            "",
-            "http://example.org"
-        });
+    file.close();
+}
 
-        std::set<std::string> expected = {
-            "http://example.com",
-            "http://example.org"
-        };
-        std::set<std::string> result = getBLURLsSetFromFile (path);
-        EXPECT_EQ(result, expected);
-        fs::remove(path);
-    }
-    TEST(getBLURLsSetFromFileTest, FileNotFoundReturnsEmptySet) {
-        fs::path tempPath = "non_existing_file.txt";
-        std::set<std::string> result = getBLURLsSetFromFile (tempPath);
-        EXPECT_TRUE(result.empty());
-    }
+TEST(getBLURLsSetFromFileTest, EmptyFileReturnsEmptySet) {
+    fs::path path = "temp_empty.txt";
+    createTempFile(path, {});  //An empty file
+    auto result = getBLURLsSetFromFile (path);
+    EXPECT_TRUE(result.empty());
+    fs::remove(path);
+}
 
-    
+TEST(getBLURLsSetFromFileTest, OnlyTwoLinesReturnsEmptySet) {
+    fs::path path = "temp_two_lines.txt";
+    createTempFile(path, {"header line", "another header"});
+    auto result = getBLURLsSetFromFile (path);
+    EXPECT_TRUE(result.empty());
+    fs::remove(path);
+}
+
+TEST(getBLURLsSetFromFileTest, URLsParsedCorrectly) {
+    fs::path path = "temp_urls.txt";
+    createTempFile(path, {
+        "Header1", "Header2", 
+        "http://bad.com", 
+        "https://evil.org", 
+        "http://bad.com" //double URL
+    });
+    set<string> expected = {
+        "http://bad.com",
+        "https://evil.org"
+    };
+    set<string> result = getBLURLsSetFromFile (path);
+    EXPECT_EQ(result, expected);
+    fs::remove(path);
+}
+
+TEST(getBLURLsSetFromFileTest, SkipsEmptyLines) {
+    fs::path path = "temp_with_empty_lines.txt";
+    createTempFile(path, {
+        "Header1", "Header2",
+        "",
+        "http://example.com",
+        "",
+        "http://example.org"
+    });
+
+    set<string> expected = {
+        "http://example.com",
+        "http://example.org"
+    };
+    set<string> result = getBLURLsSetFromFile (path);
+    EXPECT_EQ(result, expected);
+    fs::remove(path);
+}
+
+TEST(getBLURLsSetFromFileTest, FileNotFoundReturnsEmptySet) {
+    fs::path tempPath = "non_existing_file.txt";
+    set<string> result = getBLURLsSetFromFile (tempPath);
+    EXPECT_TRUE(result.empty());
+}
+ 
 //PGAPP-64(tests for PGAPP-63)
 // Sanity Test: Valid file with integer length in first line
 TEST(GetBitArrLengthTest, ValidFile) {
@@ -241,19 +242,20 @@ TEST(GetBitArrLengthTest, ValidFile) {
     EXPECT_EQ(getBitArrLengthFromFile(filePath), 8);
     fs::remove(filePath);
 }
+
 TEST(GetBitArrLengthTest, FileDoesNotExist) {
     fs::path filePath = "nonexistent.txt";
     EXPECT_EQ(getBitArrLengthFromFile(filePath), -1);
 }
+
 TEST(GetBitArrLengthTest, EmptyFile) {
     fs::path filePath = "empty.txt";
     createTempFile(filePath, {});
     EXPECT_THROW({
         getBitArrLengthFromFile(filePath);
-    }, std::invalid_argument);
+    }, invalid_argument);
     fs::remove(filePath);
 }
-
 
 //PGAPP-95 (tests for PGAPP-94)
 // Sanity:
@@ -262,12 +264,14 @@ TEST(CreateFalseBoolVecTest, CorrectSize) {
     EXPECT_EQ(createFalseBoolVec(0).size(), 0);
     EXPECT_EQ(createFalseBoolVec(10).size(), 10);
 }
+
 TEST(CreateFalseBoolVecTest, InitializedWithFalse) {
     vector<bool> arr = createFalseBoolVec(5);
     for (bool val : arr) {
         EXPECT_FALSE(val);
     }
 }
+
 // Edge:
 TEST(CreateFalseBoolVecTest, EmptyArray) {
     vector<bool> arr = createFalseBoolVec(0);

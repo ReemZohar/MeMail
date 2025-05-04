@@ -1,17 +1,22 @@
 #include <gtest/gtest.h>
 #include "HashRepeats.h"
 #include "runHashOnURL.h"
+#include "IHasher.h"
 
 using namespace std;
 
 //PGAPP-79
-//hashes a integer for the passed amount of repeats
+//hashes a string for the passed amount of repeats
 size_t hashTarget(size_t target, int repeats) {
     size_t result = target;
+    string temp = to_string(result);
 
     for(int i = 0; i < repeats; i++) {
-        result = hash<size_t>{}(result);
+        temp = to_string(hash<string>{}(temp));
     }
+
+    //tries to cast the string which is the hash result number into size_t
+    result = static_cast<size_t>(stoull(temp));
 
     return result;
 }
@@ -29,10 +34,10 @@ TEST(hashTests, hashTest) {
     int size4 = 48;
 
     //creating the matching HashRepeats objects
-    HashRepeats obj1 = HASH_REPEATS::HashRepeats(hash<size_t>{}, size1);
-    HashRepeats obj2 = HASH_REPEATS::HashRepeats(hash<size_t>{}, size2);
-    HashRepeats obj3 = HASH_REPEATS::HashRepeats(hash<size_t>{}, size3);
-    HashRepeats obj4 = HASH_REPEATS::HashRepeats(hash<size_t>{}, size4);
+    HashRepeats obj1 = HASH_REPEATS::HashRepeats(hash<string>{}, size1);
+    HashRepeats obj2 = HASH_REPEATS::HashRepeats(hash<string>{}, size2);
+    HashRepeats obj3 = HASH_REPEATS::HashRepeats(hash<string>{}, size3);
+    HashRepeats obj4 = HASH_REPEATS::HashRepeats(hash<string>{}, size4);
 
     EXPECT_EQ((obj1.hash(url1)), hashTarget(hash<string>{}(url1), size1 - 1));
     EXPECT_EQ((obj2.hash(url2)), hashTarget(hash<string>{}(url2), size2 - 1));
@@ -42,11 +47,11 @@ TEST(hashTests, hashTest) {
 
 //PGAPP-80
 //returns a vector of all hash repetitions of HashRepeats objects in the passed vector
-vector<int> getRepeatCountVec(vector<HashRepeats> hashRepeats) {
+vector<int> getRepeatCountVec(vector<shared_ptr<IHasher>> hashRepeats) {
     vector<int> repeatCountVec;
 
-    for(HashRepeats obj : hashRepeats) {
-        repeatCountVec.push_back(obj.getRepeatCount());
+    for(int i = 0; i < hashRepeats.size(); i++){
+        repeatCountVec.push_back(hashRepeats.at(i)->getRepeatCount());
     }
 
     return repeatCountVec;
@@ -70,7 +75,7 @@ TEST(convInputToHRVecTest, convValidInputTest) {
     vector<int> expectedOutput4 = {33, 11};
     vector<int> expectedOutput5 = {7, 4, 6};
     vector<int> realOutput1, realOutput2, realOutput3, realOutput4, realOutput5;
-    vector<HashRepeats> v1, v2, v3, v4, v5;
+    vector<shared_ptr<IHasher>> v1, v2, v3, v4, v5;
 
     //converts the input to HashRepeats vector
     v1 = convInputToHashRepeatsVec(input1, RUN_HASH_ON_URL::createHashVec(size1));

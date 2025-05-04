@@ -2,26 +2,26 @@
 
 using namespace std;
 
-vector<HashRepeats> convInputToHashRepeatsVec(const string& userInput, vector<function<size_t(size_t)>>hashFuncs) {
-    vector<HashRepeats> hashRepeatsVec;
+vector<shared_ptr<IHasher>> convInputToHashRepeatsVec(const string& userInput, vector<function<size_t(string)>>hashFuncs) {
+    vector<shared_ptr<IHasher>> hashRepeatsVec;
     //creates a vector of all the integers in the user input
     vector<int> inputIntVec = USER_ACTION::convStringToArr(userInput);
     int skipBLSize = 1;
 
     //each loop iteration creates an HashRepeats object and appends it to the hashRepeats vector
     for(int i = 0; i < hashFuncs.size(); i++) {
-        hashRepeatsVec.push_back(HASH_REPEATS::HashRepeats(hashFuncs.at(i), inputIntVec.at(i + skipBLSize)));
+        hashRepeatsVec.push_back(make_shared<HashRepeats>(hashFuncs.at(i), inputIntVec.at(i + skipBLSize)));
     }
 
     return hashRepeatsVec;
 }
 
-vector<function<size_t(size_t)>> createHashVec(int size) {
-    vector<function<size_t(size_t)>> hashFuncsVec;
+vector<function<size_t(string)>> createHashVec(int size) {
+    vector<function<size_t(string)>> hashFuncsVec;
 
     //loop creates a vector of hash function in a matching order to their HashRepeats objects
     for(int i = 0; i < size; i++) {
-        hashFuncsVec.push_back(hash<size_t>{});
+        hashFuncsVec.push_back(hash<string>{});
     }
 
     return hashFuncsVec;

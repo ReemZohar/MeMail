@@ -24,7 +24,7 @@ TEST(saveBLToFileTest, fileExistanceTest) {
     vector<bool> blacklist = {true};
     string size = "1"; //blacklist's size
     vector<shared_ptr<IHasher>> hashVec;
-    hashVec.push_back(make_shared<HashRepeats>(hash<size_t>{}, 1));
+    hashVec.push_back(make_shared<HashRepeats>(hash<string>{}, 1));
     //the matching bloom filter objects
     BloomFilter bf1 = BloomFilter(blacklist, validPath, hashVec);
     BloomFilter bf2 = BloomFilter(blacklist, nonExistPath, hashVec);
@@ -53,7 +53,7 @@ TEST(saveBLToFileTest, fileUpdateTest) {
     vector<bool> bl3 = {false, false, false ,false, true, false, true};
     vector<bool> fileBL1, fileBL2, fileBL3;
     vector<shared_ptr<IHasher>> hashVec;
-    hashVec.push_back(make_shared<HashRepeats>(hash<size_t>{}, 1));
+    hashVec.push_back(make_shared<HashRepeats>(hash<string>{}, 1));
     //the matching bloom filter objects
     BloomFilter bf1 = BloomFilter(bl1, path1, hashVec);
     BloomFilter bf2 = BloomFilter(bl2, path2, hashVec);
@@ -116,7 +116,7 @@ TEST(saveURLToFileTest, saveURLToFileTest) {
     //vector that represent a blacklist
     vector<bool> bl = {false};
     vector<shared_ptr<IHasher>> hashVec;
-    hashVec.push_back(make_shared<HashRepeats>(hash<size_t>{}, 1));
+    hashVec.push_back(make_shared<HashRepeats>(hash<string>{}, 1));
     //the matching bloom filter objects
     BloomFilter bf1 = BloomFilter(bl, path1, hashVec);
     BloomFilter bf2 = BloomFilter(bl, path2, hashVec);
