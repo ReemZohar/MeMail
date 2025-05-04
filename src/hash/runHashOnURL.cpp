@@ -10,7 +10,7 @@ vector<shared_ptr<IHasher>> convInputToHashRepeatsVec(const string& userInput, v
 
     //each loop iteration creates an HashRepeats object and appends it to the hashRepeats vector
     for(int i = 0; i < hashFuncs.size(); i++) {
-        hashRepeatsVec->push_back(HashRepeats(hashFuncs.at(i), inputIntVec.at(i + skipBLSize)));
+        hashRepeatsVec.push_back(make_shared<HashRepeats>(hashFuncs.at(i), inputIntVec.at(i + skipBLSize)));
     }
 
     return hashRepeatsVec;

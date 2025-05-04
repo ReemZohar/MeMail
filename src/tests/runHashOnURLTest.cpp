@@ -47,7 +47,7 @@ vector<int> getRepeatCountVec(vector<shared_ptr<IHasher>> hashRepeats) {
     vector<int> repeatCountVec;
 
     for(int i=0;i<hashRepeats.size();i++){
-        repeatCountVec.push_back(hashRepeats.at(i).getRepeatCount());
+        repeatCountVec.push_back(hashRepeats.at(i)->getRepeatCount());
     }
 
     return repeatCountVec;
