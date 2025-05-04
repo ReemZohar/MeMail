@@ -24,27 +24,14 @@ void CheckBlacklistAction::performAction(const shared_ptr<IUserInput>& userInput
 
 // This function is written for use in CheckBlackListAction.
 std::string CheckBlacklistAction::getURLFromInput(const std::string &input) {
+    std::string url;
+    std::istringstream iss(input);
+
     if (!isChoiceSpaceURLInputValid(input)) {
         throw std::runtime_error("Invalid input for choice-space-URL");
     }
 
-    // Find the first space that separates the number and the URL
-    size_t spacePos = input.find(' ');
-    if (spacePos == std::string::npos) {
-        throw std::runtime_error("Input does not contain a space separating the number and the URL.");
-    }
-
-    // Find the start of the URL part (skip any additional spaces)
-    size_t urlStart = input.find_first_not_of(' ', spacePos);
-    if (urlStart == std::string::npos) {
-        throw std::runtime_error("No URL found after the number.");
-    }
-
-    // The URL continues until the end (trim any trailing spaces if needed)
-    size_t urlEnd = input.find_last_not_of(' ');
-
-    // Extract the URL substring
-    std::string url = input.substr(urlStart, urlEnd - urlStart + 1);
+    while(iss >> url) {}
 
     return url;
 }
