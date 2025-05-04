@@ -61,7 +61,8 @@ For example, when the URL www.example.com23 was blacklisted:
 •	The new URL was added to the end of the file.
 7. Initialization:
 When running the program for the first time, or if the file was deleted for some reason, the "BLFile.txt" file does not exist, so we create it. 
-After the first user input, the file is created and contains the new blacklist length (as usual) and a blacklist initialized with zeros. For example:
+After the first user input, the file is created and contains the new blacklist length (as usual) and a blacklist initialized with zeros.
+ For example:
   ![UI Prompt](documentation-pictures/8.png)
 The program has generated a new file named "BLFile.txt" with a 8-bits BlackList array initialized with zero.
 
