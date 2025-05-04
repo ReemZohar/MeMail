@@ -7,6 +7,7 @@ vector<int> convStringToArr(const string& userInput) {
     string sub;
     istringstream iss(userInput);
 
+    //loop separates each substring within the string, converts it to an int and pushes it as an element in the vector
     while(iss >> sub) {
         userChoices.push_back(stoi(sub));
     }

@@ -15,9 +15,11 @@ void CheckBlacklistAction::performAction(const shared_ptr<IUserInput>& userInput
     }
     else{
         UserOutput::printToConsole("true");
+        std::cout << " ";
         bool isBLByFile = CheckBlacklistAction::isBlackListedByFile(url);
         UserOutput::printToConsole(isBLByFile ? "true" : "false");
     }
+    std::cout << endl;
 }
 
 // This function is written for use in CheckBlackListAction.

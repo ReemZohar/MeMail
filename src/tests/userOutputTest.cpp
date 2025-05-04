@@ -42,6 +42,6 @@ TEST(UserOutputTest, PrintToConsole_PrintsCorrectMessage) {
     // Retrieve the captured output
     std::string output = testing::internal::GetCapturedStdout();
 
-    // Check if the captured output matches the expected message, including the newline
-    EXPECT_EQ(output, expectedMessage + "\n");
+    // Check if the captured output matches the expected message
+    EXPECT_EQ(output, expectedMessage);
 }

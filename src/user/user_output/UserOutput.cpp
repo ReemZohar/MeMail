@@ -4,7 +4,7 @@
 
 //PGAPP-97-UserOutput-class
 void UserOutput::printToConsole(const std::string& message) {
-    std::cout << message << std::endl;
+    std::cout << message;
 }
 
 void UserOutput::writeToFile(const std::string& filepath, const std::string& content) {
