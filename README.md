@@ -145,3 +145,60 @@ Src/
 ├── main.cpp
 ├── CMakeLists.txt
 └── Dockerfile
+Src/
+├── Hash/
+│   ├── hashrepeat.cpp
+│   ├── HashRepeats.h
+│   ├── IHasher.h
+│   ├── runhashOnUrl.cpp
+│   ├── runHashOnUrl.h
+│
+├── initialization/
+│   ├── initializeBlsystem.cpp
+│   ├── initializeBlsystem.h
+│   ├── Iprogram.h
+│   ├── program.cpp
+│   ├── program.h
+│
+├── tests/
+│   ├── ActionFactory.Test.cpp
+│   ├── addUrlToBLTest.cpp
+│   ├── checkBlackListActionTest.cpp
+│   ├── initializeBLsystemTest.cpp
+│   ├── runHashOnUrlTest.cpp
+│   ├── userActionTest.cpp
+│   ├── userOutputTest.cpp
+│   ├── validateUserInputTest.cpp
+│
+├── user/
+│   ├── actions/
+│   │   ├── actionFactory.cpp
+│   │   ├── actionFactory.h
+│   │   ├── addURLToBL.cpp
+│   │   ├── addURLToBL.h
+│   │   ├── CheckBlackListAction.cpp
+│   │   ├── CheckBlackListAction.h
+│   │   ├── IAction.h
+│   │   ├── userAction.cpp
+│   │   ├── userAction.h
+│   │
+│   ├── userinput/
+│   │   ├── firstUserInput.cpp
+│   │   ├── firstUserInput.h
+│   │   ├── IUserInput.h
+│   │   ├── MenueChoiceInput.cpp
+│   │   ├── MenueChoiceInput.h
+│   │
+│   ├── userOutput/
+│   │   ├── userOutput.cpp
+│   │   ├── userOutput.h
+│
+├── validations/
+│   ├── validateUserInput.cpp
+│   ├── validateUserInput.h
+│
+├── bloomFilter.cpp
+├── bloomFilter.h
+├── main.cpp
+├── CMakeLists.txt
+└── Dockerfile
