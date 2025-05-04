@@ -6,12 +6,12 @@
 #include "initializeBLSystem.h"
 #include "BloomFilter.h"
 #include "runHashOnURL.h"
+#include "userAction.h"
 #include <fstream>
 #include <string>
 #include <fstream>
 #include <filesystem>
 #include <vector>
-#include "userAction.h"
 
 namespace fs = std::filesystem;
 

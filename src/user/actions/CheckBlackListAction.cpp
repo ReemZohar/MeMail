@@ -1,5 +1,6 @@
 #include "CheckBlackListAction.h"
-#include <iostream>
+
+using namespace std;
 
 //Constructor for the class
 CheckBlacklistAction::CheckBlacklistAction(BloomFilter& blFilter): 
@@ -8,27 +9,27 @@ blFilter(blFilter) {}
 //PGAPP-8 - Check if URL is black listed
 //Implement prformAction of IAction
 void CheckBlacklistAction::performAction(const shared_ptr<IUserInput>& userInput) {
-    const std::string &url = getURLFromInput(userInput->getInput());
+    const string &url = getURLFromInput(userInput->getInput());
     bool isBLByInnerList = isBlackListedByInnerList(url);
     if(isBLByInnerList == false) {
         UserOutput::printToConsole("false");
     }
     else{
         UserOutput::printToConsole("true");
-        std::cout << " ";
+        cout << " ";
         bool isBLByFile = CheckBlacklistAction::isBlackListedByFile(url);
         UserOutput::printToConsole(isBLByFile ? "true" : "false");
     }
-    std::cout << endl;
+    cout << endl;
 }
 
 // This function is written for use in CheckBlackListAction.
-std::string CheckBlacklistAction::getURLFromInput(const std::string &input) {
-    std::string url;
-    std::istringstream iss(input);
+string CheckBlacklistAction::getURLFromInput(const std::string &input) {
+    string url;
+    istringstream iss(input);
 
     if (!isChoiceSpaceURLInputValid(input)) {
-        throw std::runtime_error("Invalid input for choice-space-URL");
+        throw runtime_error("Invalid input for choice-space-URL");
     }
 
     while(iss >> url) {}
@@ -53,6 +54,6 @@ bool CheckBlacklistAction::isBlackListedByInnerList(const string& url) {
 
 //Help function for performAction: check if the given URL is Black listd by the file in which the URLS  
 bool CheckBlacklistAction::isBlackListedByFile(const string& url){
-    std::set<string> setOfBLURLS = getBLURLsSetFromFile(blFilter.getFilePath());
+    set<string> setOfBLURLS = getBLURLsSetFromFile(blFilter.getFilePath());
     return setOfBLURLS.find(url) != setOfBLURLS.end();
 }

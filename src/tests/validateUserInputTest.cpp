@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
-#include "validateUserInput.h"
 #include <string>
 #include <vector>
+#include "validateUserInput.h"
+
 using namespace std;
 
 //GPAPP-25: Tests for isURLValid (GPAPP-20)
@@ -19,8 +20,8 @@ TEST(URLTest, validURL){
     EXPECT_TRUE(isURLValid("http://example.com/page?search=Exam#ple"));
     EXPECT_TRUE(isURLValid("http://example.com/page?search=exam#ple"));
     EXPECT_TRUE(isURLValid("http://example.com/page?Search=Exam#PLE"));
-    // EXPECT_TRUE(isURLValid("git+ssh://www.example.com/index.html"));  //לבדוק מה תקן הURL הנדרש
 }
+
 //Negative + Egde cases:
 //mention - a valid URL is in a template: "schema://[username[:password]@]server[:port]/path[?query][#anchor]"
 TEST(URLTest, invalidURL){
@@ -41,15 +42,14 @@ TEST(URLTest, invalidURL){
     EXPECT_FALSE(isURLValid("http")); //invalid
     EXPECT_FALSE(isURLValid("http://")); //invalid
     EXPECT_FALSE(isURLValid("כתובת")); //invalid
-    //EXPECT_FALSE(isURLValid("example.com"));   //missing scheme
 }
+
 //Boundary:
 TEST(URLTest, MaxURLLength){
     string base = "https://example.com/path?";
     string longURL = base + string(2048 - base.length() + 1, 'a');
     EXPECT_FALSE(isURLValid(longURL));
 }
-
 
 //GPAPP-26: Tests for isURLValid (GPAPP-21)
 //Sanity:
@@ -58,6 +58,7 @@ TEST(BLSizeTest, validBLSize){
     EXPECT_TRUE(isBLSizeValid("8"));
     EXPECT_TRUE(isBLSizeValid("10"));
 }
+
 //Negative + Egde cases:
 TEST(BLSizeTest, inValidBLSize){
     EXPECT_FALSE(isBLSizeValid(""));
@@ -73,7 +74,6 @@ TEST(BLSizeTest, inValidBLSize){
     EXPECT_FALSE(isBLSizeValid("!"));
 }
 
-
 //PGAPP-27: Tests for isHashInputValid (PGAPP-22)
 //Sanity:
 TEST(hashsListTest, validHashsList){
@@ -85,6 +85,7 @@ TEST(hashsListTest, validHashsList){
     EXPECT_TRUE(isHashInputValid(" 1  2 "));
     EXPECT_TRUE(isHashInputValid(" 1"));
 }
+
 TEST(hashsListTest, inValidHashsList){
     EXPECT_FALSE(isHashInputValid(""));
     EXPECT_FALSE(isHashInputValid(" "));
@@ -99,13 +100,14 @@ TEST(hashsListTest, inValidHashsList){
 //PGAPP-29: Tests for isMenuChoiceValid (for sprint 1 it's 1/2) (PGAPP-23)
 //Sanity:
 TEST(choiceTest, validChoice){
-    std::vector<std::string> choices = {"1", "2"};
+    vector<string> choices = {"1", "2"};
     EXPECT_TRUE(isMenuChoiceValid("1", choices));
     EXPECT_TRUE(isMenuChoiceValid("2", choices));
 }
+
 //Negative + Egde + Boundary cases:
 TEST(choiceTest, inValidChoice){
-    std::vector<std::string> choices = {"1", "2"};
+    vector<string> choices = {"1", "2"};
     EXPECT_FALSE(isMenuChoiceValid("", choices));
     EXPECT_FALSE(isMenuChoiceValid(" ", choices));
     EXPECT_FALSE(isMenuChoiceValid("12", choices));  //invalid num
@@ -122,7 +124,6 @@ TEST(choiceTest, inValidChoice){
     EXPECT_FALSE(isMenuChoiceValid("1.0", choices)); //float num
 }
 
-
 //PGAPP-40: Tests for isChoiceSpaceURLInputValid (GPAPP-39)
 //Sanity:
 TEST(secInputTest, validInput){
@@ -136,6 +137,7 @@ TEST(secInputTest, validInput){
     EXPECT_TRUE(isChoiceSpaceURLInputValid("2  https://www.example.com"));
     EXPECT_TRUE(isChoiceSpaceURLInputValid(" 2  https://www.example.com  "));
 }
+
 //Negative + Egde cases:
 TEST(secInputTest, inValidInput){
     EXPECT_FALSE(isChoiceSpaceURLInputValid(""));
@@ -155,7 +157,6 @@ TEST(secInputTest, inValidInput){
     EXPECT_FALSE(isChoiceSpaceURLInputValid("1www.example.com11"));
 }
 
-
 //PGAPP-42: Tests for isBLSizeSpaceHashsInputValid (GPAPP-41)
 //Sanity:
 TEST(firstInputTest, validInput){
@@ -169,6 +170,7 @@ TEST(firstInputTest, validInput){
     EXPECT_TRUE(isBLSizeSpaceHashsInputValid("8  1   2  "));
     EXPECT_TRUE(isBLSizeSpaceHashsInputValid(" 8  2 "));
 }
+
 //Negative + Egde cases:
 TEST(firstInputTest, inValidInput){
     EXPECT_FALSE(isBLSizeSpaceHashsInputValid(""));
@@ -185,7 +187,6 @@ TEST(firstInputTest, inValidInput){
     EXPECT_FALSE(isBLSizeSpaceHashsInputValid("! 8"));
 }
 
-
 //PGAPP-44: Tests for isStringNaturalNumber (GPAPP-43)
 //Sanity:
 TEST(naturalNumberStringTest, naturalString){
@@ -193,6 +194,7 @@ TEST(naturalNumberStringTest, naturalString){
     EXPECT_TRUE(isStringNaturalNumber("10"));
     EXPECT_TRUE(isStringNaturalNumber("100"));
 }
+
 //Negative + edge_cases
 TEST(naturalNumberStringTest, notNaturalString){
     EXPECT_FALSE(isStringNaturalNumber(""));

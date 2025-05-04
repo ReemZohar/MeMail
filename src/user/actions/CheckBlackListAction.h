@@ -4,14 +4,16 @@
 #include "IAction.h"
 #include "userAction.h"
 #include "runHashOnURL.h"
-#include <string>
-#include <vector>
-#include <filesystem>
 #include "UserOutput.h"
 #include "BloomFilter.h"
 #include "initializeBLSystem.h"
+#include <string>
+#include <vector>
+#include <iostream>
+#include <filesystem>
+#include <set>
+#include <stdexcept>
 
-using namespace std;
 namespace fs = std::filesystem;
 
 // PGAPP-89
@@ -32,7 +34,7 @@ public:
 
 private:
     // Checks whether the given URL is blacklisted
-    bool isBlackListed(const string& url);
+    bool isBlackListed(const std::string& url);
 };
 
 #endif // CHECKBLACKLISTACTION_H

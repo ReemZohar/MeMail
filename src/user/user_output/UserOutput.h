@@ -2,6 +2,8 @@
 #define USEROUTPUT_H
 
 #include <string>
+#include <iostream>
+#include <fstream>
 
 //PGAPP-97-UserOutput-class
 class UserOutput {

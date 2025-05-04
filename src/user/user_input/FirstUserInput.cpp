@@ -4,7 +4,7 @@ using namespace std;
 
 FirstUserInput::FirstUserInput() : currInput("") {}
 
-FirstUserInput::FirstUserInput(const std::string& input) {
+FirstUserInput::FirstUserInput(const string& input) {
     currInput = input;
 }
 

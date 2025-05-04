@@ -6,11 +6,11 @@ HashRepeats::HashRepeats(function<size_t(string)> hashFunc, int count)
         : hashFunc(hashFunc), repeatCount(count) {}
 
 size_t HashRepeats::hash(const string& target) const {
-    size_t result = std::hash<string>{}(target), skipFirstStr = 1;
-    string temp = to_string(result);
+    string temp = target;
+    size_t result;
     
-    //loop hashes the URL (which is hashed once already) for as many times as passed by the user
-    for(int i = 0; i < HashRepeats::repeatCount - skipFirstStr; i++) {
+    //loop hashes the URL for as many times as passed by the user
+    for(int i = 0; i < HashRepeats::repeatCount; i++) {
         temp = to_string(hashFunc(temp));
     }
 

@@ -1,5 +1,6 @@
 #ifndef VALIDATE_USER_INPUT
 #define VALIDATE_USER_INPUT
+
 #include <string>
 #include <vector>
 #include <algorithm>

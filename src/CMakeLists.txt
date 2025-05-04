@@ -50,7 +50,9 @@ add_executable(runProg main.cpp
   ../user/actions/CheckBlackListAction.cpp
   ../user/BloomFilter.cpp
   ../user/actions/ActionFactory.cpp
+  ../initialization/Program.cpp
 ) #write here the files you wish to run, the format is: <file_name>.cpp
+
 target_include_directories(runTests
   PRIVATE
     ${PROJECT_SOURCE_DIR}/hash
@@ -62,6 +64,7 @@ target_include_directories(runTests
     ${PROJECT_SOURCE_DIR}/user
     
 )
+
 target_include_directories(runProg
   PRIVATE
     ${PROJECT_SOURCE_DIR}/hash
@@ -72,6 +75,5 @@ target_include_directories(runProg
     ${PROJECT_SOURCE_DIR}/validations
     ${PROJECT_SOURCE_DIR}/user
 )
-
 
 target_link_libraries(runTests gtest_main)

@@ -1,10 +1,13 @@
 #include <gtest/gtest.h>
+#include <filesystem>
 #include "CheckBlackListAction.h"
 #include "initializeBLSystem.h"
 #include "AddURLToBL.h"
 #include "FirstUserInput.h"
 
 using namespace std;
+namespace fs = std::filesystem;
+
 //AGAPP - 10
 //Write tests for CheckBlackListAction class 
 //Sanity test - should check if the black list file contains URL
@@ -28,7 +31,6 @@ TEST(CheckBlacklistActionTest, WorksWithNewBLFile) {
     //The file is empty so the URL is not in the black list
     EXPECT_FALSE(action.isBlackListedByFile("2 www.something.com"));
     EXPECT_FALSE(action.isBlackListedByInnerList("2 www.something.com"));
-
 
     // cleaning
     fs::remove_all(testDir);
@@ -64,7 +66,6 @@ TEST(CheckBlacklistActionTest, WorksWithAddingToFile) {
 
     EXPECT_TRUE(action.isBlackListedByFile("www.something.com"));
     EXPECT_TRUE(action.isBlackListedByInnerList("www.something.com"));
-
 
     // cleaning
     fs::remove_all(testDir);

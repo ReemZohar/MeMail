@@ -15,6 +15,7 @@ size_t hashTarget(size_t target, int repeats) {
         temp = to_string(hash<string>{}(temp));
     }
 
+    //tries to cast the string which is the hash result number into size_t
     result = static_cast<size_t>(stoull(temp));
 
     return result;
@@ -49,7 +50,7 @@ TEST(hashTests, hashTest) {
 vector<int> getRepeatCountVec(vector<shared_ptr<IHasher>> hashRepeats) {
     vector<int> repeatCountVec;
 
-    for(int i=0;i<hashRepeats.size();i++){
+    for(int i = 0; i < hashRepeats.size(); i++){
         repeatCountVec.push_back(hashRepeats.at(i)->getRepeatCount());
     }
 
