@@ -27,6 +27,7 @@ This sprint delivered:
 ![UI Prompt](documentation-pictures/3.png)
 ![UI Prompt](documentation-pictures/4.png)
 
+## Explenation about the input
 ## Build & Run Instructions
 Using Docker:
 docker build -t url-bl-checker .
@@ -79,6 +80,18 @@ The program has generated a new file named "BLFile.txt" with a 8-bits BlackList 
 5. checkBlackListAction, userAction - Implementations of IAction that perform blacklist checking.
 6. IUserOutput, userOutput - Responsible for displaying output and take the input from the user (eg., filtered results, error messages).
 7. IHasher Interface - for creating custom hash logic, used in HashRepeats.
+
+## Input/Output Explanation
+1. At first, the user choose the length of the in-memory inner list and the times of running the hash functions. 
+2. The user interacts with the program by choosing numbered actions and providing relevant input. Here's what the inputs mean:
+    1 — Add URL to Blacklist:
+    The user inputs a URL (e.g., www.example.com0) to be added to the blacklist system.
+    2 — Check if URL is Blacklisted:
+    The user inputs a URL, and the system checks whether it's already blacklisted.
+3. The system may return true or false:
+The first true result indicates that the URL was found in the in-memory inner list.
+The second true (or later checks) indicates that the URL was found by checking the persistent file/database.
+false is checked once in the in-memory inner list.
 
 ## File Structure Overview
 Src/
@@ -138,3 +151,11 @@ Src/
 ├── main.cpp
 ├── CMakeLists.txt
 └── Dockerfile
+
+## Technologies Used
+1. C++17 – Core programming language used for the entire system logic and implementation.
+2. CMake – Build system for managing the compilation of the project.
+3. Google Test (gtest) – Unit testing framework used to validate system functionality.
+4. Docker – Containerization tool used to create a consistent runtime environment.
+5. Standard Template Library (STL) – For efficient data structures (e.g., vector, set, function) and algorithms.
+6. Filesystem Library – For managing file paths and reading/writing the blacklist file.
