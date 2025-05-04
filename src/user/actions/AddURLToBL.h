@@ -21,7 +21,7 @@ class AddURLToBL : public IAction {
     AddURLToBL(BloomFilter& bf);
     
     //adds a URL to the blacklist
-    void performAction(const IUserInput& userInput) override;
+    void performAction(const std::shared_ptr<IUserInput>& userInput) override;
 
     //updates the bloom filter file to contain the updated blacklist
     bool saveBLToFile();

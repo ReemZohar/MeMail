@@ -5,8 +5,8 @@ namespace fs = std::filesystem;
 
 AddURLToBL::AddURLToBL(BloomFilter& bf) : bf(bf) {}
 
-void AddURLToBL::performAction(const IUserInput& userInput) {
-    string url = USER_ACTION::getURL(userInput.getInput());
+void AddURLToBL::performAction(const shared_ptr<IUserInput>& userInput) {
+    string url = USER_ACTION::getURL(userInput->getInput());
     vector<bool> blacklist = bf.getBlackList();
     vector<bool> blacklistedURL = RUN_HASH_ON_URL::runHashOnURL(url, bf.getHasher(), blacklist.size());
 

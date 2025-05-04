@@ -7,8 +7,8 @@ blFilter(blFilter) {}
 
 //PGAPP-8 - Check if URL is black listed
 //Implement prformAction of IAction
-void CheckBlacklistAction::performAction(const IUserInput& userInput) {
-    const std::string &url = getURLFromInput(userInput.getInput());
+void CheckBlacklistAction::performAction(const shared_ptr<IUserInput>& userInput) {
+    const std::string &url = getURLFromInput(userInput->getInput());
     bool isBLByInnerList = isBlackListedByInnerList(url);
     if(isBLByInnerList == false) {
         UserOutput::printToConsole("false");

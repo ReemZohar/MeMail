@@ -23,4 +23,3 @@ void FirstUserInput::takeInput() {
 string FirstUserInput::getInput() const {
     return currInput;
 }
-

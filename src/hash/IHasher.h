@@ -9,5 +9,6 @@ class IHasher {
     public:
     //hashes a string
     virtual std::size_t hash(const std::string& target) const = 0;
+    virtual int getRepeatCount() const=0;
 };
 #endif

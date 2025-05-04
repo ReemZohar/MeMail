@@ -16,6 +16,6 @@ size_t HashRepeats::hash(const string& target) const {
     return result;
 }
 
-int HashRepeats::getRepeatCount() {
+int HashRepeats::getRepeatCount() const {
     return repeatCount;
 }

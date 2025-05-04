@@ -25,7 +25,7 @@ public:
     CheckBlacklistAction(BloomFilter& blFilter);
 
     // Overrides performAction from IAction
-    void performAction(const IUserInput& userInput) override;
+    void performAction(const std::shared_ptr<IUserInput>& userInput) override;
     bool isBlackListedByFile(const std::string& url);
     bool isBlackListedByInnerList(const std::string& url);
     std::string getURLFromInput(const std::string &input);

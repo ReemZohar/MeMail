@@ -58,8 +58,7 @@ TEST(CheckBlacklistActionTest, WorksWithAddingToFile) {
     EXPECT_FALSE(action.isBlackListedByInnerList("2 www.something.com"));
 
     AddURLToBL obj1 = AddURLToBL(bl);
-
-    FirstUserInput uinput("1 www.something.com");
+    shared_ptr<IUserInput> uinput = make_shared<FirstUserInput>("1 www.something.com");
 
     obj1.AddURLToBL::performAction(uinput);
 

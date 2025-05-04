@@ -14,7 +14,7 @@ class HashRepeats : public IHasher {
     std::size_t hash(const std::string& target) const override;
 
     //class getter
-    int getRepeatCount();
+    int getRepeatCount() const override;
 
     private:
     //class fields    
