@@ -51,10 +51,14 @@ The file contains 3 main things:
     2.	The BlackList bits array (array of bits separated with spaces) – on the 2nd line of the file
     3.	The Blacklisted URLs – from the 3rd line to the end of the file
 5. For example:
+
   ![UI Prompt](documentation-pictures/6.png)
+
 We can see that the BlackList length is 8 (first line). In the second line, we have the 8-bit BlackList with bits 3, 4, 5, 6, and 8 turned on. There are three URLs that have been added to the Black List: www.example.com0, www.example.com1, and www.example.com2.
 7. Handling during runtime:
+
  ![UI Prompt](documentation-pictures/7.png)
+ 
 Each time we add a new URL to the BlackList, the file is updated accordingly – the relevant bits are modified, the new Blacklisted URL is appended to the end of the file on a new Line.
 For example, when the URL www.example.com23 was blacklisted:
 •	Bits 2 and 7 were turned on.
@@ -63,7 +67,9 @@ For example, when the URL www.example.com23 was blacklisted:
 When running the program for the first time, or if the file was deleted for some reason, the "BLFile.txt" file does not exist, so we create it. 
 After the first user input, the file is created and contains the new blacklist length (as usual) and a blacklist initialized with zeros.
  For example:
+ 
   ![UI Prompt](documentation-pictures/8.png)
+  
 The program has generated a new file named "BLFile.txt" with a 8-bits BlackList array initialized with zero.
 
 ## Main Data Structures
