@@ -4,7 +4,6 @@
 #include "IAction.h"
 #include "userAction.h"
 #include "runHashOnURL.h"
-#include "UserOutput.h"
 #include "BloomFilter.h"
 #include "initializeBLSystem.h"
 #include <string>
