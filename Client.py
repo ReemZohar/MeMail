@@ -6,3 +6,8 @@ class Client(Iclient):
         self.dest_IP = dest_IP
         self.dest_port = dest_port
         self.s = None
+
+    def start(self):
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.s.connect((self.dest_IP, self.dest_port))
+        print("Connected to server.")  #todo delete
