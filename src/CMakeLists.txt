@@ -34,6 +34,7 @@ add_executable(runTests
   ../tests/ActionFactoryTest.cpp
   ../user/actions/ActionFactory.cpp
   ../user/user_output/OutputToClient.cpp
+  ../user/actions/BadAction.cpp
 ) #write here the files you wish to test, the format is: <file_name>.cpp
 
 add_executable(runProg main.cpp
@@ -50,6 +51,7 @@ add_executable(runProg main.cpp
   ../user/BloomFilter.cpp
   ../user/actions/ActionFactory.cpp
   ../initialization/Program.cpp
+  ../user/actions/BadAction.cpp
 ) #write here the files you wish to run, the format is: <file_name>.cpp
 
 target_include_directories(runTests
