@@ -3,6 +3,6 @@
 class IUserOutput {
     public:
 
-    //returns the string output of an action
-    std::string getOutput() const;
+    //shares the user's output
+    void shareOutput();
 };
