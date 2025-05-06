@@ -11,3 +11,6 @@ class Client(Iclient):
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.s.connect((self.dest_IP, self.dest_port))
         print("Connected to server.")  #todo delete
+
+    def sendMessage(self, msg: str):
+        self.s.send(bytes(msg, 'utf-8'))
