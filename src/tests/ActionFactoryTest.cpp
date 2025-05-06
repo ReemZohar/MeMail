@@ -47,8 +47,8 @@ TEST(ActionFactoryTest, objectCreationTest) {
     shared_ptr<IAction> actionObj1 = make_shared<AddURLToBL>(bf);
     shared_ptr<IAction> actionObj2 = make_shared<CheckURLInBL>(bf);
     shared_ptr<IAction> actionObj3 = make_shared<DeleteURLFromBL>(bf);
-    shared_ptr<IAction> actionObj4 = make_shared<BadAction>(bf);
-    shared_ptr<IAction> actionObj5 = make_shared<BadAction>(bf);
+    shared_ptr<IAction> actionObj4 = make_shared<BadAction>();
+    shared_ptr<IAction> actionObj5 = make_shared<BadAction>();
 
     //we use typeid to get the actual classes names
     className1 = typeid(actionObj1).name();
