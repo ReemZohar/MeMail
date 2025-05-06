@@ -12,8 +12,11 @@ shared_ptr<IAction> ActionFactory::create(BloomFilter& bf, const shared_ptr<IUse
     else if(action == CHECK_URL) {
         actionObj = make_shared<CheckURLInBL>(bf);
     }
+    else if(action == DEL_URL) {
+        actionObj = make_shared<DeleteURLFromBL>(bf);
+    }
     else {
-        throw runtime_error("Error: cannot create IAction object");
+        actionObj = make_shared<BadAction>();
     }
 
     return actionObj;

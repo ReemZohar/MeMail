@@ -36,9 +36,9 @@ vector<shared_ptr<IUserInput>> createUserInputs() {
     string url2 = "http://example.com/page.html";
     string url3 = "https://www.example.com";
     //valid addition commands
-    string command1 = "1 http://example.com/page?search=Exam#ple";
-    string command2 = "1 http://example.com/page.html";
-    string command3 = "1 https://www.example.com";
+    string command1 = "POST http://example.com/page?search=Exam#ple";
+    string command2 = "POST http://example.com/page.html";
+    string command3 = "POST https://www.example.com";
     //matching input objects vector
     vector<shared_ptr<IUserInput>> userInputs = {make_shared<MenuChoiceInput>(command1), make_shared<MenuChoiceInput>(command2),
          make_shared<MenuChoiceInput>(command3)};

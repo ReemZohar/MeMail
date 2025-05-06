@@ -1,15 +1,17 @@
 #ifndef ACTION_FACTORY
 #define ACTION_FACTORY
-#define ADD_URL "1"
-#define CHECK_URL "2"
+#define ADD_URL "POST"
+#define CHECK_URL "GET"
+#define DEL_URL "DELETE"
 
 #include "IAction.h"
 #include "AddURLToBL.h"
 #include "CheckURLInBL.h"
+#include "DeleteURLFromBL.h"
+#include "BadAction.h"
 #include "IUserInput.h"
 #include "BloomFilter.h"
 #include <string>
-#include <stdexcept>
 
 class ActionFactory {
     public:
