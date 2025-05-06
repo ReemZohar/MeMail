@@ -36,6 +36,7 @@ add_executable(runTests
   ../user/user_output/OutputToClient.cpp
   ../user/actions/BadAction.cpp
   ../tests/DeleteURLFromBLTest.cpp
+  ../user/actions/DeleteURLFromBL.cpp
 ) #write here the files you wish to test, the format is: <file_name>.cpp
 
 add_executable(runProg main.cpp
@@ -53,6 +54,7 @@ add_executable(runProg main.cpp
   ../user/actions/ActionFactory.cpp
   ../initialization/Program.cpp
   ../user/actions/BadAction.cpp
+  ../user/actions/DeleteURLFromBL.cpp
 ) #write here the files you wish to run, the format is: <file_name>.cpp
 
 target_include_directories(runTests

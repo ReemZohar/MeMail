@@ -11,7 +11,6 @@
 #include "OutputToClient.h"
 #include <fstream>
 #include <string>
-#include <fstream>
 #include <filesystem>
 #include <vector>
 
@@ -34,9 +33,6 @@ class AddURLToBL : public IAction {
     private:
     BloomFilter& bf;
     std::string message = "201 Created\n";
-
-    //converts the blacklist's boolean vector into a string representation
-    std::string convBLToString();
 };
 
 #endif

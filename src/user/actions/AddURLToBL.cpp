@@ -22,7 +22,7 @@ void AddURLToBL::performAction(const shared_ptr<IUserInput>& userInput) {
 
 bool AddURLToBL::saveBLToFile() {
     //blacklist's string representation
-    string blStr = convBLToString(), line;
+    string blStr = convBLToString(bf.getBlackList()), line;
     //the blacklist's line position in our file
     int blStrPos = 1;
     fstream blFile;
@@ -85,24 +85,4 @@ shared_ptr<IUserOutput> AddURLToBL::getOutput() {
     shared_ptr<IUserOutput> userOutput = make_shared<OutputToClient>(message);
 
     return userOutput;
-}
-
-string AddURLToBL::convBLToString() {
-    string blStr = "", isTrue = "1", isFalse = "0";
-    int blSize = getBitArrLengthFromFile(bf.getFilePath());
-    vector<bool> blacklist = bf.getBlackList();
-
-    for(int i = 0; i < blSize; i++) {
-        //blacklist's ith elements is true scenario
-        if(blacklist.at(i) == true) {
-            blStr.append(isTrue);
-        } else { //blacklist's ith element is false scenario
-            blStr.append(isFalse);
-        }
-        if(i != blSize - 1) {
-            blStr.append(" ");
-        }
-    }
-
-    return blStr;
 }

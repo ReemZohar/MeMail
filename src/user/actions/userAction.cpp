@@ -50,3 +50,22 @@ int findURLStartIndex(string actionLine) {
 
     return index;
 }
+
+string convBLToString(vector<bool> blacklist) {
+    string blStr = "", isTrue = "1", isFalse = "0";
+    int blSize = blacklist.size();
+
+    for(int i = 0; i < blSize; i++) {
+        //blacklist's ith elements is true scenario
+        if(blacklist.at(i) == true) {
+            blStr.append(isTrue);
+        } else { //blacklist's ith element is false scenario
+            blStr.append(isFalse);
+        }
+        if(i != blSize - 1) {
+            blStr.append(" ");
+        }
+    }
+
+    return blStr;
+}
