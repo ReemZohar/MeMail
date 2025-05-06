@@ -2,5 +2,5 @@ class IUserOutput {
     public:
 
     //shares the user's output
-    bool shareOutput();
+    virtual bool shareOutput() = 0;
 };
