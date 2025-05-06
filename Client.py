@@ -17,3 +17,8 @@ class Client(Iclient):
     def receiveMessage(self) -> str:
         data = self.s.recv(4096)
         return data.decode('utf-8')
+    
+    def close(self):  #not in use
+        if self.s:
+            self.s.close()
+            print("Connection closed.")
