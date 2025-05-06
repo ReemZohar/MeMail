@@ -19,7 +19,7 @@ add_executable(runTests
   ../tests/initializeBLSystemTest.cpp
   ../validations/validateUserInput.cpp
   ../tests/validateUserInputTest.cpp
-  ../tests/CheckBlackListActionTest.cpp
+  ../tests/CheckURLInBLTest.cpp
   ../user/actions/userAction.cpp
   ../user/user_input/FirstUserInput.cpp
   ../user/user_input/MenuChoiceInput.cpp
@@ -29,7 +29,7 @@ add_executable(runTests
   ../hash/runHashOnURL.cpp
   ../tests/addURLToBLTest.cpp
   ../user/actions/AddURLToBL.cpp
-  ../user/actions/CheckBlackListAction.cpp
+  ../user/actions/CheckURLInBL.cpp
   ../user/BloomFilter.cpp
   ../tests/ActionFactoryTest.cpp
   ../user/actions/ActionFactory.cpp
@@ -47,7 +47,7 @@ add_executable(runProg main.cpp
   ../hash/HashRepeats.cpp
   ../hash/runHashOnURL.cpp
   ../user/actions/AddURLToBL.cpp
-  ../user/actions/CheckBlackListAction.cpp
+  ../user/actions/CheckURLInBL.cpp
   ../user/BloomFilter.cpp
   ../user/actions/ActionFactory.cpp
   ../initialization/Program.cpp

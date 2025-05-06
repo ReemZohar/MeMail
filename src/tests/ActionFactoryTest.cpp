@@ -4,7 +4,7 @@
 #include <filesystem>
 #include "IAction.h"
 #include "AddURLToBL.h"
-#include "CheckBlackListAction.h"
+#include "CheckURLInBL.h"
 #include "MenuChoiceInput.h"
 #include "BloomFilter.h"
 #include "HashRepeats.h"
@@ -36,7 +36,7 @@ TEST(ActionFactoryTest, objectCreationTest) {
     BloomFilter bf(blacklist, path, hashVec);
     //matching action objects
     shared_ptr<IAction> firstAction = make_shared<AddURLToBL>(bf);
-    shared_ptr<IAction> secAction = make_shared<CheckBlacklistAction>(bf);
+    shared_ptr<IAction> secAction = make_shared<CheckURLInBL>(bf);
 
     //we use typeid to get the actual classes names
     className1 = typeid(firstAction).name();
@@ -45,7 +45,7 @@ TEST(ActionFactoryTest, objectCreationTest) {
     actionObj = ActionFactory::create(bf, mci1); //should create an AddURLToBL object
     actualClassName1 = typeid(actionObj).name();
 
-    actionObj = ActionFactory::create(bf, mci2); //should create an CheckBlackListAction object 
+    actionObj = ActionFactory::create(bf, mci2); //should create an CheckURLInBL object 
     actualClassName2 = typeid(actionObj).name();
 
     EXPECT_EQ(className1, actualClassName1);

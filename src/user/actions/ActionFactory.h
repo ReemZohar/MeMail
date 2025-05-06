@@ -5,7 +5,7 @@
 
 #include "IAction.h"
 #include "AddURLToBL.h"
-#include "CheckBlackListAction.h"
+#include "CheckURLInBL.h"
 #include "IUserInput.h"
 #include "BloomFilter.h"
 #include <string>
