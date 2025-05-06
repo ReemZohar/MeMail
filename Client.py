@@ -14,3 +14,7 @@ class Client(Iclient):
 
     def sendMessage(self, msg: str):
         self.s.send(bytes(msg, 'utf-8'))
+
+    def receiveMessage(self) -> str:
+        data = self.s.recv(4096)
+        return data.decode('utf-8')
