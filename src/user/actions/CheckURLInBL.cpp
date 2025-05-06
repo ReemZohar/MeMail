@@ -1,14 +1,14 @@
-#include "CheckBlackListAction.h"
+#include "CheckURLInBL.h"
 
 using namespace std;
 
 //Constructor for the class
-CheckBlacklistAction::CheckBlacklistAction(BloomFilter& blFilter): 
+CheckURLInBL::CheckURLInBL(BloomFilter& blFilter): 
 blFilter(blFilter) {}
 
 //PGAPP-8 - Check if URL is black listed
 //Implement prformAction of IAction
-void CheckBlacklistAction::performAction(const shared_ptr<IUserInput>& userInput) {
+void CheckURLInBL::performAction(const shared_ptr<IUserInput>& userInput) {
     const string &url = getURLFromInput(userInput->getInput());
     bool isBLByInnerList = isBlackListedByInnerList(url);
     if(isBLByInnerList == false) {
@@ -16,14 +16,14 @@ void CheckBlacklistAction::performAction(const shared_ptr<IUserInput>& userInput
     }
     else {
         checkResult.append("true ");
-        bool isBLByFile = CheckBlacklistAction::isBlackListedByFile(url);
+        bool isBLByFile = CheckURLInBL::isBlackListedByFile(url);
         checkResult.append(isBLByFile ? "true" : "false");
     }
     checkResult.append("\n");
 }
 
-// This function is written for use in CheckBlackListAction.
-string CheckBlacklistAction::getURLFromInput(const std::string &input) {
+// This function is written for use in CheckURLInBL.
+string CheckURLInBL::getURLFromInput(const std::string &input) {
     string url;
     istringstream iss(input);
 
@@ -38,7 +38,7 @@ string CheckBlacklistAction::getURLFromInput(const std::string &input) {
 
 
 //Help function for performAction: check if the given URL is Black listd by the inner list  
-bool CheckBlacklistAction::isBlackListedByInnerList(const string& url) {
+bool CheckURLInBL::isBlackListedByInnerList(const string& url) {
     vector<bool> result = RUN_HASH_ON_URL::runHashOnURL(url, blFilter.getHasher(), blFilter.getBlackList().size());
     
     for (int i = 0; i < result.size(); i++) {
@@ -52,7 +52,22 @@ bool CheckBlacklistAction::isBlackListedByInnerList(const string& url) {
 }
 
 //Help function for performAction: check if the given URL is Black listd by the file in which the URLS  
-bool CheckBlacklistAction::isBlackListedByFile(const string& url){
+bool CheckURLInBL::isBlackListedByFile(const string& url){
     set<string> setOfBLURLS = getBLURLsSetFromFile(blFilter.getFilePath());
     return setOfBLURLS.find(url) != setOfBLURLS.end();
+}
+
+shared_ptr<IUserOutput> CheckURLInBL::getOutput() {
+    //no check was made scenario
+    if(checkResult.empty()) {
+        throw runtime_error("Error: no check was made before sharing the output.\n");
+    } else { //successful check scenario
+        //appends the check result's string to the action message string
+        message += checkResult;
+    }
+
+    //creates a shared pointer to an OutputToClient object that shares the class message
+    shared_ptr<IUserOutput> userOutput = make_shared<OutputToClient>(message);
+
+    return userOutput;
 }

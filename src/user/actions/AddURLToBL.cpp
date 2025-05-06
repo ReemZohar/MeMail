@@ -80,6 +80,13 @@ bool AddURLToBL::saveURLToFile(const string& URL) {
     }
 }
 
+shared_ptr<IUserOutput> AddURLToBL::getOutput() {
+    //creates a shared pointer to an OutputToClient object that shares the class message
+    shared_ptr<IUserOutput> userOutput = make_shared<OutputToClient>(message);
+
+    return userOutput;
+}
+
 string AddURLToBL::convBLToString() {
     string blStr = "", isTrue = "1", isFalse = "0";
     int blSize = getBitArrLengthFromFile(bf.getFilePath());

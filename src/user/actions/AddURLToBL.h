@@ -7,6 +7,8 @@
 #include "BloomFilter.h"
 #include "runHashOnURL.h"
 #include "userAction.h"
+#include "IUserOutput.h"
+#include "OutputToClient.h"
 #include <fstream>
 #include <string>
 #include <fstream>
@@ -22,15 +24,16 @@ class AddURLToBL : public IAction {
     
     //adds a URL to the blacklist
     void performAction(const std::shared_ptr<IUserInput>& userInput) override;
-
     //updates the bloom filter file to contain the updated blacklist
     bool saveBLToFile();
-
     //updates the bloom filter file to contain the newly blacklisted URL
     bool saveURLToFile(const std::string& URL);
+    //returns an IUserOutput object pointer that contains the output of the URL addition action
+    std::shared_ptr<IUserOutput> getOutput() override;
 
     private:
     BloomFilter& bf;
+    std::string message = "201 Created\n";
 
     //converts the blacklist's boolean vector into a string representation
     std::string convBLToString();
