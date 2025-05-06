@@ -21,6 +21,7 @@ namespace fs = std::filesystem;
 class CheckBlacklistAction : public IAction {
 private:
     BloomFilter& blFilter;
+    std::string checkResult;
 
 public:
     // Constructor

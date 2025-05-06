@@ -12,15 +12,14 @@ void CheckBlacklistAction::performAction(const shared_ptr<IUserInput>& userInput
     const string &url = getURLFromInput(userInput->getInput());
     bool isBLByInnerList = isBlackListedByInnerList(url);
     if(isBLByInnerList == false) {
-        UserOutput::printToConsole("false");
+        checkResult.append("false");
     }
-    else{
-        UserOutput::printToConsole("true");
-        cout << " ";
+    else {
+        checkResult.append("true ");
         bool isBLByFile = CheckBlacklistAction::isBlackListedByFile(url);
-        UserOutput::printToConsole(isBLByFile ? "true" : "false");
+        checkResult.append(isBLByFile ? "true" : "false");
     }
-    cout << endl;
+    checkResult.append("\n");
 }
 
 // This function is written for use in CheckBlackListAction.
