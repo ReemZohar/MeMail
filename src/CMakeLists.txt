@@ -19,38 +19,42 @@ add_executable(runTests
   ../tests/initializeBLSystemTest.cpp
   ../validations/validateUserInput.cpp
   ../tests/validateUserInputTest.cpp
-  ../tests/CheckBlackListActionTest.cpp
+  ../tests/CheckURLInBLTest.cpp
   ../user/actions/userAction.cpp
-  ../user/user_output/UserOutput.cpp
   ../user/user_input/FirstUserInput.cpp
   ../user/user_input/MenuChoiceInput.cpp
   ../tests/userActionTest.cpp
   ../hash/HashRepeats.cpp
   ../tests/runHashOnURLTest.cpp
-  ../tests/userOutputTest.cpp
   ../hash/runHashOnURL.cpp
   ../tests/addURLToBLTest.cpp
   ../user/actions/AddURLToBL.cpp
-  ../user/actions/CheckBlackListAction.cpp
+  ../user/actions/CheckURLInBL.cpp
   ../user/BloomFilter.cpp
   ../tests/ActionFactoryTest.cpp
   ../user/actions/ActionFactory.cpp
+  ../user/user_output/OutputToClient.cpp
+  ../user/actions/BadAction.cpp
+  ../tests/DeleteURLFromBLTest.cpp
+  ../user/actions/DeleteURLFromBL.cpp
 ) #write here the files you wish to test, the format is: <file_name>.cpp
 
 add_executable(runProg main.cpp
 ../initialization/initializeBLSystem.cpp
   ../validations/validateUserInput.cpp
   ../user/actions/userAction.cpp
-  ../user/user_output/UserOutput.cpp
+  ../user/user_output/OutputToClient.cpp
   ../user/user_input/FirstUserInput.cpp
   ../user/user_input/MenuChoiceInput.cpp
   ../hash/HashRepeats.cpp
   ../hash/runHashOnURL.cpp
   ../user/actions/AddURLToBL.cpp
-  ../user/actions/CheckBlackListAction.cpp
+  ../user/actions/CheckURLInBL.cpp
   ../user/BloomFilter.cpp
   ../user/actions/ActionFactory.cpp
   ../initialization/Program.cpp
+  ../user/actions/BadAction.cpp
+  ../user/actions/DeleteURLFromBL.cpp
 ) #write here the files you wish to run, the format is: <file_name>.cpp
 
 target_include_directories(runTests

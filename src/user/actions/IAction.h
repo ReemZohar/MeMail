@@ -2,6 +2,7 @@
 #define IACTION
 
 #include "IUserInput.h"
+#include "IUserOutput.h"
 #include <memory>
 
 //PGAPP-88
@@ -11,6 +12,9 @@ class IAction {
     
     //performs an action using a IUserInput object
     virtual void performAction(const std::shared_ptr<IUserInput>& userInput) = 0;
+
+    //returns an IUserOutput object pointer that represents the current action's output
+    virtual std::shared_ptr<IUserOutput> getOutput() = 0;
 };
 
 #endif

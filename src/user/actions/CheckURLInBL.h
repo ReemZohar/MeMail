@@ -1,12 +1,13 @@
+#ifndef CheckURLInBL_H
+#define CheckURLInBL_H
 
-#ifndef CHECKBLACKLISTACTION_H
-#define CHECKBLACKLISTACTION_H
 #include "IAction.h"
 #include "userAction.h"
 #include "runHashOnURL.h"
-#include "UserOutput.h"
 #include "BloomFilter.h"
 #include "initializeBLSystem.h"
+#include "IUserOutput.h"
+#include "OutputToClient.h"
 #include <string>
 #include <vector>
 #include <iostream>
@@ -18,23 +19,22 @@ namespace fs = std::filesystem;
 
 // PGAPP-89
 // Implements IAction interface to check if a given URL is blacklisted
-class CheckBlacklistAction : public IAction {
+class CheckURLInBL : public IAction {
 private:
     BloomFilter& blFilter;
+    std::string checkResult;
+    std::string message = "200 Ok\n\n";
 
 public:
     // Constructor
-    CheckBlacklistAction(BloomFilter& blFilter);
+    CheckURLInBL(BloomFilter& blFilter);
 
     // Overrides performAction from IAction
     void performAction(const std::shared_ptr<IUserInput>& userInput) override;
     bool isBlackListedByFile(const std::string& url);
     bool isBlackListedByInnerList(const std::string& url);
     std::string getURLFromInput(const std::string &input);
-
-private:
-    // Checks whether the given URL is blacklisted
-    bool isBlackListed(const std::string& url);
+    std::shared_ptr<IUserOutput> getOutput() override;
 };
 
-#endif // CHECKBLACKLISTACTION_H
+#endif // CheckURLInBL_H
