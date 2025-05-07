@@ -4,7 +4,6 @@ from Client import Client
 if __name__ == "__main__":
 
     if len(sys.argv) != 3:
-        print("Usage: python main.py <server_ip> <port>")
         sys.exit(1)
 
     server_ip = sys.argv[1]
@@ -15,6 +14,10 @@ if __name__ == "__main__":
 
     while True:
         msg = input()
+
+        if msg == "":
+            continue
+        
         client.sendMessage(msg)
         data = client.receiveMessage()
         print(data)
