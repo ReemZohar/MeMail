@@ -18,7 +18,7 @@ class Client(Iclient):
         data = self.s.recv(4096)
         return data.decode('utf-8')
     
-    def close(self):  #not in use
+    def close(self):  #not in use this sprint
         if self.s:
             self.s.close()
             print("Connection closed.")
