@@ -35,4 +35,6 @@ bool isBLSizeSpaceHashsInputValid(const std::string &input);
 //The function returns true if the number is natural (=1 or bigger)
 bool isStringNaturalNumber(const std::string &num);
 
+//help function to check if the format of the user input in the menu is valid - through the socket
+bool isMenuChoiceValidFromSocket(const std::string &input);
 #endif

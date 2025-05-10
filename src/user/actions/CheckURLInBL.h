@@ -34,6 +34,7 @@ public:
     bool isBlackListedByFile(const std::string& url);
     bool isBlackListedByInnerList(const std::string& url);
     std::string getURLFromInput(const std::string &input);
+    std::string getURLFromInputSocket(const std::string& input);
     std::shared_ptr<IUserOutput> getOutput() override;
 };
 
