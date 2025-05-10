@@ -32,7 +32,10 @@ add_executable(runTests
   ../user/actions/CheckURLInBL.cpp
   ../user/BloomFilter.cpp
   ../tests/ActionFactoryTest.cpp
+  ../tests/OutputToClientTest.cpp
+  ../tests/serverTest.cpp
   ../user/actions/ActionFactory.cpp
+  ../server/Server.cpp
   ../user/user_output/OutputToClient.cpp
   ../user/actions/BadAction.cpp
   ../tests/DeleteURLFromBLTest.cpp
@@ -66,7 +69,7 @@ target_include_directories(runTests
     ${PROJECT_SOURCE_DIR}/user/actions
     ${PROJECT_SOURCE_DIR}/validations
     ${PROJECT_SOURCE_DIR}/user
-    
+    ${PROJECT_SOURCE_DIR}/server
 )
 
 target_include_directories(runProg
