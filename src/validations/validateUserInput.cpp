@@ -140,3 +140,94 @@ bool isStringNaturalNumber(const string &num){
     regex naturalNumberPattern(R"(^[1-9][0-9]*$)"); 
     return regex_match(num, naturalNumberPattern);
 }
+
+
+
+//PGAPP-140:
+//The function returns true if the strings contains a valid strings in the syntax: IP-space-port
+bool isIPSpacePortInputValid(const std::string& input) {
+    if (input.empty()) return false;
+
+    // Find the first non-space character
+    size_t first = input.find_first_not_of(' ');
+    if (first == std::string::npos) return false;
+
+    // Find the last non-space character
+    size_t last = input.find_last_not_of(' ');
+    if (last == std::string::npos || last < first) return false;
+
+    // Trim the string
+    std::string trimmed = input.substr(first, last - first + 1);
+
+    // Find the first space that separates IP and port
+    size_t spacePos = trimmed.find(' ');
+    if (spacePos == std::string::npos) return false;
+
+    // Extract IP and port, trimming inner spaces
+    std::string ip = trimmed.substr(0, spacePos);
+    std::string port = trimmed.substr(spacePos + 1);
+
+    // Trim any spaces around port
+    size_t portFirst = port.find_first_not_of(' ');
+    size_t portLast = port.find_last_not_of(' ');
+    if (portFirst == std::string::npos || portLast == std::string::npos) return false;
+    port = port.substr(portFirst, portLast - portFirst + 1);
+
+    // Ensure no extra tokens except the IP and the port
+    if (port.find(' ') != std::string::npos) return false;
+
+    return isIPv4Valid(ip) && isPortValid(port);
+}
+
+//The function checks if a string is a valid IP adress in version 4
+bool isIPv4Valid(const std::string& ip) {
+    std::istringstream ss(ip);
+    std::string token;
+    int count = 0;
+    if (ip.empty())
+        return false;
+
+    while (std::getline(ss, token, '.')) {
+        if (++count > 4) return false;
+
+        //Token should not be empty and should not have leading zeros (except "0")
+        if (token.empty() || (token.size() > 1 && token[0] == '0')) return false;
+
+        //Token must be all digits
+        for (char ch : token) {
+            if (!std::isdigit(ch)) return false;
+        }
+
+        //Convert to integer and check range
+        try {
+            int num = std::stoi(token);
+            if (num < 0 || num > 255) return false;
+        } catch (...) {
+            return false;
+        }
+    }
+    return count == 4;
+}
+
+//The function checks if a string is a valid port number(in range 0-65,535)
+bool isPortValid(const std::string& port) {
+    if (port.empty()) return false;
+
+    //Check that all characters are digits
+    for (char ch : port) {
+        if (!std::isdigit(ch)) return false;
+    }
+
+    //Convert string to integer and check range
+    try {
+        size_t idx = 0;
+        int num = std::stoi(port, &idx);
+
+        //Ensure the entire string was converted
+        if (idx != port.size()) return false;
+
+        return num >= 0 && num <= 65535;
+    } catch (...) {
+        return false;
+    }
+}
