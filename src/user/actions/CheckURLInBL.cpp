@@ -9,7 +9,7 @@ blFilter(blFilter) {}
 //PGAPP-8 - Check if URL is black listed
 //Implement prformAction of IAction
 void CheckURLInBL::performAction(const shared_ptr<IUserInput>& userInput) {
-    const string &url = getURLFromInput(userInput->getInput());
+    const string &url = getURLFromInputSocket(userInput->getInput());
     bool isBLByInnerList = isBlackListedByInnerList(url);
     if(isBLByInnerList == false) {
         checkResult.append("false");
@@ -32,6 +32,22 @@ string CheckURLInBL::getURLFromInput(const std::string &input) {
     }
 
     while(iss >> url) {}
+
+    return url;
+}
+
+//This function extracts the URL from the input received through the socket in the expected format
+std::string CheckURLInBL::getURLFromInputSocket(const std::string& input) {
+    std::istringstream iss(input);
+    std::string command, url;
+
+    if (!(iss >> command >> url)) {
+        throw std::runtime_error("Invalid input format: expected COMMAND URL");
+    }
+
+    if (command != "GET" && command != "POST" && command != "DELETE") {
+        throw std::runtime_error("Invalid command: expected GET, POST or DELETE");
+    }
 
     return url;
 }

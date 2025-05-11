@@ -1,4 +1,5 @@
 #include "validateUserInput.h"
+#include <iostream>
 
 using namespace std;
 
@@ -122,7 +123,7 @@ bool isBLSizeSpaceHashsInputValid(const string &input){
        if (s1.empty() || s2.empty()) {
            return false;
        }
-   
+
        return isBLSizeValid(s1) && isHashInputValid(s2);
 }
 
@@ -139,4 +140,36 @@ bool isStringNaturalNumber(const string &num){
     }
     regex naturalNumberPattern(R"(^[1-9][0-9]*$)"); 
     return regex_match(num, naturalNumberPattern);
+}
+
+bool isMenuChoiceValidFromSocket(const std::string &input) {
+    std::string trimmedInput = input;
+
+    // Remove newline character from the end (if present)
+    if (!trimmedInput.empty() && trimmedInput.back() == '\n') {
+        trimmedInput.pop_back();
+    }
+
+    size_t spacePos = trimmedInput.find(' ');
+    if (spacePos == std::string::npos) {
+        return false; // No space found, format is invalid
+    }
+
+    // Reject input if it contains double spaces after the command
+    if (trimmedInput.find("  ", spacePos) != std::string::npos) {
+        return false;
+    }
+
+    std::string command = trimmedInput.substr(0, spacePos); // Extract command part
+    std::string url = trimmedInput.substr(spacePos + 1);    // Extract URL part
+
+    if (url.empty()) {
+        return false; // URL is missing
+    }
+
+    // Return true only if command is valid and URL passes validation
+    return (
+        (command == "POST" || command == "GET" || command == "DELETE") &&
+        isURLValid(url)
+    );
 }
