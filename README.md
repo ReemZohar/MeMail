@@ -38,7 +38,7 @@ This sprint delivered:
 ### Client (Python)
 1. explanation:
 The Client connects to a server using TCP and allows message exchange.
-It’s implemented using Python sockets and follows an interface (IClient) to ensure a consistent structure.
+It’s implemented using Python sockets and follows an interface (`IClient`) to ensure a consistent structure.
   * `Client.py`:
      * Establishes a connection to a server IP and port.
      *   Sends and receives messages over the socket.
