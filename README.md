@@ -159,18 +159,19 @@ docker run -it --rm --network serverclientnet pyclient cppserver 9090
 ---
 ### Example of the Blacklist File
 
+*While initialized:*
+```
+8
+0 0 0 0 0 0 0 0
+```
+
+*After adding URLs:*
 ```
 8
 0 0 1 1 1 1 0 1
 www.example.com0
 www.example.com1
 www.example.com2
-```
-
-*while initialized:*
-```
-8
-0 0 0 0 0 0 0 0
 ```
 
 ---
