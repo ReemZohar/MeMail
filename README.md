@@ -196,8 +196,8 @@ www.example.com2
 
 
 
-## documentation:
-### 1.  running examples:
+## Documentation:
+### 1.  Running Examples:
   * *Example 1:*
 ![Server Flow](documentation-pictures/9.png)
 
@@ -217,7 +217,7 @@ www.example.com2
    ![image](https://github.com/user-attachments/assets/4cc800f3-8358-439b-8871-8227a4e41b66)
 
 
-### 2. tests pass:
+### 2. Tests Pass:
 ![tests pass](documentation-pictures/10.png)
 
 ---
