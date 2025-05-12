@@ -188,8 +188,8 @@ docker run -it --rm --network serverclientnet pyclient cppserver 9090
      *  'BLFile.txt'result:
               - ![image](https://github.com/user-attachments/assets/8c8aed68-c991-45f7-a552-f9b75a15da31)
 
-  * Example 3-invalid bit array size:
-  ![image](https://github.com/user-attachments/assets/99717fab-567d-4e6a-87b1-e8fd1f0aae1d)
+  * Example 3-invalid BlackList's arguments:
+  ![image](https://github.com/user-attachments/assets/c7be49a5-2f7d-466d-a9df-906a726f9caf)
 
 
 ### 2. tests pass:
