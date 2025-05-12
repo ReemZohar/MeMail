@@ -112,8 +112,9 @@ docker run -it --rm --network serverclientnet pyclient cppserver 9090
 explanation:
 In this example -the ip is the ip of the server and the port of the client is 9090
 
+> **Note:** Please make sure to start the **server** before the **client**, so that the server is ready and listening for incoming requests.
+
 ---
-please note to run first the server and than the client so thar the server will listen to the requests of the client.
 
 ### Edge Cases
 
