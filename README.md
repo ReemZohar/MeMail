@@ -92,7 +92,7 @@ docker build -t program .
 docker run -it --rm --network serverclientnet --name cppserver -v "$((Resolve-Path ..\data).ProviderPath):/data" program ./runProg 9090 8 1 2
 ```
 
-**Explanation:**  
+*Explanation:*  
 In this example, the server listens for connections on port **9090**, the Bloom filter will be initialized with a size of **8**, and the standard hash functions used are: **1** and **2**.
 
 
