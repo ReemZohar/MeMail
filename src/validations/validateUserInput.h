@@ -44,14 +44,6 @@ bool isIPv4Valid(const std::string& ip);
 //The function checks if a string is a valid port number(in range 0-65,535)
 bool isPortValid(const std::string& port);
 
-//PGAPP-140
-//The function returns true if the strings contains a valid strings in the syntax: IP-space-port
-bool isIPSpacePortInputValid(const std::string &input);
-//The function checks if a string is a valid IP adress in version 4
-bool isIPv4Valid(const std::string& ip);
-//The function checks if a string is a valid port number(in range 0-65,535)
-bool isPortValid(const std::string& port);
-
 //help function to check if the format of the user input in the menu is valid - through the socket
 bool isMenuChoiceValidFromSocket(const std::string &input);
 #endif
