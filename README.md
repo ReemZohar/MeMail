@@ -97,6 +97,13 @@ cd src
 docker build -t program .
 docker run -it --rm --network serverclientnet --name cppserver -v "$((Resolve-Path ..\data).ProviderPath):/data" program ./runProg <port> <bloom filter size> <hash>
 ```
+**Run Python Client:**
+
+```bash
+docker network create serverclientnet
+docker build -t pyclient src/client
+docker run -it --rm --network serverclientnet pyclient cppserver <port>
+```
 
 #### For Example:
 ```bash
@@ -117,13 +124,7 @@ docker run -it --rm --network serverclientnet pyclient cppserver 9090
  The IP address refers to the server, and the port **9090** is used by the client to connect to it.
 
 
-**Run Python Client:**
 
-```bash
-docker network create serverclientnet
-docker build -t pyclient src/client
-docker run -it --rm --network serverclientnet pyclient cppserver <port>
-```
 
 
 > **Note:** Please make sure to start the **server** before the **client**, so that the server is ready and listening for incoming requests.
@@ -178,11 +179,12 @@ docker run -it --rm --network serverclientnet pyclient cppserver <port>
 
 ## documentation:
 1.  running examples:
-   A.
+   * A.
 ![Server Flow](documentation-pictures/9.png)
 
-  B.
+  * B.
   ![image](https://github.com/user-attachments/assets/5fbcad92-b781-4e8d-9edd-7f163cb49a47)
+
 The BLFile.txt: ![image](https://github.com/user-attachments/assets/8c8aed68-c991-45f7-a552-f9b75a15da31)
 
 
