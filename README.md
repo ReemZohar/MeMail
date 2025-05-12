@@ -45,11 +45,11 @@ It’s implemented using Python sockets and follows an interface (IClient) to en
      *   Uses UTF-8 encoding for communication.
 2. files:
   * `IClient.py`:
-  o    Defines the interface (IClient) that every client must implement, including methods to start the connection, send/receive messages, and close the socket.
+     * Defines the interface (IClient) that every client must implement, including methods to start the connection, send/receive messages, and close the socket.
   * `main.py`:
-  o    Initializes a Client object with IP and port from command-line arguments.
-  o    Starts communication with the server.
-  o    Loops to read user input, sends it to the server, and prints the server's response.
+     * Initializes a Client object with IP and port from command-line arguments.
+     * Starts communication with the server.
+     * Loops to read user input, sends it to the server, and prints the server's response.
 This design makes the client modular and easy to extend or replace and the interface ensures any new implementation will be compatible with the existing structure.---
 
 ### Server (C++)
