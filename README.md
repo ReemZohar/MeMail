@@ -304,4 +304,4 @@ src/
 
 This sprint showcases how a modular design enables easy extension. 
 The new DELETE operation and client-server communication were added without rewriting core logic — thanks to clean interfaces and abstractions.
-This architecture is testable, and open for future expansion (e.g., usind diffrent hash functions, adding clients, etc.).
+This architecture is modular, testable, and designed for future expansion—such as integrating different hash functions, adding new client types, or supporting advanced blacklist policies.
