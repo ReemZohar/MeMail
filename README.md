@@ -1,4 +1,4 @@
-# Advanced-Programming---Gmail-Repository
+![image](https://github.com/user-attachments/assets/d69d7752-4fd4-41e4-8174-c04b425976b4)# Advanced-Programming---Gmail-Repository
 
 ## URL Blacklisting Hash System with Client-Server Architecture
 
@@ -179,8 +179,13 @@ docker run -it --rm --network serverclientnet pyclient cppserver 9090
 
 
 ## documentation:
-1.  running example:
+1.  running examples:
+   A.
 ![Server Flow](documentation-pictures/9.png)
+
+  B.
+  ![image](https://github.com/user-attachments/assets/5fbcad92-b781-4e8d-9edd-7f163cb49a47)
+The BLFile.txt: ![image](https://github.com/user-attachments/assets/8c8aed68-c991-45f7-a552-f9b75a15da31)
 
 
 2. tests pass:
