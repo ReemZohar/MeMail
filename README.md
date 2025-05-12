@@ -123,7 +123,7 @@ please note to run first the server and than the client so thar the server will 
 
 ---
 
-### Blacklist File (BLFile)
+### Blacklist File (BLFile.txt)
 
 * **Path**: `/data/BLFile.txt`
 
@@ -188,7 +188,7 @@ the server will return 400 Bad Request – For invalid command formats or not va
 
 ---
 
-### Example Blacklist File
+### Example of the Blacklist File
 
 ```
 8
