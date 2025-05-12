@@ -62,7 +62,7 @@ This design makes the client modular and easy to extend or replace and the inter
   * `Server.cpp/h`: Socket handling, request loop
   * `BloomFilter.cpp/h`: Core blacklist logic
   * `ActionFactory.cpp/h`: Dispatches actions
-- Note: IPv4 has been used
+> **Note:** This project uses IPv4.
 ---
 
 ### Supported Commands
