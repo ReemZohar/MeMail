@@ -173,13 +173,13 @@ docker run -it --rm --network serverclientnet pyclient cppserver 9090
 
 ## Supported Commands
 
-1. POST <url> – Add URL to the blacklist (returns 201 Created)
+1. `POST <url>` – Add URL to the blacklist (returns `201 Created`)
 
-2. GET <url> – Check if URL is blacklisted (returns 200 Ok followed by result)
+2. `GET <url>` – Check if URL is blacklisted (returns `200 Ok` followed by result)
 
-3. DELETE <url> – Remove URL from the blacklist file only (returns 204 No Content or 404 not found if the URL never added to the black list)
+3. `DELETE <url>` – Remove URL from the blacklist file only (returns `204 No Content` or `404 not found` if the URL never added to the black list)
 
-the server will return 400 Bad Request – For invalid command formats or not valid URLs format.
+the server will return `400 Bad Request` – For invalid command formats or not valid URLs format.
 
 ## documentation:
 1.  running example:
