@@ -183,7 +183,7 @@ the server will return 400 Bad Request – For invalid command formats or not va
 
 
 2. tests pass:
-![tests pass](documentation-pictures/9.png)
+![tests pass](documentation-pictures/10.png)
 
 ---
 
