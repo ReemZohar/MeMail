@@ -39,14 +39,14 @@ This sprint delivered:
 1. explanation:
 The Client connects to a server using TCP and allows message exchange.
 It’s implemented using Python sockets and follows an interface (IClient) to ensure a consistent structure.
-•    Client.py:
+*    Client.py:
 o    Establishes a connection to a server IP and port.
 o    Sends and receives messages over the socket.
 o    Uses UTF-8 encoding for communication.
 2. files:
-    •    IClient.py:
+    *    IClient.py:
 o    Defines the interface (IClient) that every client must implement, including methods to start the connection, send/receive messages, and close the socket.
-    •    main.py:
+    *    main.py:
 o    Initializes a Client object with IP and port from command-line arguments.
 o    Starts communication with the server.
 o    Loops to read user input, sends it to the server, and prints the server's response.
