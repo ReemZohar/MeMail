@@ -1,170 +1,279 @@
 # Advanced-Programming---Gmail-Repository
- URL Blacklisting Hash System
 
-## Introduction
-This project implements a system that filters URLs using hash functions.  
-It simulates a URL filtering mechanism using repeatable hashing to flag entries in a simulated blacklist bit array and a persistent blacklist file.
-The primary use-case involves checking if a URL should be considered suspicious or blocked based on a configurable hashing strategy.
+## URL Blacklisting Hash System with Client-Server Architecture
 
-## Sprint Overview
+### Introduction
+
+This project implements a modular URL blacklisting system based on hash functions and an extendable architecture. 
+The system filters URLs using repeatable hashing and a persistent blacklist file. In this sprint, the system was expanded to support:
+
+* A new `DELETE` operation to remove URLs from the blacklist.
+* A **TCP-based client-server architecture** for real-time interaction between a Python client and C++ server.
+
+The design leverages interfaces (`IAction`, `IUserInput`, `IUserOutput`, `IHasher`, `Iclient`, `Iprogram`) to allow seamless feature addition with minimal changes.
+
+---
+
+### Sprint Overview
+
 This sprint delivered:
-1. Core hashing logic (`HashRepeats`, `runHashOnURL`)
+
+1. Core hashing logic (`HashRepeats`, `runHashOnURL`).
 2. Simulated blacklist system with:
-   - Bit array
-   - Persistent file of blacklisted URLs
+
+   * Bit array (BloomFilter logic)
+   * Persistent file of blacklisted URLs
 3. Full user interaction cycle:
-   - Input
-   - Validation
-   - Hashing
-   - Output
-4. Create tests for verifying correctness across all components
 
-## Screenshots
-- UI prompt (User inputs for hash selection and repetitions)
-- CLI test results
-![UI Prompt](documentation-pictures/1.png)
-![UI Prompt](documentation-pictures/2.png)
-![UI Prompt](documentation-pictures/3.png)
-![UI Prompt](documentation-pictures/4.png)
+   * Input
+   * Validation
+   * Hashing
+   * Output
+4. TCP Client-Server communication
+5. `DELETE` support for removing URLs
+6. Extensive unit testing
 
-## Explenation about the input
-## Build & Run Instructions
-Using Docker:
-docker build -t url-bl-checker .
-docker run -it --rm -v "$((Resolve-Path ..\\data).ProviderPath):/data" url-bl-checker
+---
 
-## Edge Cases: 
-1.	Edge Case: Empty URL
-    o	System handles it and wait for valid input.
-2.	Edge Case: All repeat counts are zero
-    o	No URL is filtered; output remains the initial state of the bit array.
+### Client (Python)
+1. explanation:
+The Client connects to a server using TCP and allows message exchange.
+It’s implemented using Python sockets and follows an interface (IClient) to ensure a consistent structure.
+•    Client.py:
+o    Establishes a connection to a server IP and port.
+o    Sends and receives messages over the socket.
+o    Uses UTF-8 encoding for communication.
+2. files:
+    •    IClient.py:
+o    Defines the interface (IClient) that every client must implement, including methods to start the connection, send/receive messages, and close the socket.
+    •    main.py:
+o    Initializes a Client object with IP and port from command-line arguments.
+o    Starts communication with the server.
+o    Loops to read user input, sends it to the server, and prints the server's response.
+This design makes the client modular and easy to extend or replace and the interface ensures any new implementation will be compatible with the existing structure.---
 
-## Blacklist File (BLFile)
-1. The "BLFile.txt" file:
- ![UI Prompt](documentation-pictures/5.png)
-2. Location:
-This file is located in the data folder and contains all the relevant information about the blacklist, allowing us to manage it during runtime and reload it at the start of a new program run.
-3. Purpose:
-Acts as a bloom-filter-like structure indicating whether a URL is Backlisted or not.
-4. Structure:
-The file contains 3 main things:
-    1.	The size of the BlackList - at the top of the file
-    2.	The BlackList bits array (array of bits separated with spaces) – on the 2nd line of the file
-    3.	The Blacklisted URLs – from the 3rd line to the end of the file
-5. For example:
+### Server (C++)
+1. explanation:
+o Receives and handles commands via TCP socket from the client.
+o Delegates logic to `ActionFactory` using `IAction` classes (`AddURLToBL`, `CheckURLInBL`, `DeleteURLFromBL`).
+o Maintains the blacklist in-memory and on disk.
 
-  ![UI Prompt](documentation-pictures/6.png)
+2. files:
+o `Server.cpp/h`: Socket handling, request loop
+o `BloomFilter.cpp/h`: Core blacklist logic
+o `ActionFactory.cpp/h`: Dispatches actions
 
-We can see that the BlackList length is 8 (first line). In the second line, we have the 8-bit BlackList with bits 3, 4, 5, 6, and 8 turned on. There are three URLs that have been added to the Black List: www.example.com0, www.example.com1, and www.example.com2.
-7. Handling during runtime:
+---
 
- ![UI Prompt](documentation-pictures/7.png)
- 
-Each time we add a new URL to the BlackList, the file is updated accordingly – the relevant bits are modified, the new Blacklisted URL is appended to the end of the file on a new Line.
-For example, when the URL www.example.com23 was blacklisted:
-•	Bits 2 and 7 were turned on.
-•	The new URL was added to the end of the file.
-8. Initialization:
-When running the program for the first time, or if the file was deleted for some reason, the "BLFile.txt" file does not exist, so we create it. 
-After the first user input, the file is created and contains the new blacklist length (as usual) and a blacklist initialized with zeros.
- For example:
- 
-  ![UI Prompt](documentation-pictures/8.png)
-  
-The program has generated a new file named "BLFile.txt" with a 8-bits BlackList array initialized with zero.
+### Supported Commands
 
-## Main Data Structures
-1. std::vector<bool> - Represents the blacklist as a bit array
-2. std::function<size_t(size_t)> - Type used to represent hash functions.
-3. HashRepeats Class - holds a hash function and a repeat count, allowing repeated application of the same hash.
-4. std::vector<HashRepeats>	- A group of HashRepeats to process a URL using multiple hash functions.
+* `POST <url>` – Add URL to the blacklist
+* `GET <url>` – Check if URL is blacklisted
+* `DELETE <url>` – Remove URL from the blacklist
 
-## Key Components
-1. IUserInput (interface) - Defines the contract for classes responsible for collecting user input.
-2. firstUserInput, MenueChoiceInput Implement concrete user input logic (e.g., initial parameters, menu choices).
-3. validateUserInput - Validates the input before proceeding to processing.
-4. IAction Interface - for actions that should be executed after validation.
-5. checkBlackListAction, userAction - Implementations of IAction that perform blacklist checking.
-6. IUserOutput, userOutput - Responsible for displaying output and take the input from the user (eg., filtered results, error messages).
-7. IHasher Interface - for creating custom hash logic, used in HashRepeats.
+---
 
-## Input/Output Explanation
-1. At first, the user choose the length of the in-memory inner list and the times of running the hash functions. 
-2. The user interacts with the program by choosing numbered actions and providing relevant input. Here's what the inputs mean:
-    1 — Add URL to Blacklist:
-    The user inputs a URL (e.g., www.example.com0) to be added to the blacklist system.
-    2 — Check if URL is Blacklisted:
-    The user inputs a URL, and the system checks whether it's already blacklisted.
-3. The system may return true or false:
-The first true result indicates that the URL was found in the in-memory inner list.
-The second true (or later checks) indicates that the URL was found by checking the persistent file/database.
-false is checked once in the in-memory inner list.
+### Build & Run Instructions
 
-## File Structure Overview
+**Build C++ Server with Docker:**
+
+```bash
+docker network create serverclientnet
+cd src
+docker build -t program .
+docker run -it --rm --network serverclientnet --name cppserver -v "$((Resolve-Path ..\data).ProviderPath):/data" program ./runProg <port> <bloom filter size> <hash>
+```
+
+e.g.
+docker network create serverclientnet
+cd src
+docker build -t program .
+docker run -it --rm --network serverclientnet --name cppserver -v "$((Resolve-Path ..\data).ProviderPath):/data" program ./runProg 9090 8 1 2
+
+explanation:
+(in this example - the server listens to changes in 9090 porst, the bloomfilter will be in size 8 and the standard hash functions that will run are: 1, 2)
+
+**Run Python Client:**
+
+```bash
+docker network create serverclientnet
+docker build -t pyclient src/client
+docker run -it --rm --network serverclientnet pyclient cppserver <port>
+```
+
+e.g.
+docker build -t pyclient src/client
+# Run the client with target IP and port
+docker run -it --rm --network serverclientnet pyclient cppserver 9090
+
+explanation:
+In this example -the ip is the ip of the server and the port of the client is 9090
+
+---
+
+### Edge Cases
+
+1. **Empty URL input**: System waits for valid input.
+2. **All repeat counts = 0**: BloomFilter bit array remains unchanged.
+3. **Deleting a URL that does not exist**: System returns `404 Not Found`.
+
+---
+
+### Blacklist File (BLFile)
+
+* **Path**: `/data/BLFile.txt`
+
+* **Structure**:
+
+  1. First line: Size of the BloomFilter
+  2. Second line: Bit array (space-separated)
+  3. From line 3: List of blacklisted URLs
+
+* **On POST**: Adds bits + appends URL
+
+* **On DELETE**: Removes URL (and possibly bits if necessary)
+
+---
+
+### Main Data Structures
+
+* `std::vector<bool>` – Blacklist bit array
+* `std::function<size_t(string)>` – Hash function signature
+* `std::vector<shared_ptr<IHasher>>` – Multiple hashers
+* `BloomFilter` – Wraps blacklist logic, file sync
+
+---
+
+### Key Components
+
+* `IUserInput`, `MenuChoiceInput`, `FirstUserInput`: Input wrappers
+* `validateUserInput`: Input validation logic
+* `IAction`, `AddURLToBL`, `CheckURLInBL`, `DeleteURLFromBL`: Action logic
+* `IUserOutput`, `OutputToClient`: Output formatting + socket
+* `IHasher`, `HashRepeats`: Reusable hash logic
+* `IClient`: Interface for client communication, enabling pluggable implementations like a Python client or other future clients
+
+---
+
+### Input/Output Flow
+
+1. Client starts and connects to server
+2. User inputs a command (e.g., `POST <url>`)
+3. Client sends command via TCP socket
+4. Server validates, performs action, returns response
+5. Client prints response to screen
+
+
+## Supported Commands
+
+1. POST <url> – Add URL to the blacklist (returns 201 Created)
+
+2. GET <url> – Check if URL is blacklisted (returns 200 Ok followed by result)
+
+3. DELETE <url> – Remove URL from the blacklist file only (returns 204 No Content or 404 not found if the URL never added to the black list)
+
+the server will return 400 Bad Request – For invalid command formats or not valid URLs format.
+
+## documentation:
+1.  running example:
+![Server Flow](documentation-pictures/9.png)
+
+
+2. tests pass:
+![tests pass](documentation-pictures/9.png)
+
+---
+
+### Example Blacklist File
 
 ```
-Src/
-├── Hash/
-│   ├── hashrepeat.cpp
-│   ├── HashRepeats.h
-│   ├── IHasher.h
-│   ├── runhashOnUrl.cpp
-│   ├── runHashOnUrl.h
-│
-├── initialization/
-│   ├── initializeBlsystem.cpp
-│   ├── initializeBlsystem.h
-│   ├── Iprogram.h
-│   ├── program.cpp
-│   ├── program.h
-│
-├── tests/
-│   ├── ActionFactory.Test.cpp
-│   ├── addUrlToBLTest.cpp
-│   ├── checkBlackListActionTest.cpp
-│   ├── initializeBLsystemTest.cpp
-│   ├── runHashOnUrlTest.cpp
-│   ├── userActionTest.cpp
-│   ├── userOutputTest.cpp
-│   ├── validateUserInputTest.cpp
-│
-├── user/
-│   ├── actions/
-│   │   ├── actionFactory.cpp
-│   │   ├── actionFactory.h
-│   │   ├── addURLToBL.cpp
-│   │   ├── addURLToBL.h
-│   │   ├── CheckBlackListAction.cpp
-│   │   ├── CheckBlackListAction.h
-│   │   ├── IAction.h
-│   │   ├── userAction.cpp
-│   │   ├── userAction.h
-│   │
-│   ├── userinput/
-│   │   ├── firstUserInput.cpp
-│   │   ├── firstUserInput.h
-│   │   ├── IUserInput.h
-│   │   ├── MenueChoiceInput.cpp
-│   │   ├── MenueChoiceInput.h
-│   │
-│   ├── userOutput/
-│   │   ├── userOutput.cpp
-│   │   ├── userOutput.h
-│
-├── validations/
-│   ├── validateUserInput.cpp
-│   ├── validateUserInput.h
-│
-├── bloomFilter.cpp
-├── bloomFilter.h
-├── main.cpp
-├── CMakeLists.txt
-└── Dockerfile
+8
+0 0 1 1 1 1 0 1
+www.example.com0
+www.example.com1
+www.example.com2
+```
 
-## Technologies Used
-1. C++17 – Core programming language used for the entire system logic and implementation.
-2. CMake – Build system for managing the compilation of the project.
-3. Google Test (gtest) – Unit testing framework used to validate system functionality.
-4. Docker – Containerization tool used to create a consistent runtime environment.
-5. Standard Template Library (STL) – For efficient data structures (e.g., vector, set, function) and algorithms.
-6. Filesystem Library – For managing file paths and reading/writing the blacklist file.
+---
+
+### File Structure Overview
+
+```
+src/
+├── client/                       # Python TCP client
+│   ├── Client.py                 # Client socket logic
+│   ├── IClient.py                # Interface for future clients
+│   ├── main.py                   # Entrypoint script
+│   └── dockerfile                # Dockerfile for Python client
+
+├── hash/                         # Hash logic
+│   ├── HashRepeats.cpp / .h
+│   ├── IHasher.h
+│   ├── runHashOnURL.cpp / .h
+
+├── initialization/              # Startup system setup
+│   ├── initializeBLSystem.cpp / .h
+│   ├── Program.cpp / .h
+│   └── IProgram.h
+
+├── server/                      # C++ server
+│   ├── Server.cpp / .h
+
+├── user/                        # Input / Output / Actions
+│   ├── actions/
+│   │   ├── ActionFactory.cpp / .h
+│   │   ├── AddURLToBL.cpp / .h
+│   │   ├── CheckURLInBL.cpp / .h
+│   │   ├── DeleteURLFromBL.cpp / .h
+│   │   ├── IAction.h
+│   │   └── userAction.cpp / .h
+│   ├── user_input/
+│   │   ├── FirstUserInput.cpp / .h
+│   │   ├── MenuChoiceInput.cpp / .h
+│   │   └── IUserInput.h
+│   └── user_output/
+│       ├── OutputToClient.cpp / .h
+│       ├── UserOutput.cpp / .h
+│       └── IUserOutput.h
+
+├── validations/
+│   ├── validateUserInput.cpp / .h
+
+├── BloomFilter.cpp / .h         # BloomFilter logic
+├── main.cpp                     # Server entrypoint
+├── Dockerfile                   # Dockerfile for C++ server
+├── CMakeLists.txt
+
+├── tests/                       # GTest unit tests
+│   ├── ActionFactoryTest.cpp
+│   ├── addURLToBLTest.cpp
+│   ├── CheckURLInBLTest.cpp
+│   ├── DeleteURLFromBLTest.cpp
+│   ├── initializeBLSystemTest.cpp
+│   ├── OutputToClientTest.cpp
+│   ├── runHashOnURLTest.cpp
+│   ├── serverTest.cpp
+│   ├── userActionTest.cpp
+│   └── validateUserInputTest.cpp
+
+└── README.md
+```
+
+---
+
+### Technologies Used
+
+* **C++17** – Core backend logic
+* **Python 3.9** – Client logic
+* **CMake** – Build system
+* **Google Test** – Testing framework
+* **Docker** – Containerized build/run
+* **STL / Filesystem** – Efficient memory and file I/O
+
+---
+
+### Summary
+
+This sprint showcases how a modular design enables easy extension. 
+The new DELETE operation and client-server communication were added without rewriting core logic — thanks to clean interfaces and abstractions.
+This architecture is testable, and open for future expansion (e.g., usind diffrent hash functions, adding clients, etc.).
