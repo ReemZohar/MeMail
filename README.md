@@ -149,6 +149,9 @@ docker run -it --rm --network serverclientnet pyclient cppserver 9090
   2. Second line: Bit array (space-separated)
   3. From line 3: List of blacklisted URLs
 
+* **Initialization**: When running the program for the first time, or if the file was deleted for some reason, the "BLFile.txt" file does not exist, so we create it.
+  After the first user input, the file is created and contains the new blacklist length (as usual) and a blacklist initialized with zeros.
+
 * **When `POST`**: Adds bits + appends URL
 
 * **When `DELETE`**: Removes URL (and possibly bits if necessary)
