@@ -149,9 +149,9 @@ docker run -it --rm --network serverclientnet pyclient cppserver 9090
   2. Second line: Bit array (space-separated)
   3. From line 3: List of blacklisted URLs
 
-* **On POST**: Adds bits + appends URL
+* **When `POST`**: Adds bits + appends URL
 
-* **On DELETE**: Removes URL (and possibly bits if necessary)
+* **When `DELETE`**: Removes URL (and possibly bits if necessary)
 
 ---
 
