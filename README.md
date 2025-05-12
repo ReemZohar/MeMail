@@ -5,7 +5,7 @@
 ### Introduction
 
 This project implements a modular URL blacklisting system based on hash functions and an extendable architecture. 
-The system filters URLs using repeatable hashing and a persistent blacklist file. In this sprint, the system was expanded to support:
+The system filters URLs repeatable hash functions and a persistent blacklist file. In this sprint, the system was expanded to support:
 
 * A new `DELETE` operation to remove URLs from the blacklist.
 * A **TCP-based client-server architecture** for real-time interaction between a Python client and C++ server.
@@ -149,8 +149,8 @@ docker run -it --rm --network serverclientnet pyclient cppserver 9090
   2. Second line: Bit array (space-separated)
   3. From line 3: List of blacklisted URLs
 
-* **Initialization**: When running the program for the first time, or if the file was deleted for some reason, the `BLFile.txt` file does not exist, so we create it.
-  After the first user input, the file is created and contains the new blacklist length (as usual) and a blacklist initialized with zeros.
+* **Initialization**:  If BLFile.txt does not exist (e.g. on first run), it is created.
+  After the first user input, the system is initializing the Bloom filter with the specified size and an all-zero bit array.
 
 * **When `POST`**: Modifies bits + appends URL
 
@@ -173,6 +173,14 @@ www.example.com2
 0 0 0 0 0 0 0 0
 ```
 
+---
+### Validation Checks (c++ server)
+* IPv4 Validation
+* Port Validation
+* Hash Function Numbers Validation
+* Blacklist Size Validation (BLSize)
+* Command Validation (`POST`, `GET`, `DELETE`)
+* URL Validation
 ---
 ### Main Data Structures
 
