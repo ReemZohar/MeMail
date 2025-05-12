@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/d69d7752-4fd4-41e4-8174-c04b425976b4)# Advanced-Programming---Gmail-Repository
+# Advanced-Programming---Gmail-Repository
 
 ## URL Blacklisting Hash System with Client-Server Architecture
 
@@ -98,7 +98,7 @@ docker build -t program .
 docker run -it --rm --network serverclientnet --name cppserver -v "$((Resolve-Path ..\data).ProviderPath):/data" program ./runProg <port> <bloom filter size> <hash>
 ```
 
-e.g.
+#### For Example:
 ```bash
 docker network create serverclientnet
 cd src
@@ -106,9 +106,15 @@ docker build -t program .
 docker run -it --rm --network serverclientnet --name cppserver -v "$((Resolve-Path ..\data).ProviderPath):/data" program ./runProg 9090 8 1 2
 ```
 
+```bash
+docker build -t pyclient src/client
+# Run the client with target IP and port
+docker run -it --rm --network serverclientnet pyclient cppserver 9090
+```
+
 *Example explanation:*  
  In this example, the server listens for connections on port **9090**, the Bloom filter will be initialized with a size of **8**, and the standard hash functions used are: **1** and **2**.
-
+ The IP address refers to the server, and the port **9090** is used by the client to connect to it.
 
 
 **Run Python Client:**
@@ -119,14 +125,6 @@ docker build -t pyclient src/client
 docker run -it --rm --network serverclientnet pyclient cppserver <port>
 ```
 
-e.g.
-```bash
-docker build -t pyclient src/client
-# Run the client with target IP and port
-docker run -it --rm --network serverclientnet pyclient cppserver 9090
-```
-*Example explanation:*  
- In this example, the IP address refers to the server, and the port **9090** is used by the client to connect to it.
 
 > **Note:** Please make sure to start the **server** before the **client**, so that the server is ready and listening for incoming requests.
 
