@@ -5,6 +5,11 @@ using namespace std;
 shared_ptr<IAction> ActionFactory::create(BloomFilter& bf, const shared_ptr<IUserInput>& userInput) {
     string action = ActionFactory::getAction(userInput->getInput());
     shared_ptr<IAction> actionObj;
+    std::string inputStr = userInput->getInput();
+
+    if(!isChoiceSpaceURLInputValid(inputStr)){
+        return make_shared<BadAction>();
+    }
 
     if(action == ADD_URL) {
         actionObj = make_shared<AddURLToBL>(bf);

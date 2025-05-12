@@ -42,11 +42,13 @@ std::string CheckURLInBL::getURLFromInputSocket(const std::string& input) {
     std::string command, url;
 
     if (!(iss >> command >> url)) {
-        throw std::runtime_error("Invalid input format: expected COMMAND URL");
+        //Invalid input format: expected COMMAND URL
+        return nullptr;
     }
 
     if (command != "GET" && command != "POST" && command != "DELETE") {
-        throw std::runtime_error("Invalid command: expected GET, POST or DELETE");
+        //"Invalid command: expected GET, POST or DELETE"
+        return nullptr;
     }
 
     return url;
@@ -76,7 +78,8 @@ bool CheckURLInBL::isBlackListedByFile(const string& url){
 shared_ptr<IUserOutput> CheckURLInBL::getOutput() {
     //no check was made scenario
     if(checkResult.empty()) {
-        throw runtime_error("Error: no check was made before sharing the output.\n");
+        //Error: no check was made before sharing the output.
+        return nullptr;  //return null instead of exception
     } else { //successful check scenario
         //appends the check result's string to the action message string
         message += checkResult;

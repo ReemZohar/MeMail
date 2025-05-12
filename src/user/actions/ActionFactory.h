@@ -12,6 +12,7 @@
 #include "IUserInput.h"
 #include "BloomFilter.h"
 #include <string>
+#include "validateUserInput.h"
 
 class ActionFactory {
     public:

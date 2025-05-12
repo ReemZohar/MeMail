@@ -28,7 +28,7 @@ class Server : public IProgram {
      */
     int server_fd;
       /**
-     * The port on which the server listens (e.g., 8080 or 9090).
+     * The port on which the server listens.
      * Clients must connect to this address and port to communicate with the server.
      */
     int port;

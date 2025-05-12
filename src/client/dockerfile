@@ -1,0 +1,14 @@
+# Use a lightweight Python image
+FROM python:3.9-slim
+
+# Set working directory inside the container
+WORKDIR /app
+
+# Copy all client files into the container
+COPY . /app/
+
+# Install dependencies if needed (requirements.txt must exist, או הסר שורה זו אם אין)
+# RUN pip install --no-cache-dir -r requirements.txt
+
+# Set default command (override this when running with docker run)
+ENTRYPOINT ["python", "main.py"]

@@ -100,14 +100,14 @@ TEST(hashsListTest, inValidHashsList){
 //PGAPP-29: Tests for isMenuChoiceValid (for sprint 1 it's 1/2) (PGAPP-23)
 //Sanity:
 TEST(choiceTest, validChoice){
-    vector<string> choices = {"1", "2"};
-    EXPECT_TRUE(isMenuChoiceValid("1", choices));
-    EXPECT_TRUE(isMenuChoiceValid("2", choices));
+  vector<string> choices = {"POST", "GET","DELETE"};
+      EXPECT_TRUE(isMenuChoiceValid("POST", choices));
+    EXPECT_TRUE(isMenuChoiceValid("DELETE", choices));
 }
 
 //Negative + Egde + Boundary cases:
 TEST(choiceTest, inValidChoice){
-    vector<string> choices = {"1", "2"};
+    vector<string> choices = {"POST", "GET","DELETE"};
     EXPECT_FALSE(isMenuChoiceValid("", choices));
     EXPECT_FALSE(isMenuChoiceValid(" ", choices));
     EXPECT_FALSE(isMenuChoiceValid("12", choices));  //invalid num
@@ -127,15 +127,15 @@ TEST(choiceTest, inValidChoice){
 //PGAPP-40: Tests for isChoiceSpaceURLInputValid (GPAPP-39)
 //Sanity:
 TEST(secInputTest, validInput){
-    EXPECT_TRUE(isChoiceSpaceURLInputValid("1 www.example.com0"));
-    EXPECT_TRUE(isChoiceSpaceURLInputValid("2 www.example.com0"));
-    EXPECT_TRUE(isChoiceSpaceURLInputValid("1 https://example.com"));
-    EXPECT_TRUE(isChoiceSpaceURLInputValid("2 https://www.example.com"));
-    EXPECT_TRUE(isChoiceSpaceURLInputValid("1 www.example.com11"));
-    EXPECT_TRUE(isChoiceSpaceURLInputValid("2 http://www.example.com/index.html"));
-    EXPECT_TRUE(isChoiceSpaceURLInputValid("1 https://example.com:1000/path?query=test#anchor"));
-    EXPECT_TRUE(isChoiceSpaceURLInputValid("2  https://www.example.com"));
-    EXPECT_TRUE(isChoiceSpaceURLInputValid(" 2  https://www.example.com  "));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid(" POST www.example.com0"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("GET www.example.com0"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("DELETE https://example.com"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("GET https://www.example.com"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("GET www.example.com11"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("POST http://www.example.com/index.html"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("DELETE https://example.com:1000/path?query=test#anchor"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("POST  https://www.example.com"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("GET  https://www.example.com  "));
 }
 
 //Negative + Egde cases:
@@ -146,15 +146,15 @@ TEST(secInputTest, inValidInput){
     EXPECT_FALSE(isChoiceSpaceURLInputValid("17"));
     EXPECT_FALSE(isChoiceSpaceURLInputValid("173"));
     EXPECT_FALSE(isChoiceSpaceURLInputValid("www.example.com0"));
-    EXPECT_FALSE(isChoiceSpaceURLInputValid("3 www.example.com0")); //invalid function
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("1 www.example.com0")); //invalid function
     EXPECT_FALSE(isChoiceSpaceURLInputValid("a www.example.com0")); //invalid function
-    EXPECT_FALSE(isChoiceSpaceURLInputValid("? www.example.com0")); //invalid function
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("post www.example.com0")); //invalid function
     EXPECT_FALSE(isChoiceSpaceURLInputValid("1 www.example.com0 4"));
     EXPECT_FALSE(isChoiceSpaceURLInputValid("1 www.examp le.com0"));
     EXPECT_FALSE(isChoiceSpaceURLInputValid("1 a")); //invalid URL
     EXPECT_FALSE(isChoiceSpaceURLInputValid("? a")); //invalid combination
-    EXPECT_FALSE(isChoiceSpaceURLInputValid("2https://www.example.com"));
-    EXPECT_FALSE(isChoiceSpaceURLInputValid("1www.example.com11"));
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("GEThttps://www.example.com"));
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("POSTwww.example.com11"));
 }
 
 //PGAPP-42: Tests for isBLSizeSpaceHashsInputValid (GPAPP-41)

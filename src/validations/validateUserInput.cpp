@@ -63,7 +63,7 @@ bool isMenuChoiceValid(const string &choice, const vector<string>& validChoices)
 //PGAPP-39:
 // The function gets a user input that has to be in the syntax: function - space - URL and checks if it's valid
 bool isChoiceSpaceURLInputValid(const string &input) {
-    vector<string> choices = {"1", "2"};
+    vector<string> choices = {"POST", "GET", "DELETE"};
 
     if (input.empty() || input.length()<2){
         return false;

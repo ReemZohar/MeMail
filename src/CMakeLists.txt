@@ -43,6 +43,7 @@ add_executable(runTests
 ) #write here the files you wish to test, the format is: <file_name>.cpp
 
 add_executable(runProg main.cpp
+  ../server/Server.cpp
 ../initialization/initializeBLSystem.cpp
   ../validations/validateUserInput.cpp
   ../user/actions/userAction.cpp
@@ -81,6 +82,7 @@ target_include_directories(runProg
     ${PROJECT_SOURCE_DIR}/user/actions
     ${PROJECT_SOURCE_DIR}/validations
     ${PROJECT_SOURCE_DIR}/user
+    ${PROJECT_SOURCE_DIR}/server
 )
 
 target_link_libraries(runTests gtest_main)

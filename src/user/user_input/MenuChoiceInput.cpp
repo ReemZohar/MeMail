@@ -29,7 +29,6 @@ bool MenuChoiceInput::takeMenuChoiceFromSocket(int client_socket) {
     }
 
     userSelection = std::string(buffer, valread); // Convert buffer to string
-
     currInput = userSelection; // Store the received input
     return true; // Indicate successful read
 }
