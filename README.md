@@ -183,16 +183,19 @@ docker run -it --rm --network serverclientnet pyclient cppserver 9090
 ![Server Flow](documentation-pictures/9.png)
 
   * Example 2:
-  ![image](https://github.com/user-attachments/assets/5fbcad92-b781-4e8d-9edd-7f163cb49a47)
+   ![image](https://github.com/user-attachments/assets/5fbcad92-b781-4e8d-9edd-7f163cb49a47)
 
      *  'BLFile.txt'result:
               - ![image](https://github.com/user-attachments/assets/8c8aed68-c991-45f7-a552-f9b75a15da31)
 
   * Example 3 - invalid BlackList's arguments:
-  ![image](https://github.com/user-attachments/assets/c7be49a5-2f7d-466d-a9df-906a726f9caf)
+   ![image](https://github.com/user-attachments/assets/c7be49a5-2f7d-466d-a9df-906a726f9caf)
 
-  * Example 4 – Invalid port number in the server's arguments:
-  * ![image](https://github.com/user-attachments/assets/2c31c1f1-a3c9-4264-a999-314eceec339a)
+  * Example 4 – Invalid port number as a server's argument:
+   ![image](https://github.com/user-attachments/assets/2c31c1f1-a3c9-4264-a999-314eceec339a)
+
+ * Example 5 – Invalid port number as a client's argument:
+   ![image](https://github.com/user-attachments/assets/4cc800f3-8358-439b-8871-8227a4e41b66)
 
 
 ### 2. tests pass:
