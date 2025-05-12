@@ -92,8 +92,9 @@ docker build -t program .
 docker run -it --rm --network serverclientnet --name cppserver -v "$((Resolve-Path ..\data).ProviderPath):/data" program ./runProg 9090 8 1 2
 ```
 
-*Explanation:*  
+*Example explanation:*  
  In this example, the server listens for connections on port **9090**, the Bloom filter will be initialized with a size of **8**, and the standard hash functions used are: **1** and **2**.
+
 
 
 **Run Python Client:**
@@ -110,7 +111,7 @@ docker build -t pyclient src/client
 # Run the client with target IP and port
 docker run -it --rm --network serverclientnet pyclient cppserver 9090
 ```
-*Explanation:*  
+*Example explanation:*  
  In this example, the IP address refers to the server, and the port **9090** is used by the client to connect to it.
 
 > **Note:** Please make sure to start the **server** before the **client**, so that the server is ready and listening for incoming requests.
