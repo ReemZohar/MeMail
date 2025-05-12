@@ -204,8 +204,8 @@ www.example.com2
   * *Example 2:*
    ![image](https://github.com/user-attachments/assets/5fbcad92-b781-4e8d-9edd-7f163cb49a47)
 
-    > *  'BLFile.txt` result:
-              > ![image](https://github.com/user-attachments/assets/8c8aed68-c991-45f7-a552-f9b75a15da31)
+    >   'BLFile.txt` result:  
+               ![image](https://github.com/user-attachments/assets/8c8aed68-c991-45f7-a552-f9b75a15da31)
 
   * *Example 3 - invalid BlackList's arguments:*
    ![image](https://github.com/user-attachments/assets/c7be49a5-2f7d-466d-a9df-906a726f9caf)
