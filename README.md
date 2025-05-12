@@ -83,7 +83,7 @@ This design makes the client modular and easy to extend or replace and the inter
 
 3. `DELETE <url>` – Remove URL from the blacklist file only (returns `204 No Content` or `404 not found` if the URL never added to the black list)
 
-the server will return `400 Bad Request` – For invalid command formats or not valid URLs format.
+> the server will return `400 Bad Request` – For invalid command formats or not valid URLs format.
 
 ---
 
