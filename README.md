@@ -175,7 +175,7 @@ www.example.com2
 ```
 
 ---
-### Validation Checks (c++ server)
+### Validation Checks (C++, server)
 * IPv4 Validation
 * Port Validation
 * Hash Function Numbers Validation
