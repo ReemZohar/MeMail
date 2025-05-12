@@ -1,10 +1,13 @@
 #ifndef FIRST_USER_INPUT
 #define FIRST_USER_INPUT
-
+#define BUFFER_LEN 4096
 #include "IUserInput.h"
 #include "validateUserInput.h"
 #include <string>
 #include <iostream>
+#include <cstring>
+#include <unistd.h>
+
 
 class FirstUserInput : public IUserInput {
     public:

@@ -5,15 +5,23 @@ using namespace std;
 shared_ptr<IAction> ActionFactory::create(BloomFilter& bf, const shared_ptr<IUserInput>& userInput) {
     string action = ActionFactory::getAction(userInput->getInput());
     shared_ptr<IAction> actionObj;
+    std::string inputStr = userInput->getInput();
+
+    if(!isChoiceSpaceURLInputValid(inputStr)){
+        return make_shared<BadAction>();
+    }
 
     if(action == ADD_URL) {
         actionObj = make_shared<AddURLToBL>(bf);
     }
     else if(action == CHECK_URL) {
-        actionObj = make_shared<CheckBlacklistAction>(bf);
+        actionObj = make_shared<CheckURLInBL>(bf);
+    }
+    else if(action == DEL_URL) {
+        actionObj = make_shared<DeleteURLFromBL>(bf);
     }
     else {
-        throw runtime_error("Error: cannot create IAction object");
+        actionObj = make_shared<BadAction>();
     }
 
     return actionObj;

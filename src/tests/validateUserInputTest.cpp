@@ -100,14 +100,14 @@ TEST(hashsListTest, inValidHashsList){
 //PGAPP-29: Tests for isMenuChoiceValid (for sprint 1 it's 1/2) (PGAPP-23)
 //Sanity:
 TEST(choiceTest, validChoice){
-    vector<string> choices = {"1", "2"};
-    EXPECT_TRUE(isMenuChoiceValid("1", choices));
-    EXPECT_TRUE(isMenuChoiceValid("2", choices));
+  vector<string> choices = {"POST", "GET","DELETE"};
+      EXPECT_TRUE(isMenuChoiceValid("POST", choices));
+    EXPECT_TRUE(isMenuChoiceValid("DELETE", choices));
 }
 
 //Negative + Egde + Boundary cases:
 TEST(choiceTest, inValidChoice){
-    vector<string> choices = {"1", "2"};
+    vector<string> choices = {"POST", "GET","DELETE"};
     EXPECT_FALSE(isMenuChoiceValid("", choices));
     EXPECT_FALSE(isMenuChoiceValid(" ", choices));
     EXPECT_FALSE(isMenuChoiceValid("12", choices));  //invalid num
@@ -127,15 +127,15 @@ TEST(choiceTest, inValidChoice){
 //PGAPP-40: Tests for isChoiceSpaceURLInputValid (GPAPP-39)
 //Sanity:
 TEST(secInputTest, validInput){
-    EXPECT_TRUE(isChoiceSpaceURLInputValid("1 www.example.com0"));
-    EXPECT_TRUE(isChoiceSpaceURLInputValid("2 www.example.com0"));
-    EXPECT_TRUE(isChoiceSpaceURLInputValid("1 https://example.com"));
-    EXPECT_TRUE(isChoiceSpaceURLInputValid("2 https://www.example.com"));
-    EXPECT_TRUE(isChoiceSpaceURLInputValid("1 www.example.com11"));
-    EXPECT_TRUE(isChoiceSpaceURLInputValid("2 http://www.example.com/index.html"));
-    EXPECT_TRUE(isChoiceSpaceURLInputValid("1 https://example.com:1000/path?query=test#anchor"));
-    EXPECT_TRUE(isChoiceSpaceURLInputValid("2  https://www.example.com"));
-    EXPECT_TRUE(isChoiceSpaceURLInputValid(" 2  https://www.example.com  "));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid(" POST www.example.com0"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("GET www.example.com0"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("DELETE https://example.com"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("GET https://www.example.com"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("GET www.example.com11"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("POST http://www.example.com/index.html"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("DELETE https://example.com:1000/path?query=test#anchor"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("POST  https://www.example.com"));
+    EXPECT_TRUE(isChoiceSpaceURLInputValid("GET  https://www.example.com  "));
 }
 
 //Negative + Egde cases:
@@ -146,15 +146,15 @@ TEST(secInputTest, inValidInput){
     EXPECT_FALSE(isChoiceSpaceURLInputValid("17"));
     EXPECT_FALSE(isChoiceSpaceURLInputValid("173"));
     EXPECT_FALSE(isChoiceSpaceURLInputValid("www.example.com0"));
-    EXPECT_FALSE(isChoiceSpaceURLInputValid("3 www.example.com0")); //invalid function
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("1 www.example.com0")); //invalid function
     EXPECT_FALSE(isChoiceSpaceURLInputValid("a www.example.com0")); //invalid function
-    EXPECT_FALSE(isChoiceSpaceURLInputValid("? www.example.com0")); //invalid function
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("post www.example.com0")); //invalid function
     EXPECT_FALSE(isChoiceSpaceURLInputValid("1 www.example.com0 4"));
     EXPECT_FALSE(isChoiceSpaceURLInputValid("1 www.examp le.com0"));
     EXPECT_FALSE(isChoiceSpaceURLInputValid("1 a")); //invalid URL
     EXPECT_FALSE(isChoiceSpaceURLInputValid("? a")); //invalid combination
-    EXPECT_FALSE(isChoiceSpaceURLInputValid("2https://www.example.com"));
-    EXPECT_FALSE(isChoiceSpaceURLInputValid("1www.example.com11"));
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("GEThttps://www.example.com"));
+    EXPECT_FALSE(isChoiceSpaceURLInputValid("POSTwww.example.com11"));
 }
 
 //PGAPP-42: Tests for isBLSizeSpaceHashsInputValid (GPAPP-41)
@@ -209,4 +209,42 @@ TEST(naturalNumberStringTest, notNaturalString){
     EXPECT_FALSE(isStringNaturalNumber("fsk"));
     EXPECT_FALSE(isStringNaturalNumber("-3.6"));
     EXPECT_FALSE(isStringNaturalNumber("!"));
+}
+
+//PGAPP-141: Tests for isIPSpacePortInputValid (GPAPP-140)
+//Sanity:
+TEST(IPSpacePort, validInput){
+    EXPECT_TRUE(isIPSpacePortInputValid("172.16.254.1 3"));
+    EXPECT_TRUE(isIPSpacePortInputValid("            172.16.254.1           0          "));
+    EXPECT_TRUE(isIPSpacePortInputValid("172.16.254.1        65534"));
+    EXPECT_TRUE(isIPSpacePortInputValid("  172.16.254.1 16"));
+    EXPECT_TRUE(isIPSpacePortInputValid("192.168.0.1 65535"));
+    EXPECT_TRUE(isIPSpacePortInputValid("250.100.50.20 70"));
+}
+//Negative + Egde cases:
+TEST(IPSpacePort, inValidInput){
+    EXPECT_FALSE(isIPSpacePortInputValid("172.16.254.1 ")); //IP only
+    EXPECT_FALSE(isIPSpacePortInputValid(" 7")); //Port only    
+    EXPECT_FALSE(isIPSpacePortInputValid("")); //No arguments
+    //Invalid IPs
+    EXPECT_FALSE(isIPSpacePortInputValid("256.100.100.100 19"));
+    EXPECT_FALSE(isIPSpacePortInputValid("172.16.254. 20"));
+    EXPECT_FALSE(isIPSpacePortInputValid("172.16.254 21"));
+    EXPECT_FALSE(isIPSpacePortInputValid("172.16.254.1.2 22"));
+    EXPECT_FALSE(isIPSpacePortInputValid("172.16.a.1.2 23"));
+    EXPECT_FALSE(isIPSpacePortInputValid("0.16.254 21"));
+    EXPECT_FALSE(isIPSpacePortInputValid("01.16.254 21"));
+    EXPECT_FALSE(isIPSpacePortInputValid("2.16.257 21"));
+    EXPECT_FALSE(isIPSpacePortInputValid("a 24"));
+    EXPECT_FALSE(isIPSpacePortInputValid("172 25"));
+    EXPECT_FALSE(isIPSpacePortInputValid("172.16 26"));
+    //Invalid ports
+    EXPECT_FALSE(isIPSpacePortInputValid("172.16.254.1 -7"));
+    EXPECT_FALSE(isIPSpacePortInputValid("172.16.254.1 7.5"));
+    EXPECT_FALSE(isIPSpacePortInputValid("172.16.254.1 a"));
+    EXPECT_FALSE(isIPSpacePortInputValid("172.16.254.1 א"));
+    EXPECT_FALSE(isIPSpacePortInputValid("172.16.254.1 "));
+    EXPECT_FALSE(isIPSpacePortInputValid("172.16.254.1 -7"));
+    EXPECT_FALSE(isIPSpacePortInputValid("172.16.254.1 65536"));
+    EXPECT_FALSE(isIPSpacePortInputValid("172.16.254.1 200000"));
 }
