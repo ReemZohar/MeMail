@@ -225,6 +225,13 @@ www.example.com2
  * *Example 5 – Invalid port number as a client's argument:*
    ![image](https://github.com/user-attachments/assets/4cc800f3-8358-439b-8871-8227a4e41b66)
 
+ * *Example 6 – Invalid command / URL:*
+   ![image](https://github.com/user-attachments/assets/c4f82229-f929-42fe-a018-468eeaab5463)
+
+ * *Example 7 :*
+   ![image](https://github.com/user-attachments/assets/f33fdd36-a31b-465a-8748-8f72b86468df)
+
+
 
 ### 2. Tests Pass:
 ![tests pass](documentation-pictures/10.png)
