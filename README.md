@@ -113,6 +113,7 @@ explanation:
 In this example -the ip is the ip of the server and the port of the client is 9090
 
 ---
+please note to run first the server and than the client so thar the server will listen to the requests of the client.
 
 ### Edge Cases
 
