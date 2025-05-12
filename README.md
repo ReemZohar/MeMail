@@ -73,8 +73,9 @@ This design makes the client modular and easy to extend or replace and the inter
 4. Server validates, performs action, returns response
 5. Client prints response to screen
 
+---
 
-## Supported Commands
+### Supported Commands
 
 1. `POST <url>` – Add URL to the blacklist (returns `201 Created`)
 
