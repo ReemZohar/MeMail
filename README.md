@@ -178,18 +178,18 @@ docker run -it --rm --network serverclientnet pyclient cppserver 9090
 
 
 ## documentation:
-1.  running examples:
+### 1.  running examples:
    * Example 1:
 ![Server Flow](documentation-pictures/9.png)
 
   * Example 2:
   ![image](https://github.com/user-attachments/assets/5fbcad92-b781-4e8d-9edd-7f163cb49a47)
 
-    *  The BLFile.txt after the run:
-             ![image](https://github.com/user-attachments/assets/8c8aed68-c991-45f7-a552-f9b75a15da31)
+     *  'BLFile.txt'result:
+              - ![image](https://github.com/user-attachments/assets/8c8aed68-c991-45f7-a552-f9b75a15da31)
 
 
-2. tests pass:
+### 2. tests pass:
 ![tests pass](documentation-pictures/10.png)
 
 ---
