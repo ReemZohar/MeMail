@@ -179,7 +179,7 @@ docker run -it --rm --network serverclientnet pyclient cppserver 9090
 
 ## documentation:
 ### 1.  running examples:
-   * Example 1:
+  * Example 1:
 ![Server Flow](documentation-pictures/9.png)
 
   * Example 2:
@@ -187,6 +187,9 @@ docker run -it --rm --network serverclientnet pyclient cppserver 9090
 
      *  'BLFile.txt'result:
               - ![image](https://github.com/user-attachments/assets/8c8aed68-c991-45f7-a552-f9b75a15da31)
+
+  * Example 3-invalid bit array size:
+  ![image](https://github.com/user-attachments/assets/99717fab-567d-4e6a-87b1-e8fd1f0aae1d)
 
 
 ### 2. tests pass:
