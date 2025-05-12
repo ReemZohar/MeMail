@@ -54,14 +54,14 @@ This design makes the client modular and easy to extend or replace and the inter
 
 ### Server (C++)
 1. explanation:
-o Receives and handles commands via TCP socket from the client.
-o Delegates logic to `ActionFactory` using `IAction` classes (`AddURLToBL`, `CheckURLInBL`, `DeleteURLFromBL`).
-o Maintains the blacklist in-memory and on disk.
+* Receives and handles commands via TCP socket from the client.
+* Delegates logic to `ActionFactory` using `IAction` classes (`AddURLToBL`, `CheckURLInBL`, `DeleteURLFromBL`).
+* Maintains the blacklist in-memory and on disk.
 
 2. files:
-o `Server.cpp/h`: Socket handling, request loop
-o `BloomFilter.cpp/h`: Core blacklist logic
-o `ActionFactory.cpp/h`: Dispatches actions
+* `Server.cpp/h`: Socket handling, request loop
+* `BloomFilter.cpp/h`: Core blacklist logic
+* `ActionFactory.cpp/h`: Dispatches actions
 
 ---
 
