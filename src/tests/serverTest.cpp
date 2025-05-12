@@ -26,7 +26,7 @@ TEST(ServerWithThreadTest, HandleClientRespondsCorrectlyToDelete) {
 
     // Simulate client sending initialization string (manual init without socket)
     server.initializeFromString("8 1 2");  
-    sendToServer(sv[0], "DELETE www.example.com1\n");  // Send DELETE command
+    sendToServer(sv[0], "DELETE www.example.com1");  // Send DELETE command
 
     // Read server response on client side
     char buffer[BUFFER_LEN] = {0};
@@ -66,25 +66,28 @@ TEST(ServerWithThreadTest, FullScenarioWithDelete) {
     };
 
     // Invalid command test
-    sendAndReceive("a\n", "400 Bad Request\n");
+    sendAndReceive("a", "400 Bad Request\n");
 
     // POST command
-    sendAndReceive("POST www.example.com0\n", "201 Created\n");
+    sendAndReceive("POST www.example.com0", "201 Created\n");
 
     // GET command for existing URL - expecting both bloom filter and list to return true
-    sendAndReceive("GET www.example.com0\n", "200 Ok\n\ntrue true\n");
+    sendAndReceive("GET www.example.com0", "200 Ok\n\ntrue true\n");
 
     // GET command for non-existing URL - expecting false
-    sendAndReceive("GET www.example.com1\n", "200 Ok\n\nfalse\n");
+    sendAndReceive("GET www.example.com1", "200 Ok\n\nfalse\n");
 
     // GET command where bloom filter returns true but blacklist doesn't
-    sendAndReceive("GET www.example.com11\n", "200 Ok\n\ntrue false\n");
+    sendAndReceive("GET www.example.com11", "200 Ok\n\ntrue false\n");
 
     // DELETE existing URL
-    sendAndReceive("DELETE www.example.com0\n", "204 No Content\n");
+    sendAndReceive("DELETE www.example.com0", "204 No Content\n");
 
     // DELETE non-existing URL
-    sendAndReceive("DELETE www.example.com2\n", "404 Not Found\n");
+    sendAndReceive("DELETE www.example.com2", "404 Not Found\n");
+
+    sendAndReceive("DELETE www.exampלחנשדכקדחle.com2", "400 Bad Request\n");
+
 
     // Final cleanup
     close(sv[0]); // Close client socket

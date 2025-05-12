@@ -80,14 +80,11 @@ void Server::handleClient(int client_socket) {
 
        // casting to concrete object to print the action output
         auto concreteOutput = std::dynamic_pointer_cast<OutputToClient>(actionOutput);
+        //check that getOutput() return OutputToClient
         if (concreteOutput) {
             concreteOutput->setClientSocket(client_socket);
             bool is_sent = concreteOutput->shareOutput();
-
-        } else {
-            std::cerr << "Error: getOutput() did not return OutputToClient" << std::endl;
         }
-
         isTakenInput = mc.takeMenuChoiceFromSocket(client_socket);
     }
     close(client_socket);
@@ -98,7 +95,6 @@ void Server::closeServer() {
     if (server_fd != -1) {
         close(server_fd);
         server_fd = -1;
-        std::cout << "Server closed." << std::endl;
     }
 }
 
