@@ -157,7 +157,17 @@ docker run -it --rm --network serverclientnet pyclient cppserver 9090
 * **When `DELETE`**: Removes URL (and possibly bits if necessary)
 
 ---
+### Example of the Blacklist File
 
+```
+8
+0 0 1 1 1 1 0 1
+www.example.com0
+www.example.com1
+www.example.com2
+```
+
+---
 ### Main Data Structures
 
 * `std::vector<bool>` – Blacklist bit array
@@ -206,17 +216,7 @@ docker run -it --rm --network serverclientnet pyclient cppserver 9090
 
 ---
 
-### Example of the Blacklist File
 
-```
-8
-0 0 1 1 1 1 0 1
-www.example.com0
-www.example.com1
-www.example.com2
-```
-
----
 
 ### File Structure Overview
 
