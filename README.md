@@ -85,10 +85,12 @@ docker run -it --rm --network serverclientnet --name cppserver -v "$((Resolve-Pa
 ```
 
 e.g.
+```bash
 docker network create serverclientnet
 cd src
 docker build -t program .
 docker run -it --rm --network serverclientnet --name cppserver -v "$((Resolve-Path ..\data).ProviderPath):/data" program ./runProg 9090 8 1 2
+```
 
 explanation:
 (in this example - the server listens to changes in 9090 porst, the bloomfilter will be in size 8 and the standard hash functions that will run are: 1, 2)
@@ -102,10 +104,11 @@ docker run -it --rm --network serverclientnet pyclient cppserver <port>
 ```
 
 e.g.
+```bash
 docker build -t pyclient src/client
 # Run the client with target IP and port
 docker run -it --rm --network serverclientnet pyclient cppserver 9090
-
+```
 explanation:
 In this example -the ip is the ip of the server and the port of the client is 9090
 
