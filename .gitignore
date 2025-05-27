@@ -1,0 +1,35 @@
+# ================================
+# Node.js related
+# ================================
+node_modules/
+.env
+logs/
+*.log
+npm-debug.log*
+
+# ================================
+# C/C++ related
+# ================================
+*.o
+*.obj
+*.out
+*.exe
+*.a
+*.so
+*.dll
+*.dSYM/
+*.stackdump
+*.gcno
+*.gcda
+*.gch
+
+# ================================
+# General OS/editor garbage
+# ================================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.bak
+*.tmp
