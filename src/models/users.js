@@ -1,6 +1,9 @@
 let userCount = 0
 const users = []
 
+//returns all the users - helper function
+const getAllUsers = () => users;
+
 const registerUser = (username, password, name, avatar) => {
     if (users.some(user => user.username === username)) { //if the user already exists
         return null;
@@ -21,4 +24,4 @@ const registerUser = (username, password, name, avatar) => {
 
 const getUserById = (id) => users.find(u => u.id === id)
 
-module.exports = {registerUser, getUserById}
+module.exports = {registerUser, getUserById, getAllUsers}
