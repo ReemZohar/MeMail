@@ -1,65 +1,87 @@
 const net = require('net');
-const { v4: uuidv4 } = require('uuid');
 
 const SERVER_HOST = '127.0.0.1';
 const SERVER_PORT = 12345;
 
-function sendCommandToCppServer(command) {
-  return new Promise((resolve, reject) => {
-    const client = new net.Socket();
-    let response = '';
-
-    client.connect(SERVER_PORT, SERVER_HOST, () => {
-      client.write(command);
-    });
-
-    client.on('data', (data) => {
-      response += data.toString();
-    });
-
-    client.on('end', () => {
-      resolve(response.trim());
-    });
-
-    client.on('error', (err) => {
-      reject(err);
-    });
-  });
-}
-
-const add = async (url) => {
-  const id = uuidv4();
-  const command = `ADD ${id} ${url}\n`;
-  const response = await sendCommandToCppServer(command);
-  if (response !== '201 Created') {
-    if (response === '400 Bad Request') return null; //invalid request
-    throw new Error(`Failed to add url to blacklist: ${response}`);
+class BlacklistClient {
+  constructor() {
+    this.client = new net.Socket();
+    this.buffer = '';
+    this.callbacks = [];
+    this.connected = false;
+    this.connect();
   }
-  return { id, url };
-}
 
-const remove = async (id) => {
-  const command = `DELETE ${id}\n`;
-  const response = await sendCommandToCppServer(command);
-  if (response === '204 No Content') {
-    return true;
-  } else if (response === '404 Not Found') {
-    return false; //URL is not found
-  } else if (response === '400 Bad Request') {
-    throw new Error('Bad request');
+  connect() {
+    this.client.connect(SERVER_PORT, SERVER_HOST, () => {
+      this.connected = true;
+    });
+
+    this.client.on('data', (data) => {
+      this.buffer += data.toString();
+      // נניח שכל תגובה מסתיימת ב-newline כפול "\n\n"
+      while (this.buffer.includes('\n\n')) {
+        const [response, ...rest] = this.buffer.split('\n\n');
+        this.buffer = rest.join('\n\n');
+        if (this.callbacks.length > 0) {
+          const cb = this.callbacks.shift();
+          cb(response.trim());
+        }
+      }
+    });
+
+    this.client.on('error', (err) => {
+      console.error('Blacklist TCP error:', err);
+      this.connected = false;
+    });
+
+    this.client.on('close', () => {
+      this.connected = false;
+    });
   }
-  throw new Error(`Unexpected response: ${response}`);
+
+  sendCommand(command) {
+    return new Promise((resolve, reject) => {
+      if (!this.connected) {
+        return reject(new Error('Not connected to blacklist server'));
+      }
+      this.callbacks.push(resolve);
+      this.client.write(command + '\n');
+    });
+  }
+
+  async add(url) {
+    const command = `POST ${url} ${url}`;
+    const response = await this.sendCommand(command);
+    if (response === '201 Created') {
+      return { id: url, url };
+    } else if (response === '400 Bad Request') {
+      return null;
+    }
+    throw new Error(`Unexpected response: ${response}`);
+  }
+
+  async remove(url) {
+    const command = `DELETE ${url}`;
+    const response = await this.sendCommand(command);
+    if (response === '204 No Content') return true;
+    if (response === '404 Not Found') return false;
+    if (response === '400 Bad Request') throw new Error('Bad request');
+    throw new Error(`Unexpected response: ${response}`);
+  }
+
+  async isBlacklisted(url) {
+    const command = `GET ${url}`;
+    const response = await this.sendCommand(command);
+    if (response === '200 Ok\n\n1') {
+      return true;
+    } else if (response === '200 Ok\n\n0') {
+      return false;
+    } else if (response === '400 Bad Request') {
+      return null;
+    }
+    throw new Error(`Unexpected response: ${response}`);
+  }
 }
 
-const isBlacklisted = async (url) => {
-  const command = `GET 1 ${url}\n`;
-  const response = await sendCommandToCppServer(command);
-  
-  if (response === '200 Ok') return true;
-  if (response === '404 Not Found') return false;
-  if (response === '400 Bad Request') return null;
-
-  throw new Error(`Unexpected response: ${response}`);
-}
-
-module.exports = { add, remove, isBlacklisted }
+module.exports = new BlacklistClient();

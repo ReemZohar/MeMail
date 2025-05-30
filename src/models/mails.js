@@ -1,6 +1,8 @@
 let idCounter = 0 //counts the mails
 const mails = []
 
+const { isUrlBlacklisted } = require('./blacklist');
+
 const getAllMails = () => {
     return mails
         .slice()
@@ -21,7 +23,7 @@ const sendMail = async (title, content, sender, receiver) => {
   for (const url of urlsToCheck) {
     const blacklisted = await isUrlBlacklisted(url);
     if (blacklisted) {
-      throw new Error(`Cannot send mail. Blacklisted URL detected: ${url}`);
+      return null;
     }
   }
 
@@ -50,13 +52,28 @@ const sendMail = async (title, content, sender, receiver) => {
 
 const getMailById = (id) => mails.find(m => m.id === id)
 
-const updateMail = (id, title, content) => {
-    const mail = mails.find(m => m.id === id)
-    if(!mail) return null
-    if(title) mail.title = title
-    if(content) mail.content = content
-    return mail
-}
+const updateMail = async (id, title, content) => {
+    const mail = mails.find(m => m.id === id);
+    if (!mail) return null;
+
+    const extractUrls = (text) => {
+      const regex = /((?:(https?|ftp):\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(:\d+)?(\/[^\s]*)?)/gi;
+      return text ? text.match(regex) || [] : [];
+    };
+
+    const urlsToCheck = [...extractUrls(title), ...extractUrls(content)];
+
+    for (const url of urlsToCheck) {
+      const blacklisted = await isUrlBlacklisted(url);
+      if (blacklisted) {
+        return null;
+      }
+    }
+
+    if (title) mail.title = title;
+    if (content) mail.content = content;
+    return mail;
+};
 
 const deleteMail = (id) => {
     const index = mails.findIndex(m => m.id === id)
