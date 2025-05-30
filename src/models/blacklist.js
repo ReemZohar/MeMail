@@ -32,7 +32,7 @@ const add = async (url) => {
   const command = `ADD ${id} ${url}\n`;
   const response = await sendCommandToCppServer(command);
   if (response !== '201 Created') {
-    if (response === '400 Bad Request') return null; // בקשה לא חוקית
+    if (response === '400 Bad Request') return null; //invalid request
     throw new Error(`Failed to add url to blacklist: ${response}`);
   }
   return { id, url };
@@ -44,7 +44,7 @@ const remove = async (id) => {
   if (response === '204 No Content') {
     return true;
   } else if (response === '404 Not Found') {
-    return false; // לא נמצא למחיקה
+    return false; //URL is not found
   } else if (response === '400 Bad Request') {
     throw new Error('Bad request');
   }
