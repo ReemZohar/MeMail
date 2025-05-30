@@ -19,7 +19,6 @@ class BlacklistClient {
 
     this.client.on('data', (data) => {
       this.buffer += data.toString();
-      // נניח שכל תגובה מסתיימת ב-newline כפול "\n\n"
       while (this.buffer.includes('\n\n')) {
         const [response, ...rest] = this.buffer.split('\n\n');
         this.buffer = rest.join('\n\n');
