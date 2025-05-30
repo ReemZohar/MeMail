@@ -1,4 +1,4 @@
-const tokenModel = require('../models/tokens'); // tokenService handles login authentication
+const tokenModel = require('../models/tokens'); // token handles login authentication
 
 exports.login = (req, res) => {
     const { username, password } = req.body;

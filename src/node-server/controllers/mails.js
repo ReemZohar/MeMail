@@ -1,4 +1,4 @@
-const mailModel = require('../model/mails'); // mailService holds the in-memory model
+const mailModel = require('../models/mails'); // mail holds the in-memory model
 
 // Get the 50 most recent mails (sorted by time, newest first)
 exports.getAllMails = (req, res) => {

@@ -1,4 +1,4 @@
-const userModel = require('../services/userService'); // userService handles user registration and retrieval
+const userModel = require('../models/users'); // user handles user registration and retrieval
 // Register a new user
 exports.registerUser = (req, res) => {
     const { username, password, name, avatar } = req.body;

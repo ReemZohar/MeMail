@@ -1,4 +1,4 @@
-const labelModel = require('../models/lables'); // labelService handles label operations
+const labelModel = require('../models/lables'); // label handles label operations
 
 // Get all labels
 exports.getAllLabels = (req, res) => {
