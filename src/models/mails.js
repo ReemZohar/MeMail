@@ -8,8 +8,22 @@ const getAllMails = () => {
         .slice(0, 50);
 }
 
-const sendMail = (title, content, sender, receiver) => {
-const time = Date.now();
+const sendMail = async (title, content, sender, receiver) => {
+  const time = Date.now();
+
+  const extractUrls = (text) => {
+    const regex = /((?:(https?|ftp):\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(:\d+)?(\/[^\s]*)?)/gi;
+    return text.match(regex) || [];
+  };
+
+  const urlsToCheck = [...extractUrls(title), ...extractUrls(content)];
+
+  for (const url of urlsToCheck) {
+    const blacklisted = await isUrlBlacklisted(url);
+    if (blacklisted) {
+      throw new Error(`Cannot send mail. Blacklisted URL detected: ${url}`);
+    }
+  }
 
   const sent = {
     id: idCounter++,
@@ -30,8 +44,9 @@ const time = Date.now();
   mails.push(sent);
   mails.push(received);
 
-  return sent; //returns the mail to the sender
+  return sent;
 }
+
 
 const getMailById = (id) => mails.find(m => m.id === id)
 
