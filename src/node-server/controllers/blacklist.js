@@ -1,28 +1,31 @@
-const blacklistModel = require('../models/blacklistService'); // blacklistService handles malicious links
+const blacklistModel = require('../models/blacklist'); 
 
-// Add a malicious link to the blacklist
+// Add a malicious link to the blacklist (no ID returned)
 exports.addToBlacklist = async (req, res) => {
     const { url } = req.body;
     if (!url) {
         return res.status(400).json({ error: 'URL is required' });
     }
     try {
-        const blacklisted = await blacklistModel.add(url);
-        res.status(201).location(`/api/blacklist/${blacklisted.id}`).send(); // HTTP 201 Created
+        await blacklistModel.add(url);
+        res.status(201).send(); // no ID or Location
     } catch (error) {
         res.status(500).json({ error: 'Failed to add to blacklist' });
     }
 };
 
-// Remove a blacklisted URL by ID
+// Remove a blacklisted URL by URL (not ID)
 exports.removeFromBlacklist = async (req, res) => {
-    const id = req.params.id;
+    const { url } = req.body;
+    if (!url) {
+        return res.status(400).json({ error: 'URL is required' });
+    }
     try {
-        const success = await blacklistModel.remove(id);
+        const success = await blacklistModel.remove(url);
         if (!success) {
             return res.status(404).json({ error: 'Blacklist entry not found' });
         }
-        res.status(204).send(); // HTTP 204 No Content
+        res.status(204).send();
     } catch (error) {
         res.status(500).json({ error: 'Failed to remove from blacklist' });
     }
