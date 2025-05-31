@@ -1,323 +1,102 @@
-# Advanced-Programming---Gmail-Repository
+#  Gmail-like REST API – Assignment 3
 
-## URL Blacklisting Hash System with Client-Server Architecture
+## System Overview
+This project implements a modular, RESTful backend in Node.js and Express that simulates a Gmail-like interface. It integrates with a C++ server from Assignment 2 using TCP sockets for real-time blacklist validation.
 
-### Introduction
-
-This project implements a modular URL blacklisting system based on hash functions and an extendable architecture. 
-The system filters URLs repeatable hash functions and a persistent blacklist file. In this sprint, the system was expanded to support:
-
-* A new `DELETE` operation to remove URLs from the blacklist.
-* A **TCP-based client-server architecture** for real-time interaction between a Python client and C++ server.
-
-The design leverages interfaces (`IAction`, `IUserInput`, `IUserOutput`, `IHasher`, `Iclient`, `Iprogram`) to allow seamless feature addition with minimal changes.
+The project is built using the MVC architecture and exposes a full-featured API for managing users, authentication, emails, labels, and blacklist entries.
 
 ---
 
-### Sprint Overview
-
-This sprint delivered:
-
-1. Core hashing logic (`HashRepeats`, `runHashOnURL`).
-2. Simulated blacklist system with:
-
-   * Bit array (BloomFilter logic)
-   * Persistent file of blacklisted URLs
-3. Full user interaction cycle:
-
-   * Input
-   * Validation
-   * Hashing
-   * Output
-4. TCP Client-Server communication
-5. `DELETE` support for removing URLs
-6. Extensive unit testing
+## Sprint Features
+- Modular route handling via Express
+- In-memory data storage (no database) via the model
+- Full CRUD API for labels, mails, and users
+- URL-based blacklist filtering through TCP communication with C++ server
+- Error handling and proper HTTP status codes
 
 ---
 
-### Client (Python)
-1. explanation:
-The Client connects to a server using TCP and allows message exchange.
-It’s implemented using Python sockets and follows an interface (`IClient`) to ensure a consistent structure.
-  * `Client.py`:
-     * Establishes a connection to a server IP and port.
-     *   Sends and receives messages over the socket.
-     *   Uses UTF-8 encoding for communication.
-2. files:
-  * `IClient.py`:
-     * Defines the interface (IClient) that every client must implement, including methods to start the connection, send/receive messages, and close the socket.
-  * `main.py`:
-     * Initializes a Client object with IP and port from command-line arguments.
-     * Starts communication with the server.
-     * Loops to read user input, sends it to the server, and prints the server's response.
-This design makes the client modular and easy to extend or replace and the interface ensures any new implementation will be compatible with the existing structure.---
+## API Endpoints
 
-### Server (C++)
-1. explanation:
-  * Receives and handles commands via TCP socket from the client.
-  * Delegates logic to `ActionFactory` using `IAction` classes (`AddURLToBL`, `CheckURLInBL`, `DeleteURLFromBL`).
-  * Maintains the blacklist in-memory and on disk.
+### Users
+- `POST /api/users` – Register new user
+- `GET /api/users/:id` – Retrieve user data by ID
 
-2. files:
-  * `Server.cpp/h`: Socket handling, request loop
-  * `BloomFilter.cpp/h`: Core blacklist logic
-  * `ActionFactory.cpp/h`: Dispatches actions
-> **Note:** This project uses IPv4.
----
+### Tokens
+- `POST /api/tokens` – Authenticate user, returns `{ id: <userId> }`
 
-### Input/Output Flow
+### Mails
+- `GET /api/mails` – Get 50 latest mails
+- `POST /api/mails` – Send mail (validates links via blacklist)
+- `GET /api/mails/:id` – Get specific mail
+- `PATCH /api/mails/:id` – Update mail
+- `DELETE /api/mails/:id` – Delete mail
+- `GET /api/mails/search/:query` – Search by title/content/sender/receiver
 
-1. Client starts and connects to server
-2. User inputs a command (e.g., `POST <url>`)
-3. Client sends command via TCP socket
-4. Server validates, performs action, returns response
-5. Client prints response to screen
+### Labels
+- `GET /api/labels` – List all labels
+- `POST /api/labels` – Create label
+- `GET /api/labels/:id` – Get label
+- `PATCH /api/labels/:id` – Update label
+- `DELETE /api/labels/:id` – Delete label
+
+### Blacklist (via C++ Socket Server)
+- `POST /api/blacklist` – Add URL to blacklist
+- `DELETE /api/blacklist` – Remove URL from blacklist (via request body)
 
 ---
 
-### Supported Commands
+## Project Structure
+# TODO: add it when finish the project
 
-1. `POST <url>` – Add URL to the blacklist (returns `201 Created`)
-
-2. `GET <url>` – Check if URL is blacklisted (returns `200 Ok` followed by result)
-
-3. `DELETE <url>` – Remove URL from the blacklist file only (returns `204 No Content` or `404 not found` if the URL never added to the black list)
-
-> the server will return `400 Bad Request` – For invalid command formats or not valid URLs format.
+## Integration with Assignment 2 (C++ Server)
+- TCP socket client (Node) communicates with a multithreaded C++ server
+- C++ server supports:
+  - `POST <url>` – Add URL
+  - `GET <url>` – Check if blacklisted
+  - `DELETE <url>` – Remove from blacklist
+- All blacklist functionality in the Node server delegates to this system
 
 ---
 
-### Build & Run Instructions
-
-**Build C++ Server with Docker:**
+## Running Instructions
+# TODO: add it when finish the project
 
 ```bash
-docker network create serverclientnet
-cd src
-docker build -t program .
-docker run -it --rm --network serverclientnet --name cppserver -v "$((Resolve-Path ..\data).ProviderPath):/data" program ./runProg <port> <bloom filter size> <hash>
-```
-**Run Python Client:**
 
-```bash
-docker network create serverclientnet
-docker build -t pyclient src/client
-docker run -it --rm --network serverclientnet pyclient cppserver <port>
+npm install
+npm start
 ```
 
-#### For Example:
+### Requirements:
+- C++ blacklist server must be running (`localhost:<PORT>`) before Node server starts.
+- Port should match the one expected in `blacklist.js` in the models folder
+
+---
+
+## Notes
+- JSON is the standard format for all API requests/responses
+- There is no DB; in-memory logic only
+- SOLID principles and modular code structure maintained
+- Errors returned in `{ error: "..." }` format
+
+---
+
+## Developer Info
+- Project: Advanced Programming – Assignment 3
+- GitHub: https://github.com/liany2/Advanced-Programming---Gmail-Repository
+
+---
+
+## Example curl
 ```bash
-docker network create serverclientnet
-cd src
-docker build -t program .
-docker run -it --rm --network serverclientnet --name cppserver -v "$((Resolve-Path ..\data).ProviderPath):/data" program ./runProg 9090 8 1 2
+curl -X POST http://localhost:3000/api/blacklist \
+  -H "Content-Type: application/json" \
+  -d '{"url": "http://malicious.com"}'
 ```
 
 ```bash
-docker build -t pyclient src/client
-# Run the client with target IP and port
-docker run -it --rm --network serverclientnet pyclient cppserver 9090
+curl -X DELETE http://localhost:3000/api/blacklist \
+  -H "Content-Type: application/json" \
+  -d '{"url": "http://malicious.com"}'
 ```
-
-*Example explanation:*  
- In this example, the server listens for connections on port **9090**, the Bloom filter will be initialized with a size of **8**, and the standard hash functions used are: **1** and **2**.
- The IP address refers to the server, and the port **9090** is used by the client to connect to it.
-
-
-
-
-
-> **Note:** Please make sure to start the **server** before the **client**, so that the server is ready and listening for incoming requests.
-
----
-
-### Edge Cases
-
-1. **Empty URL input**: System waits for valid input.
-2. **All repeat counts = 0**: BloomFilter bit array remains unchanged.
-3. **Deleting a URL that does not exist**: System returns `404 Not Found`.
-
----
-
-### Blacklist File (BLFile.txt)
-
-* **Path**: `/data/BLFile.txt`
-
-* **Structure**:
-
-  1. First line: Size of the BloomFilter
-  2. Second line: Bit array (space-separated)
-  3. From line 3: List of blacklisted URLs
-
-* **Initialization**:  If BLFile.txt does not exist (e.g. on first run), it is created.
-  After the first user input, the system is initializing the Bloom filter with the specified size and an all-zero bit array.
-
-* **When `POST`**: Modifies bits + appends URL
-
-* **When `DELETE`**: Removes URL (and possibly bits if necessary)
-
----
-### Example of the Blacklist File
-
-*While initialized:*
-```
-8
-0 0 0 0 0 0 0 0
-```
-
-*After adding URLs:*
-```
-8
-0 0 1 1 1 1 0 1
-www.example.com0
-www.example.com1
-www.example.com2
-```
-
----
-### Validation Checks (C++ server)
-* IPv4 Validation
-* Port Validation
-* Hash Function Numbers Validation
-* Blacklist Size Validation (BLSize)
-* Command Validation (`POST`, `GET`, `DELETE`)
-* URL Validation
----
-### Main Data Structures
-
-* `std::vector<bool>` – Blacklist bit array
-* `std::function<size_t(string)>` – Hash function signature
-* `std::vector<shared_ptr<IHasher>>` – Multiple hashers
-* `BloomFilter` – Wraps blacklist logic, file sync
-
----
-
-### Key Components
-
-* `IUserInput`, `MenuChoiceInput`, `FirstUserInput`: Input wrappers
-* `validateUserInput`: Input validation logic
-* `IAction`, `AddURLToBL`, `CheckURLInBL`, `DeleteURLFromBL`: Action logic
-* `IUserOutput`, `OutputToClient`: Output formatting + socket
-* `IHasher`, `HashRepeats`: Reusable hash logic
-* `IClient`: Interface for client communication, enabling pluggable implementations like a Python client or other future clients
-
----
-
-
-
-## Documentation:
-### 1.  Running Examples:
-  * *Example 1:*
-![Server Flow](documentation-pictures/9.png)
-
-  * *Example 2:*
-   ![image](https://github.com/user-attachments/assets/5fbcad92-b781-4e8d-9edd-7f163cb49a47)
-
-    >   'BLFile.txt` result:  
-               ![image](https://github.com/user-attachments/assets/8c8aed68-c991-45f7-a552-f9b75a15da31)
-
-  * *Example 3 - invalid BlackList's arguments:*
-   ![image](https://github.com/user-attachments/assets/c7be49a5-2f7d-466d-a9df-906a726f9caf)
-
-  * *Example 4 – Invalid port number as a server's argument:*
-   ![image](https://github.com/user-attachments/assets/2c31c1f1-a3c9-4264-a999-314eceec339a)
-
- * *Example 5 – Invalid port number as a client's argument:*
-   ![image](https://github.com/user-attachments/assets/4cc800f3-8358-439b-8871-8227a4e41b66)
-
- * *Example 6 – Invalid command / URL:*
-   ![image](https://github.com/user-attachments/assets/c4f82229-f929-42fe-a018-468eeaab5463)
-
- * *Example 7 :*
-   ![image](https://github.com/user-attachments/assets/f33fdd36-a31b-465a-8748-8f72b86468df)
-
-
-
-### 2. Tests Pass:
-![tests pass](documentation-pictures/10.png)
-
----
-
-
-
-### File Structure Overview
-
-```
-src/
-├── client/                       # Python TCP client
-│   ├── Client.py                 # Client socket logic
-│   ├── IClient.py                # Interface for future clients
-│   ├── main.py                   # Entrypoint script
-│   └── dockerfile                # Dockerfile for Python client
-
-├── hash/                         # Hash logic
-│   ├── HashRepeats.cpp / .h
-│   ├── IHasher.h
-│   ├── runHashOnURL.cpp / .h
-
-├── initialization/              # Startup system setup
-│   ├── initializeBLSystem.cpp / .h
-│   ├── Program.cpp / .h
-│   └── IProgram.h
-
-├── server/                      # C++ server
-│   ├── Server.cpp / .h
-
-├── user/                        # Input / Output / Actions
-│   ├── actions/
-│   │   ├── ActionFactory.cpp / .h
-│   │   ├── AddURLToBL.cpp / .h
-│   │   ├── CheckURLInBL.cpp / .h
-│   │   ├── DeleteURLFromBL.cpp / .h
-│   │   ├── IAction.h
-│   │   └── userAction.cpp / .h
-│   ├── user_input/
-│   │   ├── FirstUserInput.cpp / .h
-│   │   ├── MenuChoiceInput.cpp / .h
-│   │   └── IUserInput.h
-│   └── user_output/
-│       ├── OutputToClient.cpp / .h
-│       ├── UserOutput.cpp / .h
-│       └── IUserOutput.h
-
-├── validations/
-│   ├── validateUserInput.cpp / .h
-
-├── BloomFilter.cpp / .h         # BloomFilter logic
-├── main.cpp                     # Server entrypoint
-├── Dockerfile                   # Dockerfile for C++ server
-├── CMakeLists.txt
-
-├── tests/                       # GTest unit tests
-│   ├── ActionFactoryTest.cpp
-│   ├── addURLToBLTest.cpp
-│   ├── CheckURLInBLTest.cpp
-│   ├── DeleteURLFromBLTest.cpp
-│   ├── initializeBLSystemTest.cpp
-│   ├── OutputToClientTest.cpp
-│   ├── runHashOnURLTest.cpp
-│   ├── serverTest.cpp
-│   ├── userActionTest.cpp
-│   └── validateUserInputTest.cpp
-
-└── README.md
-```
-
----
-
-### Technologies Used
-
-* **C++17** – Core backend logic
-* **Python 3.9** – Client logic
-* **CMake** – Build system
-* **Google Test** – Testing framework
-* **Docker** – Containerized build/run
-* **STL / Filesystem** – Efficient memory and file I/O
-
----
-
-### Summary
-
-This sprint showcases how a modular design enables easy extension. 
-The new DELETE operation and client-server communication were added without rewriting core logic — thanks to clean interfaces and abstractions.
-This architecture is modular, testable, and designed for future expansion—such as integrating different hash functions, adding new client types, or supporting advanced blacklist policies.
