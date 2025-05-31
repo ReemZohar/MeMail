@@ -53,7 +53,7 @@ class BlacklistClient {
     const command = `POST ${url} ${url}`;
     const response = await this.sendCommand(command);
     if (response === '201 Created') {
-      return { id: url, url };
+      return { url };
     } else if (response === '400 Bad Request') {
       return null;
     }
