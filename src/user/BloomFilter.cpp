@@ -19,6 +19,7 @@ vector <shared_ptr<IHasher>> BloomFilter::getHasher() {
 }
 
 void BloomFilter::setBlackList(vector<bool> newBlackList){
+        std::lock_guard<std::mutex> lock(blMutex); //lock
       blackList.resize(newBlackList.size());
     for (size_t i = 0; i < newBlackList.size(); ++i) {
         blackList[i] = newBlackList[i];

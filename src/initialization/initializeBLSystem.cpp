@@ -1,7 +1,9 @@
 #include "initializeBLSystem.h"
-
+#include <mutex>
 using namespace std;
 namespace fs = std::filesystem; 
+
+std::mutex createFileMutex;  // global mutex for BL file creation
 
 // PGAPP-34
 // The function gets an existing file path and returns the BlackList from there as a boolean vector
@@ -45,6 +47,7 @@ vector<bool> createNewBLArr(const string& length, const fs::path& filePath) {
 //PGAPP-55:
 //The function gets a length of a new BL and a file path and creates a new file initialized with this length and a new zeros BL
 void createNewBLFile(const string& length, const fs::path& filePath) {
+    std::lock_guard<std::mutex> lock(createFileMutex); //lock
     fs::path dataDir = filePath.parent_path();
 
     if (!fs::exists(dataDir)) {
