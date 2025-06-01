@@ -2,18 +2,22 @@ const labelModel = require('../models/labels'); // label handles label operation
 
 // Get all labels
 exports.getAllLabels = (req, res) => {
-    const labels = labelModel.getAllLabels();
-    res.status(200).json(labels); // HTTP 200 OK
+    const userId = req.header("user-id");
+    const labels = labelService.getAllLabelsForUser(userId);
+    res.status(200).json(labels);
 };
 
 // Create a new label
 exports.createLabel = (req, res) => {
+    const userId = req.header("user-id");
     const { name } = req.body;
+
     if (!name) {
-        return res.status(400).json({ error: 'Name is required' }); // HTTP 400 Bad Request
+        return res.status(400).json({ error: 'Name is required' });
     }
-    const newLabel = labelModel.createLabel(name);
-    res.status(201).location(`/api/labels/${newLabel.id}`).send(); // HTTP 201 Created
+
+    const label = labelService.createLabel(name, userId);
+    res.status(201).location(`/api/labels/${label.id}`).send();
 };
 
 // Get a label by ID

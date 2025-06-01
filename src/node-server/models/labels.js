@@ -1,12 +1,12 @@
 let labelCounter = 0
 const labels = []
 
-const getAllLabels = () => {
-    return labels
-}
+const getAllLabelsForUser = (userId) => {
+  return labels.filter(l => l.userId === userId);
+};
 
-const createLabel = (name) => {
-    const newLabel = { id: ++labelCounter, name}
+const createLabel = (name, userId) => {
+    const newLabel = { id: ++labelCounter, name, userId}
     labels.push(newLabel)
     return newLabel
 }
@@ -28,4 +28,4 @@ const deleteLabel = (id) => {
 }
 
 
-module.exports = {getAllLabels, createLabel, getLabelById, updateLabel, deleteLabel}
+module.exports = {getAllLabelsForUser, createLabel, getLabelById, updateLabel, deleteLabel}
