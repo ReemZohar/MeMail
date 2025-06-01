@@ -1,4 +1,5 @@
 #include "Server.h"
+#include <thread>
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -107,7 +108,7 @@ void Server::run() {
     while (true) {
         int client_socket = acceptClient();
         if (client_socket >= 0) {
-            handleClient(client_socket);
+            std::thread(&Server::handleClient, this, client_socket).detach();
         }
     }
 }

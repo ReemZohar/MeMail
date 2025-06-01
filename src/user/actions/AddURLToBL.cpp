@@ -43,6 +43,8 @@ bool AddURLToBL::saveBLToFile() {
         blFile.close();
     }
 
+    std::lock_guard<std::mutex> lock(blMutex);//lock 
+
     //opens the file in writing mode
     blFile.open(bf.getFilePath(), ios::out);
     //file opened successfully scenario
@@ -71,6 +73,7 @@ bool AddURLToBL::saveURLToFile(const string& URL) {
     file.open(bf.getFilePath(), ios::app);
     //file opens successfully scenario
     if(file.is_open()) {
+        std::lock_guard<std::mutex> lock(blMutex);  
         file << URL << endl;
         file.close();
 
