@@ -3,12 +3,12 @@ const mails = []
 
 const { isUrlBlacklisted } = require('./blacklist');
 
-const getAllMails = () => {
-    return mails
-        .slice()
-        .sort((a, b) => b.time - a.time)
-        .slice(0, 50);
-}
+const getAllMailsForUser = (userId) => {
+  return mails
+    .filter(m => m.sender === userId || m.receiver === userId)
+    .sort((a, b) => b.time - a.time)
+    .slice(0, 50);
+};
 
 const sendMail = async (title, content, sender, receiver) => {
   const time = Date.now();
@@ -92,4 +92,4 @@ const searchMails = (query) => {
   );
 }
   
-module.exports = {getAllMails, sendMail, getMailById, updateMail, deleteMail, searchMails}
+module.exports = {getAllMailsForUser, sendMail, getMailById, updateMail, deleteMail, searchMails}

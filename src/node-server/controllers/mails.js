@@ -2,8 +2,9 @@ const mailModel = require('../models/mails'); // mail holds the in-memory model
 
 // Get the 50 most recent mails (sorted by time, newest first)
 exports.getAllMails = (req, res) => {
-    const mails = mailModel.getAllMails();
-    res.status(200).json(mails); // HTTP 200 OK
+    const userId = req.header("user-id");
+    const mails = mailService.getAllMailsForUser(userId);
+    res.status(200).json(mails);
 };
 
 // Send a new mail
