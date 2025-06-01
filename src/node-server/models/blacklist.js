@@ -1,7 +1,7 @@
 const net = require('net');
 
 const SERVER_HOST = '127.0.0.1';
-const SERVER_PORT = 12345;
+const SERVER_PORT = 9090;
 
 class BlacklistClient {
   constructor() {

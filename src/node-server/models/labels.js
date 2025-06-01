@@ -11,7 +11,7 @@ const createLabel = (name) => {
     return newLabel
 }
 
-const getlabelById = (id) => labels.find(l => l.id === id)
+const getLabelById = (id) => labels.find(l => l.id === id)
 
 const updateLabel = (id, name) => {
     const label = labels.find(l => l.id === id)
@@ -28,4 +28,4 @@ const deleteLabel = (id) => {
 }
 
 
-module.exports = {getAlllabels, createlabel, getlabelById, updatelabel, deleteLabel}
+module.exports = {getAllLabels, createLabel, getLabelById, updateLabel, deleteLabel}
