@@ -72,6 +72,9 @@ void Server::handleClient(int client_socket) {
     while (isTakenInput)
     {
         string inputLine = mc.getInput();
+
+        std::cout << "Received command: " << inputLine << std::endl; //todo
+
         shared_ptr<IUserInput> mci1 = make_shared<MenuChoiceInput>(inputLine);
 
         shared_ptr<IAction> actionObj = ActionFactory::create(*bl, mci1);

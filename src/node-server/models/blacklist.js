@@ -1,10 +1,11 @@
 const net = require('net');
 
-const SERVER_HOST = '127.0.0.1';
-const SERVER_PORT = 9090;
+const SERVER_HOST = 'cppserver';
+const SERVER_PORT = 7070;
 
 class BlacklistClient {
   constructor() {
+    console.log('BlacklistClient constructor called'); //todo
     this.client = new net.Socket();
     this.buffer = '';
     this.callbacks = [];
@@ -13,6 +14,7 @@ class BlacklistClient {
   }
 
   connect() {
+    console.log(`Connecting to TCP server at ${SERVER_HOST}:${SERVER_PORT}`); // todo
     this.client.connect(SERVER_PORT, SERVER_HOST, () => {
       this.connected = true;
     });
@@ -32,26 +34,29 @@ class BlacklistClient {
     });
   }
 
-  handleBuffer() {
-    while (this.buffer.includes('\n') && this.callbacks.length > 0) {
-      const index = this.buffer.indexOf('\n');
-      const response = this.buffer.slice(0, index).trim();
-      this.buffer = this.buffer.slice(index + 1);
-      const cb = this.callbacks.shift();
-      cb(response);
-    }
+handleBuffer() {
+  while (this.buffer.includes('\n') && this.callbacks.length > 0) {
+    const index = this.buffer.indexOf('\n');
+    const response = this.buffer.slice(0, index).trim();
+    this.buffer = this.buffer.slice(index + 1);
+    console.log('Received response line:', response);  //todo
+    const cb = this.callbacks.shift();
+    cb(response);
   }
+}
 
-  sendCommand(command) {
-    return new Promise((resolve, reject) => {
-      if (!this.connected) {
-        return reject(new Error('Not connected to blacklist server'));
-      }
-      this.callbacks.push(resolve);
-      this.client.write(command + '\n');
-      this.handleBuffer();
-    });
-  }
+
+sendCommand(command) {
+  return new Promise((resolve, reject) => {
+    if (!this.connected) {
+      return reject(new Error('Not connected to blacklist server'));
+    }
+    console.log('Sending command to C++ server:', command); //todo
+    this.callbacks.push(resolve);
+    this.client.write(command + '\n');
+  });
+}
+
 
   parseResponseLine(line) {
     const match = line.match(/^HTTP\/\d+\.\d+ (\d{3}) (.+)$/);
@@ -61,20 +66,22 @@ class BlacklistClient {
     return line;
   }
 
-  async addToBlackList(url) {
-    const command = `POST ${url} ${url}`;
-    const response = await this.sendCommand(command);
-    const parsedResponse = this.parseResponseLine(response);
+async add(url) {
+  console.log('BlacklistClient.add called with url:', url); //todo
+  const command = `POST ${url}`;
+  const response = await this.sendCommand(command);
+  console.log('Response from C++ server:', response); //todo
+  const parsedResponse = this.parseResponseLine(response);
 
-    if (parsedResponse === '201 Created') {
-      return { url };
-    } else if (parsedResponse === '400 Bad Request') {
-      return null;
-    }
-    throw new Error(`Unexpected response: ${response}`);
+  if (parsedResponse === '201 Created') {
+    return { url };
+  } else if (parsedResponse === '400 Bad Request') {
+    return null;
   }
+  throw new Error(`Unexpected response: ${response}`);
+}
 
-  async remove(url) {
+async remove(url) {
     const command = `DELETE ${url}`;
     const response = await this.sendCommand(command);
     const parsedResponse = this.parseResponseLine(response);
@@ -113,7 +120,7 @@ class BlacklistClient {
 const blacklistClient = new BlacklistClient();
 
 module.exports = {
-  add: (url) => blacklistClient.addToBlackList(url),
+  add: (url) => blacklistClient.add(url),
   remove: (url) => blacklistClient.remove(url),
   isBlacklisted: (url) => blacklistClient.isBlacklisted(url),
 };
