@@ -19,12 +19,13 @@ class BlacklistClient {
 
     this.client.on('data', (data) => {
       this.buffer += data.toString();
-      while (this.buffer.includes('\n\n')) {
-        const [response, ...rest] = this.buffer.split('\n\n');
-        this.buffer = rest.join('\n\n');
+      while (this.buffer.includes('\n')) {
+        const index = this.buffer.indexOf('\n');
+        const response = this.buffer.slice(0, index).trim();
+        this.buffer = this.buffer.slice(index + 1);
         if (this.callbacks.length > 0) {
           const cb = this.callbacks.shift();
-          cb(response.trim());
+          cb(response);
         }
       }
     });
@@ -69,18 +70,27 @@ class BlacklistClient {
     throw new Error(`Unexpected response: ${response}`);
   }
 
-  async isBlacklisted(url) {
-    const command = `GET ${url}`;
-    const response = await this.sendCommand(command);
-    if (response === '200 Ok\n\n1') {
-      return true;
-    } else if (response === '200 Ok\n\n0') {
-      return false;
-    } else if (response === '400 Bad Request') {
-      return null;
-    }
-    throw new Error(`Unexpected response: ${response}`);
+async isBlacklisted(url) {
+  const command = `GET ${url}`;
+  
+  const status = await this.sendCommand(command);  // "200 Ok" או "400 Bad Request"
+
+  if (status === '400 Bad Request') {
+    return null;
   }
+
+  if (status === '200 Ok') {
+    const dataLine = await new Promise((resolve, reject) => {
+      this.callbacks.push(resolve);
+    });
+
+    if (dataLine === '1') return true;
+    if (dataLine === '0') return false;
+
+    throw new Error(`Unexpected second line: ${dataLine}`);
+  }
+  throw new Error(`Unexpected response: ${status}`);
+}
 }
 
 module.exports = new BlacklistClient();
