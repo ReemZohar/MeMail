@@ -3,7 +3,7 @@ const labelModel = require('../models/labels'); // label handles label operation
 // Get all labels
 exports.getAllLabels = (req, res) => {
     const userId = req.header("user-id");
-    const labels = labelService.getAllLabelsForUser(userId);
+    const labels = labelModel.getAllLabelsForUser(userId);
     res.status(200).json(labels);
 };
 
@@ -16,7 +16,7 @@ exports.createLabel = (req, res) => {
         return res.status(400).json({ error: 'Name is required' });
     }
 
-    const label = labelService.createLabel(name, userId);
+    const label = labelModel.createLabel(name, userId);
     res.status(201).location(`/api/labels/${label.id}`).send();
 };
 
