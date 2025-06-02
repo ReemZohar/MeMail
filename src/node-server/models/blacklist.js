@@ -19,15 +19,7 @@ class BlacklistClient {
 
     this.client.on('data', (data) => {
       this.buffer += data.toString();
-      while (this.buffer.includes('\n')) {
-        const index = this.buffer.indexOf('\n');
-        const response = this.buffer.slice(0, index).trim();
-        this.buffer = this.buffer.slice(index + 1);
-        if (this.callbacks.length > 0) {
-          const cb = this.callbacks.shift();
-          cb(response);
-        }
-      }
+      this.handleBuffer();
     });
 
     this.client.on('error', (err) => {
@@ -40,6 +32,16 @@ class BlacklistClient {
     });
   }
 
+  handleBuffer() {
+    while (this.buffer.includes('\n') && this.callbacks.length > 0) {
+      const index = this.buffer.indexOf('\n');
+      const response = this.buffer.slice(0, index).trim();
+      this.buffer = this.buffer.slice(index + 1);
+      const cb = this.callbacks.shift();
+      cb(response);
+    }
+  }
+
   sendCommand(command) {
     return new Promise((resolve, reject) => {
       if (!this.connected) {
@@ -47,15 +49,26 @@ class BlacklistClient {
       }
       this.callbacks.push(resolve);
       this.client.write(command + '\n');
+      this.handleBuffer();
     });
   }
 
-  async add(url) {
+  parseResponseLine(line) {
+    const match = line.match(/^HTTP\/\d+\.\d+ (\d{3}) (.+)$/);
+    if (match) {
+      return `${match[1]} ${match[2]}`;
+    }
+    return line;
+  }
+
+  async addToBlackList(url) {
     const command = `POST ${url} ${url}`;
     const response = await this.sendCommand(command);
-    if (response === '201 Created') {
+    const parsedResponse = this.parseResponseLine(response);
+
+    if (parsedResponse === '201 Created') {
       return { url };
-    } else if (response === '400 Bad Request') {
+    } else if (parsedResponse === '400 Bad Request') {
       return null;
     }
     throw new Error(`Unexpected response: ${response}`);
@@ -64,33 +77,43 @@ class BlacklistClient {
   async remove(url) {
     const command = `DELETE ${url}`;
     const response = await this.sendCommand(command);
-    if (response === '204 No Content') return true;
-    if (response === '404 Not Found') return false;
-    if (response === '400 Bad Request') throw new Error('Bad request');
+    const parsedResponse = this.parseResponseLine(response);
+
+    if (parsedResponse === '204 No Content') return true;
+    if (parsedResponse === '404 Not Found') return false;
+    if (parsedResponse === '400 Bad Request') throw new Error('Bad request');
     throw new Error(`Unexpected response: ${response}`);
   }
 
-async isBlacklisted(url) {
-  const command = `GET ${url}`;
-  
-  const status = await this.sendCommand(command);  // "200 Ok" או "400 Bad Request"
+  async isBlacklisted(url) {
+    const command = `GET ${url}`;
+    const status = await this.sendCommand(command);
+    const parsedStatus = this.parseResponseLine(status);
 
-  if (status === '400 Bad Request') {
-    return null;
+    if (parsedStatus === '400 Bad Request') {
+      return null;
+    }
+
+    if (parsedStatus === '200 Ok') {
+      const dataLine = await new Promise((resolve) => {
+        this.callbacks.push(resolve);
+        this.handleBuffer(); // לוודא קריאת שורה שניה
+      });
+
+      if (dataLine === '1') return true;
+      if (dataLine === '0') return false;
+
+      throw new Error(`Unexpected second line: ${dataLine}`);
+    }
+
+    throw new Error(`Unexpected response: ${status}`);
   }
-
-  if (status === '200 Ok') {
-    const dataLine = await new Promise((resolve, reject) => {
-      this.callbacks.push(resolve);
-    });
-
-    if (dataLine === '1') return true;
-    if (dataLine === '0') return false;
-
-    throw new Error(`Unexpected second line: ${dataLine}`);
-  }
-  throw new Error(`Unexpected response: ${status}`);
-}
 }
 
-module.exports = new BlacklistClient();
+const blacklistClient = new BlacklistClient();
+
+module.exports = {
+  add: (url) => blacklistClient.addToBlackList(url),
+  remove: (url) => blacklistClient.remove(url),
+  isBlacklisted: (url) => blacklistClient.isBlacklisted(url),
+};

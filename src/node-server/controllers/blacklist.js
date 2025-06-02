@@ -10,9 +10,11 @@ exports.addToBlacklist = async (req, res) => {
         await blacklistModel.add(url);
         res.status(201).send(); // no ID or Location
     } catch (error) {
+        console.error('Blacklist add error:', error); // ← חשוב
         res.status(500).json({ error: 'Failed to add to blacklist\n' });
     }
 };
+
 
 // Remove a blacklisted URL by URL (not ID)
 exports.removeFromBlacklist = async (req, res) => {
@@ -27,6 +29,7 @@ exports.removeFromBlacklist = async (req, res) => {
         }
         res.status(204).send();
     } catch (error) {
+        console.error('Remove from blacklist error:', error);
         res.status(500).json({ error: 'Failed to remove from blacklist\n' });
     }
 };
