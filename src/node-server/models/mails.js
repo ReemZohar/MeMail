@@ -5,7 +5,7 @@ const { isUrlBlacklisted } = require('./blacklist');
 
 const getAllMailsForUser = (userId) => {
   return mails
-    .filter(m => m.sender === userId || m.receiver === userId)
+    .filter(m => (m.sender === userId && m.folder === 'sent')|| (m.receiver === userId && m.folder === 'inbox'))
     .sort((a, b) => b.time - a.time)
     .slice(0, 50);
 };

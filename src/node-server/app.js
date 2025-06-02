@@ -10,7 +10,7 @@ app.use('/api', apiRoutes);
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ error: 'Not Found' });
+  res.status(404).json({ error: 'Not Found\n' });
 });
 
 app.listen(PORT, () => {
