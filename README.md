@@ -87,36 +87,36 @@ This design makes the client modular and easy to extend or replace and the inter
 
 ---
 
-### Build & Run Instructions
+### Build & Run Instructions (using WSL Linux)
 
-**Build C++ Server with Docker:**
+**Build and run C++ Server with Docker:**
 
 ```bash
-docker network create serverclientnet
+docker network create network
 cd src
 docker build -t program .
-docker run -it --rm --network serverclientnet --name cppserver -v "$((Resolve-Path ..\data).ProviderPath):/data" program ./runProg <port> <bloom filter size> <hash>
+docker run -it --name cppserver --network network -p 7070:7070 -v "$(realpath ../data):/data" program ./runProg 7070 <bloom filter size> <hash> <hash> ...
 ```
-**Run Python Client:**
+**Build and run Node.js Server with Docker:**
 
 ```bash
-docker network create serverclientnet
-docker build -t pyclient src/client
-docker run -it --rm --network serverclientnet pyclient cppserver <port>
+cd src/node-server
+docker build -t node-server .
+docker run -it --name nodejs --network network -p 9090:9090 node-server
 ```
 
 #### For Example:
 ```bash
-docker network create serverclientnet
+docker network create network
 cd src
 docker build -t program .
-docker run -it --rm --network serverclientnet --name cppserver -v "$((Resolve-Path ..\data).ProviderPath):/data" program ./runProg 9090 8 1 2
+docker run -it --name cppserver --network network -p 7070:7070 -v "$(realpath ../data):/data" program ./runProg 7070 8 1 2
 ```
 
 ```bash
-docker build -t pyclient src/client
-# Run the client with target IP and port
-docker run -it --rm --network serverclientnet pyclient cppserver 9090
+cd src/node-server
+docker build -t node-server .
+docker run -it --name nodejs --network network -p 9090:9090 node-server
 ```
 
 *Example explanation:*  
