@@ -266,23 +266,22 @@ curl -i -X POST http://localhost:9090/api/users \
 ##### → 201 Created
 
 
-  * *Example 1:*
 #### Send mail
 ```bash
-curl -X POST http://localhost:3000/api/mails -H "Content-Type: application/json" \
+curl -X POST http://localhost:9090/api/mails -H "Content-Type: application/json" \
 -d '{"title": "Hi", "content": "Hello", "sender": "1", "receiver": "2"}'
 ```
 ##### → 201 Created
 
 #### Get mail by ID
 ```bash
-curl -X GET http://localhost:3000/api/mails/1
+curl -X GET http://localhost:9090/api/mails/1
 ```
 ##### → 200 OK with mail JSON
 
 #### Get all mails
 ```bash
-curl -X GET http://localhost:3000/api/mails -H "user-id: 1"
+curl -X GET http://localhost:9090/api/mails -H "user-id: 1"
 ```
 ##### → 200 OK with mail list
 
@@ -290,38 +289,38 @@ curl -X GET http://localhost:3000/api/mails -H "user-id: 1"
   * *Example 2 - Mails Operations:*
 #### Send mail
 ```bash
-curl -X POST http://localhost:3000/api/mails -H "Content-Type: application/json" \
+curl -X POST http://localhost:9090/api/mails -H "Content-Type: application/json" \
 -d '{"title": "Mail", "content": "Body", "sender": "1", "receiver": "2"}'
 ```
 ##### → 201 Created
 
 #### Get mail by ID
 ```bash
-curl -X GET http://localhost:3000/api/mails/1
+curl -X GET http://localhost:9090/api/mails/1
 ```
 ##### → 200 OK
 
 #### Patch mail
 ```bash
-curl -X PATCH http://localhost:3000/api/mails/1 -H "Content-Type: application/json" \
+curl -X PATCH http://localhost:9090/api/mails/1 -H "Content-Type: application/json" \
 -d '{"title": "Updated Title"}'
 ```
 ##### → 204 No Content
 
 #### Delete mail
 ```bash
-curl -X DELETE http://localhost:3000/api/mails/1
+curl -X DELETE http://localhost:9090/api/mails/1
 ```
 ##### → 204 No Content
 
 #### Search mails
 ```bash
-curl -X GET http://localhost:3000/api/mails/search/hello
+curl -X GET http://localhost:9090/api/mails/search/hello
 ```
 ##### → 200 OK with results
 
 ```bash
-curl -X GET http://localhost:3000/api/mails/search/world
+curl -X GET http://localhost:9090/api/mails/search/world
 ```
 ##### → 200 OK with results
 
@@ -329,21 +328,21 @@ curl -X GET http://localhost:3000/api/mails/search/world
   * *Example 3 - Labels Operations:*
 #### Create label
 ```bash
-curl -X POST http://localhost:3000/api/labels -H "Content-Type: application/json" \
+curl -X POST http://localhost:9090/api/labels -H "Content-Type: application/json" \
 -H "user-id: 1" -d '{"name": "Work"}'
 ```
 ##### → 201 Created with Location header
 
 #### Update label
 ```bash
-curl -X PATCH http://localhost:3000/api/labels/1 -H "Content-Type: application/json" \
+curl -X PATCH http://localhost:9090/api/labels/1 -H "Content-Type: application/json" \
 -d '{"name": "Updated Label"}'
 ```
 ##### → 204 No Content
 
 #### Delete label
 ```bash
-curl -X DELETE http://localhost:3000/api/labels/1
+curl -X DELETE http://localhost:9090/api/labels/1
 ```
 ##### → 204 No Content
 
@@ -351,28 +350,28 @@ curl -X DELETE http://localhost:3000/api/labels/1
   * *Example 4 - Blacklist Operations:*
 #### Add URL to blacklist
 ```bash
-curl -X POST http://localhost:3000/api/blacklist -H "Content-Type: application/json" \
+curl -X POST http://localhost:9090/api/blacklist -H "Content-Type: application/json" \
 -d '{"url": "http://bad.com"}'
 ```
 ##### → 201 Created
 
 #### Try sending mail with blacklisted URL
 ```bash
-curl -X POST http://localhost:3000/api/mails -H "Content-Type: application/json" \
+curl -X POST http://localhost:9090/api/mails -H "Content-Type: application/json" \
 -d '{"title": "Spam", "content": "Visit http://bad.com", "sender": "1", "receiver": "2"}'
 ```
 ##### → 400 Bad Request – Mail contains blacklisted URL
 
 #### Remove URL from blacklist
 ```bash
-curl -X DELETE http://localhost:3000/api/blacklist -H "Content-Type: application/json" \
+curl -X DELETE http://localhost:9090/api/blacklist -H "Content-Type: application/json" \
 -d '{"url": "http://bad.com"}'
 ```
 ##### → 204 No Content
 
 #### Retry sending mail with removed URL
 ```bash
-curl -X POST http://localhost:3000/api/mails -H "Content-Type: application/json" \
+curl -X POST http://localhost:9090/api/mails -H "Content-Type: application/json" \
 -d '{"title": "Spam", "content": "Visit http://bad.com", "sender": "1", "receiver": "2"}'
 ```
 ##### → 201 Created
@@ -381,20 +380,20 @@ curl -X POST http://localhost:3000/api/mails -H "Content-Type: application/json"
  * *Example 5 – Edge Cases:*
 #### Missing fields
 ```bash
-curl -X POST http://localhost:3000/api/mails -H "Content-Type: application/json" -d '{}'
+curl -X POST http://localhost:9090/api/mails -H "Content-Type: application/json" -d '{}'
 ```
 ##### → 400 Bad Request – Missing required fields
 
 #### Invalid user
 ```bash
-curl -X POST http://localhost:3000/api/mails -H "Content-Type: application/json" \
+curl -X POST http://localhost:9090/api/mails -H "Content-Type: application/json" \
 -d '{"title": "Hello", "content": "test", "sender": "999", "receiver": "2"}'
 ```
 ##### → 404 Not Found – Sender or receiver not found
 
 #### Blacklisted URL (again)
 ```bash
-curl -X POST http://localhost:3000/api/mails -H "Content-Type: application/json" \
+curl -X POST http://localhost:9090/api/mails -H "Content-Type: application/json" \
 -d '{"title": "Hey", "content": "http://bad.com", "sender": "1", "receiver": "2"}'
 ```
 ##### → 400 Bad Request – Mail contains blacklisted URL
