@@ -65,12 +65,6 @@ The project is built using the MVC architecture and exposes a full-featured API 
 ---
 
 ## Running Instructions
-
-```bash
-
-npm install
-npm start
-```
 **Build and run C++ Server with Docker:**
 
 ```bash
