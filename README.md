@@ -100,7 +100,9 @@ docker run -it --name nodejs --network network -p 9090:9090 node-server
 
 
 
-> **Note:** Please make sure to start the **server** before the **client**, so that the server is ready and listening for incoming requests. And then open a new terminal to put commands in curl format.
+> **Note:**
+> 1. Please make sure to start the **server** before the **client**, so that the server is ready and listening for incoming requests. And then open a new terminal to put commands in curl format.
+> 2. Please pay attention to run the C++ server on port 7070 because the node.js sends the requests to this port.
 
 **Build and run tests from exercise 1+2:**
 ```bash
