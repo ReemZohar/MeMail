@@ -1,4 +1,4 @@
-![edge cases 5](https://github.com/user-attachments/assets/c4857ee9-18a3-40e3-adf7-a41e756f821c)#  Gmail-like REST API – Assignment 3
+#  Gmail-like REST API – Assignment 3
 
 ## System Overview
 This project implements a modular, RESTful backend in Node.js and Express that simulates a Gmail-like interface. It integrates with a C++ server from Assignment 2 using TCP sockets for real-time blacklist validation.
@@ -222,6 +222,7 @@ TODO: ask lian if delete the above examples
 
   ![edge cases 5](https://github.com/user-attachments/assets/f6e41d79-6442-4db1-8bba-31119ac8d97d)
   Another test with missing required fields. Status 400 Bad Request.
+
 
 ### 2. Running Examples (text):
 
