@@ -111,10 +111,6 @@ docker build -t url-bl-checker .
 docker run -it --rm url-bl-checker ./runTests
 ```
 
-### Requirements:
-- C++ blacklist server must be running (`localhost:<PORT>`) before Node server starts.
-- Port should match the one expected in `blacklist.js` in the models folder
-
 ---
 
 ## Notes
