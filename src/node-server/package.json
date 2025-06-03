@@ -1,0 +1,23 @@
+{
+  "name": "advanced-programming---gmail-repository-1",
+  "version": "1.0.0",
+  "description": "This project implements a modular URL blacklisting system based on hash functions and an extendable architecture. \r The system filters URLs repeatable hash functions and a persistent blacklist file. In this sprint, the system was expanded to support:",
+  "main": "index.js",
+  "scripts": {
+  "start": "node src/node-server/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liany2/Advanced-Programming---Gmail-Repository.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/liany2/Advanced-Programming---Gmail-Repository/issues"
+  },
+  "homepage": "https://github.com/liany2/Advanced-Programming---Gmail-Repository#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

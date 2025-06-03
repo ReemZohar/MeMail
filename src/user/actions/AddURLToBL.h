@@ -13,6 +13,7 @@
 #include <string>
 #include <filesystem>
 #include <vector>
+#include <mutex>
 
 namespace fs = std::filesystem;
 
@@ -33,6 +34,8 @@ class AddURLToBL : public IAction {
     private:
     BloomFilter& bf;
     std::string message = "201 Created\n";
+    std::mutex blMutex; //for locking in threads
+
 };
 
 #endif

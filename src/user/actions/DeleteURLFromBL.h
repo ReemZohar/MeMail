@@ -32,6 +32,7 @@ class DeleteURLFromBL : public IAction {
     BloomFilter& bf;
     std::string message;
     bool validDel;
+    std::mutex blMutex; //for locking in threads
 
     //returns true if a URL is in our bloomfilter's URL list and false otherwise
     bool isURLInBL(std::string url);

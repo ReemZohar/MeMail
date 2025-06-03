@@ -1,4 +1,5 @@
 #include "Server.h"
+#include <thread>
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -71,6 +72,7 @@ void Server::handleClient(int client_socket) {
     while (isTakenInput)
     {
         string inputLine = mc.getInput();
+
         shared_ptr<IUserInput> mci1 = make_shared<MenuChoiceInput>(inputLine);
 
         shared_ptr<IAction> actionObj = ActionFactory::create(*bl, mci1);
@@ -107,7 +109,7 @@ void Server::run() {
     while (true) {
         int client_socket = acceptClient();
         if (client_socket >= 0) {
-            handleClient(client_socket);
+            std::thread(&Server::handleClient, this, client_socket).detach();
         }
     }
 }
