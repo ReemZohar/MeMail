@@ -159,166 +159,218 @@ TODO: ask lian if delete the above examples
     ![valid ex 1](https://github.com/user-attachments/assets/c644001d-47ad-4245-9976-5c03b9c4d6c0)
     Sending a valid mail. Response shows status 201 Created, indicating the mail was successfully sent.
 
+
     ![valid ex 2](https://github.com/user-attachments/assets/cd4e6af5-28d3-4a5e-aa79-91a98ca5ece8)
     Fetching a mail by ID. Response shows status 200 OK with the mail content, confirming successful retrieval.
+
 
     ![valid ex 3](https://github.com/user-attachments/assets/f794f897-329a-49b5-9b50-50974d235a07)
     Retrieving all mails for a user. Response is 200 OK with a list of mails.
 
 
+
   * *Example 2 - Mails Operations:*
-  ![mails check 1](https://github.com/user-attachments/assets/212cbb90-4347-4299-b404-11f95d603592)
-  Sending a mail with all required fields. Status 201 Created confirms success.
+    ![mails check 1](https://github.com/user-attachments/assets/212cbb90-4347-4299-b404-11f95d603592)
+    Sending a mail with all required fields. Status 201 Created confirms success.
 
-  ![mails check 2](https://github.com/user-attachments/assets/279755ae-f879-4c3e-9d25-09da19a65190)
-  Fetching a specific mail by ID. Status 200 OK confirms the mail exists and was retrieved.
-  
-  ![mails check 3- patch](https://github.com/user-attachments/assets/be78dfb2-65ac-4230-825e-940789bbf8e6)
-  Updating an existing mail (title/content). Status 204 No Content confirms the update succeeded.
-  
-  ![mails check 4 - DELETE](https://github.com/user-attachments/assets/5370577f-b9e0-44c9-8685-6a6de48de152)
-  Deleting a mail by ID. Status 204 No Content indicates successful deletion.
 
-  ![mails check 5 - search](https://github.com/user-attachments/assets/a353755a-8213-40ae-9ce6-b7a38643206a)
-  Searching mails with a keyword. Status 200 OK with matching results.
+    ![mails check 2](https://github.com/user-attachments/assets/279755ae-f879-4c3e-9d25-09da19a65190)
+    Fetching a specific mail by ID. Status 200 OK confirms the mail exists and was retrieved.
 
-  ![mails check 6 - search](https://github.com/user-attachments/assets/e37a0d80-a038-426a-8190-0ceb9ba040cf)
-  Another search query. Status 200 OK with relevant results.
+
+    ![mails check 3- patch](https://github.com/user-attachments/assets/be78dfb2-65ac-4230-825e-940789bbf8e6)
+    Updating an existing mail (title/content). Status 204 No Content confirms the update succeeded.
+
+
+    ![mails check 4 - DELETE](https://github.com/user-attachments/assets/5370577f-b9e0-44c9-8685-6a6de48de152)
+    Deleting a mail by ID. Status 204 No Content indicates successful deletion.
+
+
+    ![mails check 5 - search](https://github.com/user-attachments/assets/a353755a-8213-40ae-9ce6-b7a38643206a)
+    Searching mails with a keyword. Status 200 OK with matching results.
+
+
+    ![mails check 6 - search](https://github.com/user-attachments/assets/e37a0d80-a038-426a-8190-0ceb9ba040cf)
+    Another search query. Status 200 OK with relevant results.
 
 
   * *Example 3 - Labels Operations:*
-  ![labels 1](https://github.com/user-attachments/assets/aa8a3f52-2307-4e4d-81f2-1a4c53a4c7f6)
-  Creating a label for a user. Status 201 Created with a Location header for the new label.
+    ![labels 1](https://github.com/user-attachments/assets/aa8a3f52-2307-4e4d-81f2-1a4c53a4c7f6)
+    Creating a label for a user. Status 201 Created with a Location header for the new label.
 
-  ![labels 2-PATCH](https://github.com/user-attachments/assets/1311d63b-13b0-4929-ae9c-ec4968e11252)
-  Updating a label name. Status 204 No Content confirms a successful update.
 
-  ![labels 3-DELETE](https://github.com/user-attachments/assets/edf56b58-2288-415e-a4bb-a556f5290bd7)
-  Deleting a label. Status 204 No Content confirms successful deletion.
+    ![labels 2-PATCH](https://github.com/user-attachments/assets/1311d63b-13b0-4929-ae9c-ec4968e11252)
+    Updating a label name. Status 204 No Content confirms a successful update.
+
+
+    ![labels 3-DELETE](https://github.com/user-attachments/assets/edf56b58-2288-415e-a4bb-a556f5290bd7)
+    Deleting a label. Status 204 No Content confirms successful deletion.
 
 
   * *Example 4 - Blacklist Operations:*
-  ![adding url to blacklist and send mail](https://github.com/user-attachments/assets/e10965e6-1a00-4e39-b25e-f3a808b0e803)
-  Adding a URL to the blacklist and then trying to send a mail containing it. Status 400 Bad Request due to blacklisted content.
+    ![adding url to blacklist and send mail](https://github.com/user-attachments/assets/e10965e6-1a00-4e39-b25e-f3a808b0e803)
+    Adding a URL to the blacklist and then trying to send a mail containing it. Status 400 Bad Request due to blacklisted content.
 
-  ![image](https://github.com/user-attachments/assets/daba14e2-6ed0-4722-a581-d021053d9366)
-  Removing the URL from the blacklist and sending the mail again. Status 201 Created confirms success.
 
-  ![blacklist cont](https://github.com/user-attachments/assets/b00307af-7a07-42fb-826d-48db2d7bf32b)
-  Continuation: mail successfully sent after URL was removed from the blacklist.
+    ![image](https://github.com/user-attachments/assets/daba14e2-6ed0-4722-a581-d021053d9366)
+    Removing the URL from the blacklist and sending the mail again. Status 201 Created confirms success.
+
+
+    ![blacklist cont](https://github.com/user-attachments/assets/b00307af-7a07-42fb-826d-48db2d7bf32b)
+    Continuation: mail successfully sent after URL was removed from the blacklist.
 
 
  * *Example 5 – Edge Cases:*
    ![edge cases 1](https://github.com/user-attachments/assets/ee6bc648-5dc5-4ad1-afe0-3f34fd494ba9)
-  Sending mail with missing fields (e.g., no content or title). Status 400 Bad Request.
+   Sending mail with missing fields (e.g., no content or title). Status 400 Bad Request.
 
-  ![edge cases 2](https://github.com/user-attachments/assets/37f1ec4d-c728-4d9b-8fb7-320bd90d7525)
-  Sending mail with non-existing sender or receiver. Status 404 Not Found.
 
-  ![edge cases 3](https://github.com/user-attachments/assets/e6b7f11b-2e48-4e49-9694-bf0fcb913ecf)
-  Sending mail with a blacklisted URL. Status 400 Bad Request.
+   ![edge cases 2](https://github.com/user-attachments/assets/37f1ec4d-c728-4d9b-8fb7-320bd90d7525)
+   Sending mail with non-existing sender or receiver. Status 404 Not Found.
 
-  ![edge cases 4](https://github.com/user-attachments/assets/92cb2969-6fae-4b87-a581-35fd3b4b1a26)
-  Again, sending mail with invalid user IDs. Status 404 Not Found.
 
-  ![edge cases 5](https://github.com/user-attachments/assets/f6e41d79-6442-4db1-8bba-31119ac8d97d)
-  Another test with missing required fields. Status 400 Bad Request.
+   ![edge cases 3](https://github.com/user-attachments/assets/e6b7f11b-2e48-4e49-9694-bf0fcb913ecf)
+   Sending mail with a blacklisted URL. Status 400 Bad Request.
+
+
+   ![edge cases 4](https://github.com/user-attachments/assets/92cb2969-6fae-4b87-a581-35fd3b4b1a26)
+   Again, sending mail with invalid user IDs. Status 404 Not Found.
+
+
+   ![edge cases 5](https://github.com/user-attachments/assets/f6e41d79-6442-4db1-8bba-31119ac8d97d)
+   Another test with missing required fields. Status 400 Bad Request.
 
 
 ### 2. Running Examples (text):
 
   * *Example 1:*
 # Send mail
+```bash
 curl -X POST http://localhost:3000/api/mails -H "Content-Type: application/json" \
 -d '{"title": "Hi", "content": "Hello", "sender": "1", "receiver": "2"}'
+```
 # → 201 Created
 
 # Get mail by ID
+```bash
 curl -X GET http://localhost:3000/api/mails/1
+```
 # → 200 OK with mail JSON
 
 # Get all mails
+```bash
 curl -X GET http://localhost:3000/api/mails -H "user-id: 1"
+```
 # → 200 OK with mail list
 
 
   * *Example 2 - Mails Operations:*
 # Send mail
+```bash
 curl -X POST http://localhost:3000/api/mails -H "Content-Type: application/json" \
 -d '{"title": "Mail", "content": "Body", "sender": "1", "receiver": "2"}'
+```
 # → 201 Created
 
 # Get mail by ID
+```bash
 curl -X GET http://localhost:3000/api/mails/1
+```
 # → 200 OK
 
 # Patch mail
+```bash
 curl -X PATCH http://localhost:3000/api/mails/1 -H "Content-Type: application/json" \
 -d '{"title": "Updated Title"}'
+```
 # → 204 No Content
 
 # Delete mail
+```bash
 curl -X DELETE http://localhost:3000/api/mails/1
+```
 # → 204 No Content
 
 # Search mails
+```bash
 curl -X GET http://localhost:3000/api/mails/search/hello
 # → 200 OK with results
 curl -X GET http://localhost:3000/api/mails/search/world
+```
 # → 200 OK with results
 
 
   * *Example 3 - Labels Operations:*
 # Create label
+```bash
 curl -X POST http://localhost:3000/api/labels -H "Content-Type: application/json" \
 -H "user-id: 1" -d '{"name": "Work"}'
+```
 # → 201 Created with Location header
 
 # Update label
+```bash
 curl -X PATCH http://localhost:3000/api/labels/1 -H "Content-Type: application/json" \
 -d '{"name": "Updated Label"}'
+```
 # → 204 No Content
 
 # Delete label
+```bash
 curl -X DELETE http://localhost:3000/api/labels/1
+```
 # → 204 No Content
 
 
   * *Example 4 - Blacklist Operations:*
 # Add URL to blacklist
+```bash
 curl -X POST http://localhost:3000/api/blacklist -H "Content-Type: application/json" \
 -d '{"url": "http://bad.com"}'
+```
 # → 201 Created
 
 # Try sending mail with blacklisted URL
+```bash
 curl -X POST http://localhost:3000/api/mails -H "Content-Type: application/json" \
 -d '{"title": "Spam", "content": "Visit http://bad.com", "sender": "1", "receiver": "2"}'
+```
 # → 400 Bad Request – Mail contains blacklisted URL
 
 # Remove URL from blacklist
+```bash
 curl -X DELETE http://localhost:3000/api/blacklist -H "Content-Type: application/json" \
 -d '{"url": "http://bad.com"}'
+```
 # → 204 No Content
 
 # Retry sending mail with removed URL
+```bash
 curl -X POST http://localhost:3000/api/mails -H "Content-Type: application/json" \
 -d '{"title": "Spam", "content": "Visit http://bad.com", "sender": "1", "receiver": "2"}'
+```
 # → 201 Created
 
 
  * *Example 5 – Edge Cases:*
 # Missing fields
+```bash
 curl -X POST http://localhost:3000/api/mails -H "Content-Type: application/json" -d '{}'
+```
 # → 400 Bad Request – Missing required fields
 
 # Invalid user
+```bash
 curl -X POST http://localhost:3000/api/mails -H "Content-Type: application/json" \
 -d '{"title": "Hello", "content": "test", "sender": "999", "receiver": "2"}'
+```
 # → 404 Not Found – Sender or receiver not found
 
 # Blacklisted URL (again)
+```bash
 curl -X POST http://localhost:3000/api/mails -H "Content-Type: application/json" \
 -d '{"title": "Hey", "content": "http://bad.com", "sender": "1", "receiver": "2"}'
+```
 # → 400 Bad Request – Mail contains blacklisted URL
 
 
