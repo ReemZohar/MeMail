@@ -66,10 +66,10 @@ This design makes the client modular and easy to extend or replace and the inter
 
 ### HTML Server (Node.js)
 1. explanation:
- * A multi-threaded web server built with Node.js using the MVC architecture.
+* A multi-threaded web server built with Node.js using the MVC architecture.
 * Exposes a RESTful API for managing users, tokens, emails, labels, and blacklist URLs.
-  * Communicates with the C++ TCP server over a persistent socket to validate URLs in emails.
-  * Supports user registration, login, email operations, labeling, searching, and blacklist management.
+* Communicates with the C++ TCP server over a persistent socket to validate URLs in emails.
+* Supports user registration, login, email operations, labeling, searching, and blacklist management.
 
 2. files:
 * `App.js`: Entry point that starts the Node.js server and establishes TCP connection to the C++ server.
