@@ -18,7 +18,8 @@ The project is built using the MVC architecture and exposes a full-featured API 
 - Full CRUD API for labels, mails, and users
 - URL-based blacklist filtering through TCP communication with C++ server
 - Error handling and proper HTTP status codes
-
+- JSON is the standard format for all API requests/responses
+- SOLID principles and modular code structure maintained
 ---
 
 ## API Endpoints
@@ -110,14 +111,6 @@ cd src
 docker build -t url-bl-checker .
 docker run -it --rm url-bl-checker ./runTests
 ```
-
----
-
-## Notes
-- JSON is the standard format for all API requests/responses
-- There is no DB; in-memory logic only
-- SOLID principles and modular code structure maintained
-- Errors returned in `{ error: "..." }` format
 
 ---
 
