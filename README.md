@@ -251,6 +251,20 @@ curl -X DELETE http://localhost:3000/api/blacklist \
 
 
 ### 2. Running Examples (text):
+#### Create user
+```bash
+curl -i -X POST http://localhost:9090/api/users \
+-H "Content-Type: application/json" \
+-d '{"username": "noa", "password": "1234", "name": "Noa"}'
+```
+##### → 201 Created
+```bash
+curl -i -X POST http://localhost:9090/api/users \
+-H "Content-Type: application/json" \
+-d '{"username": "lian", "password": "1234", "name": "Lian"}'
+```
+##### → 201 Created
+
 
   * *Example 1:*
 #### Send mail
