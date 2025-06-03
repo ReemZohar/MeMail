@@ -52,7 +52,7 @@ It’s implemented using Python sockets and follows an interface (`IClient`) to 
      * Loops to read user input, sends it to the server, and prints the server's response.
 This design makes the client modular and easy to extend or replace and the interface ensures any new implementation will be compatible with the existing structure.---
 
-### Server (C++)
+### TCP Server (C++)
 1. explanation:
   * Receives and handles commands via TCP socket from the client.
   * Delegates logic to `ActionFactory` using `IAction` classes (`AddURLToBL`, `CheckURLInBL`, `DeleteURLFromBL`).
@@ -63,6 +63,21 @@ This design makes the client modular and easy to extend or replace and the inter
   * `BloomFilter.cpp/h`: Core blacklist logic
   * `ActionFactory.cpp/h`: Dispatches actions
 > **Note:** This project uses IPv4.
+
+### HTML Server (Node.js)
+1. explanation:
+   * A multi-threaded web server built with Node.js using the MVC architecture.
+   * Exposes a RESTful API for managing users, tokens, emails, labels, and blacklist URLs.
+   * Communicates with the C++ TCP server over a persistent socket to validate URLs in emails.
+   * Supports user registration, login, email operations, labeling, searching, and blacklist management.
+
+2. files:
+   * `App.js`: Entry point that starts the Node.js server and establishes TCP connection to the C++ server.
+   * `routes/`: Defines route handlers for /api/users, /api/mails, /api/labels, /api/blacklist, and /api/tokens.
+   * `controllers/`: Implements business logic for each route
+   * `models/`: In-memory data structures and helper functions to manage users, mails, and labels.
+   * `models/blacklist.js`: Manages communication with the TCP server to check/add/delete blacklist URLs.
+
 ---
 
 ### Input/Output Flow
