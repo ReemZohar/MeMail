@@ -25,25 +25,25 @@ The project was built to be as similar as possible to real email apps and how th
 - SOLID principles and modular code structure maintained
 ---
 ### TCP Server (C++)
-1. explanation:
+1. Explanation:
   * Receives and handles commands via TCP socket from the client.
   * Delegates logic to `ActionFactory` using `IAction` classes (`AddURLToBL`, `CheckURLInBL`, `DeleteURLFromBL`).
   * Maintains the blacklist in-memory and on disk.
 
-2. files:
+2. Files:
   * `Server.cpp/h`: Socket handling, request loop
   * `BloomFilter.cpp/h`: Core blacklist logic
   * `ActionFactory.cpp/h`: Dispatches actions
 > **Note:** This project uses IPv4.
 
 ### HTML Server (Node.js)
-1. explanation:
+1. Explanation:
 * A multi-threaded web server built with Node.js using the MVC architecture.
 * Exposes a RESTful API for managing users, tokens, emails, labels, and blacklist URLs.
 * Communicates with the C++ TCP server over a persistent socket to validate URLs in emails.
 * Supports user registration, login, email operations, labeling, searching, and blacklist management.
 
-2. files:
+2. Files:
 * `App.js`: Entry point that starts the Node.js server and establishes TCP connection to the C++ server.
 * `routes/`: Defines route handlers for /api/users, /api/mails, /api/labels, /api/blacklist, and /api/tokens.
 * `controllers/`: Implements business logic for each route
