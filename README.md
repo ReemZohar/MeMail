@@ -167,24 +167,21 @@ TODO: ask lian if delete the above examples
 
 
   * *Example 2 - Mails Operations:*
-  ![mails check 1](https://github.com/user-attachments/assets/212cbb90-4347-4299-b404-11f95d603592)
+  * ![mails check 1](https://github.com/user-attachments/assets/212cbb90-4347-4299-b404-11f95d603592)
   Sending a mail with all required fields. Status 201 Created confirms success.
-
-  ![mails check 2](https://github.com/user-attachments/assets/279755ae-f879-4c3e-9d25-09da19a65190)
+  * ![mails check 2](https://github.com/user-attachments/assets/279755ae-f879-4c3e-9d25-09da19a65190)
   Fetching a specific mail by ID. Status 200 OK confirms the mail exists and was retrieved.
-
-  ![mails check 3- patch](https://github.com/user-attachments/assets/be78dfb2-65ac-4230-825e-940789bbf8e6)
+  * ![mails check 3- patch](https://github.com/user-attachments/assets/be78dfb2-65ac-4230-825e-940789bbf8e6)
   Updating an existing mail (title/content). Status 204 No Content confirms the update succeeded.
-
-  ![mails check 4 - DELETE](https://github.com/user-attachments/assets/5370577f-b9e0-44c9-8685-6a6de48de152)
+  * ![mails check 4 - DELETE](https://github.com/user-attachments/assets/5370577f-b9e0-44c9-8685-6a6de48de152)
   Deleting a mail by ID. Status 204 No Content indicates successful deletion.
 
   ![mails check 5 - search](https://github.com/user-attachments/assets/a353755a-8213-40ae-9ce6-b7a38643206a)
   Searching mails with a keyword. Status 200 OK with matching results.
 
-
   ![mails check 6 - search](https://github.com/user-attachments/assets/e37a0d80-a038-426a-8190-0ceb9ba040cf)
   Another search query. Status 200 OK with relevant results.
+
 
   * *Example 3 - Labels Operations:*
   ![labels 1](https://github.com/user-attachments/assets/aa8a3f52-2307-4e4d-81f2-1a4c53a4c7f6)
@@ -206,6 +203,7 @@ TODO: ask lian if delete the above examples
 
   ![blacklist cont](https://github.com/user-attachments/assets/b00307af-7a07-42fb-826d-48db2d7bf32b)
   Continuation: mail successfully sent after URL was removed from the blacklist.
+
 
  * *Example 5 – Edge Cases:*
    ![edge cases 1](https://github.com/user-attachments/assets/ee6bc648-5dc5-4ad1-afe0-3f34fd494ba9)
