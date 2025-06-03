@@ -65,37 +65,12 @@ The project is built using the MVC architecture and exposes a full-featured API 
 ---
 
 ## Running Instructions
-# TODO: add it when finish the project
 
 ```bash
 
 npm install
 npm start
 ```
-
-### Requirements:
-- C++ blacklist server must be running (`localhost:<PORT>`) before Node server starts.
-- Port should match the one expected in `blacklist.js` in the models folder
-
----
-
-## Notes
-- JSON is the standard format for all API requests/responses
-- There is no DB; in-memory logic only
-- SOLID principles and modular code structure maintained
-- Errors returned in `{ error: "..." }` format
-
----
-
-## Developer Info
-- Project: Advanced Programming – Assignment 3
-- GitHub: https://github.com/liany2/Advanced-Programming---Gmail-Repository
-
-
----
-
-### Build & Run Instructions (using WSL Linux)
-
 **Build and run C++ Server with Docker:**
 
 ```bash
@@ -142,6 +117,25 @@ cd src
 docker build -t url-bl-checker .
 docker run -it --rm url-bl-checker ./runTests
 ```
+
+### Requirements:
+- C++ blacklist server must be running (`localhost:<PORT>`) before Node server starts.
+- Port should match the one expected in `blacklist.js` in the models folder
+
+---
+
+## Notes
+- JSON is the standard format for all API requests/responses
+- There is no DB; in-memory logic only
+- SOLID principles and modular code structure maintained
+- Errors returned in `{ error: "..." }` format
+
+---
+
+## Developer Info
+- Project: Advanced Programming – Assignment 3
+- GitHub: https://github.com/liany2/Advanced-Programming---Gmail-Repository
+
 ---
 ## Example curl
 ```bash
