@@ -158,11 +158,11 @@ For example:
 curl -X DELETE http://localhost:3000/api/blacklist \
   -H "Content-Type: application/json" \
   -d '{"url": "http://malicious.com"}'
-
-> **Note:** Full examples of using curl can be found under the section: "Running Examples (text)". 
-
-
 ```
+> **Note:** Full examples of using curl can be found under the section: "Running Examples (text)".
+
+---
+
 ## Documentation (via Kali-Linux):
 ### 1.  Running Examples (pictures):
   * *Example 1:*
