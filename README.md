@@ -146,19 +146,20 @@ docker run -it --rm url-bl-checker ./runTests
 
 ---
 ## Example curl
-```bash
-curl -X POST http://localhost:3000/api/blacklist \
-  -H "Content-Type: application/json" \
-  -d '{"url": "http://malicious.com"}'
-```
+The node.js server will get the request via curl format:
 
+```bash
+curl -X <command> <URL> \
+  -H "Content-Type: application/json" \
+  -d '{"key1": "value1", "key2": "value2" ...}'
+```
+For example:
 ```bash
 curl -X DELETE http://localhost:3000/api/blacklist \
   -H "Content-Type: application/json" \
   -d '{"url": "http://malicious.com"}'
 
-
-TODO: ask lian if delete the above examples
+> **Note:** Full examples of using curl can be found under the section: "Running Examples (text)". 
 
 
 ```
