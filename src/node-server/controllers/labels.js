@@ -22,17 +22,17 @@ exports.getAllLabels = (req, res) => {
 
 // Get a label by ID
 exports.getLabelById = (req, res) => {
-    const id = req.params.id;
+    const id = Number(req.params.id);
     const label = labelModel.getLabelById(id);
     if (!label) {
-        return res.status(404).json({ error: 'Label not found\n' }); // HTTP 404 Not Found
+        return res.status(404).json({ error: 'Label not found\n' });
     }
-    res.status(200).json(label); // HTTP 200 OK
+    res.status(200).json(label);
 };
 
 // Update a label by ID
 exports.updateLabel = (req, res) => {
-    const id = req.params.id;
+    const id = Number(req.params.id);
     const { name } = req.body;
     const success = labelModel.updateLabel(id, name);
     if (!success) {
@@ -43,7 +43,7 @@ exports.updateLabel = (req, res) => {
 
 // Delete a label by ID
 exports.deleteLabel = (req, res) => {
-    const id = req.params.id;
+    const id = Number(req.params.id);
     const success = labelModel.deleteLabel(id);
     if (!success) {
         return res.status(404).json({ error: 'Label not found\n' }); // HTTP 404 Not Found

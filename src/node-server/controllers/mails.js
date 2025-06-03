@@ -53,7 +53,7 @@ exports.updateMail = async (req, res) => {
     return res.status(404).json({ error: 'Mail not found or blacklisted URL\n' });
   }
 
-  res.status(204).json(updated);
+    res.status(204).send();
 };
 
 // Delete a mail by ID
@@ -70,7 +70,10 @@ exports.deleteMail = (req, res) => {
 
 // Search mails by query (matches title, content, sender or receiver)
 exports.searchMails = (req, res) => {
+   const userId = req.header("user-id");
+    const user = userModel.getUserById(userId);
+    if (!user) return res.status(404).json({ error: 'User not found' });
     const query = req.params.query;
-    const results = mailModel.searchMails(query);
+    const results = mailModel.searchMails(query, userId);
     res.status(200).json(results); // HTTP 200 OK
 };

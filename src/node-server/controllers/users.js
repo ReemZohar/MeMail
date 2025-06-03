@@ -11,7 +11,7 @@ exports.registerUser = (req, res) => {
 
 // Get a user by ID
 exports.getUserById = (req, res) => {
-    const id = req.params.id;
+    const id = Number(req.params.id);
     const user = userModel.getUserById(id);
     if (!user) {
         return res.status(404).json({ error: 'User not found\n' }); // HTTP 404 Not Found

@@ -82,13 +82,14 @@ const deleteMail = (id) => {
     return true  
 }
 
-const searchMails = (query) => {
+const searchMails = (query, userId) => {
   const lowerQuery = query.toLowerCase();
   return mails.filter(mail =>
-    mail.title.toLowerCase().includes(lowerQuery) ||
+    (mail.title.toLowerCase().includes(lowerQuery) ||
     mail.content.toLowerCase().includes(lowerQuery) ||
     mail.sender.toLowerCase().includes(lowerQuery) ||
-    mail.receiver.toLowerCase().includes(lowerQuery)
+    mail.receiver.toLowerCase().includes(lowerQuery)) &&
+    (mail.sender === userId && mail.folder === 'sent')|| ( mail.receiver  === userId && mail.folder === 'inbox')
   );
 }
   

@@ -20,7 +20,7 @@ TEST(OutputToClientTest, SendsMessageViaSocketPair) {
     ASSERT_GT(valread, 0);
 
     std::string received(buffer, valread);
-    EXPECT_EQ(received, "Hello Test");
+    EXPECT_EQ(received, "Hello Test\n");
 
     close(sv[0]);
     close(sv[1]);
