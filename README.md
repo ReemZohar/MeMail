@@ -1,9 +1,10 @@
 #  Gmail-like REST API – Assignment 3
 
 ## System Overview
-This project implements a modular, RESTful backend in Node.js and Express that simulates a Gmail-like interface. It integrates with a C++ server from Assignment 2 using TCP sockets for real-time blacklist validation.
+This project implements a modular, `RESTful` backend in `Node.js` and `Express` that simulates a Gmail-like interface. It integrates with a C++ server from Assignment 2 using TCP sockets for real-time blacklist validation.
 
 The project is built using the MVC architecture and exposes a full-featured API for managing users, authentication, emails, labels, and blacklist entries.
+The project 
 
 > **Notes:**
 > 1. The C++ server must be compiled and executed independently, using the specifications from Assignment 2. The Node.js server opens a TCP socket connection to it and expects it to support commands like POST <url>, GET <url>, and DELETE <url>. Both components are running and configured to the same port.
