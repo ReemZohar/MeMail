@@ -219,7 +219,7 @@ curl -X DELETE http://localhost:3000/api/blacklist \
     Adding a URL to the blacklist and then trying to send a mail containing it. Status 400 Bad Request due to blacklisted content.
 
 
-    ![image](https://github.com/user-attachments/assets/daba14e2-6ed0-4722-a581-d021053d9366)
+    ![delete URL from blacklist and send a new mail](https://github.com/user-attachments/assets/aeba4f4b-7e9d-4b55-9ca3-4115e1c7a58e)
     Removing the URL from the blacklist and sending the mail again. Status 201 Created confirms success.
 
 
