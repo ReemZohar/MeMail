@@ -8,7 +8,7 @@ The project is built using the MVC architecture and exposes a full-featured API 
 > **Notes:**
 > 1. The C++ server must be compiled and executed independently, using the specifications from Assignment 2. The Node.js server opens a TCP socket connection to it and expects it to support commands like POST <url>, GET <url>, and DELETE <url>. Both components are running and configured to the same port.
 >
-> 2. The TCP sercer from Exercise 2 was "locked" in a branch named "Sprint2" that can be excecuted independently.
+> 2. The TCP server from Exercise 2 was "locked" in a branch named "Sprint2" that can be excecuted independently.
 
 ---
 
