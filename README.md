@@ -4,6 +4,7 @@
 This project implements a modular, `RESTful` backend in `Node.js` and `Express` that simulates a Gmail-like interface. It integrates with a C++ server from Assignment 2 using TCP sockets for real-time blacklist validation.
 
 The project is built using the MVC architecture and exposes a full-featured API for managing users, authentication, emails, labels, and blacklist entries.
+
 The project was built to be as similar as possible to real email apps and how they usually work.
 
 
