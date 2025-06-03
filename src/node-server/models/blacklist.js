@@ -5,7 +5,6 @@ const SERVER_PORT = 7070;
 
 class BlacklistClient {
   constructor() {
-    console.log('BlacklistClient constructor called'); //todo
     this.client = new net.Socket();
     this.buffer = '';
     this.callbacks = [];
@@ -14,7 +13,6 @@ class BlacklistClient {
   }
 
   connect() {
-    console.log(`Connecting to TCP server at ${SERVER_HOST}:${SERVER_PORT}`); // todo
     this.client.connect(SERVER_PORT, SERVER_HOST, () => {
       this.connected = true;
     });
@@ -39,7 +37,6 @@ handleBuffer() {
     const index = this.buffer.indexOf('\n');
     const response = this.buffer.slice(0, index).trim();
     this.buffer = this.buffer.slice(index + 1);
-    console.log('Received response line:', response);  //todo
     const cb = this.callbacks.shift();
     cb(response);
   }
@@ -51,7 +48,6 @@ sendCommand(command) {
     if (!this.connected) {
       return reject(new Error('Not connected to blacklist server'));
     }
-    console.log('Sending command to C++ server:', command); //todo
     this.callbacks.push(resolve);
     this.client.write(command + '\n');
   });
@@ -67,10 +63,8 @@ sendCommand(command) {
   }
 
 async add(url) {
-  console.log('BlacklistClient.add called with url:', url); //todo
   const command = `POST ${url}`;
   const response = await this.sendCommand(command);
-  console.log('Response from C++ server:', response); //todo
   const parsedResponse = this.parseResponseLine(response);
 
   if (parsedResponse === '201 Created') {
@@ -117,13 +111,14 @@ async isBlacklisted(url) {
 
     const flags = dataLine.toLowerCase().split(/\s+/);
 
-    const isAnyTrue = flags.some(f => f === 'true');
-
-    return isAnyTrue;
+    if (flags.includes('false')) {
+      return false;
+    }
+    return true;
   }
-
   throw new Error(`Unexpected response: ${statusLine}`);
 }
+
 
 }
 
