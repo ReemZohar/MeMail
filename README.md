@@ -194,11 +194,10 @@ curl -X DELETE http://localhost:3000/api/blacklist \
 
 
     ![mails check 5 - search](https://github.com/user-attachments/assets/a353755a-8213-40ae-9ce6-b7a38643206a)
-    Searching mails with a keyword. Status 200 OK with matching results.
 
 
     ![mails check 6 - search](https://github.com/user-attachments/assets/e37a0d80-a038-426a-8190-0ceb9ba040cf)
-    Another search query. Status 200 OK with relevant results.
+    Search query. Status 200 OK with relevant results.
 
 
   * *Example 3 - Labels Operations:*
