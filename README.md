@@ -51,9 +51,6 @@ The project is built using the MVC architecture and exposes a full-featured API 
 
 ---
 
-## Project Structure
-# TODO: add it when finish the project
-
 ## Integration with Assignment 2 (C++ Server)
 - TCP socket client (Node) communicates with a multithreaded C++ server
 - C++ server supports:
