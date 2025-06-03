@@ -97,6 +97,7 @@ cd src
 docker build -t program .
 docker run -it --name cppserver --network network -p 7070:7070 -v "$(realpath ../data):/data" program ./runProg 7070 <bloom filter size> <hash> <hash> ...
 ```
+
 **Build and run Node.js Server with Docker:**
 
 ```bash
@@ -106,6 +107,7 @@ docker run -it --name nodejs --network network -p 9090:9090 node-server
 ```
 
 #### For Example:
+*C++ server*
 ```bash
 docker network create network
 cd src
@@ -113,6 +115,7 @@ docker build -t program .
 docker run -it --name cppserver --network network -p 7070:7070 -v "$(realpath ../data):/data" program ./runProg 7070 8 1 2
 ```
 
+*Node.js server*
 ```bash
 cd src/node-server
 docker build -t node-server .
@@ -120,14 +123,13 @@ docker run -it --name nodejs --network network -p 9090:9090 node-server
 ```
 
 *Example explanation:*  
- In this example, the server listens for connections on port **9090**, the Bloom filter will be initialized with a size of **8**, and the standard hash functions used are: **1** and **2**.
- The IP address refers to the server, and the port **9090** is used by the client to connect to it.
+ In this example, the Node.js server listens for connections on port **9090**, The C++ server listens to port **7070** the Bloom filter will be initialized with a size of **8**, and the standard hash functions used are: **1** and **2**.
 
 
 
 
 
-> **Note:** Please make sure to start the **server** before the **client**, so that the server is ready and listening for incoming requests.
+> **Note:** Please make sure to start the **server** before the **client**, so that the server is ready and listening for incoming requests. And then open a new terminal to put commands in curl format.
 
 ---
 
@@ -205,36 +207,42 @@ www.example.com2
 
 
 
-## Documentation:
+## Documentation (via Kali-Linux):
 ### 1.  Running Examples:
   * *Example 1:*
-![Server Flow](documentation-pictures/9.png)
+  ![valid ex 1](https://github.com/user-attachments/assets/c644001d-47ad-4245-9976-5c03b9c4d6c0)
+  ![valid ex 2](https://github.com/user-attachments/assets/cd4e6af5-28d3-4a5e-aa79-91a98ca5ece8)
+  ![valid ex 3](https://github.com/user-attachments/assets/f794f897-329a-49b5-9b50-50974d235a07)
+
 
   * *Example 2:*
-   ![image](https://github.com/user-attachments/assets/5fbcad92-b781-4e8d-9edd-7f163cb49a47)
+  
 
-    >   'BLFile.txt` result:  
-               ![image](https://github.com/user-attachments/assets/8c8aed68-c991-45f7-a552-f9b75a15da31)
 
   * *Example 3 - invalid BlackList's arguments:*
-   ![image](https://github.com/user-attachments/assets/c7be49a5-2f7d-466d-a9df-906a726f9caf)
+
 
   * *Example 4 – Invalid port number as a server's argument:*
-   ![image](https://github.com/user-attachments/assets/2c31c1f1-a3c9-4264-a999-314eceec339a)
+
 
  * *Example 5 – Invalid port number as a client's argument:*
-   ![image](https://github.com/user-attachments/assets/4cc800f3-8358-439b-8871-8227a4e41b66)
+
 
  * *Example 6 – Invalid command / URL:*
-   ![image](https://github.com/user-attachments/assets/c4f82229-f929-42fe-a018-468eeaab5463)
+
 
  * *Example 7 :*
-   ![image](https://github.com/user-attachments/assets/f33fdd36-a31b-465a-8748-8f72b86468df)
 
 
 
 ### 2. Tests Pass:
 ![tests pass](documentation-pictures/10.png)
+
+### 3. Building & Running C++ server:
+  ![building+running Ex2 c++ server](https://github.com/user-attachments/assets/88d178c3-8945-47f7-bb34-b2800e2d2c0d)
+
+### 4. Building & Running Node.js server:
+![building+running Ex3 node js server](https://github.com/user-attachments/assets/33bb4f69-e3f6-4658-a037-fa603aaa1636)
 
 ---
 
