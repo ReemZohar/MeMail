@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const PORT = 3000;
+const PORT = 9090;
 
 app.use(express.json());
 
@@ -10,7 +10,7 @@ app.use('/api', apiRoutes);
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ error: 'Not Found' });
+  res.status(404).json({ error: 'Not Found\n' });
 });
 
 app.listen(PORT, () => {

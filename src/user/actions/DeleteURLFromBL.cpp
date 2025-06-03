@@ -1,10 +1,12 @@
 #include "DeleteURLFromBL.h"
-
+#include <mutex>
 using namespace std;
 
 DeleteURLFromBL::DeleteURLFromBL(BloomFilter& bf) : bf(bf) {}
 
 void DeleteURLFromBL::performAction(const shared_ptr<IUserInput>& userInput) {
+    std::lock_guard<std::mutex> lock(blMutex);  //lock
+
     string url = getURL(userInput->getInput()), line;
     //first URL line index
     int firstURL = 2;

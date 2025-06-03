@@ -5,7 +5,7 @@ const blacklistController = require('../controllers/blacklist');
 // Add a new blacklisted URL
 router.post('/', blacklistController.addToBlacklist);
 
-// Remove blacklisted URL by ID
-router.delete('/:id', blacklistController.removeFromBlacklist);
+// Remove blacklisted URL from body
+router.delete('/', blacklistController.removeFromBlacklist);
 
 module.exports = router;

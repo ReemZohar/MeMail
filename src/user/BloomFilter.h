@@ -5,6 +5,7 @@
 #include <vector>
 #include <filesystem>
 #include <string>
+#include <mutex>
 
 
 class BloomFilter {
@@ -26,6 +27,7 @@ private:
 std::vector<bool> blackList;
 const std::filesystem::path filePath;
 const std::vector<std::shared_ptr<IHasher>> hasher;
+std::mutex blMutex; // new
 };
 
 #endif
