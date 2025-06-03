@@ -408,6 +408,7 @@ curl -X POST http://localhost:9090/api/mails -H "Content-Type: application/json"
   ![building+running Ex2 c++ server](https://github.com/user-attachments/assets/88d178c3-8945-47f7-bb34-b2800e2d2c0d)
 
 ### 5. Building & Running Node.js server:
-![building+running Ex3 node js server](https://github.com/user-attachments/assets/33bb4f69-e3f6-4658-a037-fa603aaa1636)
+![building+running Ex3 node js server](https://github.com/user-attachments/assets/a7bd48d8-cc22-4ac8-9dd4-f1bd5024b7ec)
+
 
 ---
