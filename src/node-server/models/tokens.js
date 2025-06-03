@@ -5,7 +5,7 @@ const login = (username, password) => {
     if (!user) {  //user not found
         return null;
     }
-    return user.id;
+    return user;
 }
 
 module.exports = { login }

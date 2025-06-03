@@ -1,11 +1,11 @@
 let idCounter = 0 //counts the mails
 const mails = []
 
-const { isUrlBlacklisted } = require('./blacklist');
+const { isBlacklisted } = require('./blacklist');
 
 const getAllMailsForUser = (userId) => {
   return mails
-    .filter(m => m.sender === userId || m.receiver === userId)
+    .filter(m => (m.sender === userId && m.folder === 'sent')|| (m.receiver === userId && m.folder === 'inbox'))
     .sort((a, b) => b.time - a.time)
     .slice(0, 50);
 };
@@ -21,7 +21,7 @@ const sendMail = async (title, content, sender, receiver) => {
   const urlsToCheck = [...extractUrls(title), ...extractUrls(content)];
 
   for (const url of urlsToCheck) {
-    const blacklisted = await isUrlBlacklisted(url);
+    const blacklisted = await isBlacklisted(url);
     if (blacklisted) {
       return null;
     }
@@ -64,7 +64,7 @@ const updateMail = async (id, title, content) => {
     const urlsToCheck = [...extractUrls(title), ...extractUrls(content)];
 
     for (const url of urlsToCheck) {
-      const blacklisted = await isUrlBlacklisted(url);
+      const blacklisted = await isBlacklisted(url);
       if (blacklisted) {
         return null;
       }
@@ -82,13 +82,14 @@ const deleteMail = (id) => {
     return true  
 }
 
-const searchMails = (query) => {
+const searchMails = (query, userId) => {
   const lowerQuery = query.toLowerCase();
   return mails.filter(mail =>
-    mail.title.toLowerCase().includes(lowerQuery) ||
+    (mail.title.toLowerCase().includes(lowerQuery) ||
     mail.content.toLowerCase().includes(lowerQuery) ||
     mail.sender.toLowerCase().includes(lowerQuery) ||
-    mail.receiver.toLowerCase().includes(lowerQuery)
+    mail.receiver.toLowerCase().includes(lowerQuery)) &&
+    (mail.sender === userId && mail.folder === 'sent')|| ( mail.receiver  === userId && mail.folder === 'inbox')
   );
 }
   

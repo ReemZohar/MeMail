@@ -18,6 +18,21 @@ void OutputToClient::setClientSocket(int socket) {
 // Sends the output message to the client via the socket
 // Returns true if the message was sent successfully
 bool OutputToClient::shareOutput() {
-    ssize_t sent = send(client_socket, output.c_str(), output.length(), 0);
-    return sent >= 0;
+    std::string dataToSend = output;
+    if (!output.empty() && output.back() != '\n') {
+        dataToSend += '\n';
+    }
+
+    size_t totalSent = 0;
+    size_t dataLen = dataToSend.length();
+
+    while (totalSent < dataLen) {
+        ssize_t sent = send(client_socket, dataToSend.c_str() + totalSent, dataLen - totalSent, 0);
+        if (sent <= 0) {
+            return false;
+        }
+        totalSent += sent;
+    }
+
+    return true;
 }

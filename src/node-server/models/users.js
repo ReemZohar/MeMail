@@ -22,6 +22,6 @@ const registerUser = (username, password, name, avatar) => {
 }
 
 
-const getUserById = (id) => users.find(u => u.id === id)
+const getUserById = (id) => users.find(u => u.id === Number(id));
 
 module.exports = {registerUser, getUserById, getAllUsers}

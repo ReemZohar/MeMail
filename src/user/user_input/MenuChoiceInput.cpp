@@ -18,19 +18,18 @@ void MenuChoiceInput::takeInput() {
 }
 
 bool MenuChoiceInput::takeMenuChoiceFromSocket(int client_socket) {
-    char buffer[BUFFER_LEN] = {0}; // Buffer to store incoming data from the client
-    std::string userSelection;
-
-    memset(buffer, 0, sizeof(buffer)); // Clear the buffer before reading
-    int valread = read(client_socket, buffer, sizeof(buffer)); // Read data from the socket
-
-    if (valread <= 0) {
-        return false; // Connection closed or read failed
+    std::string request;
+    char ch;
+    while (true) {
+        ssize_t bytesRead = read(client_socket, &ch, 1);
+        if (bytesRead <= 0) {
+            return false;
+        }
+        if (ch == '\n') break;
+        if (ch != '\r') request += ch; // skip '\r' if it's \r\n
     }
-
-    userSelection = std::string(buffer, valread); // Convert buffer to string
-    currInput = userSelection; // Store the received input
-    return true; // Indicate successful read
+    currInput = request;
+    return true;
 }
 
 
