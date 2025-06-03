@@ -89,8 +89,52 @@ npm start
 - Project: Advanced Programming – Assignment 3
 - GitHub: https://github.com/liany2/Advanced-Programming---Gmail-Repository
 
+
 ---
 
+### Build & Run Instructions (using WSL Linux)
+
+**Build and run C++ Server with Docker:**
+
+```bash
+docker network create network
+cd src
+docker build -t program .
+docker run -it --name cppserver --network network -p 7070:7070 -v "$(realpath ../data):/data" program ./runProg 7070 <bloom filter size> <hash> <hash> ...
+```
+
+**Build and run Node.js Server with Docker:**
+
+```bash
+cd src/node-server
+docker build -t node-server .
+docker run -it --name nodejs --network network -p 9090:9090 node-server
+```
+
+#### For Example:
+*C++ server*
+```bash
+docker network create network
+cd src
+docker build -t program .
+docker run -it --name cppserver --network network -p 7070:7070 -v "$(realpath ../data):/data" program ./runProg 7070 8 1 2
+```
+
+*Node.js server*
+```bash
+cd src/node-server
+docker build -t node-server .
+docker run -it --name nodejs --network network -p 9090:9090 node-server
+```
+
+*Example explanation:*  
+ In this example, the Node.js server listens for connections on port **9090**, The C++ server listens to port **7070** the Bloom filter will be initialized with a size of **8**, and the standard hash functions used are: **1** and **2**.
+
+
+
+> **Note:** Please make sure to start the **server** before the **client**, so that the server is ready and listening for incoming requests. And then open a new terminal to put commands in curl format.
+
+---
 ## Example curl
 ```bash
 curl -X POST http://localhost:3000/api/blacklist \
