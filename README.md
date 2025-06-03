@@ -187,10 +187,12 @@ curl -X DELETE http://localhost:3000/api/blacklist \
 
     ![mails check 3- patch](https://github.com/user-attachments/assets/be78dfb2-65ac-4230-825e-940789bbf8e6)
     Updating an existing mail (title/content). Status 204 No Content confirms the update succeeded.
+     > Just like in a real email system, the update is applied only for the user who performed it.
 
 
     ![mails check 4 - DELETE](https://github.com/user-attachments/assets/5370577f-b9e0-44c9-8685-6a6de48de152)
     Deleting a mail by ID. Status 204 No Content indicates successful deletion.
+      > Just like in a real email system, the deletion is applied only for the user who performed it.
 
 
     ![mails check 5 - search](https://github.com/user-attachments/assets/a353755a-8213-40ae-9ce6-b7a38643206a)
