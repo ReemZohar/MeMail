@@ -134,6 +134,12 @@ docker run -it --name nodejs --network network -p 9090:9090 node-server
 
 > **Note:** Please make sure to start the **server** before the **client**, so that the server is ready and listening for incoming requests. And then open a new terminal to put commands in curl format.
 
+**Build and run tests from exercise 1+2:**
+```bash
+cd src
+docker build -t url-bl-checker .
+docker run -it --rm url-bl-checker ./runTests
+```
 ---
 ## Example curl
 ```bash
