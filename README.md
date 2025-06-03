@@ -167,15 +167,12 @@ curl -X DELETE http://localhost:3000/api/blacklist \
 ### 1.  Running Examples (pictures):
   * *Example 1:*
     ![valid ex 1](https://github.com/user-attachments/assets/c644001d-47ad-4245-9976-5c03b9c4d6c0)
-    Sending a valid mail. Response shows status 201 Created, indicating the mail was successfully sent.
 
 
     ![valid ex 2](https://github.com/user-attachments/assets/cd4e6af5-28d3-4a5e-aa79-91a98ca5ece8)
-    Fetching a mail by ID. Response shows status 200 OK with the mail content, confirming successful retrieval.
 
 
     ![valid ex 3](https://github.com/user-attachments/assets/f794f897-329a-49b5-9b50-50974d235a07)
-    Retrieving all mails for a user. Response is 200 OK with a list of mails.
 
 
 
