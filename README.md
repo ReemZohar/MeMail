@@ -210,6 +210,7 @@ curl -X DELETE http://localhost:3000/api/blacklist \
 
 
     ![labels 3-DELETE](https://github.com/user-attachments/assets/edf56b58-2288-415e-a4bb-a556f5290bd7)
+
     Deleting a label. Status 204 No Content confirms successful deletion.
 
 
