@@ -20,7 +20,7 @@ void OutputToClient::setClientSocket(int socket) {
 bool OutputToClient::shareOutput() {
     std::string dataToSend = output;
     if (!output.empty() && output.back() != '\n') {
-        dataToSend += '\n';  // או "\r\n"
+        dataToSend += '\n';
     }
 
     size_t totalSent = 0;
@@ -29,7 +29,6 @@ bool OutputToClient::shareOutput() {
     while (totalSent < dataLen) {
         ssize_t sent = send(client_socket, dataToSend.c_str() + totalSent, dataLen - totalSent, 0);
         if (sent <= 0) {
-            // שגיאה בשליחה או החיבור נסגר
             return false;
         }
         totalSent += sent;

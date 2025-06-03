@@ -92,29 +92,39 @@ async remove(url) {
     throw new Error(`Unexpected response: ${response}`);
   }
 
-  async isBlacklisted(url) {
-    const command = `GET ${url}`;
-    const status = await this.sendCommand(command);
-    const parsedStatus = this.parseResponseLine(status);
+async isBlacklisted(url) {
+  const command = `GET ${url}`;
+  const statusLine = await this.sendCommand(command);
+  const parsedStatus = this.parseResponseLine(statusLine);
 
-    if (parsedStatus === '400 Bad Request') {
-      return null;
-    }
-
-    if (parsedStatus === '200 Ok') {
-      const dataLine = await new Promise((resolve) => {
-        this.callbacks.push(resolve);
-        this.handleBuffer(); // לוודא קריאת שורה שניה
-      });
-
-      if (dataLine === '1') return true;
-      if (dataLine === '0') return false;
-
-      throw new Error(`Unexpected second line: ${dataLine}`);
-    }
-
-    throw new Error(`Unexpected response: ${status}`);
+  if (parsedStatus === '400 Bad Request') {
+    return null;
   }
+
+  if (parsedStatus === '200 Ok') {
+    const dataLine = await new Promise((resolve) => {
+      const handleNextLine = (line) => {
+        const trimmed = line.trim();
+        if (trimmed === '') {
+          this.callbacks.unshift(handleNextLine);
+        } else {
+          resolve(trimmed);
+        }
+      };
+      this.callbacks.push(handleNextLine);
+      this.handleBuffer();
+    });
+
+    const flags = dataLine.toLowerCase().split(/\s+/);
+
+    const isAnyTrue = flags.some(f => f === 'true');
+
+    return isAnyTrue;
+  }
+
+  throw new Error(`Unexpected response: ${statusLine}`);
+}
+
 }
 
 const blacklistClient = new BlacklistClient();

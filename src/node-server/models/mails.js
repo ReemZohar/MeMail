@@ -1,7 +1,7 @@
 let idCounter = 0 //counts the mails
 const mails = []
 
-const { isUrlBlacklisted } = require('./blacklist');
+const { isBlacklisted } = require('./blacklist');
 
 const getAllMailsForUser = (userId) => {
   return mails
@@ -21,7 +21,7 @@ const sendMail = async (title, content, sender, receiver) => {
   const urlsToCheck = [...extractUrls(title), ...extractUrls(content)];
 
   for (const url of urlsToCheck) {
-    const blacklisted = await isUrlBlacklisted(url);
+    const blacklisted = await isBlacklisted(url);
     if (blacklisted) {
       return null;
     }
@@ -64,7 +64,7 @@ const updateMail = async (id, title, content) => {
     const urlsToCheck = [...extractUrls(title), ...extractUrls(content)];
 
     for (const url of urlsToCheck) {
-      const blacklisted = await isUrlBlacklisted(url);
+      const blacklisted = await isBlacklisted(url);
       if (blacklisted) {
         return null;
       }
