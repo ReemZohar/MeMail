@@ -5,7 +5,8 @@ This project implements a modular, RESTful backend in Node.js and Express that s
 
 The project is built using the MVC architecture and exposes a full-featured API for managing users, authentication, emails, labels, and blacklist entries.
 
-Note: The C++ server must be compiled and executed independently, using the specifications from Assignment 2. The Node.js server opens a TCP socket connection to it and expects it to support commands like POST <url>, GET <url>, and DELETE <url>. Both components are running and configured to the same port.
+> **Notes:** 1. The C++ server must be compiled and executed independently, using the specifications from Assignment 2. The Node.js server opens a TCP socket connection to it and expects it to support commands like POST <url>, GET <url>, and DELETE <url>. Both components are running and configured to the same port.
+> 2. The TCP sercer from Exercise 2 was "locked" in a branch named "Sprint2" that can be excecuted independently.
 
 ---
 
@@ -187,7 +188,7 @@ curl -X DELETE http://localhost:3000/api/blacklist \
 
 
 ### 2. Tests Pass:
-![tests pass](documentation-pictures/10.png)
+![tests run](https://github.com/user-attachments/assets/334c1e02-06d7-4e3c-8d3e-99d1730e4c52)
 
 ### 3. Building & Running C++ server:
   ![building+running Ex2 c++ server](https://github.com/user-attachments/assets/88d178c3-8945-47f7-bb34-b2800e2d2c0d)
