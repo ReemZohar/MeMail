@@ -5,6 +5,10 @@ exports.registerUser = (req, res) => {
     if (!username || !password) {
         return res.status(400).json({ error: 'Username and password are required\n' });
     }
+    if (password.length < 8 || !/[A-Za-z]/.test(password) || !/\d/.test(password)) {
+    return res.status(400).json({ error: 'Password must be at least 8 characters and contain letters and digits' });
+    }
+
     const newUser = userModel.registerUser(username, password, name, avatar);
     res.status(201).json(newUser); // HTTP 201 Created
 };
