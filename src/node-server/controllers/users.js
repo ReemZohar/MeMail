@@ -5,6 +5,10 @@ exports.registerUser = (req, res) => {
     if (!username || !password) {
         return res.status(400).json({ error: 'Username and password are required\n' });
     }
+    exports.getUserByUsername = (username) => {
+  return users.find(user => user.username === username);
+};
+
     const newUser = userModel.registerUser(username, password, name, avatar);
     res.status(201).json(newUser); // HTTP 201 Created
 };
