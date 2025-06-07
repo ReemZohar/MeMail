@@ -1,6 +1,7 @@
 const userModel = require('../models/users'); // user handles user registration and retrieval
 // Register a new user
 exports.registerUser = (req, res) => {
+<<<<<<< HEAD
     const { username, password, name, avatar } = req.body;
     if (!username || !password) {
         return res.status(400).json({ error: 'Username and password are required\n' });
@@ -16,6 +17,13 @@ exports.registerUser = (req, res) => {
 
 
 >>>>>>> PGAPP-190-Add-password-confirmation-check
+=======
+   const { username, password, confirmPassword, name, avatar } = req.body;
+
+if (!username || !password || !confirmPassword || !name || !avatar) {
+  return res.status(400).json({ error: 'All fields are required' });
+}
+>>>>>>> PGAPP-189-Implement-input-validation-logic-in-controller
 
     const newUser = userModel.registerUser(username, password, name, avatar);
         if (!newUser) {
