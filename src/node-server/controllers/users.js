@@ -5,6 +5,17 @@ exports.registerUser = (req, res) => {
     if (!username || !password) {
         return res.status(400).json({ error: 'Username and password are required\n' });
     }
+<<<<<<< HEAD
+=======
+    if (password.length < 8 || !/[A-Za-z]/.test(password) || !/\d/.test(password)) {
+    return res.status(400).json({ error: 'Password must be at least 8 characters and contain letters and digits' });
+    }
+    if (password !== confirmPassword) {
+    return res.status(400).json({ error: 'Passwords do not match' });
+    }
+
+
+>>>>>>> PGAPP-190-Add-password-confirmation-check
 
     const newUser = userModel.registerUser(username, password, name, avatar);
         if (!newUser) {
