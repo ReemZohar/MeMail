@@ -1,10 +1,12 @@
 const userModel = require('../models/users'); // user handles user registration and retrieval
 // Register a new user
 exports.registerUser = (req, res) => {
-    const { username, password, name, avatar } = req.body;
-    if (!username || !password) {
-        return res.status(400).json({ error: 'Username and password are required\n' });
-    }
+   const { username, password, confirmPassword, name, avatar } = req.body;
+
+if (!username || !password || !confirmPassword || !name || !avatar) {
+  return res.status(400).json({ error: 'All fields are required' });
+}
+
     const newUser = userModel.registerUser(username, password, name, avatar);
     res.status(201).json(newUser); // HTTP 201 Created
 };
