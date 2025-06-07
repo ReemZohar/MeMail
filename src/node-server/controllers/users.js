@@ -5,9 +5,15 @@ exports.registerUser = (req, res) => {
     if (!username || !password) {
         return res.status(400).json({ error: 'Username and password are required\n' });
     }
+
     const newUser = userModel.registerUser(username, password, name, avatar);
+        if (!newUser) {
+    return res.status(400).json({ error: 'Username already exists' });
+}
 const { id } = newUser;
-res.status(201).json({ id, username, name, avatar });// HTTP 201 Created
+
+
+    res.status(201).json(newUser); // HTTP 201 Created
 };
 
 // Get a user by ID
