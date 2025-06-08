@@ -1,6 +1,7 @@
 //The file loads all the relevant routs to run the client requests
 const express = require('express');
 const router = express.Router();
+const authenticateToken = require('../middleware/auth');
 
 router.use('/users', require('./users'));
 router.use('/tokens', require('./tokens'));

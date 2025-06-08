@@ -11,10 +11,19 @@ exports.registerUser = (req, res) => {
 
 // Get a user by ID
 exports.getUserById = (req, res) => {
-    const id = Number(req.params.id);
-    const user = userModel.getUserById(id);
-    if (!user) {
-        return res.status(404).json({ error: 'User not found\n' }); // HTTP 404 Not Found
-    }
-    res.status(200).json(user); // HTTP 200 OK
+  const id = Number(req.params.id);
+
+  //jwt authenticate
+  if (req.user && req.user.id !== id) {
+    return res.status(403).json({ error: 'Forbidden' }); // Not allowed to access other users
+  }
+
+  const user = userModel.getUserById(id);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found\n' });
+  }
+
+  // remove sensitive fields
+  const { password, ...safeUser } = user;
+  res.status(200).json(safeUser);
 };
