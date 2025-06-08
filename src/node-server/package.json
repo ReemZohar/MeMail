@@ -4,7 +4,7 @@
   "description": "This project implements a modular URL blacklisting system based on hash functions and an extendable architecture. \r The system filters URLs repeatable hash functions and a persistent blacklist file. In this sprint, the system was expanded to support:",
   "main": "index.js",
   "scripts": {
-  "start": "node src/node-server/app.js"
+    "start": "node src/node-server/app.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/liany2/Advanced-Programming---Gmail-Repository#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2"
   }
 }
