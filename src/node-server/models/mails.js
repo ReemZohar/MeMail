@@ -111,4 +111,4 @@ const removeLabelFromMail = (mailId, labelId) => {
   return mail;
 };
 
-module.exports = {getAllMailsForUser, sendMail, getMailById, updateMail, deleteMail, searchMails, addLabelToMail,removeLabelFromMail}
+module.exports = {getAllMailsForUser, sendMail, getMailById, updateMail, deleteMail, searchMails}
