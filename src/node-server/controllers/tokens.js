@@ -1,16 +1,30 @@
-const tokenModel = require('../models/tokens'); // token handles login authentication
+const jwt = require('jsonwebtoken');
+const tokenModel = require('../models/tokens');
+require('dotenv').config();
+
+const SECRET_KEY = process.env.JWT_SECRET; // secert is saved in .env
 
 exports.login = (req, res) => {
-    const { username, password } = req.body;
+  const { username, password } = req.body;
 
-    if (!username || !password) {
-        return res.status(400).json({ error: 'Username and password are required\n' }); // HTTP 400 Bad Request
-    }
+  // validation 
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Username and password are required' });
+  }
 
-    const user = tokenModel.login(username, password);
-    if (!user) {
-        return res.status(404).json({ error: 'Invalid username or password\n' }); // HTTP 404 Not Found
-    }
+  // check if user exists
+const user = tokenModel.login(username, password);
+  if (!user) {
+    return res.status(401).json({ error: 'Invalid username or password' });
+  }
 
-    res.status(200).json({ id: user.id }); // HTTP 200 OK
+  // create JWT
+  const token = jwt.sign(
+    { id: user.id, username: user.username },
+    SECRET_KEY,
+    { expiresIn: '1h' }
+  );
+
+  //return the token only (not the pass)
+  res.status(200).json({ token });
 };
