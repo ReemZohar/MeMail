@@ -35,12 +35,14 @@ const sendMail = async (title, content, sender, receiver) => {
     content,
     time,
     folder: 'sent',
+    labels: [] // assign mail to lables
   };
 
   const received = {
     ...sent,
     id: idCounter++,
     folder: 'inbox',
+    labels: [], // assign mail to lables
   };
 
   mails.push(sent);
@@ -93,4 +95,20 @@ const searchMails = (query, userId) => {
   );
 }
   
-module.exports = {getAllMailsForUser, sendMail, getMailById, updateMail, deleteMail, searchMails}
+const addLabelToMail = (mailId, labelId) => {
+  const mail = mails.find(m => m.id === mailId);
+  if (!mail) return null;
+  if (!mail.labels.includes(labelId)) {
+    mail.labels.push(labelId);
+  }
+  return mail;
+};
+
+const removeLabelFromMail = (mailId, labelId) => {
+  const mail = mails.find(m => m.id === mailId);
+  if (!mail) return null;
+  mail.labels = mail.labels.filter(id => id !== labelId);
+  return mail;
+};
+
+module.exports = {getAllMailsForUser, sendMail, getMailById, updateMail, deleteMail, searchMails, addLabelToMail,removeLabelFromMail}

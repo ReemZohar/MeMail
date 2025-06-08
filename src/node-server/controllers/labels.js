@@ -50,3 +50,55 @@ exports.deleteLabel = (req, res) => {
     }
     res.status(204).send(); // HTTP 204 No Content
 };
+
+//remove lable from mail
+exports.removeLabelFromMail = (req, res) => {
+  const mailId = Number(req.params.id);
+  const labelId = Number(req.params.labelId);
+
+  const mail = mailModel.getMailById(mailId);
+  if (!mail) {
+    return res.status(404).json({ error: 'Mail not found' });
+  }
+
+  if (mail.receiver !== req.user.id && mail.sender !== req.user.id) {
+    return res.status(403).json({ error: 'Not authorized' });
+  }
+
+  const updatedMail = mailModel.removeLabelFromMail(mailId, labelId);
+  if (!updatedMail) {
+    return res.status(400).json({ error: 'Label not found on mail' });
+  }
+
+  res.status(200).json(updatedMail);
+};
+
+exports.addLabelToMail = (req, res) => {
+  const mailId = Number(req.params.id);
+  const { labelId } = req.body;
+
+  // basic check to make sure the lable exists
+  if (!labelId) {
+    return res.status(400).json({ error: 'labelId is required' });
+  }
+
+  const mail = mailModel.getMailById(mailId);
+  if (!mail) {
+    return res.status(404).json({ error: 'Mail not found' });
+  }
+
+  // check that the mail is of the user account
+  if (mail.receiver !== req.user.id && mail.sender !== req.user.id) {
+    return res.status(403).json({ error: 'Not authorized to label this mail' });
+  }
+
+  // check that lable exists
+  const label = labelModel.getLabelById(labelId);
+  if (!label) {
+    return res.status(404).json({ error: 'Label not found' });
+  }
+
+  // adding the lable to mail
+  const updatedMail = mailModel.addLabelToMail(mailId, labelId);
+  res.status(200).json(updatedMail);
+};
