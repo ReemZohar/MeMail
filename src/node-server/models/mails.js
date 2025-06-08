@@ -84,16 +84,25 @@ const deleteMail = (id) => {
     return true  
 }
 
-const searchMails = (query, userId) => {
+const searchMails = (query, userId, labelId = null) => {
   const lowerQuery = query.toLowerCase();
-  return mails.filter(mail =>
-    (mail.title.toLowerCase().includes(lowerQuery) ||
-    mail.content.toLowerCase().includes(lowerQuery) ||
-    mail.sender.toLowerCase().includes(lowerQuery) ||
-    mail.receiver.toLowerCase().includes(lowerQuery)) &&
-    (mail.sender === userId && mail.folder === 'sent')|| ( mail.receiver  === userId && mail.folder === 'inbox')
-  );
-}
+
+  return mails.filter(mail => {
+    const matchesText =
+      mail.title.toLowerCase().includes(lowerQuery) ||
+      mail.content.toLowerCase().includes(lowerQuery) ||
+      mail.sender.toLowerCase().includes(lowerQuery) ||
+      mail.receiver.toLowerCase().includes(lowerQuery);
+
+    const isOwnedByUser =
+      (mail.sender === userId && mail.folder === 'sent') ||
+      (mail.receiver === userId && mail.folder === 'inbox');
+
+    const hasLabel = labelId ? mail.labels.includes(labelId) : true;
+
+    return matchesText && isOwnedByUser && hasLabel;
+  });
+};
   
 const addLabelToMail = (mailId, labelId) => {
   const mail = mails.find(m => m.id === mailId);
