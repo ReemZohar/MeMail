@@ -77,3 +77,26 @@ exports.searchMails = (req, res) => {
     const results = mailModel.searchMails(query, userId);
     res.status(200).json(results); // HTTP 200 OK
 };
+
+
+exports.updateIsReadStatus = (req, res) => {
+  const mailId = Number(req.params.id);
+  const { isRead } = req.body;
+
+  if (typeof isRead !== 'boolean') {
+    return res.status(400).json({ error: 'isRead must be a boolean' });
+  }
+
+  const mail = mailModel.getMailById(mailId);
+  if (!mail) {
+    return res.status(404).json({ error: 'Mail not found' });
+  }
+
+  if (mail.sender !== req.user.id && mail.receiver !== req.user.id) {
+    return res.status(403).json({ error: 'Not authorized to update this mail' });
+  }
+
+  const updated = mailModel.updateIsRead(mailId, isRead);
+  const { password, ...safeMail } = updated;
+  res.status(200).json(safeMail);
+};

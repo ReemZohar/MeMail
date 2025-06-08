@@ -35,12 +35,14 @@ const sendMail = async (title, content, sender, receiver) => {
     content,
     time,
     folder: 'sent',
+    isRead: false
   };
 
   const received = {
     ...sent,
     id: idCounter++,
     folder: 'inbox',
+    isRead: false
   };
 
   mails.push(sent);
@@ -93,4 +95,11 @@ const searchMails = (query, userId) => {
   );
 }
   
-module.exports = {getAllMailsForUser, sendMail, getMailById, updateMail, deleteMail, searchMails}
+const updateIsRead = (mailId, isRead) => {
+  const mail = mails.find(m => m.id === mailId);
+  if (!mail) return null;
+  mail.isRead = isRead;
+  return mail;
+};
+
+module.exports = {getAllMailsForUser, sendMail, getMailById, updateMail, deleteMail, searchMails,updateIsRead}

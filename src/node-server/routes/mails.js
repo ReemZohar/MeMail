@@ -20,4 +20,7 @@ router.delete('/:id', mailsController.deleteMail);
 // Search mails
 router.get('/search/:query', mailsController.searchMails);
 
+//update is read
+router.patch('/:id', authenticateToken, mailsController.updateIsReadStatus);
+
 module.exports = router;
