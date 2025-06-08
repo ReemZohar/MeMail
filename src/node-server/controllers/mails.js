@@ -71,7 +71,9 @@ exports.deleteMail = (req, res) => {
 // Search mails by query (matches title, content, sender or receiver)
 exports.searchMails = (req, res) => {
    const userId = req.header("user-id");
-    const user = userModel.getUserById(userId);
+     const labelId = req.query.labelId ? Number(req.query.labelId) : null;
+
+    const user = userModel.getUserById(userId, labelId);
     if (!user) return res.status(404).json({ error: 'User not found' });
     const query = req.params.query;
     const results = mailModel.searchMails(query, userId);

@@ -35,14 +35,16 @@ const sendMail = async (title, content, sender, receiver) => {
     content,
     time,
     folder: 'sent',
-    isRead: false
+    isRead: false,
+    labels: [] // assign mail to lables
   };
 
   const received = {
     ...sent,
     id: idCounter++,
     folder: 'inbox',
-    isRead: false
+    isRead: false,
+    labels: [], // assign mail to lables
   };
 
   mails.push(sent);
@@ -84,21 +86,39 @@ const deleteMail = (id) => {
     return true  
 }
 
-const searchMails = (query, userId) => {
+const searchMails = (query, userId, labelId = null) => {
   const lowerQuery = query.toLowerCase();
-  return mails.filter(mail =>
-    (mail.title.toLowerCase().includes(lowerQuery) ||
-    mail.content.toLowerCase().includes(lowerQuery) ||
-    mail.sender.toLowerCase().includes(lowerQuery) ||
-    mail.receiver.toLowerCase().includes(lowerQuery)) &&
-    (mail.sender === userId && mail.folder === 'sent')|| ( mail.receiver  === userId && mail.folder === 'inbox')
-  );
-}
+
+  return mails.filter(mail => {
+    const matchesText =
+      mail.title.toLowerCase().includes(lowerQuery) ||
+      mail.content.toLowerCase().includes(lowerQuery) ||
+      mail.sender.toLowerCase().includes(lowerQuery) ||
+      mail.receiver.toLowerCase().includes(lowerQuery);
+
+    const isOwnedByUser =
+      (mail.sender === userId && mail.folder === 'sent') ||
+      (mail.receiver === userId && mail.folder === 'inbox');
+
+    const hasLabel = labelId ? mail.labels.includes(labelId) : true;
+
+    return matchesText && isOwnedByUser && hasLabel;
+  });
+};
   
-const updateIsRead = (mailId, isRead) => {
+const addLabelToMail = (mailId, labelId) => {
   const mail = mails.find(m => m.id === mailId);
   if (!mail) return null;
-  mail.isRead = isRead;
+  if (!mail.labels.includes(labelId)) {
+    mail.labels.push(labelId);
+  }
+  return mail;
+};
+
+const removeLabelFromMail = (mailId, labelId) => {
+  const mail = mails.find(m => m.id === mailId);
+  if (!mail) return null;
+  mail.labels = mail.labels.filter(id => id !== labelId);
   return mail;
 };
 
