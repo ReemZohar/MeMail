@@ -105,21 +105,12 @@ const searchMails = (query, userId, labelId = null) => {
     return matchesText && isOwnedByUser && hasLabel;
   });
 };
-  
-const addLabelToMail = (mailId, labelId) => {
+  const updateIsRead = (mailId, isRead) => {
   const mail = mails.find(m => m.id === mailId);
   if (!mail) return null;
-  if (!mail.labels.includes(labelId)) {
-    mail.labels.push(labelId);
-  }
+  mail.isRead = isRead;
   return mail;
 };
 
-const removeLabelFromMail = (mailId, labelId) => {
-  const mail = mails.find(m => m.id === mailId);
-  if (!mail) return null;
-  mail.labels = mail.labels.filter(id => id !== labelId);
-  return mail;
-};
 
 module.exports = {getAllMailsForUser, sendMail, getMailById, updateMail, deleteMail, searchMails,updateIsRead}

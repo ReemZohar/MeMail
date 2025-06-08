@@ -26,6 +26,21 @@ const deleteLabel = (id) => {
     labels.splice(index, 1)
     return true
 }
+const addLabelToMail = (mailId, labelId) => {
+  const mail = mails.find(m => m.id === mailId);
+  if (!mail) return null;
+  if (!mail.labels.includes(labelId)) {
+    mail.labels.push(labelId);
+  }
+  return mail;
+};
+
+const removeLabelFromMail = (mailId, labelId) => {
+  const mail = mails.find(m => m.id === mailId);
+  if (!mail) return null;
+  mail.labels = mail.labels.filter(id => id !== labelId);
+  return mail;
+};
 
 
-module.exports = {getAllLabelsForUser, createLabel, getLabelById, updateLabel, deleteLabel}
+module.exports = {getAllLabelsForUser, createLabel, getLabelById, updateLabel, deleteLabel, addLabelToMail, removeLabelFromMail}
