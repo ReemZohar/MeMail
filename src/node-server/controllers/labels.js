@@ -2,19 +2,31 @@ const labelModel = require('../models/labels'); // label handles label operation
 const userModel = require('../models/users');
 
 exports.createLabel = (req, res) => {
-  const userId = req.header("user-id");
+  const userId = req.user.id;
   const { name } = req.body;
+
   if (!name) return res.status(400).json({ error: 'Name is required\n' });
+
   const user = userModel.getUserById(userId);
   if (!user) return res.status(404).json({ error: 'User not found\n' });
+
+  // check if the user has the same name lable
+  const existingLabels = labelModel.getAllLabelsForUser(userId);
+  const labelExists = existingLabels.some(label => label.name === name);
+
+  if (labelExists) {
+    return res.status(409).json({ error: 'Label with the same name already exists for this user\n' });
+  }
+
   const label = labelModel.createLabel(name, userId);
   res.status(201).location(`/api/labels/${label.id}`).send();
 };
 
 exports.getAllLabels = (req, res) => {
-  const userId = req.header("user-id");
+  const userId = req.user.id;
   const user = userModel.getUserById(userId);
   if (!user) return res.status(404).json({ error: 'User not found\n' });
+
   const labels = labelModel.getAllLabelsForUser(userId);
   res.status(200).json(labels);
 };

@@ -12,18 +12,20 @@ exports.getAllMails = (req, res) => {
 
 // Send a new mail
 exports.sendMail = async (req, res) => {
-  const { title, content, sender, receiver } = req.body;
-  if (!title || !content || !sender || !receiver) {
+  const { title, content, receiver } = req.body;
+  const sender = req.user.id; //from JWT
+
+  if (!title || !content || !receiver) {
     return res.status(400).json({ error: 'Missing required fields\n' });
   }
 
   const senderUser = userModel.getUserById(sender);
-  const receiverUser = userModel.getUserById(receiver);
+  const receiverUser = userModel.getUserByUsername(receiver); // user name
   if (!senderUser || !receiverUser) {
     return res.status(404).json({ error: 'Sender or receiver not found\n' });
   }
 
-  const mail = await mailModel.sendMail(title, content, sender, receiver);
+  const mail = await mailModel.sendMail(title, content, senderUser.id, receiverUser.id);
   if (!mail) {
     return res.status(400).json({ error: 'Mail contains blacklisted URL\n' });
   }
@@ -70,10 +72,11 @@ exports.deleteMail = (req, res) => {
 
 // Search mails by query (matches title, content, sender or receiver)
 exports.searchMails = (req, res) => {
-   const userId = req.header("user-id");
+const userId = req.user.id; // instead req.header("user-id") to get it from JWT
      const labelId = req.query.labelId ? Number(req.query.labelId) : null;
 
-    const user = userModel.getUserById(userId, labelId);
+    const user = userModel.getUserById(userId);
+
     if (!user) return res.status(404).json({ error: 'User not found' });
     const query = req.params.query;
     const results = mailModel.searchMails(query, userId);
