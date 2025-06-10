@@ -1,0 +1,18 @@
+label {
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    width: 30%;
+    margin: 10px;
+}
+
+.form-select {
+    width: 30%;
+    margin: 10px;
+}
+
+.date {
+    width: 10%;
+}
