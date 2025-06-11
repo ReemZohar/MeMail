@@ -16,7 +16,14 @@
     width: 100%
 }
 
-.button-left-margin {
+.button-left-margin-white {
+  width: 50%;
+  margin-left: 23px;
+  background-color: white;
+  color: #0d6efd;
+}
+
+.button-left-margin-blue {
   width: 50%;
   margin-left: 23px;
 }

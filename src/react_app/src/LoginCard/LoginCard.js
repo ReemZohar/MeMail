@@ -33,11 +33,15 @@ function LoginCard({ theme, onSubmit, emailInfo, passwordInfo }) {
                             feedback={emailInfo.feedback}
                         />
                         <div className="d-flex gap-2 mt-3">
+                            
+                            {/*<Link to="/register" className="btn btn-secondary">
+                                Create account
+                            </Link>*/}
 
-                            <button type="button" className="btn btn-light flex-grow-1 button-left-margin ">
+                            <button type="button" className="btn btn-light flex-grow-1 button-left-margin-white ">
                                 Create account
                             </button>
-                            <button type="submit" className="btn btn-primary flex-grow-1 button-left-margin ">
+                            <button type="submit" className="btn btn-primary flex-grow-1 button-left-margin-blue ">
                                 Next
                             </button>
                         </div>
@@ -51,7 +55,7 @@ function LoginCard({ theme, onSubmit, emailInfo, passwordInfo }) {
                                 feedback={passwordInfo.feedback}
                             />
                             <div className="d-flex justify-content-end mt-3">
-                                <button type="submit" className="btn btn-primary button button-left-margin " style={{width: "50%"}}>
+                                <button type="submit" className="btn btn-primary button button-left-margin-blue " style={{width: "50%"}}>
                                     Login
                                 </button>
                             </div>
