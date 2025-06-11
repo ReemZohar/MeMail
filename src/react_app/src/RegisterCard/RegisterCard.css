@@ -1,0 +1,22 @@
+.register-card {
+    min-height: 360px;
+    min-width: 600px;
+    width: 60%;
+    margin-top: 10%;
+    margin-bottom: 17.5%;
+    margin-right: 17.5%;
+    margin-left: 18%;
+}
+
+.align-button-end {
+    margin-left: 80%;
+}
+
+.open-sans-text {
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
