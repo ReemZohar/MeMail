@@ -1,0 +1,34 @@
+[data-bs-theme="dark"] {
+  color: var(--bs-body-color);
+}
+
+label {
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    margin: 10px;
+}
+
+.form-select {
+    margin: 10px;
+}
+
+.col-1-5 {
+  flex: 0 0 auto;
+  width: 12.5%;
+}
+
+.col-4-5 {
+  flex: 0 0 auto;
+  width: 37.5%;
+}
+
+.valid-feedback {
+    margin: 10px;
+}
+
+.invalid-feedback {
+    margin: 10px;
+}
