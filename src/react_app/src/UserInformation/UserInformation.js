@@ -35,9 +35,6 @@ function UserInformation({ requiredInfo, theme, type="text", isValid="", feedbac
 
 //password form component
 UserInformation.Password = props => {
-    //TODO: password validation function
-    //props.isValid =
-    //props.feedback =
     return (
         <UserInformation {...props} type="password" />
     )
@@ -45,9 +42,6 @@ UserInformation.Password = props => {
 
 //number form component
 UserInformation.Num = props => {
-    //TODO: password validation function
-    //props.isValid =
-    //props.feedback =
     return (
         <UserInformation {...props} type="number"/>
     )
@@ -92,9 +86,6 @@ UserInformation.Gender = ({ theme }) => {
 
 //day month and year form component
 UserInformation.Date = ({ theme }) => {
-    //TODO: date validation function
-    //const isValid =
-    //const feedback =
     const date = new Date();
     const currYear = date.getFullYear();
 
