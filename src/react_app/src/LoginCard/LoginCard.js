@@ -1,6 +1,7 @@
 import UserInformation from '../UserInformation/UserInformation';
 import "./LoginCard.css";
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function LoginCard({ theme, onSubmit, emailInfo, passwordInfo }) {
     const [step, setStep] = useState(1);
@@ -24,19 +25,23 @@ function LoginCard({ theme, onSubmit, emailInfo, passwordInfo }) {
                 <div className="login-right col-6">
                     {step === 1 ? (
                         <form onSubmit={handleNext}>
-                            <UserInformation
-                                requiredInfo="Email"
-                                theme={theme}
-                                type="email"
-                                isValid={emailInfo.isValid}
-                                feedback={emailInfo.feedback}
-                            />
-                            <div className="d-grid gap-2 mt-3">
-                                <button type="submit" className="btn btn-primary">
-                                    Next
-                                </button>
-                            </div>
-                        </form>
+                        <UserInformation
+                            requiredInfo="Email"
+                            theme={theme}
+                            type="email"
+                            isValid={emailInfo.isValid}
+                            feedback={emailInfo.feedback}
+                        />
+                        <div className="d-flex gap-2 mt-3">
+
+                            <button type="button" className="btn btn-light flex-grow-1 button-left-margin ">
+                                Create account
+                            </button>
+                            <button type="submit" className="btn btn-primary flex-grow-1 button-left-margin ">
+                                Next
+                            </button>
+                        </div>
+                    </form>
                     ) : (
                         <form onSubmit={onSubmit}>
                             <UserInformation.Password
@@ -45,8 +50,8 @@ function LoginCard({ theme, onSubmit, emailInfo, passwordInfo }) {
                                 isValid={passwordInfo.isValid}
                                 feedback={passwordInfo.feedback}
                             />
-                            <div className="d-grid gap-2 mt-3">
-                                <button type="submit" className="btn btn-primary">
+                            <div className="d-flex justify-content-end mt-3">
+                                <button type="submit" className="btn btn-primary button button-left-margin " style={{width: "50%"}}>
                                     Login
                                 </button>
                             </div>
