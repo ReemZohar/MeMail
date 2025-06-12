@@ -13,7 +13,7 @@ function LoginCard({ theme, onSubmit, emailInfo, passwordInfo }) {
     };
 
     return (
-        <div className="container d-flex justify-content-center align-items-center full-height-center">
+        <div className="container d-flex justify-content-center align-items-center full-height-center" data-bs-theme={theme}>
             <div className="login-card col-10 d-flex" data-bs-theme={theme}>
                 {/* Left side: text */}
                 <div className="login-left col-6 d-flex flex-column justify-content-center align-items-start">
