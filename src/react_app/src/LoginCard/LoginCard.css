@@ -22,10 +22,20 @@
 }
 
 .button-left-margin-white {
-  width: 50%;
   margin-left: 23px;
   background-color: white;
   color: #0d6efd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 24px;
+  font-weight: 500;
+  font-size: 15px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  transition: background-color 0.2s ease;
+  cursor: pointer;
 }
 
 [data-bs-theme="dark"] .button-left-margin-white {
@@ -34,6 +44,16 @@
 }
 
 .button-left-margin-blue {
-  width: 50%;
   margin-left: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 24px;
+  font-weight: 500;
+  font-size: 15px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  transition: background-color 0.2s ease;
+  cursor: pointer;
 }
