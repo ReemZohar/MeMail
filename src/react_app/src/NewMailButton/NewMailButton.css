@@ -25,3 +25,14 @@
 .compose-icon {
     font-size: 20px;
 }
+
+.compose-button[data-bs-theme="dark"] {
+  background-color: #202124;
+  color: #e8eaed;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+
+.compose-button[data-bs-theme="dark"]:hover {
+  background-color: #5f6368;
+}
