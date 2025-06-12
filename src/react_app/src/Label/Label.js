@@ -1,5 +1,5 @@
 import './Label.css';
-import { MdInbox } from 'react-icons/md';
+import { MdInbox, MdStar, MdSend, MdReport, MdLabel } from 'react-icons/md';
 
 function Label({ icon, name, isActive, onClick, theme }) {
   return (
@@ -12,5 +12,18 @@ function Label({ icon, name, isActive, onClick, theme }) {
     </button>
   );
 }
+
+//Custom user's label component
+Label.CustomLabel = ({ name, isActive, onClick, theme }) => {
+  return (
+    <Label
+      icon={<MdLabel size={18} />}
+      name={name}
+      isActive={isActive}
+      onClick={onClick}
+      theme={theme}
+    />
+  );
+};
 
 export default Label;
