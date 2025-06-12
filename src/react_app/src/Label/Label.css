@@ -1,0 +1,38 @@
+.label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 20px;
+  background-color: transparent;
+  color: #444;
+  font-size: 16px;
+  text-align: left;
+  width: 100%;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.label:hover {
+  background-color: #f1f3f4;
+}
+
+.label.active {
+  background-color: #d3e3fd;
+  color: #1a73e8;
+  font-weight: 600;
+}
+
+[data-bs-theme="dark"] .label {
+  color: #ddd;
+}
+
+[data-bs-theme="dark"] .label:hover {
+  background-color: #333;
+}
+
+[data-bs-theme="dark"] .label.active {
+  background-color: #3a4a61;
+  color: #aad1ff;
+}
