@@ -31,6 +31,8 @@ function LoginCard({ theme, onSubmit, emailInfo, passwordInfo }) {
                             type="email"
                             isValid={emailInfo.isValid}
                             feedback={emailInfo.feedback}
+                            value={emailInfo.value}
+                            onChange={emailInfo.onChange} 
                         />
                         <div className="d-flex gap-2 mt-3">
                             
@@ -53,6 +55,8 @@ function LoginCard({ theme, onSubmit, emailInfo, passwordInfo }) {
                                 theme={theme}
                                 isValid={passwordInfo.isValid}
                                 feedback={passwordInfo.feedback}
+                                value={passwordInfo.value}
+                                onChange={passwordInfo.onChange}
                             />
                             <div className="d-flex justify-content-end mt-3">
                                 <button type="submit" className="btn btn-primary button button-left-margin-blue " style={{width: "50%"}}>
