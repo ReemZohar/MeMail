@@ -13,9 +13,14 @@
   cursor: pointer;
   position: relative;
 }
+
 .customLabelMenu {
   width: 240px;
   font-family: Arial, sans-serif;
+}
+
+.customLabelMenu.collapsed {
+  width: 64px;
 }
 
 .label-content {
@@ -61,7 +66,7 @@
 }
 
 [data-bs-theme="dark"] .label:hover {
-  background-color: #333;
+  color: #333;
 }
 
 [data-bs-theme="dark"] .label.active {
@@ -78,6 +83,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 16px;
+  width: 100%;
+}
+
+/* במצב מכווץ – יישור הכפתור "+" למרכז */
+.customLabelMenu.collapsed .labels-header {
+  justify-content: center;
+  padding: 10px 0;
+}
+
+/* במצב מכווץ – הסתרת הטקסט "Labels" */
+.customLabelMenu.collapsed .labels-title {
+  display: none;
 }
 
 .labels-title {
@@ -86,7 +103,15 @@
   color: #444;
 }
 
-.addLabel-button {
+
+[data-bs-theme="dark"] .labels-title {
+  color: #ddd;
+}
+
+[data-bs-theme="dark"] .labels-header {
+  color: #ddd;
+}
+.addCustomLabel-button {
   background-color: transparent;
   border: none;
   font-size: 20px;
@@ -100,24 +125,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 1;
+  visibility: visible;
 }
 
-.addLabel-button:hover {
+.addCustomLabel-button:hover {
   background-color: #e3efff;
+  color: #000000;
 }
 
-[data-bs-theme="dark"] .addLabel-button {
+[data-bs-theme="dark"] .addCustomLabel-button {
   color: #ddd;
 }
 
-[data-bs-theme="dark"] .addLabel-button:hover {
-  color: #ddd;
-}
 
-[data-bs-theme="dark"] .labels-title {
-  color: #ddd;
-}
-
-[data-bs-theme="dark"] .labels-header {
-  color: #ddd;
+[data-bs-theme="dark"] .addCustomLabel-button:hover {
+  color: #444;
 }

@@ -92,8 +92,3 @@
     0 4px 8px rgba(255,255,255,0.06),
     0 12px 24px rgba(255,255,255,0.04);
 }
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}

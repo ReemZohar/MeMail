@@ -38,19 +38,16 @@
   font-weight: 600;
 }
 
-[data-bs-theme="dark"] .label {
-  color: #ddd;
+
+.label.collapsed .label-text {
+  display: none;
 }
 
-[data-bs-theme="dark"] .label:hover {
-  background-color: #333;
+.label .label-icon {
+  margin-right: 8px;
 }
 
-[data-bs-theme="dark"] .label.active {
-  background-color: #3a4a61;
-  color: #aad1ff;
-}
-
-[data-bs-theme="dark"] .label-menu-button {
-  color: #aaa;
+.label:hover,
+.label-item:hover {
+  background-color: #f1f3f4;
 }

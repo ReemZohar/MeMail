@@ -1,76 +1,48 @@
-.label {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 20px;
-  background-color: transparent;
-  color: #444;
-  font-size: 16px;
-  width: 100%;
-  transition: background-color 0.2s ease;
-  cursor: pointer;
-  position: relative;
-}
-
-.labelMenu {
+.leftMenu {
   width: 240px;
-  font-family: Arial, sans-serif;
+  transition: width 0.3s ease;
+  overflow-x: hidden;
 }
 
-
-.label-content {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-grow: 1;
-  justify-content: flex-start;
-  overflow: hidden;
+.leftMenu.collapsed {
+  width: 60px;
 }
 
-.label-text {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.label:hover {
-  background-color: #f1f3f4;
-}
-
-.label-menu-button {
+.hamburger-button {
   background: none;
   border: none;
-  color: #666;
+  padding: 10px;
   cursor: pointer;
+}
+
+.compose-button {
+  margin: 10px;
+  padding: 10px;
+  background-color: #c2e7ff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.label-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.label-name {
+  margin-left: 10px;
+}
+
+.leftMenu.collapsed .compose-button,
+.leftMenu.collapsed .label-name,
+.leftMenu.collapsed .labels-title,
+.leftMenu.collapsed .addLabel-button {
   display: none;
-  padding: 4px;
 }
 
-.label:hover .label-menu-button {
-  display: inline;
-}
-
-.label.active {
-  background-color: #d3e3fd;
-  color: #1a73e8;
-  font-weight: 600;
-}
-
-[data-bs-theme="dark"] .label {
-  color: #ddd;
-}
-
-[data-bs-theme="dark"] .label:hover {
-  background-color: #333;
-}
-
-[data-bs-theme="dark"] .label.active {
-  background-color: #3a4a61;
-  color: #aad1ff;
-}
-
-[data-bs-theme="dark"] .label-menu-button {
-  color: #aaa;
+[data-bs-theme="dark"] .label-item:hover {
+  color: #333;
 }
