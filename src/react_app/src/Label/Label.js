@@ -47,6 +47,17 @@ Label.CustomLabel = ({ name, isActive, onClick, theme, onMenuClick }) => {
         <MdMoreVert size={20} />
       </button>
     </div>
+=======
+Label.CustomLabel = ({ name, isActive, onClick, theme }) => {
+  return (
+    <Label
+      icon={<MdLabel size={18} />}
+      name={name}
+      isActive={isActive}
+      onClick={onClick}
+      theme={theme}
+      showMenuButton={true}
+    />
   );
 };
 
