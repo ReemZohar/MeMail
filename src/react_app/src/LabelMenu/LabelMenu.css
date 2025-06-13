@@ -2,18 +2,37 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
   padding: 10px 16px;
   border: none;
   border-radius: 20px;
   background-color: transparent;
   color: #444;
   font-size: 16px;
-  text-align: left;
   width: 100%;
   transition: background-color 0.2s ease;
   cursor: pointer;
   position: relative;
+}
+
+.labelMenu {
+  width: 240px;
+  font-family: Arial, sans-serif;
+}
+
+
+.label-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-grow: 1;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+.label-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .label:hover {
@@ -26,6 +45,7 @@
   color: #666;
   cursor: pointer;
   display: none;
+  padding: 4px;
 }
 
 .label:hover .label-menu-button {
