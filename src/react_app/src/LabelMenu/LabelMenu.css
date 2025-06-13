@@ -42,3 +42,7 @@
 .leftMenu.collapsed .addLabel-button {
   display: none;
 }
+
+[data-bs-theme="dark"] .label-item:hover {
+  color: #333;
+}

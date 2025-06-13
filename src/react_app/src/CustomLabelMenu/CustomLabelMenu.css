@@ -66,7 +66,7 @@
 }
 
 [data-bs-theme="dark"] .label:hover {
-  background-color: #333;
+  color: #333;
 }
 
 [data-bs-theme="dark"] .label.active {
@@ -131,12 +131,14 @@
 
 .addCustomLabel-button:hover {
   background-color: #e3efff;
+  color: #000000;
 }
 
 [data-bs-theme="dark"] .addCustomLabel-button {
   color: #ddd;
 }
 
+
 [data-bs-theme="dark"] .addCustomLabel-button:hover {
-  color: #ddd;
+  color: #444;
 }
