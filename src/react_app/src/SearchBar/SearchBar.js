@@ -16,9 +16,8 @@ function SearchBar() {
     alert('Open advanced search modal'); //todo delete
   };
 
-  // פונקציית חיפוש לדוגמה
-  const performSearch = () => {
-    alert(`Search for: ${query}`); // כאן תשים את הלוגיקה האמיתית לחיפוש
+  const performSearch = () => {  //Search function
+    alert(`Search for: ${query}`);
   };
 
   const handleKeyDown = (e) => {

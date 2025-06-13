@@ -86,13 +86,11 @@
   width: 100%;
 }
 
-/* במצב מכווץ – יישור הכפתור "+" למרכז */
 .customLabelMenu.collapsed .labels-header {
   justify-content: center;
   padding: 10px 0;
 }
 
-/* במצב מכווץ – הסתרת הטקסט "Labels" */
 .customLabelMenu.collapsed .labels-title {
   display: none;
 }
