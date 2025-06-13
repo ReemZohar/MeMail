@@ -40,9 +40,9 @@ function LoginCard({ theme, onSubmit, emailInfo, passwordInfo }) {
                                 Create account
                             </Link>*/}
 
-                            <button type="button" className="btn btn-light flex-grow-1 button-left-margin-white ">
-                                Create account
-                            </button>
+                            <Link to="/register" className="btn btn-light flex-grow-1 button-left-margin-white">
+                            Create account
+                            </Link>
                             <button type="submit" className="btn btn-primary flex-grow-1 button-left-margin-blue ">
                                 Next
                             </button>
