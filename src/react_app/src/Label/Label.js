@@ -27,16 +27,26 @@ function Label({ icon, name, isActive, onClick, theme, showMenuButton = false })
 }
 
 //Custom user's label component
-Label.CustomLabel = ({ name, isActive, onClick, theme }) => {
+Label.CustomLabel = ({ name, isActive, onClick, theme, onMenuClick }) => {
   return (
-    <Label
-      icon={<MdLabel size={18} />}
-      name={name}
-      isActive={isActive}
+    <div
+      className={`label ${isActive ? 'active' : ''} ${theme === 'dark' ? 'dark' : 'light'}`}
       onClick={onClick}
-      theme={theme}
-      showMenuButton={true}
-    />
+    >
+      <div className="label-content">
+        <span className="label-icon"><MdLabel size={18} /></span>
+        <span className="label-text">{name}</span>
+      </div>
+      <button
+        className="label-menu-button"
+        onClick={(e) => {
+          e.stopPropagation(); // מונע הפעלה של onClick הכללי
+          if (onMenuClick) onMenuClick(e);
+        }}
+      >
+        <MdMoreVert size={20} />
+      </button>
+    </div>
   );
 };
 
