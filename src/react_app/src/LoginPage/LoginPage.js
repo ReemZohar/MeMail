@@ -59,7 +59,7 @@ function LoginPage({ theme }) {
             }
 
             localStorage.setItem('token', data.token);
-            navigate('/dashboard');
+            navigate('/dashboard'); //todo change path
         } catch (error) {
             console.error('Login error:', error);
             setPasswordInfo(prev => ({
