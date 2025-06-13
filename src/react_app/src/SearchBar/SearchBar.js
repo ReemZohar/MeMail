@@ -16,9 +16,27 @@ function SearchBar() {
     alert('Open advanced search modal'); //todo delete
   };
 
+  // פונקציית חיפוש לדוגמה
+  const performSearch = () => {
+    alert(`Search for: ${query}`); // כאן תשים את הלוגיקה האמיתית לחיפוש
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      performSearch();
+    }
+  };
+
   return (
     <div className="search-bar">
-      <MdSearch className="search-icon" />
+      <button
+        type="button"
+        className="search-icon-button"
+        onClick={performSearch}
+        aria-label="Search"
+      >
+        <MdSearch className="search-icon" />
+      </button>
       <input
         ref={inputRef}
         type="text"
@@ -26,6 +44,7 @@ function SearchBar() {
         aria-label="Search mail"
         value={query}
         onChange={e => setQuery(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
       {query && (
         <button className="clear-button" onClick={clearInput} aria-label="Clear search">
