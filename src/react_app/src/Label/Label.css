@@ -54,3 +54,16 @@
 [data-bs-theme="dark"] .label-menu-button {
   color: #aaa;
 }
+
+.label.collapsed .label-text {
+  display: none;
+}
+
+.label .label-icon {
+  margin-right: 8px;
+}
+
+.label:hover,
+.label-item:hover {
+  background-color: #f1f3f4;
+}

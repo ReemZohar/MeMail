@@ -4,11 +4,11 @@ import Label from '../Label/Label';
 import NewCustomLabelWindow from './NewCustomLabelWindow';
 import LabelOptionsMenu from './LabelOptionsMenu';
 
-function CustomLabelMenu({ theme, clickOnLabel, activeLabelId }) {
+function CustomLabelMenu({ theme, clickOnLabel, activeLabelId, isCollapsed }) {
   const [labels, setLabels] = useState([]);
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [openOptionsId, setOpenOptionsId] = useState(null);
-  const [editLabelData, setEditLabelData] = useState(null); // חדש
+  const [editLabelData, setEditLabelData] = useState(null);
 
   const addLabel = (labelName) => {
     const newLabel = {
@@ -43,11 +43,8 @@ function CustomLabelMenu({ theme, clickOnLabel, activeLabelId }) {
   return (
     <div className="customLabelMenu">
       <div className="labels-header">
-        <span className="labels-title">Labels</span>
-        <button
-          className="addLabel-button"
-          onClick={() => setIsWindowOpen(true)}
-        >
+        {!isCollapsed && <span className="labels-title">Labels</span>}
+        <button className="addCustomLabel-button" onClick={() => setIsWindowOpen(true)}>
           +
         </button>
       </div>
@@ -59,10 +56,13 @@ function CustomLabelMenu({ theme, clickOnLabel, activeLabelId }) {
             name={label.name}
             isActive={label.id === activeLabelId}
             onClick={() => clickOnLabel(label.id)}
-            onMenuClick={() => setOpenOptionsId(prev => prev === label.id ? null : label.id)}
+            onMenuClick={() =>
+              setOpenOptionsId(prev => prev === label.id ? null : label.id)
+            }
+            isCollapsed={isCollapsed}
           />
 
-          {openOptionsId === label.id && (
+          {!isCollapsed && openOptionsId === label.id && (
             <LabelOptionsMenu
               onEdit={() => openEditLabel(label)}
               onDelete={() => deleteLabel(label.id)}

@@ -1,0 +1,16 @@
+.leftMenu {
+  width: 250px;
+  background-color: transparent;
+  padding: 12px 8px;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.built-in-labels,
+.custom-labels {
+  margin-top: 10px;
+}
+
