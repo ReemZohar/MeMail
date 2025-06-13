@@ -1,16 +1,40 @@
-import "./SearchBar.css";
+import React, { useState, useRef } from 'react';
+import { MdSearch, MdClose, MdTune } from 'react-icons/md';
+import './SearchBar.css';
 
 function SearchBar() {
+  const [query, setQuery] = useState('');
+  const inputRef = useRef(null);
+
+  const clearInput = () => {
+    setQuery('');
+    inputRef.current.focus();
+  };
+
+  const openAdvancedSearch = () => {
+    //Advanced search logic
+    alert('Open advanced search modal'); //todo delete
+  };
+
   return (
-    <div className="container mt-3">
-      <div id="searchWrapper" className="search-bar">
-        <input
-          type="text"
-          id="searchInput"
-          className="form-control"
-          placeholder="Search mail"
-        />
-      </div>
+    <div className="search-bar">
+      <MdSearch className="search-icon" />
+      <input
+        ref={inputRef}
+        type="text"
+        placeholder="Search mail"
+        aria-label="Search mail"
+        value={query}
+        onChange={e => setQuery(e.target.value)}
+      />
+      {query && (
+        <button className="clear-button" onClick={clearInput} aria-label="Clear search">
+          <MdClose size={20} />
+        </button>
+      )}
+      <button className="advanced-button" onClick={openAdvancedSearch} aria-label="Advanced search">
+        <MdTune size={20} />
+      </button>
     </div>
   );
 }

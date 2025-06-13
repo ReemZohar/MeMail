@@ -1,15 +1,66 @@
 .search-bar {
-  max-width: 300px;
-  margin: auto;
-  transition: all 0.3s ease;
-  border: 1px solid #ccc;
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
   border-radius: 24px;
-  padding: 5px 12px;
-  box-shadow: none;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(60,64,67,.3), 0 4px 8px rgba(60,64,67,.15);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
 }
 
-.search-bar.active {
-  max-width: 600px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+.search-bar:focus-within {
+  box-shadow: 0 1px 6px rgba(26, 115, 232, 0.6);
   border-color: #1a73e8;
+}
+
+.search-bar input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  border-radius: 24px;
+  padding: 10px 48px 10px 48px;
+  font-size: 16px;
+  color: #202124;
+  background-color: transparent;
+  font-family: 'Google Sans', Arial, sans-serif;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  color: #5f6368;
+  font-size: 20px;
+  pointer-events: none;
+}
+
+.clear-button, .advanced-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #5f6368;
+  font-size: 20px;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.clear-button:hover, .advanced-button:hover {
+  background-color: rgba(26, 115, 232, 0.1);
+}
+
+.clear-button {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-60%);
+}
+
+.advanced-button {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-60%);
 }
