@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const tokenModel = require('../models/tokens');
 require('dotenv').config();
+const { blacklistToken } = require('../models/blacklistTokens');
 
 const SECRET_KEY = process.env.JWT_SECRET; // secert is saved in .env
 
@@ -28,3 +29,13 @@ const user = tokenModel.login(username, password);
   //return the token only (not the pass)
   res.status(200).json({ token });
 };
+
+
+exports.logout = (req, res) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+  if (token) {
+    tokenModel.blacklistToken(token);
+  }
+  res.status(200).json({ message: "Logout successful" });
+};
+
