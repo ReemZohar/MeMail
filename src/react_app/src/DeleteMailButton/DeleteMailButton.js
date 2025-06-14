@@ -4,11 +4,13 @@ import './DeleteMailButton.css';
 
 const DeleteMailButton = ({ onClick }) => {
   return (
-    <button className="deleteMail-button" onClick={onClick}>
-      <MdDelete size={24} />
-    </button>
+    <div className="tooltip-container">
+      <button className="deleteMail-button" onClick={onClick}>
+        <MdDelete size={18} />
+      </button>
+      <span className="tooltip-text">Delete</span>
+    </div>
   );
 };
-
 
 export default DeleteMailButton;
