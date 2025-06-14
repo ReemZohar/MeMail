@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import MailList from './MailList/MailList';
 import DarkModeButton from './DarkModeButton/DarkModeButton';
+import LeftMenu from './LeftMenu/LeftMenu';
 
 const exampleMails = [
   {
@@ -44,6 +45,118 @@ const exampleMails = [
     folder: "inbox",
     date: new Date(Date.now() - 5 * 86400000).toISOString(), // 5 days ago
   },
+  {
+    id: "6",
+    sender: "newsletter@tech.com",
+    title: "Top 10 JavaScript tips",
+    content: "In this week's issue: 10 tips to improve your JavaScript skills and boost performance.",
+    folder: "inbox",
+    date: new Date(Date.now() - 5 * 86400000).toISOString(), // 5 days ago
+  },
+  {
+    id: "7",
+    sender: "newsletter@tech.com",
+    title: "Top 10 JavaScript tips",
+    content: "In this week's issue: 10 tips to improve your JavaScript skills and boost performance.",
+    folder: "inbox",
+    date: new Date(Date.now() - 5 * 86400000).toISOString(), // 5 days ago
+  },
+  {
+    id: "8",
+    sender: "newsletter@tech.com",
+    title: "Top 10 JavaScript tips",
+    content: "In this week's issue: 10 tips to improve your JavaScript skills and boost performance.",
+    folder: "inbox",
+    date: new Date(Date.now() - 5 * 86400000).toISOString(), // 5 days ago
+  },
+  {
+    id: "9",
+    sender: "newsletter@tech.com",
+    title: "Top 10 JavaScript tips",
+    content: "In this week's issue: 10 tips to improve your JavaScript skills and boost performance.",
+    folder: "inbox",
+    date: new Date(Date.now() - 5 * 86400000).toISOString(), // 5 days ago
+  },
+  {
+    id: "10",
+    sender: "newsletter@tech.com",
+    title: "Top 10 JavaScript tips",
+    content: "In this week's issue: 10 tips to improve your JavaScript skills and boost performance.",
+    folder: "inbox",
+    date: new Date(Date.now() - 5 * 86400000).toISOString(), // 5 days ago
+  },
+  {
+    id: "11",
+    sender: "newsletter@tech.com",
+    title: "Top 10 JavaScript tips",
+    content: "In this week's issue: 10 tips to improve your JavaScript skills and boost performance.",
+    folder: "inbox",
+    date: new Date(Date.now() - 5 * 86400000).toISOString(), // 5 days ago
+  },
+  {
+    id: "12",
+    sender: "newsletter@tech.com",
+    title: "Top 10 JavaScript tips",
+    content: "In this week's issue: 10 tips to improve your JavaScript skills and boost performance.",
+    folder: "inbox",
+    date: new Date(Date.now() - 5 * 86400000).toISOString(), // 5 days ago
+  },
+  {
+    id: "13",
+    sender: "newsletter@tech.com",
+    title: "Top 10 JavaScript tips",
+    content: "In this week's issue: 10 tips to improve your JavaScript skills and boost performance.",
+    folder: "inbox",
+    date: new Date(Date.now() - 5 * 86400000).toISOString(), // 5 days ago
+  },
+  {
+    id: "14",
+    sender: "newsletter@tech.com",
+    title: "Top 10 JavaScript tips",
+    content: "In this week's issue: 10 tips to improve your JavaScript skills and boost performance.",
+    folder: "inbox",
+    date: new Date(Date.now() - 5 * 86400000).toISOString(), // 5 days ago
+  },
+  {
+    id: "15",
+    sender: "newsletter@tech.com",
+    title: "Top 10 JavaScript tips",
+    content: "In this week's issue: 10 tips to improve your JavaScript skills and boost performance.",
+    folder: "inbox",
+    date: new Date(Date.now() - 5 * 86400000).toISOString(), // 5 days ago
+  },
+  {
+    id: "16",
+    sender: "newsletter@tech.com",
+    title: "Top 10 JavaScript tips",
+    content: "In this week's issue: 10 tips to improve your JavaScript skills and boost performance.",
+    folder: "inbox",
+    date: new Date(Date.now() - 5 * 86400000).toISOString(), // 5 days ago
+  },
+  {
+    id: "147",
+    sender: "newsletter@tech.com",
+    title: "Top 10 JavaScript tips",
+    content: "In this week's issue: 10 tips to improve your JavaScript skills and boost performance.",
+    folder: "inbox",
+    date: new Date(Date.now() - 5 * 86400000).toISOString(), // 5 days ago
+  },
+  {
+    id: "128",
+    sender: "newsletter@tech.com",
+    title: "Top 10 JavaScript tips",
+    content: "In this week's issue: 10 tips to improve your JavaScript skills and boost performance.",
+    folder: "inbox",
+    date: new Date(Date.now() - 5 * 86400000).toISOString(), // 5 days ago
+  },
+  {
+    id: "19",
+    sender: "newsletter@tech.com",
+    title: "Top 10 JavaScript tips",
+    content: "In this week's issue: 10 tips to improve your JavaScript skills and boost performance.",
+    folder: "inbox",
+    date: new Date(Date.now() - 5 * 86400000).toISOString(), // 5 days ago
+  },
 ];
 
 const handleMailDeleted = (id) => {
@@ -57,11 +170,21 @@ const handleMailMovedToSpam = (id) => {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <MailList
-      mails={exampleMails}
-      onMailDeleted={handleMailDeleted}
-      onMailMovedToSpam={handleMailMovedToSpam}
-    />
+    <div style={{ display: 'flex' }}>
+      <LeftMenu
+        theme="light"
+        activeLabelId={null}
+        clickOnLabel={(id) => console.log('Label clicked:', id)}
+      />
+
+      <MailList
+        mails={exampleMails}
+        onMailDeleted={handleMailDeleted}
+        onMailMovedToSpam={handleMailMovedToSpam}
+      />
+    </div>
+
     <DarkModeButton />
   </React.StrictMode>
 );
+
