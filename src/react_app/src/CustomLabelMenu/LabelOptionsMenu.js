@@ -5,7 +5,6 @@ import './LabelOptionsMenu.css';
 function LabelOptionsMenu({ onEdit, onDelete, onClose }) {
   const menuRef = useRef(null);
 
-  // טיפול בלחיצה מחוץ לתפריט כדי לסגור
   useEffect(() => {
     function handleClickOutside(event) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
