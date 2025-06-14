@@ -1,0 +1,9 @@
+.MailList {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  overflow-y: auto;
+  max-height: 80vh;
+}
