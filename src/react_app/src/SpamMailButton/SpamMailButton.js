@@ -12,7 +12,7 @@ const SpamMailButton = ({ onClick }) => {
       >
         <MdReport size={20} />
       </button>
-      <span className="tooltip-text">Mark as spam</span>
+      <span className="tooltip-text">Report spam</span>
     </div>
   );
 };
