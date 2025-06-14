@@ -142,3 +142,13 @@
 [data-bs-theme="dark"] .addCustomLabel-button:hover {
   color: #444;
 }
+
+.error-message {
+  background-color: #fce8e6;
+  color: #d93025;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #f1bdbd;
+  font-weight: 500;
+  font-size: 14px;
+}
