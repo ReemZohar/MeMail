@@ -1,34 +1,44 @@
 import "./UserInformation.css"
 
-function UserInformation({ requiredInfo, theme, type="text", isValid="", feedback="", min="", max="" }) {
+function UserInformation({ requiredInfo, theme, type = "text", isValid = "", feedback = "", min = "", max = "", value = "",
+    onChange = () => { } }) {
     //valid user information scenario
-    if(isValid === true) {
+    if (isValid === true) {
         return (
-        <div class="form-floating" data-bs-theme={theme}>
-            <input type={type} class="form-control is-valid" id="floatingInput" placeholder="" min={min} max={max}></input>
-            <label data-bs-theme={theme} for="floatingInput">{requiredInfo}</label>
-        </div>
+            <div className="form-floating" data-bs-theme={theme}>
+                <input type={type} className="form-control is-valid" id="floatingInput" placeholder="" min={min} max={max}
+                    value={value} onChange={onChange}></input>
+                <label data-bs-theme={theme} htmlFor="floatingInput">{requiredInfo}</label>
+                <div className="valid-feedback">
+                    {feedback}
+                </div>
+            </div>
         )
     }
     //invalid user information scenario
-    else if(isValid === false) {
+    else if (isValid === false) {
         return (
-        <div class="form-floating" data-bs-theme={theme}>
-            <input type={type} class="form-control is-invalid" id = "floatingInput" placeholder="" min={min} max={max}></input>
-            <label data-bs-theme={theme} for="floatingInput">{requiredInfo}</label>
-            <div class="invalid-feedback">
-                {feedback}
+            <div className="form-floating" data-bs-theme={theme}>
+                <input type={type} className="form-control is-invalid" id="floatingInput" placeholder="" min={min} max={max}
+                    value={value} onChange={onChange}></input>
+                <label data-bs-theme={theme} htmlFor="floatingInput">{requiredInfo}</label>
+                <div className="invalid-feedback">
+                    {feedback}
+                </div>
             </div>
-        </div>
         )
     }
     //no feedback user information form scenario
     else {
         return (
-        <div class="form-floating" data-bs-theme={theme}>
-            <input type={type} class="form-control" id = "floatingInput" placeholder="" min={min} max={max}></input>
-            <label data-bs-theme={theme} for="floatingInput">{requiredInfo}</label>
-        </div>
+            <div className="form-floating" data-bs-theme={theme}>
+                <input type={type} className="form-control" id="floatingInput" placeholder="" min={min} max={max}
+                    value={value} onChange={onChange}></input>
+                <label data-bs-theme={theme} htmlFor="floatingInput">{requiredInfo}</label>
+                <div className="form-text ms-3">
+                    {feedback}
+                </div>
+            </div>
         )
     }
 }
@@ -43,15 +53,19 @@ UserInformation.Password = props => {
 //number form component
 UserInformation.Num = props => {
     return (
-        <UserInformation {...props} type="number"/>
+        <UserInformation {...props} type="number" />
     )
 }
 
 //month form component
-UserInformation.Month = ({ theme }) => {
+UserInformation.Month = ({ theme, value, onChange, isValid }) => {
+    var className = "form-select"
+
+    if(isValid === false) className += " is-invalid"
+
     return (
-        <div class="form-floating" data-bs-theme={theme}>
-            <select class="form-select" id="floatingSelect">
+        <div className="form-floating" data-bs-theme={theme}>
+            <select className={className} id="floatingSelect" value={value} onChange={onChange}>
                 <option value="1">January</option>
                 <option value="2">February</option>
                 <option value="3">March</option>
@@ -65,40 +79,61 @@ UserInformation.Month = ({ theme }) => {
                 <option value="11">November</option>
                 <option value="12">December</option>
             </select>
-            <label for="floatingSelect">Month</label>
+            <label htmlFor="floatingSelect">Month</label>
         </div>
     )
 }
 
 //gender form component
-UserInformation.Gender = ({ theme }) => {
+UserInformation.Gender = ({ theme, value, onChange }) => {
     return (
-        <div class="form-floating col-4-5" data-bs-theme={theme}>
-            <select class="form-select" id="floatingSelect">
+        <div className="form-floating col-4-5" data-bs-theme={theme}>
+            <select className="form-select" id="floatingSelect" value={value} onChange={onChange}>
                 <option value="1">Female</option>
                 <option value="2">Male</option>
                 <option value="3">Rather not say</option>
             </select>
-            <label for="floatingSelect">Gender</label>
+            <label htmlFor="floatingSelect">Gender</label>
         </div>
     )
 }
 
 //day month and year form component
-UserInformation.Date = ({ theme }) => {
+UserInformation.Date = ({ theme, dayValue, monthValue, yearValue, onChangeDay, onChangeMonth, onChangeYear, isValid=""}) => {
     const date = new Date();
     const currYear = date.getFullYear();
 
     return (
-        <div class="row g-2">
-            <div class="col-1-5">
-                <UserInformation.Num requiredInfo={"Day"} theme={theme} min={1} max={31}></UserInformation.Num> 
+        <div className="row g-2">
+            <div className="col-1-5">
+                <UserInformation.Num
+                    requiredInfo={"Day"}
+                    theme={theme}
+                    isValid={isValid}
+                    min={1}
+                    max={31}
+                    value={dayValue}
+                    onChange={onChangeDay}
+                    ></UserInformation.Num>
             </div>
-            <div class="col-1-5">
-                <UserInformation.Month theme={theme}></UserInformation.Month>
+            <div className="col-1-5">
+                <UserInformation.Month
+                    theme={theme}
+                    isValid={isValid}
+                    value={monthValue}
+                    onChange={onChangeMonth}
+                ></UserInformation.Month>
             </div>
-            <div class="col-1-5">
-                <UserInformation.Num requiredInfo={"Year"} theme={theme} min={1} max={currYear}></UserInformation.Num>
+            <div className="col-1-5">
+                <UserInformation.Num
+                    requiredInfo={"Year"}
+                    theme={theme}
+                    isValid={isValid}
+                    min={1}
+                    max={currYear}
+                    value={yearValue}
+                    onChange={onChangeYear}
+                ></UserInformation.Num>
             </div>
         </div>
     )
