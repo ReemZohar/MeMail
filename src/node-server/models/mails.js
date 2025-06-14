@@ -84,6 +84,7 @@ const sendMail = async (title, content, sender, receiver) => {
     time,
     folder: 'sent',
     isRead: false,
+    isFavorite: false,  
     labels: [] // assign mail to lables
   };
 
@@ -160,5 +161,23 @@ const searchMails = (query, userId, labelId = null) => {
   return mail;
 };
 
+const markAsFavorite = (id, userId) => {
+  const mail = mails.find(m => m.id === parseInt(id));
+  if (mail && (mail.receiver === userId || mail.sender === userId)) {
+    mail.isFavorite = true;
+    return true;
+  }
+  return false;
+};
 
-module.exports = {getAllMailsForUser,   getSpamMailsForUser,markMailAsSpam,unmarkMailAsSpam,sendMail, getMailById, updateMail, deleteMail, searchMails,updateIsRead}
+const unmarkAsFavorite = (id, userId) => {
+  const mail = mails.find(m => m.id === parseInt(id));
+  if (mail && (mail.receiver === userId || mail.sender === userId)) {
+    mail.isFavorite = false;
+    return true;
+  }
+  return false;
+};
+
+
+module.exports = {markAsFavorite,unmarkAsFavorite,unmarkAsFavorite,markAsFavorite,getAllMailsForUser,   getSpamMailsForUser,markMailAsSpam,unmarkMailAsSpam,sendMail, getMailById, updateMail, deleteMail, searchMails,updateIsRead}

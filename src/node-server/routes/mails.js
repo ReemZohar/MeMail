@@ -28,4 +28,8 @@ router.patch('/:id', authenticateToken, mailsController.updateIsReadStatus);
 router.post('/:id/spam', authenticateToken, mailsController.markAsSpam);
 router.post('/:id/unspam', authenticateToken, mailsController.unmarkAsSpam);
 
+//NEW FAVORITES ROUTES
+router.post('/:id/favorite', authenticateToken, mailsController.markAsFavorite);
+router.post('/:id/unfavorite', authenticateToken, mailsController.unmarkAsFavorite);
+
 module.exports = router;

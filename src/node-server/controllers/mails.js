@@ -127,3 +127,25 @@ exports.unmarkAsSpam = async (req, res) => {
     res.status(404).json({ error: "Mail not found or unauthorized." });
   }
 };
+
+exports.markAsFavorite = (req, res) => {
+  const userId = req.user.id;
+  const { id } = req.params;
+  const result = mailModel.markAsFavorite(id, userId);
+  if (result) {
+    res.status(200).json({ message: "Mail marked as favorite." });
+  } else {
+    res.status(404).json({ error: "Mail not found or unauthorized." });
+  }
+};
+
+exports.unmarkAsFavorite = (req, res) => {
+  const userId = req.user.id;
+  const { id } = req.params;
+  const result = mailModel.unmarkAsFavorite(id, userId);
+  if (result) {
+    res.status(200).json({ message: "Mail unmarked as favorite." });
+  } else {
+    res.status(404).json({ error: "Mail not found or unauthorized." });
+  }
+};
