@@ -35,12 +35,16 @@ const sendMail = async (title, content, sender, receiver) => {
     content,
     time,
     folder: 'sent',
+    isRead: false,
+    labels: [] // assign mail to lables
   };
 
   const received = {
     ...sent,
     id: idCounter++,
     folder: 'inbox',
+    isRead: false,
+    labels: [], // assign mail to lables
   };
 
   mails.push(sent);
@@ -82,15 +86,31 @@ const deleteMail = (id) => {
     return true  
 }
 
-const searchMails = (query, userId) => {
+const searchMails = (query, userId, labelId = null) => {
   const lowerQuery = query.toLowerCase();
-  return mails.filter(mail =>
-    (mail.title.toLowerCase().includes(lowerQuery) ||
-    mail.content.toLowerCase().includes(lowerQuery) ||
-    mail.sender.toLowerCase().includes(lowerQuery) ||
-    mail.receiver.toLowerCase().includes(lowerQuery)) &&
-    (mail.sender === userId && mail.folder === 'sent')|| ( mail.receiver  === userId && mail.folder === 'inbox')
-  );
-}
-  
-module.exports = {getAllMailsForUser, sendMail, getMailById, updateMail, deleteMail, searchMails}
+
+  return mails.filter(mail => {
+    const matchesText =
+      mail.title.toLowerCase().includes(lowerQuery) ||
+      mail.content.toLowerCase().includes(lowerQuery) ||
+      mail.sender.toLowerCase().includes(lowerQuery) ||
+      mail.receiver.toLowerCase().includes(lowerQuery);
+
+    const isOwnedByUser =
+      (mail.sender === userId && mail.folder === 'sent') ||
+      (mail.receiver === userId && mail.folder === 'inbox');
+
+    const hasLabel = labelId ? mail.labels.includes(labelId) : true;
+
+    return matchesText && isOwnedByUser && hasLabel;
+  });
+};
+  const updateIsRead = (mailId, isRead) => {
+  const mail = mails.find(m => m.id === mailId);
+  if (!mail) return null;
+  mail.isRead = isRead;
+  return mail;
+};
+
+
+module.exports = {getAllMailsForUser, sendMail, getMailById, updateMail, deleteMail, searchMails,updateIsRead}

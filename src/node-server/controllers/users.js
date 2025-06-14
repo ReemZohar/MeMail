@@ -24,13 +24,19 @@ res.status(201).json({ id, username, name, avatar }); // without password
 // Get a user by ID
 exports.getUserById = (req, res) => {
   const id = Number(req.params.id);
-  const user = userModel.getUserById(id);
 
-  if (!user) {
-    return res.status(404).json({ error: 'User not found' }); // HTTP 404 Not Found
+  //jwt authenticate
+  if (req.user && req.user.id !== id) {
+    return res.status(403).json({ error: 'Forbidden' }); // Not allowed to access other users
   }
 
-  //remove password from the get request 
-    const { password, ...userWithoutPassword } = user;
-  res.status(200).json(userWithoutPassword); // HTTP 200 OK
+  const user = userModel.getUserById(id);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found\n' });
+  }
+
+  // remove sensitive fields
+  const { password, ...safeUser } = user;
+  res.status(200).json(safeUser);
 };
+
