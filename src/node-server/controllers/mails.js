@@ -105,3 +105,25 @@ exports.updateIsReadStatus = (req, res) => {
   const { password, ...safeMail } = updated;
   res.status(200).json(safeMail);
 };
+
+exports.markAsSpam = async (req, res) => {
+  const userId = req.user.id;
+  const { id } = req.params;
+  const result = await mailModel.markMailAsSpam(id, userId);
+  if (result) {
+    res.status(200).json({ message: "Mail marked as spam and URLs blacklisted." });
+  } else {
+    res.status(404).json({ error: "Mail not found or unauthorized." });
+  }
+};
+
+exports.unmarkAsSpam = async (req, res) => {
+  const userId = req.user.id;
+  const { id } = req.params;
+  const result = await mailModel.unmarkMailAsSpam(id, userId);
+  if (result) {
+    res.status(200).json({ message: "Mail unmarked as spam and URLs removed from blacklist." });
+  } else {
+    res.status(404).json({ error: "Mail not found or unauthorized." });
+  }
+};

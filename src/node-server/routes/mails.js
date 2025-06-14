@@ -24,4 +24,8 @@ router.get('/search/:query', authenticateToken, mailsController.searchMails);
 //update is read
 router.patch('/:id', authenticateToken, mailsController.updateIsReadStatus);
 
+// NEW SPAM ROUTES
+router.post('/:id/spam', authenticateToken, mailsController.markAsSpam);
+router.post('/:id/unspam', authenticateToken, mailsController.unmarkAsSpam);
+
 module.exports = router;

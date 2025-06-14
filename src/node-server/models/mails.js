@@ -2,13 +2,61 @@ let idCounter = 0 //counts the mails
 const mails = []
 
 const { isBlacklisted } = require('./blacklist');
+const { add, remove } = require('./blacklist');
 
-const getAllMailsForUser = (userId) => {
+const extractUrls = (text) => {
+  const regex = /((?:(https?|ftp):\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(:\d+)?(\/[^\s]*)?)/gi;
+  return text.match(regex) || [];
+};
+
+const markMailAsSpam = async (id, userId) => {
+  const mail = mails.find(m => m.id === parseInt(id));
+  if (mail && mail.receiver === userId && !mail.isSpam) {
+    mail.isSpam = true;
+    const urls = [...extractUrls(mail.title), ...extractUrls(mail.content)];
+    for (const url of urls) {
+      await add(url);
+    }
+    return true;
+  }
+  return false;
+};
+
+const unmarkMailAsSpam = async (id, userId) => {
+  const mail = mails.find(m => m.id === parseInt(id));
+  if (mail && mail.receiver === userId && mail.isSpam) {
+    mail.isSpam = false;
+    const urls = [...extractUrls(mail.title), ...extractUrls(mail.content)];
+    for (const url of urls) {
+      await remove(url);
+    }
+    return true;
+  }
+  return false;
+};
+
+const getAllMailsForUser = (userId, folder = null) => {
+  let userMails = mails.filter(m =>
+    (m.sender === userId && m.folder === 'sent') ||
+    (m.receiver === userId && m.folder !== 'sent')
+  );
+
+  if (folder) {
+    userMails = userMails.filter(m => m.folder === folder && m.isSpam !== true);
+  } else {
+    userMails = userMails.filter(m => m.isSpam !== true);
+  }
+
+  return userMails.sort((a, b) => b.time - a.time).slice(0, 50);
+};
+
+const getSpamMailsForUser = (userId) => {
   return mails
-    .filter(m => (m.sender === userId && m.folder === 'sent')|| (m.receiver === userId && m.folder === 'inbox'))
+    .filter(m => m.receiver === userId && m.isSpam === true)
     .sort((a, b) => b.time - a.time)
     .slice(0, 50);
 };
+
 
 const sendMail = async (title, content, sender, receiver) => {
   const time = Date.now();
@@ -113,4 +161,4 @@ const searchMails = (query, userId, labelId = null) => {
 };
 
 
-module.exports = {getAllMailsForUser, sendMail, getMailById, updateMail, deleteMail, searchMails,updateIsRead}
+module.exports = {getAllMailsForUser,   getSpamMailsForUser,markMailAsSpam,unmarkMailAsSpam,sendMail, getMailById, updateMail, deleteMail, searchMails,updateIsRead}
