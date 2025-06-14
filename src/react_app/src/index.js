@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import UserInformation from './UserInformation/UserInformation'
-import MailRow from './MailRow/MailRow';
+import MailRow from '../MailRow/DeleteMaiMailRowlButton';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <MailRow />
+    <div>nothing here yet</div>
   </React.StrictMode>
 );
