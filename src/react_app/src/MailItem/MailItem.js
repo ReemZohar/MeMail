@@ -33,11 +33,11 @@ function MailItem({ mail, onMailDeleted, onMailMovedToSpam }) {
       </div>
 
     <div className="MailItem-center">
-      <div className="MailItem-title-content">
-        <p className="MailItem-title" title={mail.title}>{mail.title}</p>
-        <p className="MailItem-separator">-</p>
-        <p className="MailItem-snippet" title={mail.content}>{shortContent}</p>
-      </div>
+<div className="MailItem-title-content">
+  <span className="MailItem-title">{mail.title}</span>
+  <span className="MailItem-separator">–</span>
+  <span className="MailItem-snippet">{shortContent}</span>
+</div>
     </div>
 
       <div className="MailItem-right">
