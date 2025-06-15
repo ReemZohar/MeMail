@@ -3,11 +3,22 @@ const userModel = require('../models/users');
 
 // Get the 50 most recent mails (sorted by time, newest first)
 exports.getAllMails = (req, res) => {
-    const userId = req.header("user-id");
-    const user = userModel.getUserById(userId);
-    if (!user) return res.status(404).json({ error: 'User not found' });
-    const mails = mailModel.getAllMailsForUser(userId);
-    res.status(200).json(mails);
+  const userId = req.user.id; // מקבל מתוך ה-JWT
+  const user = userModel.getUserById(userId);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+
+  const { folder, isSpam, isFavorite, sender, date } = req.query;
+
+  const filters = {
+    folder,
+    sender,
+    date,
+    isSpam: isSpam === 'true' ? true : isSpam === 'false' ? false : undefined,
+    isFavorite: isFavorite === 'true' ? true : isFavorite === 'false' ? false : undefined
+  };
+
+  const mails = mailModel.getAllMailsForUser(userId, filters);
+  res.status(200).json(mails);
 };
 
 // Send a new mail

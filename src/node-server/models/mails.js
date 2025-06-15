@@ -35,16 +35,33 @@ const unmarkMailAsSpam = async (id, userId) => {
   return false;
 };
 
-const getAllMailsForUser = (userId, folder = null) => {
-  let userMails = mails.filter(m =>
-    (m.sender === userId && m.folder === 'sent') ||
-    (m.receiver === userId && m.folder !== 'sent')
-  );
+const getAllMailsForUser = (userId, filters = {}) => {
+  let userMails = mails.filter(m => {
+    const isSender = m.sender === userId && m.folder === 'sent';
+    const isReceiver = m.receiver === userId && m.folder !== 'sent';
+    return isSender || isReceiver;
+  });
 
-  if (folder) {
-    userMails = userMails.filter(m => m.folder === folder && m.isSpam !== true);
+  if (filters.folder) {
+    userMails = userMails.filter(m => m.folder === filters.folder);
+  }
+
+  if (filters.isSpam !== undefined) {
+    userMails = userMails.filter(m => m.isSpam === filters.isSpam);
   } else {
     userMails = userMails.filter(m => m.isSpam !== true);
+  }
+
+  if (filters.isFavorite !== undefined) {
+    userMails = userMails.filter(m => m.isFavorite === filters.isFavorite);
+  }
+
+  if (filters.sender) {
+    userMails = userMails.filter(m => m.sender === filters.sender);
+  }
+
+  if (filters.date) {
+    userMails = userMails.filter(m => new Date(m.time).toDateString() === new Date(filters.date).toDateString());
   }
 
   return userMails.sort((a, b) => b.time - a.time).slice(0, 50);
