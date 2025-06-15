@@ -1,8 +1,9 @@
 import "./MailRow.css";
 import SpamMailButton from '../SpamMailButton/SpamMailButton';
 import DeleteMailButton from '../DeleteMailButton/DeleteMailButton';
+import FavoriteMailButton from '../FavoriteMailButton/FavoriteMailButton';
 
-function MailRow({ mailId, title, content, onActionDone }) {
+function MailRow({ mailId, title, content, isFavorite, isSpam, onActionDone }) {
   const token = localStorage.getItem("token");
 
   const handleDelete = async () => {
@@ -17,60 +18,64 @@ function MailRow({ mailId, title, content, onActionDone }) {
       if (response.status === 204) {
         onActionDone?.({ type: 'delete', mailId });
       } else {
-        alert("Failed to delete");
+        alert("Failed to delete mail.");
+        return;
       }
     } catch (err) {
       console.error("Error deleting mail:", err);
-      alert("Error deleting mail");
+      alert("Error deleting mail, please try again.");
     }
   };
 
   const handleSpam = async () => {
-    const extractUrls = (text) => {
-      const regex = /((?:(https?|ftp):\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(:\d+)?(\/[^\s]*)?)/gi;
-      return text.match(regex) || [];
-    };
-
-    const urls = [...extractUrls(title), ...extractUrls(content)];
-
     try {
-      if (urls.length > 0) {
-        await Promise.all(urls.map(url =>
-          fetch(`/api/blacklist`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ url })
-          })
-        ));
-      }
+      const endpoint = isSpam ? `/api/mails/${mailId}/unspam` : `/api/mails/${mailId}/spam`;
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
 
-      // Move the mail to spam folder
-      const patchResponse = await fetch(`/api/mails/${mailId}`, {
+      if (response.ok) {
+        onActionDone?.({ type: isSpam ? 'unspam' : 'spam', mailId });
+      } else {
+        alert(`Failed to ${isSpam ? 'unmark' : 'mark'} mail as spam.`);
+        return;
+      }
+    } catch (err) {
+      console.error(`Error toggling spam status:`, err);
+      alert("Error changing spam status, please try again.");
+    }
+  };
+
+  const handleFavorite = async () => {
+    try {
+      const response = await fetch(`/api/mails/${mailId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ folder: 'spam' })
+        body: JSON.stringify({ favorite: !isFavorite })
       });
 
-      if (patchResponse.ok) {
-        onActionDone?.({ type: 'spam', mailId });
+      if (response.ok) {
+        onActionDone?.({ type: 'favoriteToggle', mailId, favorite: !isFavorite });
       } else {
-        alert("Failed to mark as spam");
+        alert("Failed to update favorite status.");
+        return;
       }
     } catch (err) {
-      console.error("Error marking mail as spam:", err);
-      alert("Error marking mail as spam");
+      console.error("Error toggling favorite:", err);
+      alert("Error toggling favorite, please try again.");
     }
   };
 
   return (
     <div className="MailRow">
-      <SpamMailButton onClick={handleSpam} />
+      <FavoriteMailButton isFavorite={isFavorite} onClick={handleFavorite} />
+      <SpamMailButton isSpam={isSpam} onClick={handleSpam} />
       <DeleteMailButton onClick={handleDelete} />
     </div>
   );

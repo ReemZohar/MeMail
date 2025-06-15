@@ -1,14 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MailItem from '../MailItem/MailItem';
 import { MdRefresh, MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import './MailList.css';
 
-function MailList({ mails, onMailDeleted, onMailMovedToSpam, onRefresh }) {
+function MailList({ 
+  folder = 'inbox', 
+  isFavorite, 
+  sender, 
+  date, 
+  token, 
+  onMailDeleted, 
+  onMailMovedToSpam 
+}) {
   const [page, setPage] = useState(0);
+  const [mails, setMails] = useState([]);
   const mailsPerPage = 50;
 
-  const startIndex = page * mailsPerPage;
-  const displayedMails = mails.slice(startIndex, startIndex + mailsPerPage);
+  const fetchMails = async () => {
+    try {
+      const params = new URLSearchParams();
+      if (folder) params.append('folder', folder);
+      if (isFavorite !== undefined) params.append('isFavorite', isFavorite);
+      if (sender) params.append('sender', sender);
+      if (date) params.append('date', date);
+
+      const response = await fetch(`http://localhost:9090/api/mails?${params.toString()}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to fetch mails');
+
+      const data = await response.json();
+      setMails(data);
+      setPage(0); // reset to first page on refresh
+    } catch (err) {
+      console.error('Error loading mails:', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchMails();
+  }, [folder, isFavorite, sender, date]);
 
   const handleNext = () => {
     if ((page + 1) * mailsPerPage < mails.length) {
@@ -22,11 +56,19 @@ function MailList({ mails, onMailDeleted, onMailMovedToSpam, onRefresh }) {
     }
   };
 
+  const handleRefresh = () => {
+    fetchMails();
+  };
+
+  const sortedMails = [...mails].sort((a, b) => new Date(b.date) - new Date(a.date));
+  const startIndex = page * mailsPerPage;
+  const displayedMails = sortedMails.slice(startIndex, startIndex + mailsPerPage);
+
   return (
     <div className="MailList">
       <div className="MailList-header">
         <div className="tooltip-container">
-          <button onClick={onRefresh} className="MailList-btn">
+          <button onClick={handleRefresh} className="MailList-btn">
             <MdRefresh size={20} />
           </button>
           <span className="tooltip-text">Refresh</span>
@@ -47,7 +89,7 @@ function MailList({ mails, onMailDeleted, onMailMovedToSpam, onRefresh }) {
           <div className="tooltip-container">
             <button
               onClick={handleNext}
-              disabled={(page + 1) * mailsPerPage >= mails.length}
+              disabled={(page + 1) * mailsPerPage >= sortedMails.length}
               className="MailList-btn"
             >
               <MdNavigateNext size={24} />
