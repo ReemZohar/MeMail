@@ -3,6 +3,11 @@
   transition: width 0.3s ease;
   overflow-x: hidden;
 }
+.labelMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
 .leftMenu.collapsed {
   width: 60px;
@@ -28,12 +33,15 @@
 .label-item {
   display: flex;
   align-items: center;
-  padding: 8px;
+  padding: 10px 16px;
+  border-radius: 20px;
   cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s ease;
 }
 
-.label-name {
-  margin-left: 10px;
+.label-item:hover {
+  background-color: #f1f3f4;
 }
 
 .leftMenu.collapsed .compose-button,
