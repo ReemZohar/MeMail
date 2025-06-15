@@ -4,21 +4,7 @@ const mailsController = require('../controllers/mails');
 const authenticateToken = require('../middleware/auth');
 
 // Get last 50 mails
-router.get('/', authenticateToken, (req, res) => {
-  const userId = req.user.id;
-  const { folder, isSpam, isFavorite, sender, date } = req.query;
-
-  const filters = {
-    folder,
-    sender,
-    date,
-    isSpam: isSpam === 'true' ? true : isSpam === 'false' ? false : undefined,
-    isFavorite: isFavorite === 'true' ? true : isFavorite === 'false' ? false : undefined
-  };
-
-  const mails = mailsController.getAllMailsForUser(userId, filters);
-  res.json(mails);
-});
+router.get('/', authenticateToken, mailsController.getAllMails);
 
 // Send a new mail
 router.post('/', authenticateToken,mailsController.sendMail);

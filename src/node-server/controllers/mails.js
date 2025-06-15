@@ -3,7 +3,7 @@ const userModel = require('../models/users');
 
 // Get the 50 most recent mails (sorted by time, newest first)
 exports.getAllMails = (req, res) => {
-  const userId = req.user.id; // מקבל מתוך ה-JWT
+  const userId = req.user.id; // from-JWT
   const user = userModel.getUserById(userId);
   if (!user) return res.status(404).json({ error: 'User not found' });
 

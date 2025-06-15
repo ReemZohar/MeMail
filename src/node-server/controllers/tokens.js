@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const tokenModel = require('../models/tokens');
 require('dotenv').config();
-const { blacklistToken } = require('../models/blacklistTokens');
+const { blacklistToken } = require('../models/tokens');
 
 const SECRET_KEY = process.env.JWT_SECRET; // secert is saved in .env
 
