@@ -197,4 +197,4 @@ const unmarkAsFavorite = (id, userId) => {
 };
 
 
-module.exports = {markAsFavorite,unmarkAsFavorite,unmarkAsFavorite,markAsFavorite,getAllMailsForUser,   getSpamMailsForUser,markMailAsSpam,unmarkMailAsSpam,sendMail, getMailById, updateMail, deleteMail, searchMails,updateIsRead}
+module.exports = {markAsFavorite, unmarkAsFavorite, getAllMailsForUser,   getSpamMailsForUser,markMailAsSpam,unmarkMailAsSpam,sendMail, getMailById, updateMail, deleteMail, searchMails,updateIsRead}
