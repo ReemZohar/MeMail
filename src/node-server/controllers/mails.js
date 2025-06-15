@@ -3,11 +3,22 @@ const userModel = require('../models/users');
 
 // Get the 50 most recent mails (sorted by time, newest first)
 exports.getAllMails = (req, res) => {
-    const userId = req.header("user-id");
-    const user = userModel.getUserById(userId);
-    if (!user) return res.status(404).json({ error: 'User not found' });
-    const mails = mailModel.getAllMailsForUser(userId);
-    res.status(200).json(mails);
+  const userId = req.user.id; // from-JWT
+  const user = userModel.getUserById(userId);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+
+  const { folder, isSpam, isFavorite, sender, date } = req.query;
+
+  const filters = {
+    folder,
+    sender,
+    date,
+    isSpam: isSpam === 'true' ? true : isSpam === 'false' ? false : undefined,
+    isFavorite: isFavorite === 'true' ? true : isFavorite === 'false' ? false : undefined
+  };
+
+  const mails = mailModel.getAllMailsForUser(userId, filters);
+  res.status(200).json(mails);
 };
 
 // Send a new mail
@@ -104,4 +115,48 @@ exports.updateIsReadStatus = (req, res) => {
   const updated = mailModel.updateIsRead(mailId, isRead);
   const { password, ...safeMail } = updated;
   res.status(200).json(safeMail);
+};
+
+exports.markAsSpam = async (req, res) => {
+  const userId = req.user.id;
+  const { id } = req.params;
+  const result = await mailModel.markMailAsSpam(id, userId);
+  if (result) {
+    res.status(200).json({ message: "Mail marked as spam and URLs blacklisted." });
+  } else {
+    res.status(404).json({ error: "Mail not found or unauthorized." });
+  }
+};
+
+exports.unmarkAsSpam = async (req, res) => {
+  const userId = req.user.id;
+  const { id } = req.params;
+  const result = await mailModel.unmarkMailAsSpam(id, userId);
+  if (result) {
+    res.status(200).json({ message: "Mail unmarked as spam and URLs removed from blacklist." });
+  } else {
+    res.status(404).json({ error: "Mail not found or unauthorized." });
+  }
+};
+
+exports.markAsFavorite = (req, res) => {
+  const userId = req.user.id;
+  const { id } = req.params;
+  const result = mailModel.markAsFavorite(id, userId);
+  if (result) {
+    res.status(200).json({ message: "Mail marked as favorite." });
+  } else {
+    res.status(404).json({ error: "Mail not found or unauthorized." });
+  }
+};
+
+exports.unmarkAsFavorite = (req, res) => {
+  const userId = req.user.id;
+  const { id } = req.params;
+  const result = mailModel.unmarkAsFavorite(id, userId);
+  if (result) {
+    res.status(200).json({ message: "Mail unmarked as favorite." });
+  } else {
+    res.status(404).json({ error: "Mail not found or unauthorized." });
+  }
 };
