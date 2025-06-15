@@ -1,0 +1,21 @@
+.FavoriteMail-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+  width: 32px;
+  height: 32px;
+}
+
+.FavoriteMail-button:hover {
+  background-color: #f1f3f4;
+}
+
+.FavoriteMail-button svg {
+  color: #444;
+}
