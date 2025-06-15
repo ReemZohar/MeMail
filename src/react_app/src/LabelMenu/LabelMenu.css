@@ -38,3 +38,7 @@
 [data-bs-theme="dark"] .label-item:hover {
   color: #333;
 }
+
+.label-name {
+  margin-left: 10px;
+}

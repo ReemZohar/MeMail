@@ -5,6 +5,7 @@ import { MdInbox, MdStar, MdSend, MdReport, MdMail, MdDrafts } from 'react-icons
 function LabelMenu({ theme, clickOnLabel, isCollapsed }) {
   const labels = [
     { id: 'inbox', name: 'Inbox', icon: <MdInbox size={18} /> },
+    { id: 'starred', name: 'Starred', icon: <MdStar size={18} /> },
     { id: 'sent', name: 'Sent', icon: <MdSend size={18} /> },
     { id: 'drafts', name: 'Drafts', icon: <MdDrafts size={18} /> },
     { id: 'allmail', name: 'All Mail', icon: <MdMail size={18} /> },
