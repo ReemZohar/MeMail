@@ -14,19 +14,15 @@ function LabelMenu({ theme, clickOnLabel, isCollapsed }) {
   return (
     <div className="labelMenu">
       {labels.map(label => (
- <div className="tooltip-container" key={label.id}>
-  <div
-    className="label-item"
-    onClick={() => clickOnLabel(label.id)}
-  >
-    <div className="label-content">
-      {label.icon}
-      {!isCollapsed && <span className="label-name">{label.name}</span>}
-    </div>
-  </div>
-  <span className="tooltip-text">{label.name}</span>
-</div>
-     ))}
+        <div
+          key={label.id}
+          className="label-item"
+          onClick={() => clickOnLabel(label.id)}
+        >
+          {label.icon}
+          {!isCollapsed && <span className="label-name">{label.name}</span>}
+        </div>
+      ))}
     </div>
   );
 }
