@@ -9,6 +9,6 @@ import ChooseAvatarCard from './RegisterCards/ChooseAvatarCard/ChooseAvatarCard'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ChooseAvatarCard theme={"light"}/>
+    <ChooseAvatarCard theme={"dark"}/>
   </React.StrictMode>
 );

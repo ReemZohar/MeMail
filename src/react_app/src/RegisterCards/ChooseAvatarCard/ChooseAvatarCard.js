@@ -1,4 +1,3 @@
-// ChooseAvatarCard.js
 import { useState } from "react";
 import LogoAndText from "../LogoAndText/LogoAndText";
 import avatars from "../../avatars/avatars";
@@ -24,6 +23,16 @@ function ChooseAvatarCard({ theme }) {
       setAvatarFile(file);
       setAvatarPreview(URL.createObjectURL(file));
       setSelectedAvatar(null);
+    }
+  };
+
+  const handleAvatarClick = (url) => {
+    if (selectedAvatar === url) {
+      setSelectedAvatar(null);
+    } else {
+      setSelectedAvatar(url);
+      setAvatarFile(null);
+      setAvatarPreview(null);
     }
   };
 
@@ -60,17 +69,13 @@ function ChooseAvatarCard({ theme }) {
                   "avatar-choice me-3 mb-3" +
                   (selectedAvatar === url ? " selected" : "")
                 }
-                onClick={() => {
-                  setSelectedAvatar(url);
-                  setAvatarFile(null);
-                  setAvatarPreview(null);
-                }}
+                onClick={() => handleAvatarClick(url)}
               />
             ))}
 
             <label
               htmlFor="avatarUpload"
-              className="btn btn-outline-secondary mb-3"
+              className={btnClass + " mt-4 mb-3 w-100"}
             >
               Upload
             </label>
@@ -84,13 +89,15 @@ function ChooseAvatarCard({ theme }) {
           </div>
 
           {avatarPreview && (
-            <div className="mt-3">
+            <div className="preview-container mt-4 text-center">
               <p className="small mb-2 text-muted">Preview:</p>
-              <img
-                src={avatarPreview}
-                alt="Avatar preview"
-                className="avatar-preview"
-              />
+              <div className="preview-circle">
+                <img
+                  src={avatarPreview}
+                  alt="Avatar preview"
+                  className="avatar-preview"
+                />
+              </div>
             </div>
           )}
 
