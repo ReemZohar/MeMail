@@ -150,3 +150,23 @@
 [data-bs-theme="dark"] .MailItem-date {
   color: #999;
 }
+
+.MailItem.read {
+  background-color: #e8f0fe;
+}
+
+.MailItem.read .MailItem-sender,
+.MailItem.read .MailItem-title {
+  font-weight: 400;
+  color: #5f6368;
+}
+
+[data-bs-theme="dark"] .MailItem.read {
+  background-color: #2a2d30;
+}
+
+[data-bs-theme="dark"] .MailItem.read .MailItem-sender,
+[data-bs-theme="dark"] .MailItem.read .MailItem-title {
+  font-weight: 400;
+  color: #999;
+}

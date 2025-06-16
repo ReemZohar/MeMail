@@ -59,7 +59,7 @@ function LoginPage({ theme }) {
             }
 
             localStorage.setItem('token', data.token);
-            navigate('/dashboard'); //todo change path
+            navigate('/mail?folder=inbox'); //todo check path
         } catch (error) {
             console.error('Login error:', error);
             setPasswordInfo(prev => ({

@@ -9,11 +9,12 @@ import MainPage from './MainPage/MainPage';
 const exampleMails = [
   {
     id: "1",
-    sender: "alice@example.com",
-    title: "Welcome!",
-    content: "Hi there, welcome to our app. We're excited to have you on board.",
-    folder: "inbox",
-    date: new Date().toISOString(),
+  sender: "alice@example.com",
+  title: "Welcome!",
+  content: "Hi there, welcome to our app. We're excited to have you on board.",
+  folder: "inbox",
+  date: new Date().toISOString(),
+  read: true,
   },
   {
     id: "2",
@@ -174,7 +175,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <MainPage />
+      <MailList mails={exampleMails} onDelete={handleMailDeleted} onMarkSpam={handleMailMovedToSpam} />
+
     </BrowserRouter>
     <DarkModeButton />
   </React.StrictMode>
