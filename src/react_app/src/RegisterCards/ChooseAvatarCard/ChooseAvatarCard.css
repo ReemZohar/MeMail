@@ -1,0 +1,20 @@
+.avatar-choice {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+  margin-left: 6%;
+}
+.avatar-choice.selected {
+  border-color: #0d6efd;
+}
+.avatar-preview {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #dee2e6;
+}
