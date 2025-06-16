@@ -23,22 +23,28 @@ exports.getAllMails = (req, res) => {
 
 // Send a new mail
 exports.sendMail = async (req, res) => {
-  const { title, content, receiver } = req.body;
-  const sender = req.user.id; //from JWT
+  const { title, content, receiver, draftId } = req.body;
+  const sender = req.user.id;
 
   if (!title || !content || !receiver) {
-    return res.status(400).json({ error: 'Missing required fields\n' });
+    return res.status(400).json({ error: 'Missing required fields' });
   }
 
   const senderUser = userModel.getUserById(sender);
-  const receiverUser = userModel.getUserByUsername(receiver); // user name
+  const receiverUser = userModel.getUserByUsername(receiver);
   if (!senderUser || !receiverUser) {
-    return res.status(404).json({ error: 'Sender or receiver not found\n' });
+    return res.status(404).json({ error: 'Sender or receiver not found' });
   }
 
   const mail = await mailModel.sendMail(title, content, senderUser.id, receiverUser.id);
   if (!mail) {
-    return res.status(400).json({ error: 'Mail contains blacklisted URL\n' });
+    return res.status(400).json({ error: 'Mail contains blacklisted URL' });
+  }
+
+  // delete the draft if exist
+  if (draftId) {
+    const draftModel = require('../models/draft');
+    draftModel.deleteDraft(draftId, senderUser.id);
   }
 
   res.status(201).location(`/api/mails/${mail.id}`).json(mail);

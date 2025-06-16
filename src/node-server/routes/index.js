@@ -8,5 +8,6 @@ router.use('/tokens', require('./tokens'));
 router.use('/mails', require('./mails'));
 router.use('/labels', require('./labels'));
 router.use('/blacklist', require('./blacklist'));
+router.use('/draft', require('./draft.js'));
 
 module.exports = router;
