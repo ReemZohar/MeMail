@@ -3,15 +3,7 @@ import MailItem from '../MailItem/MailItem';
 import { MdRefresh, MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import './MailList.css';
 
-function MailList({ 
-  folder = 'inbox', 
-  isFavorite, 
-  sender, 
-  date, 
-  token, 
-  onMailDeleted, 
-  onMailMovedToSpam 
-}) {
+function MailList({ folder = 'inbox', isFavorite, sender, date, token }) {
   const [page, setPage] = useState(0);
   const [mails, setMails] = useState([]);
   const mailsPerPage = 50;
@@ -34,7 +26,7 @@ function MailList({
 
       const data = await response.json();
       setMails(data);
-      setPage(0); // reset to first page on refresh
+      setPage(0);
     } catch (err) {
       console.error('Error loading mails:', err);
     }
@@ -43,6 +35,20 @@ function MailList({
   useEffect(() => {
     fetchMails();
   }, [folder, isFavorite, sender, date]);
+
+  const handleMailDeleted = (mailId) => {
+    setMails(prev => prev.filter(mail => mail.id !== mailId));
+  };
+
+  const handleMailMovedToSpam = (mailId) => {
+    setMails(prev => prev.filter(mail => mail.id !== mailId));
+  };
+
+  const handleMailFavoriteToggled = (mailId, favorite) => {
+    setMails(prev =>
+      prev.map(mail => mail.id === mailId ? { ...mail, favorite } : mail)
+    );
+  };
 
   const handleNext = () => {
     if ((page + 1) * mailsPerPage < mails.length) {
@@ -76,22 +82,13 @@ function MailList({
 
         <div className="MailList-pagination">
           <div className="tooltip-container">
-            <button
-              onClick={handlePrev}
-              disabled={page === 0}
-              className="MailList-btn"
-            >
+            <button onClick={handlePrev} disabled={page === 0} className="MailList-btn">
               <MdNavigateBefore size={24} />
             </button>
             <span className="tooltip-text">Newer</span>
           </div>
-
           <div className="tooltip-container">
-            <button
-              onClick={handleNext}
-              disabled={(page + 1) * mailsPerPage >= sortedMails.length}
-              className="MailList-btn"
-            >
+            <button onClick={handleNext} disabled={(page + 1) * mailsPerPage >= sortedMails.length} className="MailList-btn">
               <MdNavigateNext size={24} />
             </button>
             <span className="tooltip-text">Older</span>
@@ -103,8 +100,9 @@ function MailList({
         <MailItem
           key={mail.id}
           mail={mail}
-          onMailDeleted={onMailDeleted}
-          onMailMovedToSpam={onMailMovedToSpam}
+          onMailDeleted={handleMailDeleted}
+          onMailMovedToSpam={handleMailMovedToSpam}
+          onMailFavoriteToggled={handleMailFavoriteToggled}
         />
       ))}
     </div>
