@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import UserInformation from './UserInformation/UserInformation'
+import { BrowserRouter } from 'react-router-dom';
+import NewMailWindow from './NewMailWindow/NewMailWindow'; // התאימי נתיב לפי מיקום הקובץ
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <div>nothing here yet</div>
+    <BrowserRouter>
+      <NewMailWindow />
+    </BrowserRouter>
   </React.StrictMode>
 );

@@ -2,7 +2,7 @@
   color: var(--bs-body-color);
 }
 
-.compose-button {
+.newMail-button {
     width: 65%;
     display: flex;
     align-items: center;
@@ -19,20 +19,30 @@
     cursor: pointer;
 }
 
-.compose-button:hover {
+.newMail-button:hover {
     background-color: #a8dfff;
 }
 
-.compose-icon {
+.newMail-icon {
     font-size: 20px;
 }
 
-[data-bs-theme="dark"] .compose-button {
+[data-bs-theme="dark"] .newMail-button {
   background-color: #202124;
   color: #e8eaed;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-[data-bs-theme="dark"] .compose-button:hover {
+[data-bs-theme="dark"] .newMail-button:hover {
   background-color: #5f6368;
+}
+
+.newMail-button.collapsed {
+    width: 48px;
+    justify-content: center;
+    padding: 12px 0;
+}
+
+.newMail-button .text {
+  white-space: nowrap;
 }
