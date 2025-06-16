@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import LeftMenu from "../LeftMenu/LeftMenu";
 import SearchBar from "../SearchBar/SearchBar";
 import MailList from "../MailList/MailList";
+import NewMailWindow from "../NewMailWindow/NewMailWindow";
 import './MainPage.css';
 
 export default function MainPage({ token }) {
@@ -14,35 +15,40 @@ export default function MainPage({ token }) {
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    const folderParam = searchParams.get("folder");
-    const labelParam = searchParams.get("labelId");
-    const favParam = searchParams.get("isFavorite");
-    const senderParam = searchParams.get("sender");
-    const dateParam = searchParams.get("date");
-
-    setFolder(folderParam || null);
-    setLabelId(labelParam || null);
-    setIsFavorite(favParam === "true" ? true : null);
-    setSender(senderParam || null);
-    setDate(dateParam || null);
+    setFolder(searchParams.get("folder") || null);
+    setLabelId(searchParams.get("labelId") || null);
+    setIsFavorite(searchParams.get("isFavorite") === "true" ? true : null);
+    setSender(searchParams.get("sender") || null);
+    setDate(searchParams.get("date") || null);
   }, [searchParams]);
+
+  const openCompose = () => {
+    const params = new URLSearchParams(location.search);
+    params.set("compose", "new");
+    navigate({ pathname: location.pathname, search: params.toString() });
+  };
+
+  const closeCompose = () => {
+    const params = new URLSearchParams(location.search);
+    params.delete("compose");
+    navigate({ pathname: location.pathname, search: params.toString() });
+  };
+
+  const compose = searchParams.get("compose");
 
   function handleLabelClick(id, isFav = false, folderName = null, isCustomLabel = false) {
     const newParams = new URLSearchParams();
 
     if (folderName) {
-      // A folder
       newParams.set("folder", folderName);
-      if (isFav) {
-        newParams.set("isFavorite", "true");
-      }
+      if (isFav) newParams.set("isFavorite", "true");
     } else if (isCustomLabel) {
       newParams.set("labelId", id);
     }
 
-    // Navigate with updated params
     navigate({ pathname: "/mail", search: `?${newParams.toString()}` });
   }
 
@@ -54,6 +60,7 @@ export default function MainPage({ token }) {
         activeFolder={folder}
         activeLabelId={labelId}
         isFavoriteActive={isFavorite}
+        onComposeClick={openCompose}
       />
 
       <div className="right-panel">
@@ -67,6 +74,8 @@ export default function MainPage({ token }) {
           date={date}
         />
       </div>
+
+      {compose === "new" && <NewMailWindow onClose={closeCompose} />}
     </div>
   );
 }

@@ -5,6 +5,7 @@ import MailList from './MailList/MailList';
 import DarkModeButton from './DarkModeButton/DarkModeButton';
 import LeftMenu from './LeftMenu/LeftMenu';
 import MainPage from './MainPage/MainPage';
+import App from './app';
 
 const exampleMails = [
   {
@@ -95,9 +96,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <MailList mails={exampleMails} onDelete={handleMailDeleted} onMarkSpam={handleMailMovedToSpam} />
-
-    </BrowserRouter>
+      {/* <MailList mails={exampleMails} onDelete={handleMailDeleted} onMarkSpam={handleMailMovedToSpam} /> */}
+    <MainPage />
+    </BrowserRouter> 
     <DarkModeButton />
   </React.StrictMode>
 );
