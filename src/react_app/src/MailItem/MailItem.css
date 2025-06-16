@@ -170,3 +170,8 @@
   font-weight: 400;
   color: #999;
 }
+
+.MailItem.unread {
+  background-color: #fff;
+  font-weight: 600;
+}

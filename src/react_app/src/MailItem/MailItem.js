@@ -6,7 +6,7 @@ function MailItem({ mail, onMailDeleted, onMailMovedToSpam, onMailFavoriteToggle
   const [folder, setFolder] = useState(mail.folder);
   const [isFavorite, setIsFavorite] = useState(mail.favorite);
   const [isSpam, setIsSpam] = useState(mail.spam);
-  const [isRead, setIsRead] = useState(mail.isRead);
+  const [isRead, setIsRead] = useState(mail.isRead ?? false);  //Mark as unread as default
 
   const handleActionDone = ({ type, mailId, favorite }) => {
     if (type === 'delete') {
@@ -50,7 +50,7 @@ function MailItem({ mail, onMailDeleted, onMailMovedToSpam, onMailFavoriteToggle
 
   return (
     <div
-      className={`MailItem ${folder} ${isRead ? 'read' : ''}`}
+      className={`MailItem ${folder} ${isRead ? 'read' : 'unread'}`}
       onClick={handleClick}
     >
       <div className="MailItem-left">
