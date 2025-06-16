@@ -1,0 +1,48 @@
+.label-options-menu {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  padding: 10px;
+  margin-right: 10px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 120px;
+}
+
+[data-bs-theme="dark"] .label-options-menu {
+  background-color: #333;
+  border-color: #666;
+  color: white;
+}
+
+.option-btn {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 6px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.option-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.option-btn.delete {
+  color: red;
+}
+
+.option-btn.close {
+  align-self: flex-end;
+  font-size: 12px;
+  color: gray;
+}

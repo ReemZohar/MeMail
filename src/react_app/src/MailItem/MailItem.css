@@ -1,0 +1,152 @@
+.MailItem {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+  background-color: #fff;
+  gap: 16px;
+  transition: background-color 0.15s ease;
+  border-radius: 0;
+}
+
+.MailItem:hover {
+  background-color: #f2f6fc;
+}
+
+.MailItem-left {
+  flex: 0 0 180px;
+  font-weight: 500;
+  color: #1a1a1a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.MailItem-sender {
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.MailItem-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
+.MailItem-title-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.MailItem-title {
+  font-weight: 600;
+  font-size: 15px;
+  color: #202124;
+  max-width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.MailItem-separator {
+  color: #999;
+  user-select: none;
+  font-weight: normal;
+}
+
+.MailItem-snippet {
+  font-size: 14px;
+  color: #5f6368;
+  max-width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.MailItem-right {
+  position: relative;
+  flex: 0 0 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  overflow: visible;
+  z-index: 1;
+}
+
+.MailItem-date {
+  font-size: 13px;
+  color: #5f6368;
+  position: absolute;
+  right: 0;
+  top: calc(50% + 3px);
+  transform: translateY(-20%);
+  transition: opacity 0.3s ease;
+}
+
+.MailRow {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: calc(50% + 3px);
+  transform: translateY(-20%);
+  transition: opacity 0.3s ease;
+}
+
+.MailItem:hover .MailRow {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.MailItem:hover .MailItem-date {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.MailItem.spam {
+  background-color: #fce8e6;
+}
+
+[data-bs-theme="dark"] .MailItem {
+  background-color: #1f1f1f;
+  border-bottom-color: #333;
+  color: #e0e0e0;
+}
+
+[data-bs-theme="dark"] .MailItem:hover {
+  background-color: #2c2c2c;
+}
+
+[data-bs-theme="dark"] .MailItem.spam {
+  background-color: #3b1a1a;
+}
+
+[data-bs-theme="dark"] .MailItem-left,
+[data-bs-theme="dark"] .MailItem-title {
+  color: #f0f0f0;
+}
+
+[data-bs-theme="dark"] .MailItem-separator {
+  color: #aaa;
+}
+
+[data-bs-theme="dark"] .MailItem-snippet {
+  color: #bbb;
+}
+
+[data-bs-theme="dark"] .MailItem-date {
+  color: #999;
+}

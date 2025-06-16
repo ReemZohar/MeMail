@@ -1,0 +1,48 @@
+.leftMenu {
+  width: 240px;
+  transition: width 0.3s ease;
+  overflow-x: hidden;
+}
+
+.leftMenu.collapsed {
+  width: 60px;
+}
+
+.hamburger-button {
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.compose-button {
+  margin: 10px;
+  padding: 10px;
+  background-color: #c2e7ff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.label-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.label-name {
+  margin-left: 10px;
+}
+
+.leftMenu.collapsed .compose-button,
+.leftMenu.collapsed .label-name,
+.leftMenu.collapsed .labels-title,
+.leftMenu.collapsed .addLabel-button {
+  display: none;
+}
+
+[data-bs-theme="dark"] .label-item:hover {
+  color: #333;
+}
