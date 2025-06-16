@@ -3,7 +3,7 @@ import MailItem from '../MailItem/MailItem';
 import { MdRefresh, MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import './MailList.css';
 
-function MailList({ folder = 'inbox', isFavorite, sender, date, token }) {
+function MailList({ folder = 'inbox', isFavorite, sender, date, labelId = null, token }) {
   const [page, setPage] = useState(0);
   const [mails, setMails] = useState([]);
   const mailsPerPage = 50;
@@ -15,6 +15,7 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token }) {
       if (isFavorite !== undefined) params.append('isFavorite', isFavorite);
       if (sender) params.append('sender', sender);
       if (date) params.append('date', date);
+      if (labelId) params.append('labelId', labelId); // ✅ תמיכה בלייבלים מותאמים אישית
 
       const response = await fetch(`http://localhost:9090/api/mails?${params.toString()}`, {
         headers: {
@@ -34,7 +35,7 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token }) {
 
   useEffect(() => {
     fetchMails();
-  }, [folder, isFavorite, sender, date]);
+  }, [folder, isFavorite, sender, date, labelId]); // ✅ הוספת labelId לתלות
 
   const handleMailDeleted = (mailId) => {
     setMails(prev => prev.filter(mail => mail.id !== mailId));
