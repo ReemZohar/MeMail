@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import LeftMenu from "../LeftMenu/LeftMenu";
+import SearchBar from "../SearchBar/SearchBar";
 import MailList from "../MailList/MailList";
 import './MainPage.css';
 
@@ -28,22 +29,22 @@ export default function MainPage({ token }) {
     setDate(dateParam || null);
   }, [searchParams]);
 
- function handleLabelClick(id, isFav = false, folderName = null, isCustomLabel = false) {
-  const newParams = new URLSearchParams();
+  function handleLabelClick(id, isFav = false, folderName = null, isCustomLabel = false) {
+    const newParams = new URLSearchParams();
 
-  if (folderName) {
-    //A folder
-    newParams.set("folder", folderName);
-    if (isFav) {
-      newParams.set("isFavorite", "true");
+    if (folderName) {
+      // A folder
+      newParams.set("folder", folderName);
+      if (isFav) {
+        newParams.set("isFavorite", "true");
+      }
+    } else if (isCustomLabel) {
+      newParams.set("labelId", id);
     }
-  } else if (isCustomLabel) {
-    newParams.set("labelId", id);
-  }
 
-  //A custom Label
-  navigate({ pathname: "/mail", search: `?${newParams.toString()}` });
-}
+    // Navigate with updated params
+    navigate({ pathname: "/mail", search: `?${newParams.toString()}` });
+  }
 
   return (
     <div className="main-page-container">
@@ -54,14 +55,18 @@ export default function MainPage({ token }) {
         activeLabelId={labelId}
         isFavoriteActive={isFavorite}
       />
-      <MailList
-        token={token}
-        folder={folder}
-        isFavorite={isFavorite}
-        labelId={labelId}
-        sender={sender}
-        date={date}
-      />
+
+      <div className="right-panel">
+        <SearchBar token={token} />
+        <MailList
+          token={token}
+          folder={folder}
+          isFavorite={isFavorite}
+          labelId={labelId}
+          sender={sender}
+          date={date}
+        />
+      </div>
     </div>
   );
 }
