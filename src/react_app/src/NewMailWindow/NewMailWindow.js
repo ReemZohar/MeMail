@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import './NewMailWindow.css';
 import { MdClose, MdAttachFile, MdInsertPhoto, MdMoreVert } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
-function NewMailWindow() {
+function NewMailWindow({ index = 0, onClose }) {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -13,8 +13,6 @@ function NewMailWindow() {
   });
 
   const [error, setError] = useState(null);
-  const draftIdRef = useRef(null);
-  const timeoutRef = useRef(null);
 
   const handleChange = (e) => {
     setFormData(prev => ({
@@ -23,76 +21,20 @@ function NewMailWindow() {
     }));
   };
 
-  // Auto-save draft after typing (debounced)
-  useEffect(() => {
-    if (!formData.title && !formData.content && !formData.receiver) return;
-
-    const saveDraft = async () => {
-      const token = localStorage.getItem('token');
-      const method = draftIdRef.current ? 'PUT' : 'POST';
-      const url = draftIdRef.current
-        ? `/api/draft/${draftIdRef.current}`
-        : `/api/draft`;
-
-      try {
-        const res = await fetch(url, {
-          method,
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(formData),
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          if (!draftIdRef.current && data.id !== undefined) {
-            draftIdRef.current = data.id;
-          }
-        }
-      } catch (err) {
-        console.error('Auto-save draft failed:', err);
-      }
-    };
-
-    clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(saveDraft, 2000);
-
-    return () => clearTimeout(timeoutRef.current);
-  }, [formData]);
-
-  // Save draft on unmount
-  useEffect(() => {
-    return () => {
-      if (formData.title || formData.content || formData.receiver) {
-        const blob = new Blob([JSON.stringify(formData)], { type: 'application/json' });
-        const url = draftIdRef.current
-          ? `/api/draft/${draftIdRef.current}`
-          : `/api/draft`;
-
-        navigator.sendBeacon?.(url, blob);
-      }
-    };
-  }, []);
-
   const sendMail = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('/api/mails', {
+      const response = await fetch('http://localhost:9090/api/mails', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          ...formData,
-          draftId: draftIdRef.current
-        }),
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
         alert('Mail sent successfully');
-        draftIdRef.current = null;
         navigate('/inbox');
       } else {
         const error = await response.json();
@@ -114,11 +56,17 @@ function NewMailWindow() {
     await sendMail();
   };
 
+  const rightOffset = 20 + index * 620;
+
   return (
-    <div className="mail-popup shadow">
+    <div className="mail-popup shadow" style={{ right: `${rightOffset}px` }}>
       <div className="mail-header d-flex justify-content-between align-items-center">
         <span>New Message</span>
-        <MdClose style={{ cursor: 'pointer' }} size={20} onClick={() => navigate('/inbox')} />
+        <MdClose
+          style={{ cursor: 'pointer' }}
+          size={20}
+          onClick={onClose}
+        />
       </div>
       <form className="mail-form" onSubmit={handleSubmit}>
         <input
