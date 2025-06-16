@@ -1,24 +1,49 @@
 const userModel = require('../models/users'); // user handles user registration and retrieval
 // Register a new user
 exports.registerUser = (req, res) => {
-const { username, password, confirmPassword, name, avatar } = req.body;
-    if (!username || !password || !confirmPassword || !name || !avatar) {
-    return res.status(400).json({ error: 'All fields are required' });
-    }
-    if (password.length < 8 || !/[A-Za-z]/.test(password) || !/\d/.test(password)) {
-    return res.status(400).json({ error: 'Password must be at least 8 characters and contain letters and digits' });
-    }
-    if (password !== confirmPassword) {
-    return res.status(400).json({ error: 'Passwords do not match' });
-    }
+  const { name, surname, gender, day, month, year, username, password, confirmPassword, avatar } = req.body;
+  if (!name) {
+    return res.status(400).json({ error: 'Enter first name' });
+  }
+  if (!day || !month || !year) {
+    return res.status(400).json({ error: 'Please fill in a complete date of birth' });
+  }
+  if (!userModel.validateDate(Number(day), Number(month), Number(year))) {
+    return res.status(400).json({ error: 'Please enter a valid date' });
+  }
+  if (!username) {
+    return res.status(400).json({ error: 'Enter a MeMail address' });
+  }
+  if (!/^[A-Za-z0-9.]+@[A-Za-z0-9]+\.[A-Za-z]{2,}$/.test(username)) {
+    return res.status(400).json({
+      error: 'Sorry, only letters (a-z), numbers (0-9), and periods (.) are allowed.'
+    });
+  }
+  if (userModel.getUserByUsername(username)) {
+    return res.status(400).json({ error: 'That username is taken. Try another.' });
+  }
+  if (!password || !confirmPassword) {
+    return res.status(400).json({ error: 'Enter a password' });
+  }
+  if (!/^[A-Za-z0-9]{8,20}$/.test(password)) {
+    return res.status(400).json({
+      error: 'Your password must be 8-20 characters long, contain letters and numbers, ' +
+        'and must not contain spaces, special characters, or emoji.'
+    });
+  }
+  if (password !== confirmPassword) {
+    return res.status(400).json({ error: "Those passwords didn't match. Try again." });
+  }
+  if (!avatar) {
+    return res.status(400).json({ error: 'Please select an avatar' });
+  }
 
-    const newUser = userModel.registerUser(username, password, name, avatar);
-    if (!newUser) {
-    return res.status(400).json({ error: 'Username already exists' });
-    }
-   const { id } = newUser;
-res.status(201).json({ id, username, name, avatar }); // without password
- // HTTP 201 Created
+  const fullName = surname != "" ? name + " " + surname : name;
+  const newUser = userModel.registerUser(fullName, gender, { day, month, year }, username, password, avatar);
+  const { id } = newUser;
+  const birthday = {day, month, year};
+  res.status(201).json({ id, fullName, gender, birthday, username, avatar }); // without password
+  // HTTP 201 Created
 };
 
 // Get a user by ID
