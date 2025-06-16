@@ -5,7 +5,6 @@ import MailList from './MailList/MailList';
 import DarkModeButton from './DarkModeButton/DarkModeButton';
 import LeftMenu from './LeftMenu/LeftMenu';
 import MainPage from './MainPage/MainPage';
-import App from './app';
 
 const exampleMails = [
   {
