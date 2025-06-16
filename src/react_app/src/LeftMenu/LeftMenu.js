@@ -5,32 +5,33 @@ import LabelMenu from '../LabelMenu/LabelMenu';
 import CustomLabelMenu from '../CustomLabelMenu/CustomLabelMenu';
 import NewMailButton from '../NewMailButton/NewMailButton';
 
-function LeftMenu({ theme, onComposeClick, clickOnLabel, activeLabelId, token }) {
+function LeftMenu({ theme, onComposeClick, onLabelClick, activeFolder, activeLabelId, token }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [labels, setLabels] = useState([]);
+
+  useEffect(() => {
+    if (!token) return;
+    fetch("/api/labels", {
+      headers: {
+        Authorization: "Bearer " + token,
+      }
+    })
+      .then(res => res.json())
+      .then(setLabels)
+      .catch(err => console.error("Failed to fetch labels", err));
+  }, [token]);
 
   const toggleMenu = () => {
     setIsCollapsed(prev => !prev);
   };
 
-  useEffect(() => {
-    const fetchLabels = async () => {
-      try {
-        const res = await fetch('http://localhost:9090/api/labels', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        if (!res.ok) throw new Error('Failed to fetch labels');
-        const data = await res.json();
-        setLabels(data);
-      } catch (err) {
-        console.error('Error loading labels:', err);
-      }
-    };
+  function handleFolderClick(folderName, isFavorite = false) {
+    onLabelClick(null, isFavorite, folderName, false);
+  }
 
-    fetchLabels();
-  }, [token]);
+  function handleCustomLabelClick(labelId) {
+    onLabelClick(labelId, false, null, true);
+  }
 
   return (
     <div className={`leftMenu ${isCollapsed ? 'collapsed' : ''}`}>
@@ -45,18 +46,20 @@ function LeftMenu({ theme, onComposeClick, clickOnLabel, activeLabelId, token })
       <div className="built-in-labels">
         <LabelMenu
           theme={theme}
-          clickOnLabel={clickOnLabel}
-          activeLabelId={activeLabelId}
+          onLabelClick={handleFolderClick}
+          activeFolder={activeFolder}
           isCollapsed={isCollapsed}
         />
       </div>
 
       <div className="custom-labels">
         <CustomLabelMenu
-          labels={labels}
           theme={theme}
-          clickOnLabel={clickOnLabel}
+          labels={labels}
+          onLabelClick={handleCustomLabelClick}
           activeLabelId={activeLabelId}
+          token={token}
+          setLabels={setLabels}
           isCollapsed={isCollapsed}
         />
       </div>

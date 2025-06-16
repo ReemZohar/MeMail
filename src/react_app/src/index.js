@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from "react-router-dom";
 import MailList from './MailList/MailList';
 import DarkModeButton from './DarkModeButton/DarkModeButton';
 import LeftMenu from './LeftMenu/LeftMenu';
+import MainPage from './MainPage/MainPage';
 
 const exampleMails = [
   {
@@ -168,22 +170,12 @@ const handleMailMovedToSpam = (id) => {
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <React.StrictMode>
-    <div style={{ display: 'flex' }}>
-      <LeftMenu
-        theme="light"
-        activeLabelId={null}
-        clickOnLabel={(id) => console.log('Label clicked:', id)}
-      />
-
-      <MailList
-        mails={exampleMails}
-        onMailDeleted={handleMailDeleted}
-        onMailMovedToSpam={handleMailMovedToSpam}
-      />
-    </div>
-
+    <BrowserRouter>
+      <MainPage />
+    </BrowserRouter>
     <DarkModeButton />
   </React.StrictMode>
 );
