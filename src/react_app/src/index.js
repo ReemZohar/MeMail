@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import NewMailWindow from './NewMailWindow/NewMailWindow'; // התאימי נתיב לפי מיקום הקובץ
+import UserInformation from './UserInformation/UserInformation'
+import MailRow from './MailRow/MailRow';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <NewMailWindow />
-    </BrowserRouter>
+    <MailRow 
+  mailId="1234"
+  title="Hello from example"
+  content="This is a test mail content."
+/>
+
   </React.StrictMode>
 );

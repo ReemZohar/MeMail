@@ -1,16 +1,52 @@
 .leftMenu {
-  width: 250px;
-  background-color: transparent;
-  padding: 12px 8px;
   height: 100vh;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  transition: flex 0.3s ease, max-width 0.3s ease, min-width 0.3s ease;
+  background-color: transparent;
+  flex: 0 0 250px;
+  max-width: 250px;
+  min-width: 250px;
 }
+
+.leftMenu.collapsed {
+  flex: 0 0 72px;
+  max-width: 72px;
+  min-width: 72px;
+}
+
 
 .built-in-labels,
 .custom-labels {
   margin-top: 10px;
 }
 
+.menu-toggle-container {
+  display: flex;
+  justify-content: flex-start;
+  padding: 8px 0;
+}
+
+.menu-toggle-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-toggle-button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  transform: scale(1.1);
+}
+
+.menu-toggle-button:focus {
+  outline: 2px solid #007BFF;
+  outline-offset: 2px;
+}

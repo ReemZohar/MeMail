@@ -3,3 +3,13 @@
   align-items: center;
   gap: 8px;
 }
+
+[data-bs-theme="dark"] .deleteMail-button:hover,
+[data-bs-theme="dark"] .spamMail-button:hover {
+  background-color: #3a3a3a;
+}
+
+[data-bs-theme="dark"] .deleteMail-button svg,
+[data-bs-theme="dark"] .spamMail-button svg {
+  color: #ddd;
+}
