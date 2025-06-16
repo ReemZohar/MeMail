@@ -1,11 +1,13 @@
-import React from 'react';
-import { MdCreate } from 'react-icons/md';
-import './NewMailButton.css';
+import React from "react";
+import { MdCreate } from "react-icons/md";
+import "./NewMailButton.css";
 
-function NewMailButton({ theme, onClick, isCollapsed }) {
+export default function NewMailButton({ theme, isCollapsed, onClick }) {
   return (
     <button
-      className={`newMail-button ${theme === 'dark' ? 'dark' : 'light'} ${isCollapsed ? 'collapsed' : ''}`}
+      className={`newMail-button ${theme === "dark" ? "dark" : "light"} ${
+        isCollapsed ? "collapsed" : ""
+      }`}
       onClick={onClick}
     >
       <MdCreate size={20} className="newMail-icon" />
@@ -13,5 +15,3 @@ function NewMailButton({ theme, onClick, isCollapsed }) {
     </button>
   );
 }
-
-export default NewMailButton;
