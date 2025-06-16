@@ -1,17 +1,17 @@
+import React from "react";
+import { MdCreate } from "react-icons/md";
 import "./NewMailButton.css";
-import { MdEdit } from "react-icons/md";
 
-function NewMailButton({ theme, onClick }) {
-    return (
-        <button
-            className="compose-button"
-            data-bs-theme={theme}
-            onClick={onClick}
-        >
-            <MdEdit className="compose-icon" />
-            Compose
-        </button>
-    );
+export default function NewMailButton({ theme, isCollapsed, onClick }) {
+  return (
+    <button
+      className={`newMail-button ${theme === "dark" ? "dark" : "light"} ${
+        isCollapsed ? "collapsed" : ""
+      }`}
+      onClick={onClick}
+    >
+      <MdCreate size={20} className="newMail-icon" />
+      {!isCollapsed && <span className="text">Compose</span>}
+    </button>
+  );
 }
-
-export default NewMailButton;
