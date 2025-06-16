@@ -17,6 +17,8 @@ export default function MainPage({ token }) {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [openComposes, setOpenComposes] = useState([]);
+
   useEffect(() => {
     setFolder(searchParams.get("folder") || null);
     setLabelId(searchParams.get("labelId") || null);
@@ -26,18 +28,14 @@ export default function MainPage({ token }) {
   }, [searchParams]);
 
   const openCompose = () => {
-    const params = new URLSearchParams(location.search);
-    params.set("compose", "new");
-    navigate({ pathname: location.pathname, search: params.toString() });
+    if (openComposes.length >= 2) return; //If there are already 2 open windows, don't open a new one
+    const id = Date.now();
+    setOpenComposes(prev => [...prev, id]);
   };
 
-  const closeCompose = () => {
-    const params = new URLSearchParams(location.search);
-    params.delete("compose");
-    navigate({ pathname: location.pathname, search: params.toString() });
+  const closeCompose = (idToClose) => {
+    setOpenComposes(prev => prev.filter(id => id !== idToClose));
   };
-
-  const compose = searchParams.get("compose");
 
   function handleLabelClick(id, isFav = false, folderName = null, isCustomLabel = false) {
     const newParams = new URLSearchParams();
@@ -75,7 +73,14 @@ export default function MainPage({ token }) {
         />
       </div>
 
-      {compose === "new" && <NewMailWindow onClose={closeCompose} />}
+      {openComposes.map((id, index) => (
+        <NewMailWindow
+          key={id}
+          index={index}
+          onClose={() => closeCompose(id)}
+        />
+      ))}
+
     </div>
   );
 }

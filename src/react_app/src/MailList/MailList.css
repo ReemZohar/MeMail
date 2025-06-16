@@ -88,3 +88,7 @@
 [data-bs-theme="dark"] .MailList-header {
   background-color: #3a3a3a;
 }
+
+[data-bs-theme="dark"] .MailList {
+  background-color: #3a3a3a;
+}

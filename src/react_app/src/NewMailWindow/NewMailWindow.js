@@ -3,7 +3,7 @@ import './NewMailWindow.css';
 import { MdClose, MdAttachFile, MdInsertPhoto, MdMoreVert } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
-function NewMailWindow() {
+function NewMailWindow({ index = 0, onClose }) {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -56,11 +56,17 @@ function NewMailWindow() {
     await sendMail();
   };
 
+  const rightOffset = 20 + index * 620;
+
   return (
-    <div className="mail-popup shadow">
+    <div className="mail-popup shadow" style={{ right: `${rightOffset}px` }}>
       <div className="mail-header d-flex justify-content-between align-items-center">
         <span>New Message</span>
-        <MdClose style={{ cursor: 'pointer' }} size={20} />
+        <MdClose
+          style={{ cursor: 'pointer' }}
+          size={20}
+          onClick={onClose}
+        />
       </div>
       <form className="mail-form" onSubmit={handleSubmit}>
         <input

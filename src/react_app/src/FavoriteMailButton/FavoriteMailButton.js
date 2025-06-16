@@ -12,3 +12,5 @@ const FavoriteMailButton = ({ isFavorite, onClick }) => {
     </div>
   );
 };
+
+export default FavoriteMailButton;
