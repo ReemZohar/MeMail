@@ -1,48 +1,44 @@
-.leftMenu {
-  width: 240px;
-  transition: width 0.3s ease;
-  overflow-x: hidden;
-}
-
-.leftMenu.collapsed {
-  width: 60px;
-}
-
-.hamburger-button {
-  background: none;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.compose-button {
-  margin: 10px;
-  padding: 10px;
-  background-color: #c2e7ff;
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
   border: none;
   border-radius: 20px;
+  background-color: transparent;
+  color: #444;
+  font-size: 16px;
+  width: 100%;
+  transition: background-color 0.2s ease;
   cursor: pointer;
-  font-weight: bold;
+  position: relative;
+}
+
+.labelMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: Arial, sans-serif;
 }
 
 .label-item {
   display: flex;
   align-items: center;
-  padding: 8px;
+  padding: 10px 16px;
+  border-radius: 20px;
   cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s ease;
 }
 
-.label-name {
-  margin-left: 10px;
-}
-
-.leftMenu.collapsed .compose-button,
-.leftMenu.collapsed .label-name,
-.leftMenu.collapsed .labels-title,
-.leftMenu.collapsed .addLabel-button {
-  display: none;
+.label-item:hover {
+  background-color: #f1f3f4;
 }
 
 [data-bs-theme="dark"] .label-item:hover {
   color: #333;
+}
+
+.label-name {
+  margin-left: 10px;
 }
