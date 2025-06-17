@@ -1,8 +1,7 @@
  import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import LeftMenu from "../LeftMenu/LeftMenu";
-import SearchBar from "../SearchBar/SearchBar";
-import MailList from "../MailList/MailList";
+import TopPanel from "../TopPanel/TopPanel";
 import NewMailWindow from "../NewMailWindow/NewMailWindow";
 import MailPlace from "../MailPlace/MailPlace";
 import './MainPage.css';
@@ -90,7 +89,7 @@ export default function MainPage({ token }) {
     navigate({ pathname: "/mail", search: `?${newParams.toString()}` });
   }
 
-  return (
+   return (
     <div className="main-page-container">
       <LeftMenu
         token={token}
@@ -102,7 +101,7 @@ export default function MainPage({ token }) {
       />
 
       <div className="right-panel">
-        <SearchBar token={token} />
+        <TopPanel />
         <MailPlace
           token={token}
           currentUserEmail={currentUserEmail}
