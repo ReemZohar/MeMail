@@ -11,6 +11,5 @@ root.render(
   title="Hello from example"
   content="This is a test mail content."
 />
-
   </React.StrictMode>
 );
