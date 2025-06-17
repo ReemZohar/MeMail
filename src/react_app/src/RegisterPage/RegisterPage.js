@@ -9,8 +9,7 @@ import avatars from './avatars/avatars'
 export default function RegisterPage({ theme }) {
     const [step, setStep] = useState(0);
 
-    // this object will collect EVERYTHING that the server expects:
-    //  { username, password, confirmPassword, name, avatar }
+    //object collects all fields expected by the server
     const [data, setData] = useState({
         firstName: '', surname: '',
         day: '', month: '1', year: '',
