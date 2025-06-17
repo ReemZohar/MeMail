@@ -1,112 +1,47 @@
 import React, { useState } from 'react';
-import './NewMailWindow.css';
-import { MdClose, MdAttachFile, MdInsertPhoto, MdMoreVert } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
+import './MailWindow.css';
+import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 
-function NewMailWindow({ index = 0, onClose }) {
-  const navigate = useNavigate();
+export default function MailWindow({ mail, currentUserEmail }) {
+  const [showDetails, setShowDetails] = useState(false);
 
-  const [formData, setFormData] = useState({
-    receiver: '',
-    title: '',
-    content: ''
-  });
+  if (!mail) return <div>Loading...</div>;
 
-  const [error, setError] = useState(null);
-
-  const handleChange = (e) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
+  const toggleDetails = () => {
+    setShowDetails(prev => !prev);
   };
 
-  const sendMail = async () => {
-    const token = localStorage.getItem('token');
-    try {
-      const response = await fetch('http://localhost:9090/api/mails', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        alert('Mail sent successfully');
-        navigate('/inbox');
-      } else {
-        const error = await response.json();
-        alert('Failed to send mail: ' + error.error);
-      }
-    } catch (err) {
-      alert('Error sending mail: ' + err.message);
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.receiver || !formData.title || !formData.content) {
-      setError('All fields are required.');
-      return;
-    }
-
-    setError(null);
-    await sendMail();
-  };
-
-  const rightOffset = 20 + index * 620;
+  const isToMe = mail.receiver === currentUserEmail;  //If the current user is the sender
 
   return (
-    <div className="mail-popup shadow" style={{ right: `${rightOffset}px` }}>
-      <div className="mail-header d-flex justify-content-between align-items-center">
-        <span>New Message</span>
-        <MdClose
-          style={{ cursor: 'pointer' }}
-          size={20}
-          onClick={onClose}
-        />
-      </div>
-      <form className="mail-form" onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="receiver"
-          className="form-control"
-          placeholder="To"
-          value={formData.receiver}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="title"
-          className="form-control"
-          placeholder="Subject"
-          value={formData.title}
-          onChange={handleChange}
-          required
-        />
-        <textarea
-          name="content"
-          className="form-control"
-          placeholder="Compose your message..."
-          value={formData.content}
-          onChange={handleChange}
-          required
-        />
-        {error && <div className="text-danger mb-2">{error}</div>}
-        <div className="mail-actions">
-          <button type="submit" className="btn btn-send">Send</button>
-          <div className="icon-bar">
-            <MdAttachFile size={20} />
-            <MdInsertPhoto size={20} />
-            <MdMoreVert size={20} />
-          </div>
+    <div className="mail-window">
+      <h2 className="mail-subject">{mail.title}</h2>
+
+      <div className="mail-header-info">
+        <div className="mail-from-to">
+          <strong>{mail.senderName}</strong>{' '}
+          <span className="mail-to">
+            {isToMe ? 'to me' : `to ${mail.receiver}`}
+          </span>
+          <button className="details-toggle" onClick={toggleDetails}>
+            {showDetails ? <MdExpandLess size={20} /> : <MdExpandMore size={20} />}
+          </button>
         </div>
-      </form>
+        {showDetails && (
+          <div className="mail-details">
+            <div><strong>from:</strong> {mail.senderName} &lt;{mail.sender}&gt;</div>
+            <div><strong>to:</strong> {mail.receiverName || `"${mail.receiver}"`} &lt;{mail.receiver}&gt;</div>
+            <div><strong>date:</strong> {new Date(mail.date).toLocaleString()}</div>
+            <div><strong>subject:</strong> {mail.title}</div>
+          </div>
+        )}
+      </div>
+
+      <hr />
+
+      <div className="mail-content">
+        {mail.content}
+      </div>
     </div>
   );
 }
-
-export default NewMailWindow;

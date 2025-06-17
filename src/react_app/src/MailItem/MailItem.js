@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import MailRow from '../MailRow/MailRow';
 import './MailItem.css';
 
-function MailItem({ mail, onMailDeleted, onMailMovedToSpam, onMailFavoriteToggled }) {
+function MailItem({ mail, onMailDeleted, onMailMovedToSpam, onMailFavoriteToggled, onOpenMail }) {
   const [folder, setFolder] = useState(mail.folder);
   const [isFavorite, setIsFavorite] = useState(mail.favorite);
   const [isSpam, setIsSpam] = useState(mail.spam);
+  const [isRead, setIsRead] = useState(mail.isRead ?? false);  //Mark as unread as default
 
   const handleActionDone = ({ type, mailId, favorite }) => {
     if (type === 'delete') {
@@ -19,6 +20,30 @@ function MailItem({ mail, onMailDeleted, onMailMovedToSpam, onMailFavoriteToggle
     }
   };
 
+  const handleClick = async () => {
+    if (!isRead) {
+      try {
+        const res = await fetch(`http://localhost:9090/api/mails/${mail.id}/isRead`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: JSON.stringify({ isRead: true })
+        });
+        if (res.ok) {
+          setIsRead(true);
+        }
+      } catch (err) {
+        console.error('Failed to mark mail as read:', err);
+      }
+    }
+
+    if (onOpenMail) {
+      onOpenMail(mail);
+    }
+  };
+
   if (folder === 'deleted') return null;
 
   const formattedDate = new Date(mail.date).toLocaleDateString(undefined, {
@@ -28,7 +53,10 @@ function MailItem({ mail, onMailDeleted, onMailMovedToSpam, onMailFavoriteToggle
   const shortContent = mail.content.length > 100 ? mail.content.slice(0, 100) + '...' : mail.content;
 
   return (
-    <div className={`MailItem ${folder}`}>
+    <div
+      className={`MailItem ${folder} ${isRead ? 'read' : 'unread'}`}
+      onClick={handleClick}
+    >
       <div className="MailItem-left">
         <div className="MailItem-sender" title={mail.sender}>{mail.sender}</div>
       </div>

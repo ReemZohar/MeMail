@@ -1,113 +1,63 @@
-.mail-popup {
-  position: fixed;
-  bottom: 20px;
-  width: 600px;
-  background: #fff;
+.mail-window {
+  padding: 24px;
+  background-color: #fff;
+  color: #202124;
+  font-family: Arial, sans-serif;
   border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-  z-index: 1050;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 100%;
+  margin: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.mail-header {
-  background-color: #f1f3f4;
-  padding: 12px 16px;
-  font-weight: 500;
-  font-size: 16px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.mail-form {
-  padding: 16px;
-}
-
-.mail-form .form-control {
+.mail-subject {
   margin-bottom: 12px;
-  font-size: 14px;
-  border-radius: 0;
-  border: none;
-  border-bottom: 1px solid #ccc;
-  box-shadow: none;
+  font-size: 24px;
+  font-weight: bold;
 }
 
-.mail-form textarea.form-control {
-  resize: vertical;
-  min-height: 120px;
-  border-bottom: 1px solid #ccc;
+.mail-header-info {
+  margin-bottom: 16px;
 }
 
-.mail-actions {
+.mail-from-to {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 8px 16px 16px 16px;
+  gap: 8px;
 }
 
-.btn-send {
-  background-color: #0b57d0;
-  color: #fff;
-  border-radius: 20px;
-  padding: 6px 20px;
-  font-weight: 500;
-  font-size: 14px;
-  border: none;
-  transition: background-color 0.2s;
-}
-
-.btn-send:hover {
-  background-color: #0947ad;
-}
-
-.icon-bar {
-  display: flex;
-  gap: 10px;
-}
-
-.icon-bar i {
+.mail-to {
   color: #5f6368;
+}
+
+.details-toggle {
+  background: none;
+  border: none;
   cursor: pointer;
-  transition: color 0.2s;
+  padding: 0;
+  color: #5f6368;
 }
 
-.icon-bar i:hover {
-  color: #202124;
+.mail-details {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #444;
+  background: #f5f5f5;
+  padding: 8px 12px;
+  border-radius: 4px;
+  line-height: 1.6;
 }
 
-[data-bs-theme="dark"] .mail-popup {
-  background: #1e1e1e;
+.mail-content {
+  font-size: 15px;
+  white-space: pre-wrap;
+}
+
+[data-bs-theme="dark"] .mail-window {
+  background-color: #1e1e1e;
   color: #e4e4e4;
 }
 
-[data-bs-theme="dark"] .mail-header {
-  background-color: #2c2c2c;
-  border-bottom: 1px solid #444;
-}
-
-[data-bs-theme="dark"] .form-control {
-  border-bottom: 1px solid #555;
-  color: #e4e4e4;
-}
-
-[data-bs-theme="dark"] .form-control::placeholder {
-  color: #aaa;
-}
-
-[data-bs-theme="dark"] .mail-form textarea.form-control {
-  border-bottom: 1px solid #555;
-}
-
-[data-bs-theme="dark"] .btn-send {
-  background-color: #3c74d2;
-}
-
-[data-bs-theme="dark"] .btn-send:hover {
-  background-color: #2f5cb1;
-}
-
-[data-bs-theme="dark"] .icon-bar i {
-  color: #aaa;
-}
-
-[data-bs-theme="dark"] .icon-bar i:hover {
-  color: #fff;
+[data-bs-theme="dark"] .mail-details {
+  background: #2b2b2b;
+  color: #ccc;
 }

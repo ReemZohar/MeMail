@@ -3,7 +3,7 @@ import MailItem from '../MailItem/MailItem';
 import { MdRefresh, MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import './MailList.css';
 
-function MailList({ folder = 'inbox', isFavorite, sender, date, token }) {
+function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, onOpenMail }) {
   const [page, setPage] = useState(0);
   const [mails, setMails] = useState([]);
   const mailsPerPage = 50;
@@ -15,10 +15,11 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token }) {
       if (isFavorite !== undefined) params.append('isFavorite', isFavorite);
       if (sender) params.append('sender', sender);
       if (date) params.append('date', date);
+      if (labelId) params.append('labelId', labelId);
 
       const response = await fetch(`http://localhost:9090/api/mails?${params.toString()}`, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`  //Authorization header
         }
       });
 
@@ -32,9 +33,9 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token }) {
     }
   };
 
-  useEffect(() => {
-    fetchMails();
-  }, [folder, isFavorite, sender, date]);
+useEffect(() => {
+  fetchMails();
+}, [folder, isFavorite, sender, date, labelId]);
 
   const handleMailDeleted = (mailId) => {
     setMails(prev => prev.filter(mail => mail.id !== mailId));
@@ -103,6 +104,7 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token }) {
           onMailDeleted={handleMailDeleted}
           onMailMovedToSpam={handleMailMovedToSpam}
           onMailFavoriteToggled={handleMailFavoriteToggled}
+          onOpenMail={onOpenMail}
         />
       ))}
     </div>
