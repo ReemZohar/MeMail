@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import './MailWindow.css';
-import { MdExpandMore, MdExpandLess } from 'react-icons/md';
+import { MdExpandMore, MdExpandLess, MdArrowBack } from 'react-icons/md';
 import MailRow from '../MailRow/MailRow';
 
-export default function MailWindow({ mail, currentUserEmail, onMailDeleted }) {
+export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBack }) {
   const [showDetails, setShowDetails] = useState(false);
   const [mailState, setMail] = useState(mail);
 
@@ -23,19 +23,27 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted }) {
     }
   };
 
-  const isToMe = mailState.receiver === currentUserEmail; //If the current user is the sender
+  const isToMe = mailState.receiver === currentUserEmail;
 
   return (
     <div className="mail-window">
-<div className="mail-row-wrapper">
-  <MailRow
-    mailId={mailState.id}
-    isFavorite={mailState.favorite}
-    isSpam={mailState.spam}
-    onActionDone={handleActionDone}
-  />
-</div>
+      <div className="mail-header-bar">
+        <div className="back-button-tooltip-container">
+          <button className="back-button" onClick={onBack}>
+            <MdArrowBack size={24} />
+          </button>
+          <span className="back-button-tooltip-text">Back</span>
+        </div>
 
+        <div className="mail-row-wrapper">
+          <MailRow
+            mailId={mailState.id}
+            isFavorite={mailState.favorite}
+            isSpam={mailState.spam}
+            onActionDone={handleActionDone}
+          />
+        </div>
+      </div>
 
       <h2 className="mail-subject">{mailState.title}</h2>
 
@@ -45,10 +53,11 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted }) {
           <span className="mail-to">
             {isToMe ? 'to me' : `to ${mailState.receiver}`}
           </span>
-          <button className="details-toggle" onClick={toggleDetails}>
+          <span className="details-toggle" onClick={toggleDetails}>
             {showDetails ? <MdExpandLess size={20} /> : <MdExpandMore size={20} />}
-          </button>
+          </span>
         </div>
+
         {showDetails && (
           <div className="mail-details">
             <div><strong>from:</strong> {mailState.senderName} &lt;{mailState.sender}&gt;</div>

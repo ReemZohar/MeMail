@@ -46,3 +46,16 @@
   visibility: visible;
   opacity: 1;
 }
+
+[data-bs-theme="dark"] .FavoriteMail-button:hover {
+  background-color: #3a3a3a;
+}
+
+[data-bs-theme="dark"] .FavoriteMail-button svg {
+  color: #ddd;
+}
+
+[data-bs-theme="dark"] .tooltip-text {
+  background-color: #555;
+  color: #fff;
+}
