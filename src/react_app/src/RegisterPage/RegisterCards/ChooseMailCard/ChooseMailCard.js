@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "../RegisterCard.css"
-import UserInformation from "../../UserInformation/UserInformation";
+import UserInformation from "../../../UserInformation/UserInformation";
 import LogoAndText from "../LogoAndText/LogoAndText";
 
 function ChooseMailCard({ theme }) {

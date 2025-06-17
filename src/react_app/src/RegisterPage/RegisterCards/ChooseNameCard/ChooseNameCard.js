@@ -1,5 +1,5 @@
 import { useState } from "react";
-import UserInformation from "../../UserInformation/UserInformation";
+import UserInformation from "../../../UserInformation/UserInformation";
 import LogoAndText from "../LogoAndText/LogoAndText";
 import "../RegisterCard.css";
 

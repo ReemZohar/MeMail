@@ -1,6 +1,6 @@
 import { useState } from "react";
 import LogoAndText from "../LogoAndText/LogoAndText";
-import avatars from "../../avatars/avatars";
+import avatars from "../../../avatars/avatars";
 import "../RegisterCard.css";
 import "./ChooseAvatarCard.css";
 
