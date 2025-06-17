@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginCard from '../LoginCard/LoginCard';
 
-function LoginPage({ theme }) {
+function LoginPage({ theme, setToken }) {
     const navigate = useNavigate();
 
     const [emailInfo, setEmailInfo] = useState({
@@ -59,7 +59,8 @@ function LoginPage({ theme }) {
             }
 
             localStorage.setItem('token', data.token);
-            navigate('/dashboard'); //todo change path
+            setToken(data.token); //Update token in App.js
+            navigate('/mail?folder=inbox'); //todo check path
         } catch (error) {
             console.error('Login error:', error);
             setPasswordInfo(prev => ({
