@@ -37,8 +37,7 @@ function ChooseAvatarCard({ theme }) {
   };
 
   const handleNext = () => {
-    // TODO: submit avatarFile or selectedAvatar
-    console.log({ selectedAvatar, avatarFile });
+   //TODO: add implementation when creating the register page
   };
 
   const btnClass =

@@ -22,24 +22,7 @@ function ChooseNameCard({ theme }) {
     else btnClass = "btn btn-primary";
 
     const handleNext = () => {
-
-        //TODO add validation through server
-        //if(!validatePassword)
-        //no name chosen scenario
-        if (!password || !confPassword) {
-            setPassValid(false);
-            setConfValid(false)
-            setFeedback("Enter a password");
-            return;
-        } else if (password != confPassword) {
-            setPassValid(false);
-            setConfValid(false);
-            setFeedback("Those passwords didn't match. Try again.");
-            return;
-        }
-        setPassValid(true);
-        setConfValid(true);
-        setFeedback("");
+       //TODO: add implementation when creating the register page
     };
 
     return (

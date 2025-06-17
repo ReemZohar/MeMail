@@ -3,7 +3,6 @@ import UserInformation from "../../UserInformation/UserInformation"
 import LogoAndText from "../LogoAndText/LogoAndText";
 import "./ChooseDateCard.css"
 import "../RegisterCard.css"
-import validateDate from "./validateDate";
 
 function ChooseDateCard({ theme }) {
     const header = "Basic information";
@@ -19,20 +18,8 @@ function ChooseDateCard({ theme }) {
     if (theme === "dark") btnClass = "btn btn-secondary";
     else btnClass = "btn btn-primary";
 
-    const handleNext = () => {
-        //not all forms were filled scenario
-        if (!day || !year) {
-            setDateValid(false);
-            setFeedback("Please fill in a complete date of birth");
-            return;
-        }
-        else if (!validateDate(day, month, year)) {
-            setDateValid(false);
-            setFeedback("Please enter a valid date");
-            return;
-        }
-        setDateValid(true);
-    };
+    //TODO: add implementation when creating the register page
+    const handleNext = () => {};
 
     return (
         <div data-bs-theme={theme} className="card register-card border shadow p-3 mb-5 bg-body-tertiary rounded">

@@ -18,20 +18,7 @@ function ChooseNameCard({ theme }) {
     else btnClass = "btn btn-primary";
 
     const handleNext = () => {
-        let isValid = true;
-
-        //no name chosen scenario
-        if (!firstName.trim()) {
-            setFirstValid(false);
-            setFirstFb("Enter first name");
-            isValid = false;
-        } else {
-            setFirstValid(true);
-        }
-
-        if (isValid) {
-            //TODO - continue to next register card
-        }
+        //TODO: add implementation when creating the register page
     };
 
     return (

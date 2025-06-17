@@ -15,18 +15,7 @@ function ChooseMailCard({ theme }) {
   else btnClass = "btn btn-primary";
 
   const handleNext = () => {
-    //empty form was submitted scenario
-    if (!mail) {
-      setIsMailValid(false);
-      setFeedback("Enter a MeMail address");
-      return;
-    }
-    //TODO: bad mail address chosen (2 @, etc..)
-    //else if () {}
-
-    //TODO: mail address already used
-    //else if() {}
-    setIsMailValid(true);
+    //TODO: add implementation when creating the register page
   };
 
   return (
