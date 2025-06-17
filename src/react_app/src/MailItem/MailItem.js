@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MailRow from '../MailRow/MailRow';
 import './MailItem.css';
 
-function MailItem({ mail, onMailDeleted, onMailMovedToSpam, onMailFavoriteToggled }) {
+function MailItem({ mail, onMailDeleted, onMailMovedToSpam, onMailFavoriteToggled, onOpenMail }) {
   const [folder, setFolder] = useState(mail.folder);
   const [isFavorite, setIsFavorite] = useState(mail.favorite);
   const [isSpam, setIsSpam] = useState(mail.spam);
@@ -37,6 +37,10 @@ function MailItem({ mail, onMailDeleted, onMailMovedToSpam, onMailFavoriteToggle
       } catch (err) {
         console.error('Failed to mark mail as read:', err);
       }
+    }
+
+    if (onOpenMail) {
+      onOpenMail(mail);
     }
   };
 
