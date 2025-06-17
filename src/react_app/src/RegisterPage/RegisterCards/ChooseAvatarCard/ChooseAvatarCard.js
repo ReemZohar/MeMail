@@ -1,37 +1,38 @@
 import { useState } from "react";
 import LogoAndText from "../LogoAndText/LogoAndText";
-import avatars from "../../../avatars/avatars";
 import "../RegisterCard.css";
 import "./ChooseAvatarCard.css";
 
-function ChooseAvatarCard({ theme }) {
+function ChooseAvatarCard({
+  theme,
+  existingAvatars,
+  selectedAvatar,
+  onSelectAvatar,
+  onNext
+}) {
   //left column text
   const header = "Choose Your Avatar";
   const msg = "Pick one below or upload your own";
 
-  //avatar states
-  const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
   //validation state
   const [avatarValid, setAvatarValid] = useState(null);
   const [avatarFb, setAvatarFb] = useState("");
 
-  //existing avatars array
-  const existingAvatars = avatars;
-
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    setAvatarPreview(URL.createObjectURL(file));
-    setSelectedAvatar(null);
+    const previewUrl = URL.createObjectURL(file);
+    setAvatarPreview(previewUrl);
+    onSelectAvatar(previewUrl);
   };
 
   const handleAvatarClick = (url) => {
     if (selectedAvatar === url) {
-      setSelectedAvatar(null);
+      onSelectAvatar(null);
     } else {
-      setSelectedAvatar(url);
+      onSelectAvatar(url);
       setAvatarPreview(null);
     }
   };
@@ -47,7 +48,7 @@ function ChooseAvatarCard({ theme }) {
     else {
       setAvatarValid(true);
       setAvatarFb("");
-      return;
+      onNext();
     }
   };
 

@@ -3,12 +3,17 @@ import UserInformation from "../../../UserInformation/UserInformation";
 import LogoAndText from "../LogoAndText/LogoAndText";
 import "../RegisterCard.css";
 
-function ChooseNameCard({ theme }) {
+function ChooseNameCard({
+    theme,
+    valueFirst,
+    onChangeFirst,
+    valueSurname,
+    onChangeSurname,
+    onNext
+}) {
     const header = "Create a MeMail Account";
     const msg = "Enter your name";
-    //name values
-    const [firstName, setFirstName] = useState("");
-    const [surname, setSurname] = useState("");
+
     //validation state
     const [firstValid, setFirstValid] = useState(null);
     const [firstFb, setFirstFb] = useState("");
@@ -19,13 +24,14 @@ function ChooseNameCard({ theme }) {
 
     const handleNext = () => {
         //no first name was chosen scenario
-        if (!firstName) {
+        if (!valueFirst) {
             setFirstFb("Enter first name");
             setFirstValid(false);
             return;
         }
         setFirstValid(true);
         setFirstFb("");
+        onNext();
     };
 
     return (
@@ -45,8 +51,8 @@ function ChooseNameCard({ theme }) {
                     <UserInformation
                         requiredInfo="First name"
                         theme={theme}
-                        value={firstName}
-                        onChange={e => setFirstName(e.target.value)}
+                        value={valueFirst}
+                        onChange={onChangeFirst}
                         isValid={firstValid}
                         feedback={firstFb}
                     />
@@ -54,8 +60,8 @@ function ChooseNameCard({ theme }) {
                     <UserInformation
                         requiredInfo="Surname (optional)"
                         theme={theme}
-                        value={surname}
-                        onChange={e => setSurname(e.target.value)}
+                        value={valueSurname}
+                        onChange={onChangeSurname}
                     />
                     <div className="d-flex justify-content-end mt-5">
                         <button

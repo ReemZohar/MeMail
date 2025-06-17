@@ -4,15 +4,20 @@ import LogoAndText from "../LogoAndText/LogoAndText";
 import "../RegisterCard.css";
 import "./ChoosePasswordCard.css"
 
-function ChooseNameCard({ theme }) {
+function ChoosePasswordCard({ theme,
+    password,
+    onChangePassword,
+    confirmPassword,
+    onChangeConfirm,
+    onNext,
+}) {
     const passGuideStart = "Your password must be 8-20 characters long, contain letters and numbers,";
     const passGuideEnd = " and must not contain spaces, special characters, or emoji.";
     const passHeader = "Create a strong password";
     const passMsg = "Create a strong password with a mixture of letters, numbers and symbols";
+    const pwdRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[\x21-\x2F\x3A-\x40\x5B-\x60\x7B-\x7E])[\x21-\x7E]{8,20}$/;
     var btnClass;
 
-    const [password, setPassword] = useState("");
-    const [confPassword, setConfPassword] = useState("");
     const [passValid, setPassValid] = useState(null);
     const [feedback, setFeedback] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -22,20 +27,19 @@ function ChooseNameCard({ theme }) {
 
     const handleNext = () => {
         //one or more fields are empty scenario
-        if (!password || !confPassword) {
+        if (!password || !confirmPassword) {
             setPassValid(false);
             setFeedback("Enter a password");
             return;
         }
         //invalid password scenario
-        else if (!/^[A-Za-z0-9]{8,20}$/.test(password)) {
+        else if (!pwdRegex.test(password)) {
             setPassValid(false);
-            setFeedback("Your password must be 8-20 characters long, contain letters and numbers, " +
-                "and must not contain spaces, special characters, or emoji.");
-                return;
+            setFeedback("");
+            return;
         }
         //passwords don't match scenario
-        else if (password !== confPassword) {
+        else if (password !== confirmPassword) {
             setPassValid(false);
             setFeedback("Those passwords didn't match. Try again.");
             return;
@@ -43,8 +47,8 @@ function ChooseNameCard({ theme }) {
         //valid password scenario
         else {
             setPassValid(true);
-            feedback("");
-            return;
+            setFeedback("");
+            onNext();
         }
     };
 
@@ -61,7 +65,7 @@ function ChooseNameCard({ theme }) {
                         requiredInfo="Password"
                         theme={theme}
                         value={password}
-                        onChange={e => setPassword(e.target.value)}
+                        onChange={onChangePassword}
                         type={showPassword ? "text" : "password"}
                         isValid={passValid}
                     />
@@ -69,8 +73,8 @@ function ChooseNameCard({ theme }) {
                     <UserInformation
                         requiredInfo="Confirm"
                         theme={theme}
-                        value={confPassword}
-                        onChange={e => setConfPassword(e.target.value)}
+                        value={confirmPassword}
+                        onChange={onChangeConfirm}
                         type={showPassword ? "text" : "password"}
                         isValid={passValid}
                         feedback={feedback}
@@ -103,4 +107,4 @@ function ChooseNameCard({ theme }) {
     );
 }
 
-export default ChooseNameCard;
+export default ChoosePasswordCard;
