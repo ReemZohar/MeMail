@@ -1,5 +1,5 @@
 .mail-window {
-  padding: 24px;
+  padding: 24px 32px;
   background-color: #fff;
   color: #202124;
   font-family: Arial, sans-serif;
@@ -9,14 +9,21 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.mail-row-wrapper {
+  margin-bottom: 20px;
+}
+
 .mail-subject {
-  margin-bottom: 12px;
-  font-size: 24px;
-  font-weight: bold;
+  margin-bottom: 20px;
+  font-size: 26px;
+  font-weight: 500;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 8px;
 }
 
 .mail-header-info {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  font-size: 15px;
 }
 
 .mail-from-to {
@@ -42,7 +49,7 @@
   font-size: 14px;
   color: #444;
   background: #f5f5f5;
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-radius: 4px;
   line-height: 1.6;
 }
@@ -50,6 +57,7 @@
 .mail-content {
   font-size: 15px;
   white-space: pre-wrap;
+  line-height: 1.8;
 }
 
 [data-bs-theme="dark"] .mail-window {
