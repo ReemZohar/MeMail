@@ -1,20 +1,50 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+// App.js
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import MainPage from './MainPage/MainPage';
 import LoginPage from './LoginPage/LoginPage';
 
+//Get the email (username) from the token
+function parseJwt(token) {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
+  } catch (e) {
+    return null;
+  }
+}
+
 export default function App() {
-  const token = 'mock-token'; //todo check if ok
-  const currentUserEmail = 'li@gmail.com';
+  const [token, setToken] = useState(localStorage.getItem('token'));
+  const currentUserEmail = token ? parseJwt(token)?.username : null;
+
+  useEffect(() => {
+    const handleStorage = () => {
+      setToken(localStorage.getItem('token'));
+    };
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
 
   return (
     <Routes>
-        {/* routes for MainPage - PGAPP 182 */}
-     <Route path="/login" element={<LoginPage />} />
-     <Route path="/mail" element={<MainPage token={token} currentUserEmail={currentUserEmail} />} />
-     <Route path="/mail/compose" element={<MainPage token={token} currentUserEmail={currentUserEmail} />} />
-     <Route path="/mail/:id" element={<MainPage token={token} currentUserEmail={currentUserEmail} />} />
+      <Route path="/login" element={<LoginPage setToken={setToken} />} />
+      {token ? (
+        <>
+          <Route path="/mail" element={<MainPage token={token} currentUserEmail={currentUserEmail} />} />
+          <Route path="/mail/compose" element={<MainPage token={token} currentUserEmail={currentUserEmail} />} />
+          <Route path="/mail/:id" element={<MainPage token={token} currentUserEmail={currentUserEmail} />} />
+        </>
+      ) : (
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      )}
     </Routes>
-
   );
 }
