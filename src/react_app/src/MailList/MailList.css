@@ -1,0 +1,88 @@
+.MailList {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  background-color: white;
+  overflow-y: auto;
+  max-height: 80vh;
+  border-radius: 0;
+  border: none;
+}
+
+.MailList-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  border-bottom: 1px solid #ddd;
+  background-color: #f1f3f4;
+  width: 100%;
+}
+
+.MailList-btn {
+  background-color: transparent;
+  border: none;
+  padding: 6px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.MailList-btn:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.MailList-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.MailList-pagination {
+  display: flex;
+  gap: 4px;
+}
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  background-color: #333;
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+  position: absolute;
+  top: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 0.2s ease;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+[data-bs-theme="dark"] .MailList-btn:hover {
+  background-color: #3a3a3a;
+}
+
+[data-bs-theme="dark"] .MailList-btn svg{
+  color: #ddd;
+}
+
+[data-bs-theme="dark"] .MailList-header {
+  background-color: #3a3a3a;
+}
