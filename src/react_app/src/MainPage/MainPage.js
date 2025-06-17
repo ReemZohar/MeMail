@@ -31,22 +31,13 @@ export default function MainPage({ token }) {
   const parsed = parseJwt(token);
   const currentUserEmail = parsed?.username || "";
 
-  const [folder, setFolder] = useState(null);
-  const [isFavorite, setIsFavorite] = useState(null);
-  const [labelId, setLabelId] = useState(null);
-  const [sender, setSender] = useState(null);
-  const [date, setDate] = useState(null);
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const [openComposes, setOpenComposes] = useState([]);
 
-  useEffect(() => {
-    setFolder(searchParams.get("folder") || null);
-    setLabelId(searchParams.get("labelId") || null);
-    setIsFavorite(searchParams.get("isFavorite") === "true" ? true : null);
-    setSender(searchParams.get("sender") || null);
-    setDate(searchParams.get("date") || null);
-  }, [searchParams]);
+  const folder = searchParams.get("folder") || null;
+  const labelId = searchParams.get("labelId") || null;
+  const isFavorite = searchParams.get("isFavorite") === "true" ? true : null;
+  const sender = searchParams.get("sender") || null;
+  const date = searchParams.get("date") || null;
 
   const openCompose = () => {
     if (openComposes.length >= 2) return;  //If there are already 2 open windows, don't open a new one

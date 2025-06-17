@@ -45,9 +45,19 @@ export default function MailPlace({
     fetchMail();
   }, [selectedMailId, token]);
 
-  const handleOpenMail = (mail) => {
-    navigate(`/mail/${mail.id}`);
-  };
+const handleOpenMail = (mail) => {
+  const params = new URLSearchParams();
+  if (folder) params.set("folder", folder);
+  if (isFavorite) params.set("isFavorite", "true");
+  if (labelId) params.set("labelId", labelId);
+  if (sender) params.set("sender", sender);
+  if (date) params.set("date", date);
+
+  navigate({
+    pathname: `/mail/${mail.id}`,
+    search: `?${params.toString()}`,
+  });
+};
 
   const handleCloseMail = () => {
     const params = new URLSearchParams();
@@ -78,7 +88,7 @@ export default function MailPlace({
       {openedMail && (
         <div className="mail-window-wrapper" style={{ flex: 1, overflowY: 'auto', borderLeft: '1px solid #ccc' }}>
           <button onClick={handleCloseMail}>← Back to list</button>
-          <MailWindow mail={openedMail} currentUserEmail={currentUserEmail} />
+          <MailWindow mail={openedMail} currentUserEmail={currentUserEmail} onMailDeleted={() => handleCloseMail()} onBack={handleCloseMail} />
         </div>
       )}
     </div>
