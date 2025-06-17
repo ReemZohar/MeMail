@@ -1,12 +1,16 @@
 import { useState } from "react";
 import "../RegisterCard.css"
-import UserInformation from "../../UserInformation/UserInformation";
+import UserInformation from "../../../UserInformation/UserInformation";
 import LogoAndText from "../LogoAndText/LogoAndText";
 
-function ChooseMailCard({ theme }) {
+function ChooseMailCard({
+  theme,
+  value,
+  onChange,
+  onNext,
+}) {
   const header = "Choose your MeMail address";
   const msg = "Pick a MeMail address or create your own";
-  const [mail, setMail] = useState(null);
   const [isMailValid, setIsMailValid] = useState("");
   const [feedback, setFeedback] = useState("You can use letters, numbers and full stops");
   var btnClass
@@ -14,8 +18,33 @@ function ChooseMailCard({ theme }) {
   if (theme === "dark") btnClass = "btn btn-secondary"
   else btnClass = "btn btn-primary";
 
-  const handleNext = () => {
-    //TODO: add implementation when creating the register page
+  const handleNext = async () => {
+    //empty field scenario
+    if (!value) {
+      setIsMailValid(false);
+      setFeedback("Enter a MeMail address");
+      return;
+    }
+    //invalid mail address scenario
+    else if (!/^[A-Za-z0-9.]+@[A-Za-z0-9]+\.[A-Za-z]{2,}$/.test(value)) {
+      setIsMailValid(false);
+      setFeedback("Sorry, only letters (a-z), numbers (0-9), and periods (.) are allowed.");
+      return;
+    }
+    //existing mail address scenario
+    const res = await fetch('/api/users/validate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ step: 2, username: value })
+    });
+
+    if (res.ok) {
+      onNext();
+    } else {
+      const { error } = await res.json();
+      setIsMailValid(false);
+      setFeedback(error);
+    }
   };
 
   return (
@@ -34,8 +63,8 @@ function ChooseMailCard({ theme }) {
           <UserInformation
             requiredInfo={"Create a MeMail address"}
             theme={theme}
-            value={mail}
-            onChange={e => setMail(e.target.value)}
+            value={value}
+            onChange={onChange}
             isValid={isMailValid}
             feedback={feedback}
           ></UserInformation>
