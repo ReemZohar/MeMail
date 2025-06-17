@@ -9,6 +9,7 @@ export default function App() {
 
   return (
     <Routes>
+        {/* routes for MainPage - PGAPP 182 */}
      <Route path="/login" element={<LoginPage />} />
      <Route path="/mail" element={<MainPage token={token} currentUserEmail={currentUserEmail} />} />
      <Route path="/mail/compose" element={<MainPage token={token} currentUserEmail={currentUserEmail} />} />
