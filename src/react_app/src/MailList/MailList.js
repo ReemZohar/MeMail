@@ -71,8 +71,9 @@ useEffect(() => {
   const startIndex = page * mailsPerPage;
   const displayedMails = sortedMails.slice(startIndex, startIndex + mailsPerPage);
 
+
   return (
-    <div className="MailList">
+    <div className="mail-list-wrapper">
       <div className="MailList-header">
         <div className="tooltip-container">
           <button onClick={handleRefresh} className="MailList-btn">
@@ -97,16 +98,18 @@ useEffect(() => {
         </div>
       </div>
 
-      {displayedMails.map(mail => (
-        <MailItem
-          key={mail.id}
-          mail={mail}
-          onMailDeleted={handleMailDeleted}
-          onMailMovedToSpam={handleMailMovedToSpam}
-          onMailFavoriteToggled={handleMailFavoriteToggled}
-          onOpenMail={onOpenMail}
-        />
-      ))}
+      <div className="MailList-scroll">
+        {displayedMails.map(mail => (
+          <MailItem
+            key={mail.id}
+            mail={mail}
+            onMailDeleted={handleMailDeleted}
+            onMailMovedToSpam={handleMailMovedToSpam}
+            onMailFavoriteToggled={handleMailFavoriteToggled}
+            onOpenMail={onOpenMail}
+          />
+        ))}
+      </div>
     </div>
   );
 }
