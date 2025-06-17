@@ -1,0 +1,53 @@
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 20px;
+  background-color: transparent;
+  color: #444;
+  font-size: 16px;
+  text-align: left;
+  width: 100%;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.label:hover {
+  background-color: #f1f3f4;
+}
+
+.label-menu-button {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  display: none;
+}
+
+.label:hover .label-menu-button {
+  display: inline;
+}
+
+.label.active {
+  background-color: #d3e3fd;
+  color: #1a73e8;
+  font-weight: 600;
+}
+
+
+.label.collapsed .label-text {
+  display: none;
+}
+
+.label .label-icon {
+  margin-right: 8px;
+}
+
+.label:hover,
+.label-item:hover {
+  background-color: #f1f3f4;
+}
