@@ -11,19 +11,20 @@ function ChooseAvatarCard({ theme }) {
 
   //avatar states
   const [selectedAvatar, setSelectedAvatar] = useState(null);
-  const [avatarFile, setAvatarFile] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
+  //validation state
+  const [avatarValid, setAvatarValid] = useState(null);
+  const [avatarFb, setAvatarFb] = useState("");
 
   //existing avatars array
   const existingAvatars = avatars;
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setAvatarFile(file);
-      setAvatarPreview(URL.createObjectURL(file));
-      setSelectedAvatar(null);
-    }
+    if (!file) return;
+
+    setAvatarPreview(URL.createObjectURL(file));
+    setSelectedAvatar(null);
   };
 
   const handleAvatarClick = (url) => {
@@ -31,30 +32,35 @@ function ChooseAvatarCard({ theme }) {
       setSelectedAvatar(null);
     } else {
       setSelectedAvatar(url);
-      setAvatarFile(null);
       setAvatarPreview(null);
     }
   };
 
   const handleNext = () => {
-   //TODO: add implementation when creating the register page
+    //no avatar was chosen scenario
+    if (!selectedAvatar && !avatarPreview) {
+      setAvatarValid(false);
+      setAvatarFb("Please select or upload an avatar");
+      return;
+    }
+    //valid choice scenario
+    else {
+      setAvatarValid(true);
+      setAvatarFb("");
+      return;
+    }
   };
 
   const btnClass =
     theme === "dark" ? "btn btn-secondary" : "btn btn-primary";
 
   return (
-    <div
-      data-bs-theme={theme}
-      className="card register-card border shadow p-3 mb-5 bg-body-tertiary rounded"
-    >
+    <div data-bs-theme={theme}
+      className="card register-card border shadow p-3 mb-5 bg-body-tertiary rounded">
       <div className="row align-items-start g-2">
 
-        {/*left column*/}
-        <LogoAndText
-          header={header}
-          msg={msg}
-        />
+        {/* left column */}
+        <LogoAndText header={header} msg={msg} />
 
         {/* right column */}
         <div className="col-6 ms-5 align-self-center">
@@ -97,6 +103,13 @@ function ChooseAvatarCard({ theme }) {
                   className="avatar-preview"
                 />
               </div>
+            </div>
+          )}
+
+          {/* feedback message */}
+          {avatarValid === false && (
+            <div className="text-danger mt-2">
+              {avatarFb}
             </div>
           )}
 

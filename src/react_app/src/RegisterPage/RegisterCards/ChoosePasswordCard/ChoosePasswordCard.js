@@ -14,7 +14,6 @@ function ChooseNameCard({ theme }) {
     const [password, setPassword] = useState("");
     const [confPassword, setConfPassword] = useState("");
     const [passValid, setPassValid] = useState(null);
-    const [confValid, setConfValid] = useState(null);
     const [feedback, setFeedback] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
@@ -22,7 +21,31 @@ function ChooseNameCard({ theme }) {
     else btnClass = "btn btn-primary";
 
     const handleNext = () => {
-       //TODO: add implementation when creating the register page
+        //one or more fields are empty scenario
+        if (!password || !confPassword) {
+            setPassValid(false);
+            setFeedback("Enter a password");
+            return;
+        }
+        //invalid password scenario
+        else if (!/^[A-Za-z0-9]{8,20}$/.test(password)) {
+            setPassValid(false);
+            setFeedback("Your password must be 8-20 characters long, contain letters and numbers, " +
+                "and must not contain spaces, special characters, or emoji.");
+                return;
+        }
+        //passwords don't match scenario
+        else if (password !== confPassword) {
+            setPassValid(false);
+            setFeedback("Those passwords didn't match. Try again.");
+            return;
+        }
+        //valid password scenario
+        else {
+            setPassValid(true);
+            feedback("");
+            return;
+        }
     };
 
     return (
@@ -49,7 +72,7 @@ function ChooseNameCard({ theme }) {
                         value={confPassword}
                         onChange={e => setConfPassword(e.target.value)}
                         type={showPassword ? "text" : "password"}
-                        isValid={confValid}
+                        isValid={passValid}
                         feedback={feedback}
                     />
                     <p className="small gray ms-3">{passGuideStart + passGuideEnd}</p>

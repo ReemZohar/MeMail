@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../RegisterCard.css"
 import UserInformation from "../../../UserInformation/UserInformation";
 import LogoAndText from "../LogoAndText/LogoAndText";
+import { getUserByUsername } from "../../../../../node-server/models/users";
 
 function ChooseMailCard({ theme }) {
   const header = "Choose your MeMail address";
@@ -15,7 +16,29 @@ function ChooseMailCard({ theme }) {
   else btnClass = "btn btn-primary";
 
   const handleNext = () => {
-    //TODO: add implementation when creating the register page
+    //empty field scenario
+    if (!mail) {
+      setIsMailValid(false);
+      setFeedback("Enter a MeMail address");
+      return;
+    }
+    //invalid mail address scenario
+    else if (!/^[A-Za-z0-9.]+@[A-Za-z0-9]+\.[A-Za-z]{2,}$/.test(username)) {
+      setIsMailValid(false);
+      setFeedback("Sorry, only letters (a-z), numbers (0-9), and periods (.) are allowed.");
+      return;
+    }
+    //existing mail address scenario
+    else if (getUserByUsername(username)) {
+      setIsMailValid(false);
+      setFeedback("That username is taken. Try another.");
+      return;
+    }
+    //valid mail address scenario
+    else {
+      setIsMailValid(true);
+      setFeedback("");
+    }
   };
 
   return (

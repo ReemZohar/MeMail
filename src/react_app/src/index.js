@@ -2,14 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import UserInformation from './UserInformation/UserInformation'
 import MailRow from './MailRow/MailRow';
+import ChooseAvatarCard from './RegisterPage/RegisterCards/ChooseAvatarCard/ChooseAvatarCard';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <MailRow 
-  mailId="1234"
-  title="Hello from example"
-  content="This is a test mail content."
-/>
+    <ChooseAvatarCard theme={"light"}/>
   </React.StrictMode>
 );
