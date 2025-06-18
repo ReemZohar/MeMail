@@ -1,6 +1,17 @@
 const mailModel = require('../models/mails'); // mail holds the in-memory model
 const userModel = require('../models/users');
 
+function authorizeOwnership(resource, userId, res) {
+  if (resource.userId !== userId) {
+    res.status(403).json({ error: 'Unauthorized' });
+    return false;
+  }
+  return true;
+}
+
+
+
+
 // Get the 50 most recent mails (sorted by time, newest first)
 exports.getAllMails = (req, res) => {
   const userId = req.user.id; // from-JWT
@@ -59,6 +70,10 @@ exports.getMailById = (req, res) => {
         return res.status(404).json({ error: 'Mail not found\n' }); // HTTP 404 Not Found
     }
 
+    if (mail.sender !== req.user.id && mail.receiver !== req.user.id) {
+    return res.status(403).json({ error: 'Unauthorized' });
+    }
+
     res.status(200).json(mail); // HTTP 200 OK
 };
 
@@ -67,24 +82,37 @@ exports.updateMail = async (req, res) => {
   const id = parseInt(req.params.id);
   const { title, content } = req.body;
 
-  const updated = await mailModel.updateMail(id, title, content);
-  if (!updated) {
-    return res.status(404).json({ error: 'Mail not found or blacklisted URL\n' });
+  const mail = mailModel.getMailById(id);
+  if (!mail) {
+    return res.status(404).json({ error: 'Mail not found' });
   }
 
-    res.status(204).send();
+  if (mail.sender !== req.user.id && mail.receiver !== req.user.id) {
+    return res.status(403).json({ error: 'Unauthorized' });
+  }
+
+  const updated = await mailModel.updateMail(id, title, content);
+  if (!updated) {
+    return res.status(400).json({ error: 'Mail update failed or blacklisted URL' });
+  }
+
+  res.status(204).send();
 };
 
 // Delete a mail by ID
 exports.deleteMail = (req, res) => {
-    const id = parseInt(req.params.id);
-    const success = mailModel.deleteMail(id);
+  const id = Number(req.params.id);
+  const mail = mailModel.getMailById(id);
+  if (!mail) return res.status(404).json({ error: 'Mail not found' });
 
-    if (!success) {
-        return res.status(404).json({ error: 'Mail not found\n' }); // HTTP 404 Not Found
-    }
+  if (mail.sender !== req.user.id && mail.receiver !== req.user.id) {
+    return res.status(403).json({ error: 'Unauthorized' });
+  }
 
-    res.status(204).send(); // HTTP 204 No Content
+  const success = mailModel.deleteMail(id, req.user.id);
+  if (!success) return res.status(400).json({ error: 'Could not delete mail' });
+
+  res.status(204).send();
 };
 
 // Search mails by query (matches title, content, sender or receiver)
