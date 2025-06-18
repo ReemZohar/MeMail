@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import MailItem from '../MailItem/MailItem';
 import { MdRefresh, MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
+import SelectedMailsAction from '../SelectedMailsAction/SelectedMailsAction';
 import './MailList.css';
 
 function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, onOpenMail }) {
@@ -19,11 +20,8 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
       if (labelId) params.append('labelId', labelId);
 
       const response = await fetch(`http://localhost:9090/api/mails?${params.toString()}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        headers: { Authorization: `Bearer ${token}` },
       });
-
       if (!response.ok) throw new Error('Failed to fetch mails');
 
       const data = await response.json();
@@ -57,6 +55,10 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
     });
   };
 
+  const handleCancelSelection = () => {
+  setSelectedMails(new Set());
+  };
+
   const handleMailFavoriteToggled = (mailId, favorite) => {
     setMails(prev =>
       prev.map(mail => mail.id === mailId ? { ...mail, favorite } : mail)
@@ -85,19 +87,56 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
     const isChecked = e.target.checked;
     const currentPageMails = displayedMails.map(mail => mail.id);
 
-    if (isChecked) {
-      setSelectedMails(prev => {
-        const newSet = new Set(prev);
-        currentPageMails.forEach(id => newSet.add(id));
-        return newSet;
+    setSelectedMails(prev => {
+      const newSet = new Set(prev);
+      currentPageMails.forEach(id => {
+        if (isChecked) newSet.add(id);
+        else newSet.delete(id);
       });
-    } else {
-      setSelectedMails(prev => {
-        const newSet = new Set(prev);
-        currentPageMails.forEach(id => newSet.delete(id));
-        return newSet;
-      });
+      return newSet;
+    });
+  };
+
+  const handleSpamToggleSelected = async () => {
+    const actionType = folder === 'spam' ? 'unspam' : 'spam';
+    const baseUrl = 'http://localhost:9090/api/mails';
+
+    for (const mailId of selectedMails) {
+      try {
+        const response = await fetch(`${baseUrl}/${mailId}/${actionType}`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (response.ok) {
+          if (actionType === 'spam') handleMailMovedToSpam(mailId);
+          else fetchMails();
+        }
+      } catch (err) {
+        console.error(`Error performing ${actionType} on mail ${mailId}:`, err);
+      }
     }
+    setSelectedMails(new Set());
+  };
+
+  const performActionOnSelected = async (actionType) => {
+    const baseUrl = 'http://localhost:9090/api/mails';
+    for (const mailId of selectedMails) {
+      try {
+        let response;
+        if (actionType === 'delete') {
+          response = await fetch(`${baseUrl}/${mailId}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (response.status === 204) {
+            handleMailDeleted(mailId);
+          }
+        }
+      } catch (err) {
+        console.error(`Error performing ${actionType} on mail ${mailId}:`, err);
+      }
+    }
+    setSelectedMails(new Set());
   };
 
   const sortedMails = [...mails].sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -105,6 +144,7 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
   const displayedMails = sortedMails.slice(startIndex, startIndex + mailsPerPage);
 
   const allSelected = displayedMails.length > 0 && displayedMails.every(mail => selectedMails.has(mail.id));
+  const hasSelection = selectedMails.size > 0;
 
   return (
     <div className="mail-list-wrapper">
@@ -122,12 +162,19 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
             <span className="tooltip-text">Select All</span>
           </div>
 
-          <div className="tooltip-container">
-            <button onClick={handleRefresh} className="MailList-btn">
-              <MdRefresh size={20} />
-            </button>
-            <span className="tooltip-text">Refresh</span>
-          </div>
+            {hasSelection ? (
+              <SelectedMailsAction
+              inSpamFolder={folder === 'spam'}
+              onSpamToggle={handleSpamToggleSelected}
+              onDelete={() => performActionOnSelected('delete')}
+              onCancel={handleCancelSelection}
+            />
+            ) : (
+              <button onClick={handleRefresh} className="MailList-btn">
+                <MdRefresh size={20} />
+              </button>
+            )}
+            <span className="tooltip-text">{hasSelection ? 'Selected actions' : 'Refresh'}</span>
         </div>
 
         <div className="MailList-pagination">
@@ -159,11 +206,8 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
             whenSelected={(id) => {
               setSelectedMails(prev => {
                 const newSet = new Set(prev);
-                if (newSet.has(id)) {
-                  newSet.delete(id);
-                } else {
-                  newSet.add(id);
-                }
+                if (newSet.has(id)) newSet.delete(id);
+                else newSet.add(id);
                 return newSet;
               });
             }}
