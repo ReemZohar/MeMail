@@ -1,0 +1,14 @@
+.gray {
+    color: gray;
+}
+
+.underline-input {
+    border: none;
+    border-bottom: 1px solid;
+    border-radius: 0px;
+}
+
+.underline-input:focus {
+  border-bottom-color: #007bff;
+  box-shadow: none;
+}
