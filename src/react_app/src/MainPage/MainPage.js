@@ -25,6 +25,8 @@ function parseJwt(token) {
 
 export default function MainPage({ token }) {
   if (!token) throw new Error("No token found");   
+  const [openComposes, setOpenComposes] = useState([]);
+  const navigate = useNavigate();  
   const location = useLocation();
   const id = location.pathname.startsWith('/mail/') ? location.pathname.split('/mail/')[1] : null;
 
