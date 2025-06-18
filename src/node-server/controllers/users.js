@@ -2,6 +2,7 @@ const userModel = require('../models/users'); // user handles user registration 
 // Register a new user
 exports.registerUser = (req, res) => {
   const { name, surname, gender, day, month, year, username, password, confirmPassword, avatar } = req.body;
+  const pwdRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[\x21-\x2F\x3A-\x40\x5B-\x60\x7B-\x7E])[\x21-\x7E]{8,20}$/;
   if (!name) {
     return res.status(400).json({ error: 'Enter first name' });
   }
@@ -25,7 +26,7 @@ exports.registerUser = (req, res) => {
   if (!password || !confirmPassword) {
     return res.status(400).json({ error: 'Enter a password' });
   }
-  if (!/^[A-Za-z0-9]{8,20}$/.test(password)) {
+  if (!pwdRegex.test(password)) {
     return res.status(400).json({
       error: 'Your password must be 8-20 characters long, contain letters and numbers, ' +
         'and must not contain spaces, special characters, or emoji.'
@@ -64,4 +65,15 @@ exports.getUserById = (req, res) => {
   const { password, ...safeUser } = user;
   res.status(200).json(safeUser);
 };
+
+exports.validate = (req, res) => {
+  const { step, username } = req.body;
+  if (step === 2) {
+    if (userModel.getUserByUsername(username)) {
+      return res.status(400).json({ error: 'That username is taken. Try another.' });
+    }
+  }
+  return res.status(200).json({ ok: true });
+};
+
 

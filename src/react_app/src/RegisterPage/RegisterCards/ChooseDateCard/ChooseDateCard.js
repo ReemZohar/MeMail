@@ -1,16 +1,24 @@
 import { useState } from "react";
-import UserInformation from "../../UserInformation/UserInformation"
+import UserInformation from "../../../UserInformation/UserInformation"
 import LogoAndText from "../LogoAndText/LogoAndText";
 import "./ChooseDateCard.css"
 import "../RegisterCard.css"
+import validateDate from "./validateDate";
 
-function ChooseDateCard({ theme }) {
+function ChooseDateCard({
+    theme,
+    dayValue,
+    onChangeDay,
+    monthValue,
+    onChangeMonth,
+    yearValue,
+    onChangeYear,
+    genderValue,
+    onChangeGender,
+    onNext
+}) {
     const header = "Basic information";
     const msg = "Enter your birthday and gender";
-    const [day, setDay] = useState("");
-    const [month, setMonth] = useState("1");
-    const [year, setYear] = useState("");
-    const [gender, setGender] = useState("1");
     const [dateValid, setDateValid] = useState("");
     const [feedback, setFeedback] = useState("");
     var btnClass;
@@ -19,7 +27,24 @@ function ChooseDateCard({ theme }) {
     else btnClass = "btn btn-primary";
 
     //TODO: add implementation when creating the register page
-    const handleNext = () => {};
+    const handleNext = () => {
+        //one or more fields are empty scenario
+        if (!dayValue || !monthValue || !yearValue) {
+            setDateValid(false);
+            setFeedback("Please fill in a complete date of birth");
+            return;
+        }
+        //invalid date scenario
+        else if (!validateDate(Number(dayValue), Number(monthValue), Number(yearValue))) {
+            setDateValid(false);
+            setFeedback("Please enter a valid date");
+            return;
+        } else { //valid date scenario
+            setDateValid(true);
+            setFeedback("");
+            onNext();
+        }
+    };
 
     return (
         <div data-bs-theme={theme} className="card register-card border shadow p-3 mb-5 bg-body-tertiary rounded">
@@ -38,12 +63,12 @@ function ChooseDateCard({ theme }) {
                     <UserInformation.Date
                         theme={theme}
                         isValid={dateValid}
-                        dayValue={day}
-                        monthValue={month}
-                        yearValue={year}
-                        onChangeDay={e => setDay(e.target.value)}
-                        onChangeMonth={e => setMonth(e.target.value)}
-                        onChangeYear={e => setYear(e.target.value)}
+                        dayValue={dayValue}
+                        monthValue={monthValue}
+                        yearValue={yearValue}
+                        onChangeDay={onChangeDay}
+                        onChangeMonth={onChangeMonth}
+                        onChangeYear={onChangeYear}
                     />
                     {dateValid === false && (
                         <div className="invalid-feedback d-block mt-1">
@@ -53,8 +78,8 @@ function ChooseDateCard({ theme }) {
                     <div className="mt-2 mb-2"></div>
                     <UserInformation.Gender
                         theme={theme}
-                        value={gender}
-                        onChange={e => setGender(e.target.value)}
+                        value={genderValue}
+                        onChange={onChangeGender}
                     />
                     <div className="d-flex justify-content-end mt-5">
                         <button
