@@ -69,7 +69,7 @@ function MailRow({ mailId, isFavorite, isSpam, onActionDone, hideFavoriteButton 
 }
 
 //MailRow without FavoriteButton
-MailRow.WithoutFavButon = (props) => {
+MailRow.WithoutFavButton = (props) => {
   return <MailRow {...props} hideFavoriteButton />;
 };
 
