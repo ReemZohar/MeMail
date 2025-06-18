@@ -120,6 +120,11 @@
   background-color: #fce8e6;
 }
 
+.checkBox {
+  margin-top: 2px;
+  margin-right: 6px;
+}
+
 [data-bs-theme="dark"] .MailItem {
   background-color: #1f1f1f;
   border-bottom-color: #333;
@@ -165,6 +170,10 @@
   background-color: #2a2d30;
 }
 
+[data-bs-theme="dark"] .MailItem.unread {
+  background-color: #5f6368
+}
+
 [data-bs-theme="dark"] .MailItem.read .MailItem-sender,
 [data-bs-theme="dark"] .MailItem.read .MailItem-title {
   font-weight: 400;
@@ -172,6 +181,6 @@
 }
 
 .MailItem.unread {
-  background-color: #5f6368;
+  background-color: white;
   font-weight: 600;
 }

@@ -3,7 +3,7 @@ import SpamMailButton from '../SpamMailButton/SpamMailButton';
 import DeleteMailButton from '../DeleteMailButton/DeleteMailButton';
 import FavoriteMailButton from '../FavoriteMailButton/FavoriteMailButton';
 
-function MailRow({ mailId, isFavorite, isSpam, onActionDone }) {
+function MailRow({ mailId, isFavorite, isSpam, onActionDone, hideFavoriteButton }) {
   const token = localStorage.getItem('token');
   const baseUrl = 'http://localhost:9090/api/mails';
 
@@ -59,11 +59,18 @@ function MailRow({ mailId, isFavorite, isSpam, onActionDone }) {
 
   return (
     <div className="MailRow">
-      <FavoriteMailButton isFavorite={isFavorite} onClick={handleFavoriteToggle} />
+      {!hideFavoriteButton && (
+        <FavoriteMailButton isFavorite={isFavorite} onClick={handleFavoriteToggle} />
+      )}
       <SpamMailButton isSpam={isSpam} onClick={handleSpamToggle} />
       <DeleteMailButton onClick={handleDelete} />
     </div>
   );
 }
+
+//MailRow without FavoriteButton
+MailRow.WithoutFavButon = (props) => {
+  return <MailRow {...props} hideFavoriteButton />;
+};
 
 export default MailRow;
