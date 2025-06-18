@@ -14,32 +14,48 @@ function authorizeOwnership(resource, userId, res) {
 
 // Get the 50 most recent mails (sorted by time, newest first)
 exports.getAllMails = (req, res) => {
-  const userId = req.user.id; 
+  const userId = req.user.id; // from-JWT
   const user = userModel.getUserById(userId);
   if (!user) return res.status(404).json({ error: 'User not found' });
 
-  const mails = mailModel.getAllMailsForUser(userId);
+  const { folder, isSpam, isFavorite, sender, date } = req.query;
+
+  const filters = {
+    folder,
+    sender,
+    date,
+    isSpam: isSpam === 'true' ? true : isSpam === 'false' ? false : undefined,
+    isFavorite: isFavorite === 'true' ? true : isFavorite === 'false' ? false : undefined
+  };
+
+  const mails = mailModel.getAllMailsForUser(userId, filters);
   res.status(200).json(mails);
 };
 
 // Send a new mail
 exports.sendMail = async (req, res) => {
-  const { title, content, receiver } = req.body;
-  const sender = req.user.id; //from JWT
+  const { title, content, receiver, draftId } = req.body;
+  const sender = req.user.id;
 
   if (!title || !content || !receiver) {
-    return res.status(400).json({ error: 'Missing required fields\n' });
+    return res.status(400).json({ error: 'Missing required fields' });
   }
 
   const senderUser = userModel.getUserById(sender);
-  const receiverUser = userModel.getUserByUsername(receiver); // user name
+  const receiverUser = userModel.getUserByUsername(receiver);
   if (!senderUser || !receiverUser) {
-    return res.status(404).json({ error: 'Sender or receiver not found\n' });
+    return res.status(404).json({ error: 'Sender or receiver not found' });
   }
 
   const mail = await mailModel.sendMail(title, content, senderUser.id, receiverUser.id);
   if (!mail) {
-    return res.status(400).json({ error: 'Mail contains blacklisted URL\n' });
+    return res.status(400).json({ error: 'Mail contains blacklisted URL' });
+  }
+
+  // delete the draft if exist
+  if (draftId) {
+    const draftModel = require('../models/draft');
+    draftModel.deleteDraft(draftId, senderUser.id);
   }
 
   res.status(201).location(`/api/mails/${mail.id}`).json(mail);
@@ -133,4 +149,48 @@ exports.updateIsReadStatus = (req, res) => {
   const updated = mailModel.updateIsRead(mailId, isRead);
   const { password, ...safeMail } = updated;
   res.status(200).json(safeMail);
+};
+
+exports.markAsSpam = async (req, res) => {
+  const userId = req.user.id;
+  const { id } = req.params;
+  const result = await mailModel.markMailAsSpam(id, userId);
+  if (result) {
+    res.status(200).json({ message: "Mail marked as spam and URLs blacklisted." });
+  } else {
+    res.status(404).json({ error: "Mail not found or unauthorized." });
+  }
+};
+
+exports.unmarkAsSpam = async (req, res) => {
+  const userId = req.user.id;
+  const { id } = req.params;
+  const result = await mailModel.unmarkMailAsSpam(id, userId);
+  if (result) {
+    res.status(200).json({ message: "Mail unmarked as spam and URLs removed from blacklist." });
+  } else {
+    res.status(404).json({ error: "Mail not found or unauthorized." });
+  }
+};
+
+exports.markAsFavorite = (req, res) => {
+  const userId = req.user.id;
+  const { id } = req.params;
+  const result = mailModel.markAsFavorite(id, userId);
+  if (result) {
+    res.status(200).json({ message: "Mail marked as favorite." });
+  } else {
+    res.status(404).json({ error: "Mail not found or unauthorized." });
+  }
+};
+
+exports.unmarkAsFavorite = (req, res) => {
+  const userId = req.user.id;
+  const { id } = req.params;
+  const result = mailModel.unmarkAsFavorite(id, userId);
+  if (result) {
+    res.status(200).json({ message: "Mail unmarked as favorite." });
+  } else {
+    res.status(404).json({ error: "Mail not found or unauthorized." });
+  }
 };
