@@ -1,14 +1,14 @@
 import './LabelMenu.css';
-import Label from '../Label/Label';
-import { MdInbox, MdStar, MdSend, MdReport, MdMail, MdDrafts } from 'react-icons/md';
+import { MdInbox, MdSend, MdOutlineDrafts, MdMail, MdReport, MdStar } from 'react-icons/md';
 
-function LabelMenu({ theme, clickOnLabel, isCollapsed }) {
+function LabelMenu({ theme, onLabelClick, activeFolder, isCollapsed }) {
   const labels = [
-    { id: 'inbox', name: 'Inbox', icon: <MdInbox size={18} /> },
-    { id: 'sent', name: 'Sent', icon: <MdSend size={18} /> },
-    { id: 'drafts', name: 'Drafts', icon: <MdDrafts size={18} /> },
-    { id: 'allmail', name: 'All Mail', icon: <MdMail size={18} /> },
-    { id: 'spam', name: 'Spam', icon: <MdReport size={18} /> },
+    { id: 'inbox', name: 'Inbox', icon: <MdInbox size={18} />, isFavorite: false },
+    { id: 'sent', name: 'Sent', icon: <MdSend size={18} />, isFavorite: false },
+    { id: 'drafts', name: 'Drafts', icon: <MdOutlineDrafts size={18} />, isFavorite: false },
+    { id: 'allmail', name: 'All Mail', icon: <MdMail size={18} />, isFavorite: false },
+    { id: 'favorite', name: 'Favorite', icon: <MdStar size={18} />, isFavorite: true },
+    { id: 'spam', name: 'Spam', icon: <MdReport size={18} />, isFavorite: false },
   ];
 
   return (
@@ -16,8 +16,8 @@ function LabelMenu({ theme, clickOnLabel, isCollapsed }) {
       {labels.map(label => (
         <div
           key={label.id}
-          className="label-item"
-          onClick={() => clickOnLabel(label.id)}
+          className={`label-item ${activeFolder === label.id ? 'active' : ''}`}
+          onClick={() => onLabelClick(label.id, label.isFavorite, label.id, false)}
         >
           {label.icon}
           {!isCollapsed && <span className="label-name">{label.name}</span>}

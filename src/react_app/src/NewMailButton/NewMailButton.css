@@ -28,8 +28,8 @@
 }
 
 [data-bs-theme="dark"] .newMail-button {
-  background-color: #202124;
-  color: #e8eaed;
+  background-color: #e8eaed;
+  color: #202124;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
