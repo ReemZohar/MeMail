@@ -34,6 +34,7 @@ function NewMailWindow({ index = 0, onClose }) {
       });
 
       if (response.ok) {
+        onClose();
         navigate('/mail?folder=inbox');
       } else {
         const error = await response.json();
