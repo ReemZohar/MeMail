@@ -29,6 +29,7 @@ export default function MainPage({ token }) {
   const [openComposes, setOpenComposes] = useState([]);
   const [showUserWindow, setShowUserWindow] = useState(false);
   const [userWindowPos, setUserWindowPos] = useState({ top: 0, right: 0 });
+  const [userData, setUserData] = useState(null);
 
   const userWindowRef = useRef(null);
   const topPanelUserBtnRef = useRef(null);
@@ -105,7 +106,20 @@ export default function MainPage({ token }) {
     setShowUserWindow(false);
   };
 
-  // Close UserWindow on click outside
+  useEffect(() => {
+    if (!userId || !token) return;
+    fetch(`http://localhost:9090/api/users/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch user data');
+        return res.json();
+      })
+      .then(setUserData)
+      .catch(err => console.error(err));
+  }, [userId, token]);
+
+  //close user window on outside click
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -118,12 +132,13 @@ export default function MainPage({ token }) {
         setShowUserWindow(false);
       }
     }
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showUserWindow]);
+
+  if (!userData) return null;
 
   return (
     <div className="main-page-container" style={{ position: "relative" }}>
@@ -137,7 +152,7 @@ export default function MainPage({ token }) {
       />
 
       <div className="right-panel">
-        <TopPanel onUserClick={handleUserClick} userBtnRef={topPanelUserBtnRef} />
+        <TopPanel onUserClick={handleUserClick} userBtnRef={topPanelUserBtnRef} avatar={userData.avatar} />
         <MailPlace
           token={token}
           currentUserEmail={currentUserEmail}
@@ -165,7 +180,14 @@ export default function MainPage({ token }) {
           }}
         >
           <div ref={userWindowRef}>
-            <UserWindow userId={userId} token={token} onClose={handleUserWindowClose} />
+            <UserWindow
+              userId={userId}
+              token={token}
+              onClose={handleUserWindowClose}
+              username={userData.username}
+              name={userData.name}
+              avatar={userData.avatar}
+            />
           </div>
         </div>
       )}

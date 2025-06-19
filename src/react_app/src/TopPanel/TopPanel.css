@@ -37,6 +37,14 @@
   color: #1a73e8;
 }
 
+.avatar-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+}
+
 [data-bs-theme="dark"] .top-panel {
   background-color: #3a3a3a;
   border-bottom: 1px solid #5a5a5a;
