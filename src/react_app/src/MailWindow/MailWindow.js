@@ -23,35 +23,37 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
     }
   };
 
-  const isToMe = mailState.receiver === currentUserEmail;
+  const isToMe = mailState.receiverEmail === currentUserEmail;
 
   return (
     <div className="mail-window">
-      <div className="mail-header-bar">
-        <div className="back-button-tooltip-container">
-          <button className="back-button" onClick={onBack}>
-            <MdArrowBack size={24} />
-          </button>
-          <span className="back-button-tooltip-text">Back</span>
-        </div>
-
-        <div className="mail-row-wrapper">
-          <MailRow
-            mailId={mailState.id}
-            isFavorite={mailState.favorite}
-            isSpam={mailState.spam}
-            onActionDone={handleActionDone}
-          />
-        </div>
+    <div className="mail-header-bar">
+    <div className="mail-header-left">
+      <div className="back-button-tooltip-container">
+        <button className="back-button" onClick={onBack}>
+          <MdArrowBack size={24} />
+        </button>
+        <span className="back-button-tooltip-text">Back</span>
       </div>
+    </div>
+
+    <div className="mail-header-right">
+      <MailRow
+        mailId={mailState.id}
+        isFavorite={mailState.favorite}
+        isSpam={mailState.spam}
+        onActionDone={handleActionDone}
+      />
+    </div>
+  </div>
 
       <h2 className="mail-subject">{mailState.title}</h2>
 
       <div className="mail-header-info">
         <div className="mail-from-to">
-          <strong>{mailState.senderName}</strong>{' '}
+          <strong>{mailState.senderEmail}</strong>{' '}
           <span className="mail-to">
-            {isToMe ? 'to me' : `to ${mailState.receiver}`}
+            {isToMe ? 'to me' : `to ${mailState.receiverEmail}`}
           </span>
           <span className="details-toggle" onClick={toggleDetails}>
             {showDetails ? <MdExpandLess size={20} /> : <MdExpandMore size={20} />}
@@ -60,9 +62,9 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
 
         {showDetails && (
           <div className="mail-details">
-            <div><strong>from:</strong> {mailState.senderName} &lt;{mailState.sender}&gt;</div>
-            <div><strong>to:</strong> {mailState.receiverName || `"${mailState.receiver}"`} &lt;{mailState.receiver}&gt;</div>
-            <div><strong>date:</strong> {new Date(mailState.date).toLocaleString()}</div>
+            <div><strong>from:</strong> {mailState.senderEmail} &lt;{mailState.senderName}&gt;</div>
+            <div><strong>to:</strong> {mailState.receiverEmail} &lt;{mailState.receiverName}&gt;</div>
+            <div><strong>date:</strong> {new Date(mailState.date || mailState.time).toLocaleString()}</div>
             <div><strong>subject:</strong> {mailState.title}</div>
           </div>
         )}

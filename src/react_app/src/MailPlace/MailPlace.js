@@ -71,7 +71,7 @@ const handleOpenMail = (mail) => {
   };
 
   return (
-    <div className="mail-area-container" style={{ display: 'flex', height: '100vh' }}>
+    <div className="MailPlace">
       {!openedMail && (
         <div className="mail-list-wrapper" style={{ flex: 1, overflowY: 'auto' }}>
           <MailList
@@ -87,7 +87,6 @@ const handleOpenMail = (mail) => {
       )}
       {openedMail && (
         <div className="mail-window-wrapper" style={{ flex: 1, overflowY: 'auto', borderLeft: '1px solid #ccc' }}>
-          <button onClick={handleCloseMail}>← Back to list</button>
           <MailWindow mail={openedMail} currentUserEmail={currentUserEmail} onMailDeleted={() => handleCloseMail()} onBack={handleCloseMail} />
         </div>
       )}

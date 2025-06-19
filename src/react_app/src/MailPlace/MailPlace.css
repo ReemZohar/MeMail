@@ -1,0 +1,8 @@
+.MailPlace{
+display: 'flex';
+height: '100vh'
+}
+
+[data-bs-theme="dark"] .MailPlace {
+  background-color: #1e1e1e;
+}

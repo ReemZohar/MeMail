@@ -31,3 +31,7 @@
   align-items: center;
   z-index: 1000;
 }
+
+[data-bs-theme="dark"].main-page-container {
+  background-color: #1e1e1e;
+}

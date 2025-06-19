@@ -4,6 +4,7 @@ import { MdMenu } from 'react-icons/md';
 import LabelMenu from '../LabelMenu/LabelMenu';
 import CustomLabelMenu from '../CustomLabelMenu/CustomLabelMenu';
 import NewMailButton from '../NewMailButton/NewMailButton';
+import LogoAndText from '../RegisterPage/RegisterCards/LogoAndText/LogoAndText';
 
 function LeftMenu({ theme, onComposeClick, onLabelClick, activeFolder, activeLabelId, token }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
