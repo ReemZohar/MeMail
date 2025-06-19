@@ -39,6 +39,7 @@ export default function App() {
       <Route path="/login" element={<LoginPage setToken={setToken} />} />
       {token ? (
         <>
+          <Route path="/login" element={<Navigate to='/mail?folder=inbox' replace />} />
           <Route path="/mail" element={<MainPage token={token} currentUserEmail={currentUserEmail} />} />
           <Route path="/mail/compose" element={<MainPage token={token} currentUserEmail={currentUserEmail} />} />
           <Route path="/mail/:id" element={<MainPage token={token} currentUserEmail={currentUserEmail} />} />
