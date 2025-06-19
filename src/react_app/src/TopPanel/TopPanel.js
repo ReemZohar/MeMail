@@ -1,9 +1,7 @@
-import React from 'react';
 import SearchBar from '../SearchBar/SearchBar';
-import { MdAccountCircle } from 'react-icons/md';
 import './TopPanel.css';
 
-function TopPanel({ onUserClick, userBtnRef }) {
+function TopPanel({ onUserClick, userBtnRef, avatar }) {
   return (
     <div className="top-panel">
       <div className="top-panel-left">
@@ -16,7 +14,7 @@ function TopPanel({ onUserClick, userBtnRef }) {
           onClick={onUserClick}
           aria-label="User menu"
         >
-          <MdAccountCircle size={32} />
+        <img src={avatar} alt="Avatar" className="avatar-icon" />
         </button>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LogoAndText from "../LogoAndText/LogoAndText";
 import "../RegisterCard.css";
 import "./ChooseAvatarCard.css";
@@ -14,18 +14,29 @@ function ChooseAvatarCard({
   const header = "Choose Your Avatar";
   const msg = "Pick one below or upload your own";
 
+  const [file, setFile] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
   //validation state
   const [avatarValid, setAvatarValid] = useState(null);
   const [avatarFb, setAvatarFb] = useState("");
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
+  useEffect(() => {
     if (!file) return;
+    const url = URL.createObjectURL(file);
+    setAvatarPreview(url);
+    return () => {
+      URL.revokeObjectURL(url);
+      setAvatarPreview(null);
+    };
+  }, [file]);
 
-    const previewUrl = URL.createObjectURL(file);
-    setAvatarPreview(previewUrl);
-    onSelectAvatar(previewUrl);
+  const handleFileChange = (e) => {
+    const pickedFile = e.target.files[0];
+    
+    if (!pickedFile) return;
+    setFile(pickedFile);
+    const url = URL.createObjectURL(pickedFile);
+    onSelectAvatar(url);
   };
 
   const handleAvatarClick = (url) => {
