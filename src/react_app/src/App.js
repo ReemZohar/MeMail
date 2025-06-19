@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import MainPage from './MainPage/MainPage';
 import LoginPage from './LoginPage/LoginPage';
+import RegisterPage from './RegisterPage/RegisterPage'
 
 //Get the email (username) from the token
 function parseJwt(token) {
@@ -34,6 +35,7 @@ export default function App() {
 
   return (
     <Routes>
+      <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage setToken={setToken} />} />
       {token ? (
         <>

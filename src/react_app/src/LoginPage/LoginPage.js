@@ -77,7 +77,8 @@ function LoginPage({ theme, setToken }) {
             onSubmit={handleSubmit}
             emailInfo={{
                 ...emailInfo,
-                onChange: (value) => {
+                onChange: (e) => {
+                    const value = e.target.value;
                     const isValid = value.includes('@');
                     setEmailInfo({
                         value,
@@ -88,7 +89,8 @@ function LoginPage({ theme, setToken }) {
             }}
             passwordInfo={{
                 ...passwordInfo,
-                onChange: (value) => {
+                onChange: (e) => {
+                    const value = e.target.value;
                     const isValid = value.length >= 6;
                     setPasswordInfo({
                         value,
