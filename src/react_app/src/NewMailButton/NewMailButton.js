@@ -1,4 +1,3 @@
-import React from "react";
 import { MdCreate } from "react-icons/md";
 import "./NewMailButton.css";
 
