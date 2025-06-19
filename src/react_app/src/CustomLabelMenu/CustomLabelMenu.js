@@ -1,151 +1,98 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './CustomLabelMenu.css';
 import Label from '../Label/Label';
 import NewCustomLabelWindow from './NewCustomLabelWindow';
 import LabelOptionsMenu from './LabelOptionsMenu';
-import { MdWarning } from 'react-icons/md';
 
-function CustomLabelMenu({ theme, clickOnLabel, activeLabelId, isCollapsed }) {
-  const [labels, setLabels] = useState([]);
+function CustomLabelMenu({ theme, labels, onLabelClick, activeLabelId, isCollapsed, token, setLabels }) {
   const [isWindowOpen, setIsWindowOpen] = useState(false);
   const [openOptionsId, setOpenOptionsId] = useState(null);
   const [editLabelData, setEditLabelData] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
 
-  const token = localStorage.getItem('token');
+  const addLabel = (labelName) => {
+    if (!labelName.trim()) return;
+    fetch('/api/labels', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name: labelName.trim(), color: 'blue' }),
+    })
+      .then(res => res.json())
+      .then(newLabel => {
+        setLabels(prev => [...prev, newLabel]);
+        setIsWindowOpen(false);
+      })
+      .catch(err => console.error('Failed to add label', err));
+  };
 
-  // Load labels from server on mount
-  useEffect(() => {
-    fetch('http://localhost:9090/api/labels', {
+  const saveEditedLabel = (newName) => {
+    if (!editLabelData || !newName.trim()) return;
+    fetch(`/api/labels/${editLabelData.id}`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name: newName.trim() }),
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to update label');
+        setLabels(prev =>
+          prev.map(label => (label.id === editLabelData.id ? { ...label, name: newName.trim() } : label))
+        );
+        setEditLabelData(null);
+      })
+      .catch(err => console.error(err));
+  };
+
+  const deleteLabel = (id) => {
+    fetch(`/api/labels/${id}`, {
+      method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then(res => res.json())
-      .then(setLabels)
-      .catch(err => console.error('Failed to fetch labels:', err));
-  }, []);
-
-  // Add new label
-  const addLabel = async (labelName) => {
-    setErrorMessage('');
-    try {
-      const res = await fetch('http://localhost:9090/api/labels', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ name: labelName }),
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        setErrorMessage(err.error || 'Unknown error');
-        console.error('Failed to add label:', err.error);
-        return;
-      }
-
-      const newLabel = await res.json();
-      setLabels(prevLabels => [...prevLabels, newLabel]);
-      setIsWindowOpen(false);
-    } catch (err) {
-      console.error('Network error while adding label:', err);
-      setErrorMessage('Network error occurred');
-    }
-  };
-
-  // Save changes to existing label
-  const saveEditedLabel = async (newName) => {
-    if (!editLabelData) return;
-
-    setErrorMessage('');
-    try {
-      const res = await fetch(`http://localhost:9090/api/labels/${editLabelData.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ name: newName }),
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        setErrorMessage(err.error || 'Unknown error');
-        console.error('Failed to update label:', err.error);
-        return;
-      }
-
-      // Update label in local state
-      setLabels(prev =>
-        prev.map(label =>
-          label.id === editLabelData.id ? { ...label, name: newName } : label
-        )
-      );
-      setEditLabelData(null);
-    } catch (err) {
-      console.error('Network error while updating label:', err);
-      setErrorMessage('Network error occurred');
-    }
-  };
-
-  // Delete a label from the server and update state
-  const deleteLabel = async (id) => {
-    try {
-      const res = await fetch(`http://localhost:9090/api/labels/${id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        setErrorMessage(err.error || 'Unknown error');
-        console.error('Failed to delete label:', err.error);
-        return;
-      }
-
-      setLabels(prev => prev.filter(label => label.id !== id));
-      setOpenOptionsId(null);
-    } catch (err) {
-      console.error('Network error while deleting label:', err);
-      setErrorMessage('Network error occurred');
-    }
+      .then(res => {
+        if (res.ok) {
+          setLabels(prev => prev.filter(label => label.id !== id));
+        } else {
+          throw new Error('Failed to delete label');
+        }
+      })
+      .catch(err => console.error(err));
+    setOpenOptionsId(null);
   };
 
   const openEditLabel = (label) => {
     setEditLabelData(label);
     setOpenOptionsId(null);
-    setErrorMessage('');
   };
 
   return (
-    <div className="customLabelMenu">
+    <div className={`customLabelMenu ${theme}`}>
       <div className="labels-header">
         {!isCollapsed && <span className="labels-title">Labels</span>}
         <button
           className="addCustomLabel-button"
-          onClick={() => {
-            setIsWindowOpen(true);
-            setErrorMessage('');
-          }}
+          onClick={() => setIsWindowOpen(true)}
+          title="Add label"
+          aria-label="Add label"
         >
           +
         </button>
       </div>
 
-      {/* Render all labels */}
       {labels.map(label => (
         <div key={label.id} className="label-item" style={{ position: 'relative' }}>
           <Label.CustomLabel
             theme={theme}
             name={label.name}
             isActive={label.id === activeLabelId}
-            onClick={() => clickOnLabel(label.id)}
+            onClick={() => onLabelClick(label.id, false, null, true)}
             onMenuClick={() =>
-              setOpenOptionsId(prev => prev === label.id ? null : label.id)
+              setOpenOptionsId(prev => (prev === label.id ? null : label.id))
             }
             isCollapsed={isCollapsed}
           />
@@ -160,36 +107,20 @@ function CustomLabelMenu({ theme, clickOnLabel, activeLabelId, isCollapsed }) {
         </div>
       ))}
 
-      {/* Error message (if any) */}
-      {errorMessage && (
-        <div className="error-message" role="alert" style={{ display: 'flex', alignItems: 'center' }}>
-          <MdWarning size={18} color="#d93025" style={{ marginRight: 8 }} />
-          {errorMessage}
-        </div>
-      )}
-
-      {/* Create new label window */}
       {isWindowOpen && (
         <NewCustomLabelWindow
           onSave={addLabel}
-          onCancel={() => {
-            setIsWindowOpen(false);
-            setErrorMessage('');
-          }}
+          onCancel={() => setIsWindowOpen(false)}
         />
       )}
 
-      {/* Edit label window */}
       {editLabelData && (
         <NewCustomLabelWindow
           title="Edit label"
           content="Label name:"
           initialValue={editLabelData.name}
           onSave={saveEditedLabel}
-          onCancel={() => {
-            setEditLabelData(null);
-            setErrorMessage('');
-          }}
+          onCancel={() => setEditLabelData(null)}
         />
       )}
     </div>
