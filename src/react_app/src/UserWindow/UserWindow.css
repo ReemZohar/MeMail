@@ -1,0 +1,71 @@
+.user-window {
+  width: 280px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  padding: 16px 24px 24px 24px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.user-email-top {
+  width: 100%;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #202124;
+  margin-bottom: 20px;
+}
+
+.user-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+.user-greeting {
+  font-size: 1.2rem;
+  color: #5f6368;
+  font-weight: 500;
+  text-align: center;
+}
+
+.user-window-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.user-window-close-btn:hover {
+  color: #000;
+}
+
+.logout-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  margin-right: 12px;
+  width: fit-content;
+  align-self: center;
+}
+
+.user-email-top,
+.user-greeting {
+  max-width: 100%;
+  word-wrap: break-word;
+  word-break: break-word;
+  text-align: center;
+  overflow-wrap: break-word;
+}
