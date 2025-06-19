@@ -11,7 +11,7 @@ function CustomLabelMenu({ theme, labels, onLabelClick, activeLabelId, isCollaps
 
   const addLabel = (labelName) => {
     if (!labelName.trim()) return;
-    fetch('/api/labels', {
+    fetch(`http://localhost:9090/api/labels`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -29,7 +29,7 @@ function CustomLabelMenu({ theme, labels, onLabelClick, activeLabelId, isCollaps
 
   const saveEditedLabel = (newName) => {
     if (!editLabelData || !newName.trim()) return;
-    fetch(`/api/labels/${editLabelData.id}`, {
+    fetch(`http://localhost:9090/api/labels/${editLabelData.id}`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -48,7 +48,7 @@ function CustomLabelMenu({ theme, labels, onLabelClick, activeLabelId, isCollaps
   };
 
   const deleteLabel = (id) => {
-    fetch(`/api/labels/${id}`, {
+    fetch(`http://localhost:9090/api/labels/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,

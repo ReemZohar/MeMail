@@ -12,7 +12,7 @@ function LeftMenu({ theme, onComposeClick, onLabelClick, activeFolder, activeLab
 
   useEffect(() => {
     if (!token) return;
-    fetch("/api/labels", {
+    fetch(`http://localhost:9090/api/labels`, {
       headers: {
         Authorization: "Bearer " + token,
       }

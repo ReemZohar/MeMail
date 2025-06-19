@@ -19,7 +19,7 @@ exports.createLabel = (req, res) => {
   }
 
   const label = labelModel.createLabel(name, userId);
-  res.status(201).location(`/api/labels/${label.id}`).send();
+  res.status(201).location(`/api/labels/${label.id}`).json(label);
 };
 
 exports.getAllLabels = (req, res) => {
