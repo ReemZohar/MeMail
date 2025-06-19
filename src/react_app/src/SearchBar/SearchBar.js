@@ -5,6 +5,12 @@ import './SearchBar.css';
 
 function SearchBar() {
   const [query, setQuery] = useState('');
+  //advanced search filters
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
+  const [subject, setSubject] = useState('');
+  const [includes, setIncludes] = useState('');
+  const [excludes, setExcludes] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const inputRef = useRef(null);
 
@@ -13,9 +19,9 @@ function SearchBar() {
     inputRef.current.focus();
   };
 
-  const performSearch = () => {
-    alert(`Search for: ${query}`);
-  };
+  const performSearch = async () => {
+  
+  }
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -42,6 +48,7 @@ function SearchBar() {
           value={query}
           onChange={e => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
+          onClick={() => setShowAdvanced(false)}
         />
         {query && (
           <button className="clear-button" onClick={clearInput} aria-label="Clear search">
@@ -56,6 +63,16 @@ function SearchBar() {
         {showAdvanced && (
           <AdvancedSearch
             theme={"light"}
+            fromVal={from}
+            onChgFrom={e => setFrom(e.target.value)}
+            toVal={to}
+            onChgTo={e => setTo(e.target.value)}
+            subVal={subject}
+            onChgSub={e => setSubject(e.target.value)}
+            incVal={includes}
+            onChgInc={e => setIncludes(e.target.value)}
+            notIncVal={excludes}
+            onChgNotInc={e => setExcludes(e.target.value)}
           />
         )}
       </div>

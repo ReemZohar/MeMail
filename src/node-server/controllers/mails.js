@@ -52,14 +52,14 @@ exports.sendMail = async (req, res) => {
 
 // Get a specific mail by its ID
 exports.getMailById = (req, res) => {
-    const id = parseInt(req.params.id);
-    const mail = mailModel.getMailById(id);
+  const id = parseInt(req.params.id);
+  const mail = mailModel.getMailById(id);
 
-    if (!mail) {
-        return res.status(404).json({ error: 'Mail not found\n' }); // HTTP 404 Not Found
-    }
+  if (!mail) {
+    return res.status(404).json({ error: 'Mail not found\n' }); // HTTP 404 Not Found
+  }
 
-    res.status(200).json(mail); // HTTP 200 OK
+  res.status(200).json(mail); // HTTP 200 OK
 };
 
 // Update an existing mail by ID (partial update for title/content)
@@ -72,32 +72,32 @@ exports.updateMail = async (req, res) => {
     return res.status(404).json({ error: 'Mail not found or blacklisted URL\n' });
   }
 
-    res.status(204).send();
+  res.status(204).send();
 };
 
 // Delete a mail by ID
 exports.deleteMail = (req, res) => {
-    const id = parseInt(req.params.id);
-    const success = mailModel.deleteMail(id);
+  const id = parseInt(req.params.id);
+  const success = mailModel.deleteMail(id);
 
-    if (!success) {
-        return res.status(404).json({ error: 'Mail not found\n' }); // HTTP 404 Not Found
-    }
+  if (!success) {
+    return res.status(404).json({ error: 'Mail not found\n' }); // HTTP 404 Not Found
+  }
 
-    res.status(204).send(); // HTTP 204 No Content
+  res.status(204).send(); // HTTP 204 No Content
 };
 
 // Search mails by query (matches title, content, sender or receiver)
 exports.searchMails = (req, res) => {
-const userId = req.user.id; // instead req.header("user-id") to get it from JWT
-     const labelId = req.query.labelId ? Number(req.query.labelId) : null;
+  const userId = req.user.id; // instead req.header("user-id") to get it from JWT
+  const labelId = req.query.labelId ? Number(req.query.labelId) : null;
 
-    const user = userModel.getUserById(userId);
+  const user = userModel.getUserById(userId);
 
-    if (!user) return res.status(404).json({ error: 'User not found' });
-    const query = req.params.query;
-    const results = mailModel.searchMails(query, userId);
-    res.status(200).json(results); // HTTP 200 OK
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  const query = req.params.query;
+  const results = mailModel.searchMails(query, userId);
+  res.status(200).json(results); // HTTP 200 OK
 };
 
 
@@ -165,4 +165,38 @@ exports.unmarkAsFavorite = (req, res) => {
   } else {
     res.status(404).json({ error: "Mail not found or unauthorized." });
   }
+};
+
+exports.getAdvancedMails = (req, res) => {
+  const userId = req.user.id;
+  const user = userModel.getUserById(userId);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  const {
+    folder,
+    isSpam,
+    isFavorite,
+    sender,
+    date,
+    subject,
+    includes,
+    excludes
+  } = req.query;
+
+  const filters = {
+    folder,
+    // only set boolean filters if present
+    isSpam: isSpam === 'true' ? true : isSpam === 'false' ? false : undefined,
+    isFavorite: isFavorite === 'true' ? true : isFavorite === 'false' ? false : undefined,
+    sender: sender ? Number(sender) : undefined,
+    date,
+    subject,
+    includes,
+    excludes 
+  };
+
+  const mails = mailModel.getAllMailsForUser(userId, filters);
+  res.status(200).json(mails);
 };
