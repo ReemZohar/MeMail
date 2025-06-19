@@ -1,60 +1,67 @@
 import { useState } from "react";
 import LogoAndText from "../LogoAndText/LogoAndText";
-import avatars from "../../avatars/avatars";
 import "../RegisterCard.css";
 import "./ChooseAvatarCard.css";
 
-function ChooseAvatarCard({ theme }) {
+function ChooseAvatarCard({
+  theme,
+  existingAvatars,
+  selectedAvatar,
+  onSelectAvatar,
+  onNext
+}) {
   //left column text
   const header = "Choose Your Avatar";
   const msg = "Pick one below or upload your own";
 
-  //avatar states
-  const [selectedAvatar, setSelectedAvatar] = useState(null);
-  const [avatarFile, setAvatarFile] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
-
-  //existing avatars array
-  const existingAvatars = avatars;
+  //validation state
+  const [avatarValid, setAvatarValid] = useState(null);
+  const [avatarFb, setAvatarFb] = useState("");
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setAvatarFile(file);
-      setAvatarPreview(URL.createObjectURL(file));
-      setSelectedAvatar(null);
-    }
+    if (!file) return;
+
+    const previewUrl = URL.createObjectURL(file);
+    setAvatarPreview(previewUrl);
+    onSelectAvatar(previewUrl);
   };
 
   const handleAvatarClick = (url) => {
     if (selectedAvatar === url) {
-      setSelectedAvatar(null);
+      onSelectAvatar(null);
     } else {
-      setSelectedAvatar(url);
-      setAvatarFile(null);
+      onSelectAvatar(url);
       setAvatarPreview(null);
     }
   };
 
   const handleNext = () => {
-   //TODO: add implementation when creating the register page
+    //no avatar was chosen scenario
+    if (!selectedAvatar && !avatarPreview) {
+      setAvatarValid(false);
+      setAvatarFb("Please select or upload an avatar");
+      return;
+    }
+    //valid choice scenario
+    else {
+      setAvatarValid(true);
+      setAvatarFb("");
+      onNext();
+    }
   };
 
   const btnClass =
     theme === "dark" ? "btn btn-secondary" : "btn btn-primary";
 
   return (
-    <div
-      data-bs-theme={theme}
-      className="card register-card border shadow p-3 mb-5 bg-body-tertiary rounded"
-    >
+    <div data-bs-theme={theme}
+      className="card register-card border shadow p-3 mb-5 bg-body-tertiary rounded">
       <div className="row align-items-start g-2">
 
-        {/*left column*/}
-        <LogoAndText
-          header={header}
-          msg={msg}
-        />
+        {/* left column */}
+        <LogoAndText header={header} msg={msg} />
 
         {/* right column */}
         <div className="col-6 ms-5 align-self-center">
@@ -97,6 +104,13 @@ function ChooseAvatarCard({ theme }) {
                   className="avatar-preview"
                 />
               </div>
+            </div>
+          )}
+
+          {/* feedback message */}
+          {avatarValid === false && (
+            <div className="text-danger mt-2">
+              {avatarFb}
             </div>
           )}
 
