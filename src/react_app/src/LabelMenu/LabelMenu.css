@@ -1,44 +1,48 @@
-.label {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 20px;
-  background-color: transparent;
-  color: #444;
-  font-size: 16px;
-  width: 100%;
-  transition: background-color 0.2s ease;
-  cursor: pointer;
-  position: relative;
+.leftMenu {
+  width: 240px;
+  transition: width 0.3s ease;
+  overflow-x: hidden;
 }
 
-.labelMenu {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-family: Arial, sans-serif;
+.leftMenu.collapsed {
+  width: 60px;
+}
+
+.hamburger-button {
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.compose-button {
+  margin: 10px;
+  padding: 10px;
+  background-color: #c2e7ff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .label-item {
   display: flex;
   align-items: center;
-  padding: 10px 16px;
-  border-radius: 20px;
+  padding: 8px;
   cursor: pointer;
-  position: relative;
-  transition: background-color 0.2s ease;
-}
-
-.label-item:hover {
-  background-color: #f1f3f4;
-}
-
-[data-bs-theme="dark"] .label-item:hover {
-  color: #333;
 }
 
 .label-name {
   margin-left: 10px;
+}
+
+.leftMenu.collapsed .compose-button,
+.leftMenu.collapsed .label-name,
+.leftMenu.collapsed .labels-title,
+.leftMenu.collapsed .addLabel-button {
+  display: none;
+}
+
+[data-bs-theme="dark"] .label-item:hover {
+  color: #333;
 }

@@ -1,11 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import SearchBar from './SearchBar/SearchBar'
-import AdvancedSearch from './AdvancedSearch/AdvancedSearch';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+import DarkModeButton from "./DarkModeButton/DarkModeButton";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <React.StrictMode>
-    <SearchBar />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+    <DarkModeButton />
   </React.StrictMode>
 );

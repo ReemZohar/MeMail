@@ -1,7 +1,7 @@
 .search-bar {
   position: relative;
-  max-width: 600px;
-  margin: 0 auto;
+  width: 600px;
+  margin: 0;
   border-radius: 24px;
   background-color: var(--bs-body-bg);
   color: var(--bs-body-color);
@@ -80,4 +80,9 @@
 
 .search-icon-button:hover {
   color: #1a73e8;
+}
+
+
+[data-bs-theme="dark"] .search-bar {
+  border-color: #a7a0a0;
 }

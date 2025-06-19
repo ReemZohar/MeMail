@@ -102,6 +102,7 @@ exports.removeLabelFromMail = (req, res) => {
   res.status(200).json(updatedMail);
 };
 
+
 exports.addLabelToMail = (req, res) => {
   const mailId = Number(req.params.id);
   const { labelId } = req.body;
@@ -130,6 +131,7 @@ exports.addLabelToMail = (req, res) => {
   // adding the lable to mail
   const updatedMail = mailModel.addLabelToMail(mailId, labelId);
   res.status(200).json(updatedMail);
+
 };
 
 function authorizeOwnership(resource, userId, res) {

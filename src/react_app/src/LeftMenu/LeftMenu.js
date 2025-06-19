@@ -1,16 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './LeftMenu.css';
 import { MdMenu } from 'react-icons/md';
 import LabelMenu from '../LabelMenu/LabelMenu';
 import CustomLabelMenu from '../CustomLabelMenu/CustomLabelMenu';
 import NewMailButton from '../NewMailButton/NewMailButton';
 
-function LeftMenu({ theme, onComposeClick, clickOnLabel, activeLabelId }) {
+function LeftMenu({ theme, onComposeClick, onLabelClick, activeFolder, activeLabelId, token }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [labels, setLabels] = useState([]);
+
+  useEffect(() => {
+    if (!token) return;
+    fetch("/api/labels", {
+      headers: {
+        Authorization: "Bearer " + token,
+      }
+    })
+      .then(res => res.json())
+      .then(setLabels)
+      .catch(err => console.error("Failed to fetch labels", err));
+  }, [token]);
 
   const toggleMenu = () => {
     setIsCollapsed(prev => !prev);
   };
+
+  function handleFolderClick(folderName, isFavorite = false) {
+    onLabelClick(null, isFavorite, folderName, false);
+  }
+
+  function handleCustomLabelClick(labelId) {
+    onLabelClick(labelId, false, null, true);
+  }
 
   return (
     <div className={`leftMenu ${isCollapsed ? 'collapsed' : ''}`}>
@@ -25,8 +46,8 @@ function LeftMenu({ theme, onComposeClick, clickOnLabel, activeLabelId }) {
       <div className="built-in-labels">
         <LabelMenu
           theme={theme}
-          clickOnLabel={clickOnLabel}
-          activeLabelId={activeLabelId}
+          onLabelClick={handleFolderClick}
+          activeFolder={activeFolder}
           isCollapsed={isCollapsed}
         />
       </div>
@@ -34,8 +55,11 @@ function LeftMenu({ theme, onComposeClick, clickOnLabel, activeLabelId }) {
       <div className="custom-labels">
         <CustomLabelMenu
           theme={theme}
-          clickOnLabel={clickOnLabel}
+          labels={labels}
+          onLabelClick={handleCustomLabelClick}
           activeLabelId={activeLabelId}
+          token={token}
+          setLabels={setLabels}
           isCollapsed={isCollapsed}
         />
       </div>
