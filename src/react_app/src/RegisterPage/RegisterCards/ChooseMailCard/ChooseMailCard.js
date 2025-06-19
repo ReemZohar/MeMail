@@ -32,7 +32,7 @@ function ChooseMailCard({
       return;
     }
     //existing mail address scenario
-    const res = await fetch('/api/users/validate', {
+    const res = await fetch('http://localhost:9090/api/users/validate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ step: 2, username: value })

@@ -60,7 +60,6 @@ function LoginPage({ theme, setToken }) {
 
             localStorage.setItem('token', data.token);
             setToken(data.token); //Update token in App.js
-            navigate('/mail?folder=inbox'); //todo check path
         } catch (error) {
             console.error('Login error:', error);
             setPasswordInfo(prev => ({

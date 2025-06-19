@@ -5,9 +5,11 @@ import ChooseMailCard from './RegisterCards/ChooseMailCard/ChooseMailCard'
 import ChoosePasswordCard from './RegisterCards/ChoosePasswordCard/ChoosePasswordCard'
 import ChooseAvatarCard from './RegisterCards/ChooseAvatarCard/ChooseAvatarCard'
 import avatars from './avatars/avatars'
+import { useNavigate } from 'react-router-dom'
 
 export default function RegisterPage({ theme }) {
     const [step, setStep] = useState(0);
+    const navigate = useNavigate();
 
     //object collects all fields expected by the server
     const [data, setData] = useState({
@@ -40,7 +42,7 @@ export default function RegisterPage({ theme }) {
             avatar: data.avatar
         }
 
-        const res = await fetch('/api/users', {
+        const res = await fetch('http://localhost:9090/api/users', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -54,6 +56,8 @@ export default function RegisterPage({ theme }) {
             const err = await res.json()
             console.error('error', err)
         }
+
+        navigate('/login')
     }
 
     //converts the gender number selected to a name string
