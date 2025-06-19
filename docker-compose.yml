@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  cpp-server:
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    container_name: cpp_server
+    ports:
+      - "9090:9090"
+    networks:
+      - gmail-net
+
+  node-server:
+    build:
+      context: ./src/node-server
+      dockerfile: Dockerfile
+    container_name: node_server
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./src/node-server/.env
+    networks:
+      - gmail-net
+    depends_on:
+      - cpp-server
+
+  react-app:
+    working_dir: /app
+    container_name: react_client
+    build:
+      context: ./src/react_app
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+    networks:
+      - gmail-net
+    depends_on:
+      - node-server
+
+networks:
+  gmail-net:
+    driver: bridge

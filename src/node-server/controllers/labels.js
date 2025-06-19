@@ -38,7 +38,9 @@ exports.getLabelById = (req, res) => {
     const label = labelModel.getLabelById(id);
     if (!label) {
         return res.status(404).json({ error: 'Label not found\n' });
-    }
+    }  
+      if (!authorizeOwnership(label, req.user.id, res)) return;
+
     res.status(200).json(label);
 };
 
@@ -46,6 +48,13 @@ exports.getLabelById = (req, res) => {
 exports.updateLabel = (req, res) => {
     const id = Number(req.params.id);
     const { name } = req.body;
+
+    const label = labelModel.getLabelById(id);
+    if (!label) {
+    return res.status(404).json({ error: 'Label not found\n' });
+    }
+    if (!authorizeOwnership(label, req.user.id, res)) return;
+
     const success = labelModel.updateLabel(id, name);
     if (!success) {
         return res.status(404).json({ error: 'Label not found\n' }); // HTTP 404 Not Found
@@ -55,12 +64,20 @@ exports.updateLabel = (req, res) => {
 
 // Delete a label by ID
 exports.deleteLabel = (req, res) => {
-    const id = Number(req.params.id);
-    const success = labelModel.deleteLabel(id);
-    if (!success) {
-        return res.status(404).json({ error: 'Label not found\n' }); // HTTP 404 Not Found
-    }
-    res.status(204).send(); // HTTP 204 No Content
+  const id = Number(req.params.id);
+  const label = labelModel.getLabelById(id);
+  if (!label) {
+    return res.status(404).json({ error: 'Label not found\n' });
+  }
+
+  if (!authorizeOwnership(label, req.user.id, res)) return;
+
+  const success = labelModel.deleteLabel(id);
+  if (!success) {
+    return res.status(404).json({ error: 'Failed to delete label\n' });
+  }
+
+  res.status(204).send(); // HTTP 204 No Content
 };
 
 //remove lable from mail
@@ -84,6 +101,7 @@ exports.removeLabelFromMail = (req, res) => {
 
   res.status(200).json(updatedMail);
 };
+
 
 exports.addLabelToMail = (req, res) => {
   const mailId = Number(req.params.id);
@@ -113,4 +131,13 @@ exports.addLabelToMail = (req, res) => {
   // adding the lable to mail
   const updatedMail = mailModel.addLabelToMail(mailId, labelId);
   res.status(200).json(updatedMail);
+
 };
+
+function authorizeOwnership(resource, userId, res) {
+  if (resource.userId !== userId) {
+    res.status(403).json({ error: 'Unauthorized' });
+    return false;
+  }
+  return true;
+}

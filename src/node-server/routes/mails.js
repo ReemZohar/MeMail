@@ -7,16 +7,19 @@ const authenticateToken = require('../middleware/auth');
 router.get('/', authenticateToken, mailsController.getAllMails);
 
 // Send a new mail
-router.post('/', authenticateToken,mailsController.sendMail);
+router.post('/', authenticateToken, mailsController.sendMail);
+
+//advanced mail search
+router.get('/advanced', authenticateToken, mailsController.getAdvancedMails);
 
 // Get mail by ID
 router.get('/:id', authenticateToken, mailsController.getMailById);
 
 // Update existing mail
-router.patch('/:id', authenticateToken,mailsController.updateMail);
+router.patch('/:id', authenticateToken, mailsController.updateMail);
 
 // Delete a mail
-router.delete('/:id', authenticateToken,mailsController.deleteMail);
+router.delete('/:id', authenticateToken, mailsController.deleteMail);
 
 // Search mails
 router.get('/search/:query', authenticateToken, mailsController.searchMails);

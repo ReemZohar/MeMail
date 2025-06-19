@@ -1,0 +1,9 @@
+.col-1-5 {
+  flex: 0 0 auto;
+  width: 33%;
+}
+
+.col-4-5 {
+  flex: 0 0 auto;
+  width: 99%;
+}

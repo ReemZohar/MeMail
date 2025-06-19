@@ -1,34 +1,3 @@
-let userCount = 0
-const users = []
-
-//returns all the users - helper function
-const getAllUsers = () => users;
-
-const registerUser = (name, gender, {day, month, year}, username, password, avatar) => {
-    if (users.some(user => user.username === username)) { //if the user already exists
-        return null;
-    }
-    
-    const birthday = {
-        day,
-        month,
-        year,
-    }
-
-    const newUser = {
-        id: ++userCount,
-        name,
-        gender,
-        birthday,
-        username,
-        password,
-        avatar
-    };
-
-    users.push(newUser);
-    return newUser;
-}
-
 const isNumInRange = (num, min, max) => (num <= max) && (num >= min);
 
 //validates the combination of a day and a month
@@ -55,10 +24,4 @@ function validateDate(day, month, year) {
     return isNumInRange(year, minYear, maxYear) && isNumInRange(month, minMonth, maxMonth) && validateDayAndMonth(day, month)
 }
 
-const getUserByUsername = (username) =>
-    users.find(user => user.username === username);
-
-
-const getUserById = (id) => users.find(u => u.id === Number(id));
-
-module.exports = {registerUser, getUserById, getAllUsers, getUserByUsername, validateDate }
+export default validateDate
