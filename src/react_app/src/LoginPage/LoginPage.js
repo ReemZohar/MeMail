@@ -48,7 +48,7 @@ function LoginPage({ theme, setToken }) {
             });
 
             const data = await res.json();
-
+            navigate('/mail?folder=inbox');
             if (!res.ok) {
                 setPasswordInfo(prev => ({
                     ...prev,
