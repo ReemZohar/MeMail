@@ -1,4 +1,4 @@
-.FavoriteMail-button {
+.cancelButton {
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -12,14 +12,13 @@
   height: 32px;
 }
 
-.FavoriteMail-button:hover {
+.cancelButton:hover {
   background-color: #f1f3f4;
 }
 
-.FavoriteMail-button svg {
+.cancelButton svg {
   color: #444;
 }
-
 .tooltip-container {
   position: relative;
   display: inline-block;
@@ -45,17 +44,4 @@
 .tooltip-container:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
-}
-
-[data-bs-theme="dark"] .FavoriteMail-button:hover {
-  background-color: #3a3a3a;
-}
-
-[data-bs-theme="dark"] .FavoriteMail-button svg {
-  color: #ddd;
-}
-
-[data-bs-theme="dark"] .tooltip-text {
-  background-color: #555;
-  color: #fff;
 }

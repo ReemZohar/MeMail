@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import MailRow from '../MailRow/MailRow';
 import './MailItem.css';
 
-function MailItem({ mail, onMailDeleted, onMailMovedToSpam, onMailFavoriteToggled, onOpenMail }) {
+function MailItem({ mail, isSelected, whenSelected, onMailDeleted, onMailMovedToSpam, onMailFavoriteToggled, onOpenMail }) {
   const [folder, setFolder] = useState(mail.folder);
   const [isFavorite, setIsFavorite] = useState(mail.favorite);
   const [isSpam, setIsSpam] = useState(mail.spam);
-  const [isRead, setIsRead] = useState(mail.isRead ?? false);  //Mark as unread as default
+  const [isRead, setIsRead] = useState(mail.isRead ?? false);
 
   const handleActionDone = ({ type, mailId, favorite }) => {
     if (type === 'delete') {
@@ -50,7 +50,9 @@ function MailItem({ mail, onMailDeleted, onMailMovedToSpam, onMailFavoriteToggle
     year: 'numeric', month: 'short', day: 'numeric',
   });
 
-  const shortContent = mail.content.length > 100 ? mail.content.slice(0, 100) + '...' : mail.content;
+  const shortContent = mail.content && mail.content.length > 100
+    ? mail.content.slice(0, 100) + '...'
+    : mail.content || '';
 
   return (
     <div
@@ -58,6 +60,13 @@ function MailItem({ mail, onMailDeleted, onMailMovedToSpam, onMailFavoriteToggle
       onClick={handleClick}
     >
       <div className="MailItem-left">
+        <input
+          type="checkbox"
+          className="checkBox"
+          checked={isSelected}
+          onChange={() => whenSelected(mail.id)}
+          onClick={(e) => e.stopPropagation()}
+        />
         <div className="MailItem-sender" title={mail.sender}>{mail.sender}</div>
       </div>
 

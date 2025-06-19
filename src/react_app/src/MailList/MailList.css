@@ -9,6 +9,8 @@
   max-height: 80vh;
   border-radius: 0;
   border: none;
+  flex-grow: 1;
+  min-width: 0;
 }
 
 .MailList-header {
@@ -19,6 +21,12 @@
   border-bottom: 1px solid #ddd;
   background-color: #f1f3f4;
   width: 100%;
+  gap: 4px;
+}
+
+.checkBox {
+  padding-top: 6px;
+  padding-right: 2px;
 }
 
 .MailList-btn {
@@ -31,6 +39,12 @@
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s ease;
+}
+
+.MailList-btns-group {
+  display: flex;
+  gap: 4px;
+  align-items: center;
 }
 
 .MailList-btn:hover:not(:disabled) {
@@ -49,7 +63,9 @@
 
 .tooltip-container {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
 }
 
 .tooltip-text {
@@ -84,5 +100,9 @@
 }
 
 [data-bs-theme="dark"] .MailList-header {
+  background-color: #3a3a3a;
+}
+
+[data-bs-theme="dark"] .MailList {
   background-color: #3a3a3a;
 }
