@@ -10,8 +10,6 @@ function authorizeOwnership(resource, userId, res) {
 }
 
 
-
-
 // Get the 50 most recent mails (sorted by time, newest first)
 exports.getAllMails = (req, res) => {
   const userId = req.user.id; // from-JWT
@@ -77,6 +75,34 @@ exports.getMailById = (req, res) => {
 
   res.status(200).json(mail); // HTTP 200 OK
 };
+
+// Get a specific mail with all his fields by its ID
+exports.getEnhancedMailById = (req, res) => {
+  const id = parseInt(req.params.id);
+  const mail = mailModel.getMailById(id);
+
+  if (!mail) {
+    return res.status(404).json({ error: 'Mail not found' });
+  }
+
+  if (mail.sender !== req.user.id && mail.receiver !== req.user.id) {
+    return res.status(403).json({ error: 'Unauthorized' });
+  }
+
+  const senderUser = userModel.getUserById(mail.sender);
+  const receiverUser = userModel.getUserById(mail.receiver);
+
+  const enrichedMail = {
+    ...mail,
+    senderEmail: senderUser ? senderUser.username : null,
+    receiverEmail: receiverUser ? receiverUser.username : null,
+    senderName: senderUser ? senderUser.name : null,
+    receiverName: receiverUser ? receiverUser.name : null,
+  };
+
+  res.status(200).json(enrichedMail);
+};
+
 
 // Update an existing mail by ID (partial update for title/content)
 exports.updateMail = async (req, res) => {

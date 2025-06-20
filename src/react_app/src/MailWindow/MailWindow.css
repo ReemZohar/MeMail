@@ -12,6 +12,7 @@
   padding: 10px 16px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .mail-subject {
@@ -96,6 +97,35 @@
   opacity: 1;
 }
 
+.mail-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.mail-row-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.mail-header-left,
+.mail-header-right {
+  display: flex;
+  align-items: center;
+}
+
+.mail-header-right {
+  gap: 8px;
+}
+
+.MailRow-inline {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  position: static !important;
+  transform: none !important;
+}
+
+
 [data-bs-theme="dark"] .mail-window {
   background-color: #1e1e1e;
   color: #e0e0e0;
@@ -138,4 +168,11 @@
 
 [data-bs-theme="dark"] hr {
   border-color: #444;
+}
+
+.mail-window .MailRow {
+  opacity: 1;
+  pointer-events: auto;
+  position: static;
+  transform: none;
 }

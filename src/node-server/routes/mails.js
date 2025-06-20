@@ -13,7 +13,7 @@ router.post('/', authenticateToken, mailsController.sendMail);
 router.get('/advanced', authenticateToken, mailsController.getAdvancedMails);
 
 // Get mail by ID
-router.get('/:id', authenticateToken, mailsController.getMailById);
+router.get('/:id', authenticateToken, mailsController.getEnhancedMailById);
 
 // Update existing mail
 router.patch('/:id', authenticateToken, mailsController.updateMail);
@@ -25,7 +25,7 @@ router.delete('/:id', authenticateToken, mailsController.deleteMail);
 router.get('/search/:query', authenticateToken, mailsController.searchMails);
 
 //update is read
-router.patch('/:id', authenticateToken, mailsController.updateIsReadStatus);
+router.patch('/:id/isRead', authenticateToken, mailsController.updateIsReadStatus);
 
 // NEW SPAM ROUTES
 router.post('/:id/spam', authenticateToken, mailsController.markAsSpam);
