@@ -207,22 +207,27 @@ exports.getAdvancedMails = (req, res) => {
     isSpam,
     isFavorite,
     sender,
-    date,
     subject,
     includes,
-    excludes
+    excludes,
+    dateRange 
   } = req.query;
+
+  let startDate, endDate;
+  if (dateRange) {
+    [startDate, endDate] = dateRange.split(',').map(d => new Date(d));
+  }
 
   const filters = {
     folder,
-    // only set boolean filters if present
     isSpam: isSpam === 'true' ? true : isSpam === 'false' ? false : undefined,
     isFavorite: isFavorite === 'true' ? true : isFavorite === 'false' ? false : undefined,
     sender: sender ? Number(sender) : undefined,
-    date,
     subject,
     includes,
-    excludes 
+    excludes,
+    startDate,
+    endDate
   };
 
   const mails = mailModel.getAllMailsForUser(userId, filters);

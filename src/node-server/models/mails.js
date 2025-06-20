@@ -60,8 +60,13 @@ const getAllMailsForUser = (userId, filters = {}) => {
     userMails = userMails.filter(m => m.sender === filters.sender);
   }
 
-  if (filters.date) {
-    userMails = userMails.filter(m => new Date(m.time).toDateString() === new Date(filters.date).toDateString());
+  if (filters.startDate && filters.endDate) {
+    const start = new Date(filters.startDate);
+    const end = new Date(filters.endDate);
+    userMails = userMails.filter(m => {
+      const mailDate = new Date(m.time);
+      return mailDate >= start && mailDate <= end;
+    });
   }
 
   if (filters.subject) {
@@ -78,6 +83,7 @@ const getAllMailsForUser = (userId, filters = {}) => {
 
   return userMails.sort((a, b) => b.time - a.time).slice(0, 50);
 };
+
 
 const getSpamMailsForUser = (userId) => {
   return mails
