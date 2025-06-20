@@ -81,7 +81,7 @@ const getAllMailsForUser = (userId, filters = {}) => {
     userMails = userMails.filter(m => !m.content.includes(filters.excludes));
   }
 
-  return userMails.sort((a, b) => b.time - a.time).slice(0, 50);
+  return userMails.sort((a, b) => b.time - a.time); 
 };
 
 
