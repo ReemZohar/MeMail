@@ -1,9 +1,14 @@
 .mail-window {
-  padding: 0;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  width: 100%;
+  min-width: 0;
   background-color: white;
+  overflow-y: auto;
+  max-height: 80vh;
+  border: 1px solid #ddd;
+  border-radius: 6px;
 }
 
 .mail-header-bar {
@@ -213,8 +218,6 @@
   visibility: visible;
   opacity: 1;
 }
-
-
 
 [data-bs-theme="dark"] .mail-window {
   background-color: #1e1e1e;
