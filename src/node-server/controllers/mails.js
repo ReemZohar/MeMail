@@ -12,16 +12,17 @@ function authorizeOwnership(resource, userId, res) {
 
 // Get the 50 most recent mails (sorted by time, newest first)
 exports.getAllMails = (req, res) => {
-  const userId = req.user.id; // from-JWT
+  const userId = req.user.id;
   const user = userModel.getUserById(userId);
   if (!user) return res.status(404).json({ error: 'User not found' });
 
-  const { folder, isSpam, isFavorite, sender, date } = req.query;
+  const { folder, isSpam, isFavorite, sender, date, labelId } = req.query;
 
   const filters = {
     folder,
     sender,
     date,
+    labelId: labelId ? Number(labelId) : undefined,
     isSpam: isSpam === 'true' ? true : isSpam === 'false' ? false : undefined,
     isFavorite: isFavorite === 'true' ? true : isFavorite === 'false' ? false : undefined
   };

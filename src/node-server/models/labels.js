@@ -1,3 +1,4 @@
+const mailModel = require('./mails');
 let labelCounter = 0
 const labels = []
 
@@ -27,16 +28,22 @@ const deleteLabel = (id) => {
     return true
 }
 const addLabelToMail = (mailId, labelId) => {
-  const mail = mails.find(m => m.id === mailId);
-  if (!mail) return null;
+  console.log(`addLabelToMail called with mailId=${mailId}, labelId=${labelId}`);
+  const mail = mailModel.getMailById(mailId);
+  if (!mail) {
+    console.log('Mail not found');
+    return null;
+  }
+  if (!mail.labels) mail.labels = [];
   if (!mail.labels.includes(labelId)) {
     mail.labels.push(labelId);
   }
   return mail;
 };
 
+
 const removeLabelFromMail = (mailId, labelId) => {
-  const mail = mails.find(m => m.id === mailId);
+  const mail = mailModel.getMailById(mailId);
   if (!mail) return null;
   mail.labels = mail.labels.filter(id => id !== labelId);
   return mail;

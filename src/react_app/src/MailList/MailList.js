@@ -4,7 +4,7 @@ import { MdRefresh, MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import SelectedMailsAction from '../SelectedMailsAction/SelectedMailsAction';
 import './MailList.css';
 
-function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, onOpenMail }) {
+function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, onOpenMail, refreshVersion }) {
   const [page, setPage] = useState(0);
   const [mails, setMails] = useState([]);
   const [selectedMails, setSelectedMails] = useState(new Set());
@@ -33,9 +33,10 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
     }
   };
 
+  // Add refreshVersion to dependency array - this triggers reload when changed
   useEffect(() => {
     fetchMails();
-  }, [folder, isFavorite, sender, date, labelId]);
+  }, [folder, isFavorite, sender, date, labelId, refreshVersion]);
 
   const handleMailDeleted = (mailId) => {
     setMails(prev => prev.filter(mail => mail.id !== mailId));

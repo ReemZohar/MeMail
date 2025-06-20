@@ -46,6 +46,10 @@ const getAllMailsForUser = (userId, filters = {}) => {
     userMails = userMails.filter(m => m.folder === filters.folder);
   }
 
+  if (filters.labelId !== undefined) {
+  userMails = userMails.filter(m => m.labels.includes(filters.labelId));
+  }
+
   if (filters.isSpam !== undefined) {
     userMails = userMails.filter(m => m.isSpam === filters.isSpam);
   } else {
