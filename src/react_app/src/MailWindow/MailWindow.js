@@ -95,9 +95,9 @@ const handleActionDone = ({ type, mailId, isFavorite }) => {
   if (type === 'delete' && mailId === mailState.id) {
     onMailDeleted?.(mailId);
   } else if ((type === 'spam' || type === 'unspam') && mailId === mailState.id) {
-    setMail(prev => ({ ...prev, spam: type === 'spam' }));
+    setMail(prev => ({ ...prev, isSpam: type === 'spam' }));
   } else if (type === 'favoriteToggle' && mailId === mailState.id) {
-    setMail(prev => ({ ...prev, isFavorite: isFavorite }));
+    setMail(prev => ({ ...prev, isFavorite }));
   }
 };
 
@@ -136,7 +136,7 @@ const handleActionDone = ({ type, mailId, isFavorite }) => {
             <MailRow
               mailId={mailState.id}
               isFavorite={mailState.isFavorite}
-              isSpam={mailState.spam}
+              isSpam={mailState.isSpam}
               onActionDone={handleActionDone}
             />
               <div className="tooltip-container">

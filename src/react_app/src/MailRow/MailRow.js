@@ -31,9 +31,7 @@ const handleSpamToggle = async () => {
   try {
     const response = await fetch(`${baseUrl}/${mailId}/${endpoint}`, {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
     console.log(`[MailRow] Spam toggle response status: ${response.status}`);
     if (response.ok) {

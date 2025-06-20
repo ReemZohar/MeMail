@@ -16,7 +16,11 @@ exports.getAllMails = (req, res) => {
   const user = userModel.getUserById(userId);
   if (!user) return res.status(404).json({ error: 'User not found' });
 
-  const { folder, isSpam, isFavorite, sender, date, labelId } = req.query;
+  let { folder, isSpam, isFavorite, sender, date, labelId } = req.query;
+  if (folder === 'spam') {
+    isSpam = 'true'; 
+    folder = undefined;
+  }
 
   const filters = {
     folder,
