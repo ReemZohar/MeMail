@@ -91,15 +91,15 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
 
   const toggleDetails = () => setShowDetails(prev => !prev);
 
-  const handleActionDone = ({ type, mailId, favorite }) => {
-    if (type === 'delete' && mailId === mailState.id) {
-      onMailDeleted?.(mailId);
-    } else if ((type === 'spam' || type === 'unspam') && mailId === mailState.id) {
-      setMail(prev => ({ ...prev, spam: type === 'spam' }));
-    } else if (type === 'favoriteToggle' && mailId === mailState.id) {
-      setMail(prev => ({ ...prev, favorite }));
-    }
-  };
+const handleActionDone = ({ type, mailId, isFavorite }) => {
+  if (type === 'delete' && mailId === mailState.id) {
+    onMailDeleted?.(mailId);
+  } else if ((type === 'spam' || type === 'unspam') && mailId === mailState.id) {
+    setMail(prev => ({ ...prev, spam: type === 'spam' }));
+  } else if (type === 'favoriteToggle' && mailId === mailState.id) {
+    setMail(prev => ({ ...prev, isFavorite: isFavorite }));
+  }
+};
 
   const isToMe = mailState.receiverEmail === currentUserEmail;
   
@@ -133,12 +133,12 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
         </div>
 
         <div className="mail-header-right">
-          <MailRow
-            mailId={mailState.id}
-            isFavorite={mailState.favorite}
-            isSpam={mailState.spam}
-            onActionDone={handleActionDone}
-          />
+            <MailRow
+              mailId={mailState.id}
+              isFavorite={mailState.isFavorite}
+              isSpam={mailState.spam}
+              onActionDone={handleActionDone}
+            />
               <div className="tooltip-container">
           <button
             onClick={() => {

@@ -17,7 +17,13 @@ function LabelMenu({ theme, onLabelClick, activeFolder, isCollapsed }) {
         <div
           key={label.id}
           className={`label-item ${activeFolder === label.id ? 'active' : ''}`}
-          onClick={() => onLabelClick(label.id, label.isFavorite, label.id, false)}
+          onClick={() => {
+            if (label.id === 'favorite') {
+              onLabelClick(null, true, null, false);
+            } else {
+              onLabelClick(label.id, false, label.id, false);
+            }
+          }}
         >
           {label.icon}
           {!isCollapsed && <span className="label-name">{label.name}</span>}

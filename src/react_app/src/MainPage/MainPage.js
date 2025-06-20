@@ -76,18 +76,21 @@ export default function MainPage({ token }) {
     });
   };
 
-  function handleLabelClick(id, isFav = false, folderName = null, isCustomLabel = false) {
-    const newParams = new URLSearchParams();
+function handleLabelClick(id, isFav = false, folderName = null, isCustomLabel = false) {
+  const newParams = new URLSearchParams();
 
-    if (folderName) {
-      newParams.set("folder", folderName);
-      if (isFav) newParams.set("isFavorite", "true");
-    } else if (isCustomLabel) {
-      newParams.set("labelId", id);
-    }
-
-    navigate({ pathname: "/mail", search: `?${newParams.toString()}` });
+  if (folderName) {
+    newParams.set("folder", folderName);
+    if (isFav) newParams.set("isFavorite", "true");
+  } else if (isFav) {
+    newParams.set("isFavorite", "true");
+  } else if (isCustomLabel) {
+    newParams.set("labelId", id);
   }
+
+  navigate({ pathname: "/mail", search: `?${newParams.toString()}` });
+}
+
 
   const handleUserClick = () => {
     if (showUserWindow) {
