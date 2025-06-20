@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mailsController = require('../controllers/mails');
+const labelsController = require('../controllers/labels');
 const authenticateToken = require('../middleware/auth');
 
 // Get last 50 mails
@@ -34,5 +35,9 @@ router.post('/:id/unspam', authenticateToken, mailsController.unmarkAsSpam);
 //NEW FAVORITES ROUTES
 router.post('/:id/favorite', authenticateToken, mailsController.markAsFavorite);
 router.post('/:id/unfavorite', authenticateToken, mailsController.unmarkAsFavorite);
+
+//Label functionality
+router.post('/:id/labels', authenticateToken, labelsController.addLabelToMail);
+router.delete('/:id/labels/:labelId', authenticateToken, labelsController.removeLabelFromMail);
 
 module.exports = router;

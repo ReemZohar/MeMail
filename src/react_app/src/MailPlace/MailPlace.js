@@ -3,11 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import MailList from '../MailList/MailList';
 import MailWindow from '../MailWindow/MailWindow';
 
-export default function MailPlace({
-  token,
-  currentUserEmail,
-  selectedMailId
-}) {
+export default function MailPlace({token,  currentUserEmail,  selectedMailId}) {
   const [openedMail, setOpenedMail] = useState(null);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -87,7 +83,7 @@ const handleOpenMail = (mail) => {
       )}
       {openedMail && (
         <div className="mail-window-wrapper" style={{ flex: 1, overflowY: 'auto', borderLeft: '1px solid #ccc' }}>
-          <MailWindow mail={openedMail} currentUserEmail={currentUserEmail} onMailDeleted={() => handleCloseMail()} onBack={handleCloseMail} />
+          <MailWindow mail={openedMail} currentUserEmail={currentUserEmail} onMailDeleted={() => handleCloseMail()} onBack={handleCloseMail} token={token} />
         </div>
       )}
     </div>

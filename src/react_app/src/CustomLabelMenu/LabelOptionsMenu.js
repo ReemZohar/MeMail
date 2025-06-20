@@ -28,7 +28,7 @@ function LabelOptionsMenu({ onEdit, onDelete, onClose }) {
         <MdDelete style={{ verticalAlign: 'middle', marginRight: 6 }} />
         Remove label
       </button>
-      <button className="option-btn close" onClick={onClose}>✖</button>
+      <button className="option-btn close" onClick={onClose}>X</button>
     </div>
   );
 }
