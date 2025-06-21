@@ -1,6 +1,6 @@
-.MailPlace{
-display: 'flex';
-height: '100vh'
+.MailPlace {
+  display: flex;
+  height: 100vh;
 }
 
 [data-bs-theme="dark"] .MailPlace {
