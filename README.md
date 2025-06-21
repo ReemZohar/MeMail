@@ -21,15 +21,62 @@ The system uses the MVC architecture and allows real-time validation between the
 
 ---
 
-##  Running with Docker Compose
+## Running with Docker Compose
+To simplify development and deployment, the system is structured using Docker Compose, with three main services:
 
-To simplify deployment and development, the system supports Docker Compose with three services:
-- `cpp-server`: Compiles and runs the C++ BloomFilter server.
-- `node-server`: RESTful API written in Node.js/Express.
-- `react-app`: Frontend UI written in React.
+cpp-server: Compiles and runs the C++ BloomFilter server on port 7070.
 
-###  Setup
+node-server: RESTful API written in Node.js/Express, exposed on port 9090.
 
-```bash
-# From the root project directory
+react-app: Frontend UI written in React, available at http://localhost:3000.
+
+### Prerequisites
+Make sure you have the following installed on your system:
+
+Docker
+
+Docker Compose
+
+⚙ Setup
+Clone the repository:
+
+bash
+Copy
+Edit
+git clone https://github.com/liany2/Advanced-Programming---Gmail-Repository
+
+Create a .env file for the Node.js server:
+
+bash
+Copy
+Edit
+cp src/node-server/.env.example src/node-server/.env
+Then edit src/node-server/.env and fill in the required secret, for example:
+
+env
+Copy
+Edit
+JWT_SECRET=your_jwt_secret_here
+Start all services:
+
+bash
+Copy
+Edit
 docker compose up --build
+Access the system:
+
+Frontend: http://localhost:3000
+
+Node API: http://localhost:9090
+
+C++ Server: http://localhost:7070
+
+### Environment Example File
+A sample environment file is available at:
+
+bash
+Copy
+Edit
+src/node-server/.env.example
+Make sure to never commit real secrets in .env files — only .env.example should be version-controlled.
+
