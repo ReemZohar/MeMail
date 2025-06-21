@@ -42,7 +42,8 @@ JWT_SECRET=your_jwt_secret_here
 ```
 Replace your_jwt_secret_here with a secure random string.
 
-You can find an example .env file in the src/node-server/ directory named .env.example. Use it as a template to create your own .env file.
+You can find an example .env file in the src/node-server/ directory named .env.example.
+Use it as a template to create your own .env file.
 
 
 3. Build and start all services with Docker Compose:
