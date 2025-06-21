@@ -21,62 +21,53 @@ The system uses the MVC architecture and allows real-time validation between the
 
 ---
 
+בהחלט! הנה גרסה מוכנה להעתקה ל־README.md:
+
+markdown
+Copy
+Edit
 ## Running with Docker Compose
-To simplify development and deployment, the system is structured using Docker Compose, with three main services:
 
-cpp-server: Compiles and runs the C++ BloomFilter server on port 7070.
+To simplify deployment and development, the system supports Docker Compose with three services:
 
-node-server: RESTful API written in Node.js/Express, exposed on port 9090.
+- `cpp-server`: C++ TCP server for Bloom filter operations.
+- `node-server`: RESTful API written in Node.js/Express.
+- `react-app`: Frontend UI built with React.
 
-react-app: Frontend UI written in React, available at http://localhost:3000.
+### Setup
 
-### Prerequisites
-Make sure you have the following installed on your system:
+1. Clone the repository and navigate to the root folder:
 
-Docker
+```bash
+git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
+cd YOUR_REPO
+Create a .env file inside the src/node-server directory with the following content:
 
-Docker Compose
-
-⚙ Setup
-Clone the repository:
-
-bash
-Copy
-Edit
-git clone https://github.com/liany2/Advanced-Programming---Gmail-Repository
-
-Create a .env file for the Node.js server:
-
-bash
-Copy
-Edit
-cp src/node-server/.env.example src/node-server/.env
-Then edit src/node-server/.env and fill in the required secret, for example:
-
-env
+ini
 Copy
 Edit
 JWT_SECRET=your_jwt_secret_here
-Start all services:
+Replace your_jwt_secret_here with a secure random string.
+
+Build and run the project with Docker Compose:
 
 bash
 Copy
 Edit
 docker compose up --build
-Access the system:
+Ports
+React app: http://localhost:3000
 
-Frontend: http://localhost:3000
+Node.js API server: http://localhost:9090
 
-Node API: http://localhost:9090
+C++ BloomFilter server: localhost:7070 (TCP socket)
 
-C++ Server: http://localhost:7070
-
-### Environment Example File
-A sample environment file is available at:
+Example: Advanced Mail Search
+You can test the advanced search API using curl:
 
 bash
 Copy
 Edit
-src/node-server/.env.example
-Make sure to never commit real secrets in .env files — only .env.example should be version-controlled.
-
+curl -X GET "http://localhost:9090/api/mails/advanced?folder=inbox&isFavorite=true&sender=1&startDate=2025-06-01&endDate=2025-06-30" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+Replace YOUR_TOKEN with a valid JWT token
