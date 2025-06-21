@@ -18,7 +18,7 @@ function LoginCard({ theme, onSubmit, emailInfo, passwordInfo }) {
                 {/* Left side: text */}
                 <div className="login-left col-6 d-flex flex-column justify-content-center align-items-start">
                     <h3>Sign in</h3>
-                    <p>with your Google Account. This account will be available to other Google apps in the browser.</p>
+                    <p>with your MeMail Account. This account will be available to other MeMail apps in the browser.</p>
                 </div>
 
                 {/* Right side: login form */}

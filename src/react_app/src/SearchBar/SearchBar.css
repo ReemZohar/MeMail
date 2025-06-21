@@ -86,3 +86,12 @@
 [data-bs-theme="dark"] .search-bar {
   border-color: #a7a0a0;
 }
+
+.search-card-container {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  z-index: 1050;
+  animation: fadeIn 0.2s ease-out;
+}

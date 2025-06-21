@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import MailList from '../MailList/MailList';
 import MailWindow from '../MailWindow/MailWindow';
+import './MailPlace.css';
 
-function MailPlace({ token, currentUserEmail, selectedMailId }) {
+function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
   const [openedMail, setOpenedMail] = useState(null);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -72,7 +73,7 @@ function MailPlace({ token, currentUserEmail, selectedMailId }) {
   return (
     <div className="MailPlace">
       {!openedMail && (
-        <div className="mail-list-wrapper" style={{ flex: 1, overflowY: 'auto' }}>
+        <div className="mail-list-wrapper">
         <MailList
           token={token}
           folder={shouldSendIsFavorite && isFavoriteParam === false ? folderParam : (isFavoriteParam === true ? null : folderParam)}
@@ -80,6 +81,7 @@ function MailPlace({ token, currentUserEmail, selectedMailId }) {
           labelId={labelIdParam}
           sender={sender}
           date={date}
+          mailsOverride={searchResults}
           onOpenMail={handleOpenMail}
         />
         </div>
