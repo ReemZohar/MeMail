@@ -1,53 +1,72 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MdSearch, MdClose, MdTune } from 'react-icons/md';
 import AdvancedSearch from '../AdvancedSearch/AdvancedSearch';
 import './SearchBar.css';
 
-function SearchBar() {
+function SearchBar({ token, onSearchResults }) {
   const [query, setQuery] = useState('');
-  //advanced search filters
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [subject, setSubject] = useState('');
   const [includes, setIncludes] = useState('');
   const [excludes, setExcludes] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const inputRef = useRef(null);
 
-  const clearInput = () => {
-    setQuery('');
-    inputRef.current.focus();
-  };
+  const navigate = useNavigate();
 
-  const performSearch = async () => {
-  
-  }
-
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      performSearch();
+  const performSearch = async (q) => {
+    if (!q.trim()) {
+      onSearchResults(null);
+      return;
+    }
+    try {
+      const response = await fetch(`http://localhost:9090/api/mails/search/${encodeURIComponent(q)}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!response.ok) throw new Error('Search failed');
+      const data = await response.json();
+      onSearchResults(data);
+    } catch (err) {
+      console.error('Search error:', err);
     }
   };
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (query.trim()) {
+        navigate(`/mail?search=${encodeURIComponent(query)}`);
+        performSearch(query);
+      } else {
+        navigate('/mail');
+        onSearchResults(null);
+      }
+    }, 300);
+
+    return () => clearTimeout(handler);
+  }, [query, navigate]);
+
+  const clearInput = () => {
+    setQuery('');
+  };
+
   return (
-    <div>
+    <div style={{ position: 'relative', width: '600px' }}>
       <div className="search-bar">
         <button
           type="button"
           className="search-icon-button"
-          onClick={performSearch}
+          onClick={() => performSearch(query)}
           aria-label="Search"
         >
           <MdSearch className="search-icon" />
         </button>
         <input
-          ref={inputRef}
           type="text"
           placeholder="Search mail"
           aria-label="Search mail"
           value={query}
           onChange={e => setQuery(e.target.value)}
-          onKeyDown={handleKeyDown}
           onClick={() => setShowAdvanced(false)}
         />
         {query && (
@@ -55,14 +74,19 @@ function SearchBar() {
             <MdClose size={20} />
           </button>
         )}
-        <button className="advanced-button" onClick={() => setShowAdvanced(!showAdvanced)} aria-label="Advanced search">
+        <button
+          className="advanced-button"
+          onClick={() => setShowAdvanced(!showAdvanced)}
+          aria-label="Advanced search"
+        >
           <MdTune size={20} />
         </button>
       </div>
-      <div>
-        {showAdvanced && (
+
+      {showAdvanced && (
+        <div className="search-card-container">
           <AdvancedSearch
-            theme={"light"}
+            theme="light"
             fromVal={from}
             onChgFrom={e => setFrom(e.target.value)}
             toVal={to}
@@ -74,8 +98,8 @@ function SearchBar() {
             notIncVal={excludes}
             onChgNotInc={e => setExcludes(e.target.value)}
           />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -178,11 +178,14 @@ const searchMails = (query, userId, labelId = null) => {
   const lowerQuery = query.toLowerCase();
 
   return mails.filter(mail => {
+    const senderStr = String(mail.sender);
+    const receiverStr = String(mail.receiver);
+
     const matchesText =
       mail.title.toLowerCase().includes(lowerQuery) ||
       mail.content.toLowerCase().includes(lowerQuery) ||
-      mail.sender.toLowerCase().includes(lowerQuery) ||
-      mail.receiver.toLowerCase().includes(lowerQuery);
+      senderStr.toLowerCase().includes(lowerQuery) ||
+      receiverStr.toLowerCase().includes(lowerQuery);
 
     const isOwnedByUser =
       (mail.sender === userId && mail.folder === 'sent') ||
@@ -193,6 +196,7 @@ const searchMails = (query, userId, labelId = null) => {
     return matchesText && isOwnedByUser && hasLabel;
   });
 };
+
 const updateIsRead = (mailId, isRead) => {
   const mail = mails.find(m => m.id === mailId);
   if (!mail) return null;

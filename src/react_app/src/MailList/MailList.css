@@ -99,8 +99,10 @@
 
 [data-bs-theme="dark"] .MailList-header {
   background-color: #3a3a3a;
+  border-bottom: 1px solid #444;
 }
 
 [data-bs-theme="dark"] .MailList {
   background-color: #1e1e1e;
+  border: 1px solid #444;
 }

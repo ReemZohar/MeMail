@@ -32,7 +32,7 @@ function AdvancedSearch({
     }
 
     return (
-        <div data-bs-theme={theme} class="card search-card">
+        <div data-bs-theme={theme} className="card search-card">
             <div className="card-body">
                 <AdvSearchForm filter={"From"} value={fromVal} onChange={onChgFrom} />
                 <AdvSearchForm filter={"To"} value={toVal} onChange={onChgTo} />
