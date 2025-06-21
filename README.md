@@ -31,9 +31,10 @@ To simplify deployment and development, the system supports Docker Compose with 
 ### Setup
 1. Clone the repository and navigate into it:
 
-bash
+```bash
 git clone https://github.com/liany2/Advanced-Programming---Gmail-Repository
-cd YOUR_REPO
+cd Advanced-Programming---Gmail-Repository
+
 
 2. Create a .env file inside the src/node-server/ directory:
 bash
