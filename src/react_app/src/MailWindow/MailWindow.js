@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './MailWindow.css';
-import { MdExpandMore, MdExpandLess, MdArrowBack, MdMoreVert } from 'react-icons/md';
+import { MdExpandMore, MdExpandLess, MdArrowBack, MdMoreVert, MdEdit } from 'react-icons/md';
 import MailRow from '../MailRow/MailRow';
+import '../CustomLabelMenu/NewCustomLabelWindow.css';
 
 export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBack, token }) {
   const [showDetails, setShowDetails] = useState(false);
@@ -10,6 +11,12 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
   const [selectedLabels, setSelectedLabels] = useState([]);
   const [showLabelSidebar, setShowLabelSidebar] = useState(false);
   const [isLoadingLabels, setIsLoadingLabels] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTitle, setEditedTitle] = useState(mailState.title);
+  const [editedContent, setEditedContent] = useState(mailState.content);
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState(null);
+
 
   // Load labels from server and set selectedLabels based on mail's current labels
   const loadLabels = () => {
@@ -91,15 +98,19 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
 
   const toggleDetails = () => setShowDetails(prev => !prev);
 
-const handleActionDone = ({ type, mailId, isFavorite }) => {
-  if (type === 'delete' && mailId === mailState.id) {
-    onMailDeleted?.(mailId);
-  } else if ((type === 'spam' || type === 'unspam') && mailId === mailState.id) {
-    setMail(prev => ({ ...prev, isSpam: type === 'spam' }));
-  } else if (type === 'favoriteToggle' && mailId === mailState.id) {
-    setMail(prev => ({ ...prev, isFavorite }));
-  }
-};
+  const handleActionDone = ({ type, mailId, isFavorite }) => {
+    if (mailId !== mailState.id) return;
+
+    if (type === 'delete') {
+      onMailDeleted?.(mailId);
+    } else if (type === 'spam') {
+      setMail(prev => ({ ...prev, isSpam: true }));
+    } else if (type === 'unspam') {
+      setMail(prev => ({ ...prev, isSpam: false }));
+    } else if (type === 'favoriteToggle') {
+      setMail(prev => ({ ...prev, isFavorite }));
+    }
+  };
 
   const isToMe = mailState.receiverEmail === currentUserEmail;
   
@@ -123,6 +134,7 @@ const handleActionDone = ({ type, mailId, isFavorite }) => {
     };
   }, [showLabelSidebar]);
 
+
   return (
     <div className="mail-window">
       <div className="mail-header-bar">
@@ -130,28 +142,40 @@ const handleActionDone = ({ type, mailId, isFavorite }) => {
           <button className="back-button" onClick={onBack}>
             <MdArrowBack size={24} />
           </button>
+          <MailRow
+            mailId={mailState.id}
+            isFavorite={mailState.isFavorite}
+            isSpam={mailState.isSpam}
+            onActionDone={handleActionDone}
+          />
         </div>
 
         <div className="mail-header-right">
-            <MailRow
-              mailId={mailState.id}
-              isFavorite={mailState.isFavorite}
-              isSpam={mailState.isSpam}
-              onActionDone={handleActionDone}
-            />
-              <div className="tooltip-container">
-          <button
-            onClick={() => {
-              loadLabels();        // Reload labels on open to sync latest
-              setShowLabelSidebar(true);
-            }}
-            aria-label="Label as"
-            className="label-popup-trigger modern-three-dots"
-          >
-            <MdMoreVert size={20} />
-          </button>
-                <span className="tooltip-text">More</span>
-    </div>
+          {mailState.senderEmail === currentUserEmail && (
+            <div className="tooltip-container">
+              <button
+                onClick={() => setIsEditing(true)}
+                aria-label="Edit mail"
+                className="buttons-trigger modern-three-dots"
+              >
+                <MdEdit size={22} />
+              </button>
+              <span className="tooltip-text">Edit</span>
+            </div>
+          )}
+          <div className="tooltip-container">
+            <button
+              onClick={() => {
+                loadLabels();
+                setShowLabelSidebar(true);
+              }}
+              aria-label="Label as"
+              className="buttons-trigger modern-three-dots"
+            >
+              <MdMoreVert size={20} />
+            </button>
+            <span className="tooltip-text">More</span>
+          </div>
         </div>
       </div>
 
@@ -160,7 +184,9 @@ const handleActionDone = ({ type, mailId, isFavorite }) => {
       <div className="mail-header-info">
         <div className="mail-from-to">
           <strong>{mailState.senderEmail}</strong>{' '}
-          <span className="mail-to">{isToMe ? 'to me' : `to ${mailState.receiverEmail}`}</span>
+          <span className="mail-to">
+            {isToMe ? 'to me' : `to ${mailState.receiverEmail}`}
+          </span>
           <span className="details-toggle" onClick={toggleDetails}>
             {showDetails ? <MdExpandLess size={18} /> : <MdExpandMore size={18} />}
           </span>
@@ -178,32 +204,93 @@ const handleActionDone = ({ type, mailId, isFavorite }) => {
 
       <hr />
 
-      <div className="mail-content">{mailState.content}</div>
+      {isEditing ? (
+        <>
+          <input
+            className="edit-title-input"
+            value={editedTitle}
+            onChange={(e) => setEditedTitle(e.target.value)}
+          />
+          <textarea
+            className="edit-content-textarea"
+            value={editedContent}
+            onChange={(e) => setEditedContent(e.target.value)}
+          />
+          {error && <div className="edit-error">{error}</div>}
+          <div className="edit-actions-left">
+            <button
+              className="btn btn-light small-button"
+              onClick={() => setIsEditing(false)}
+              disabled={isSaving}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary small-button"
+              onClick={async () => {
+                setIsSaving(true);
+                setError(null);
+                try {
+                  const res = await fetch(`http://localhost:9090/api/mails/${mailState.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                      title: editedTitle,
+                      content: editedContent,
+                    }),
+                  });
+                  if (!res.ok) {
+                    const text = await res.text();
+                    throw new Error(text || 'Failed to update mail');
+                  }
+                  setMail((prev) => ({
+                    ...prev,
+                    title: editedTitle,
+                    content: editedContent,
+                  }));
+                  setIsEditing(false);
+                } catch (err) {
+                  setError(err.message);
+                } finally {
+                  setIsSaving(false);
+                }
+              }}
+              disabled={isSaving}
+            >
+              {isSaving ? 'Saving...' : 'Done'}
+            </button>
+          </div>
+        </>
+      ) : (
+        <div className="mail-content">{mailState.content}</div>
+      )}
 
-    {showLabelSidebar && (
-      <div className="label-popup" ref={labelPopupRef}>
-        <div className="label-popup-header">
-          <h4>Label as</h4>
-          <button
-            className="label-popup-close-button"
-            onClick={() => setShowLabelSidebar(false)}
-            aria-label="Close"
-          >
-            X
-          </button>
-        </div>
-
-          <div className="label-popup-body">
+      {showLabelSidebar && (
+        <div className="buttons" ref={labelPopupRef}>
+          <div className="buttons-header">
+            <h4>Label as</h4>
+            <button
+              className="buttons-close-button"
+              onClick={() => setShowLabelSidebar(false)}
+              aria-label="Close"
+            >
+              X
+            </button>
+          </div>
+          <div className="buttons-body">
             {isLoadingLabels ? (
               <p style={{ fontSize: '14px' }}>Loading labels...</p>
             ) : labels.length === 0 ? (
               <p style={{ fontSize: '14px' }}>No labels found.</p>
             ) : (
               <form onSubmit={handleLabelApply}>
-                <ul className="label-popup-list">
+                <ul className="buttons-list">
                   {labels.map(label => (
                     <li key={label.id}>
-                      <label className="label-popup-label">
+                      <label className="buttons-label">
                         <input
                           type="checkbox"
                           checked={selectedLabels.includes(label.id)}
@@ -221,7 +308,7 @@ const handleActionDone = ({ type, mailId, isFavorite }) => {
                     </li>
                   ))}
                 </ul>
-                <button type="submit" className="label-popup-submit-button">Apply</button>
+                <button type="submit" className="buttons-submit-button">Apply</button>
               </form>
             )}
           </div>
