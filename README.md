@@ -34,17 +34,19 @@ To simplify deployment and development, the system supports Docker Compose with 
 ```bash
 git clone https://github.com/liany2/Advanced-Programming---Gmail-Repository
 cd Advanced-Programming---Gmail-Repository
-
+`​``` `
 
 2. Create a .env file inside the src/node-server/ directory:
-bash
+```bash
 JWT_SECRET=your_jwt_secret_here
 Replace your_jwt_secret_here with a secure random string.
+`​``` `
 
 3. Build and start all services with Docker Compose:
 
-bash
+```bash
 docker compose up --build
+`​``` `
 
 ### Ports
 - React App: http://localhost:3000
@@ -53,9 +55,11 @@ docker compose up --build
 
 Example: Advanced Mail Search
 Use the following curl command to test advanced filtering
-bash
+```bash
 curl -X GET "http://localhost:9090/api/mails/advanced?folder=inbox&isFavorite=true&sender=1&startDate=2025-06-01&endDate=2025-06-30" \
   -H "Authorization: Bearer YOUR_TOKEN"
+`​``` `
+
 Replace YOUR_TOKEN with your valid JWT.
 
 
