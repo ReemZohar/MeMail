@@ -18,6 +18,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(null);
   const [isReplying, setIsReplying] = useState(false);
+  const [isForwarding, setIsForwarding] = useState(false);
 
   const markAsUnread = async () => {
     await fetch(`http://localhost:9090/api/mails/${mailState.id}`, {
@@ -165,6 +166,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
             isRead={mailState.isRead}
             onActionDone={handleActionDone}
             onReply={() => setIsReplying(true)}
+            onFwd={() => setIsForwarding(true)}
           />
         </div>
 
@@ -229,6 +231,16 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
           title={mailState.title}
           content={mailState.content}
           onClose={() => setIsReplying(false)}
+        />
+      )}
+
+      {isForwarding && (
+        <NewMailWindow
+          index={0}
+          title={'FWD: ' + mailState.title}
+          content={"---------- Forwarded message ---------\nFrom: " + mailState.senderEmail + "\n" +
+            mailState.content}
+          onClose={() => setIsForwarding(false)}
         />
       )}
 

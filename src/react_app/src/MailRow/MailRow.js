@@ -4,8 +4,9 @@ import DeleteMailButton from '../DeleteMailButton/DeleteMailButton';
 import FavoriteMailButton from '../FavoriteMailButton/FavoriteMailButton';
 import MarkUnreadButton from '../MarkUnreadButton/MarkUnreadButton';
 import ReplyButton from '../ReplyButton/ReplyButton';
+import ForwardButton from '../ForwardButton/ForwardButton';
 
-function MailRow({ mailId, isFavorite, isSpam, onActionDone, hideFavoriteButton, onReply }) {
+function MailRow({ mailId, isFavorite, isSpam, onActionDone, hideFavoriteButton, onReply, onFwd }) {
   const token = localStorage.getItem('token');
   const baseUrl = 'http://localhost:9090/api/mails';
 
@@ -87,10 +88,15 @@ function MailRow({ mailId, isFavorite, isSpam, onActionDone, hideFavoriteButton,
     onReply?.();
   };
 
+  const handleForward = () => {
+    onFwd?.();
+  };
+
   return (
     <div className="MailRow">
 
       <ReplyButton onClick={handleReply} />
+      <ForwardButton onClick={handleForward} />
       {!hideFavoriteButton && (
         <FavoriteMailButton isFavorite={isFavorite} onClick={handleFavoriteToggle} />
       )}

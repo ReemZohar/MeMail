@@ -5,11 +5,12 @@ import { useNavigate } from 'react-router-dom';
 
 function NewMailWindow({ index = 0, onClose, title='', receiver='', content='' }) {
   const navigate = useNavigate();
-
+  
+  const receiverFmt = receiver ? '---\n' + receiver + ":\n" : "";
   const [formData, setFormData] = useState({
     receiver: receiver,
     title: receiver != '' ? 'RE: ' + title : title,
-    content: receiver != '' ? '---\n' + receiver + ":\n" + content + "\n---\n" : content,
+    content: title != '' ? receiverFmt + content + "\n---\n" : content,
   });
 
   const [error, setError] = useState(null);
