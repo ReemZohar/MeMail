@@ -13,12 +13,31 @@ export default function RegisterPage({ theme }) {
 
     //object collects all fields expected by the server
     const [data, setData] = useState({
-        firstName: '', surname: '',
-        day: '', month: '1', year: '',
-        gender: '1', mail: '',
-        password: '', confirmPassword: '',
-        avatar: null
+        firstName: '',
+        surname: '',
+        day: '',
+        month: '1',
+        year: '',
+        gender: '1',
+        mail: '',
+        password: '',
+        confirmPassword: '',
+        avatar: null,
+        avatarFile: null
     })
+
+    //converts the gender number selected to a name string
+    const defineGender = (gender) => {
+        const femInd = 1, maleInd = 2;
+        if (gender == femInd) {
+            return "Female";
+        }
+        else if (gender == maleInd) {
+            return "Male";
+        } else {
+            return "Rather not say";
+        }
+    }
 
     const next = () => setStep((s) => s + 1)
 
@@ -27,49 +46,38 @@ export default function RegisterPage({ theme }) {
         setData((d) => ({ ...d, [field]: value }))
     }
 
-    //final submission: assemble server payload
     const handleSubmit = async () => {
-        const payload = {
-            name: data.firstName,
-            surname: data.surname,
-            gender: defineGender(data.gender),
-            day: data.day,
-            month: data.month,
-            year: data.year,
-            username: data.mail,
-            password: data.password,
-            confirmPassword: data.confirmPassword,
-            avatar: data.avatar
+        const formData = new FormData();
+        formData.append('name', data.firstName);
+        formData.append('surname', data.surname);
+        formData.append('gender', defineGender(data.gender));
+        formData.append('day', data.day);
+        formData.append('month', data.month);
+        formData.append('year', data.year);
+        formData.append('username', data.mail);
+        formData.append('password', data.password);
+        formData.append('confirmPassword', data.confirmPassword);
+
+        if (data.avatarFile) {
+            //user uploaded an avatar scenario
+            formData.append('avatar', data.avatarFile);
+        } else {
+            //exisiting avatar was chosen scenario
+            formData.append('avatar', data.avatar);
         }
 
         const res = await fetch('http://localhost:9090/api/users', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        })
+            body: formData
+        });
 
-        //user registered successfully scenario
         if (res.ok) {
-            const user = await res.json()
-            console.log('registered', user)
+            const user = await res.json();
+            console.log('registered', user);
+            navigate('/login');
         } else {
-            const err = await res.json()
-            console.error('error', err)
-        }
-
-        navigate('/login')
-    }
-
-    //converts the gender number selected to a name string
-    const defineGender = (gender) => {
-        const femInd = 1, maleInd = 2;
-        if(gender == femInd) {
-            return "Female";
-        }
-        else if(gender == maleInd) {
-            return "Male";
-        } else {
-            return "Rather not say";
+            const err = await res.json(); 
+            console.error('Registration error', err);
         }
     }
 
@@ -122,7 +130,13 @@ export default function RegisterPage({ theme }) {
                 theme={theme}
                 selectedAvatar={data.avatar}
                 existingAvatars={avatars}
-                onSelectAvatar={(url) => update('avatar')(url)}
+                onSelectAvatar={(value) => {
+                    if (value instanceof File) {
+                        setData(d => ({ ...d, avatarFile: value, avatar: '' }));
+                    } else {
+                        setData(d => ({ ...d, avatar: value, avatarFile: null }));
+                    }
+                }}
                 onNext={handleSubmit}
             />
 
