@@ -16,7 +16,8 @@ const UserWindow = ({ userId, token, onClose, avatar, name, username }) => {
       <img src={avatar} alt="Avatar" className="user-avatar" />
       <div className="user-greeting">Hi, {name}!</div>
       <div className="logout-wrapper">
-        <LogOutButton />
+        <LogOutButton token={token} />
+
       </div>
     </div>
   );
