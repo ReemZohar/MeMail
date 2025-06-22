@@ -2,6 +2,7 @@ import './MailRow.css';
 import SpamMailButton from '../SpamMailButton/SpamMailButton';
 import DeleteMailButton from '../DeleteMailButton/DeleteMailButton';
 import FavoriteMailButton from '../FavoriteMailButton/FavoriteMailButton';
+import MarkUnreadButton from '../MarkUnreadButton/MarkUnreadButton';
 
 function MailRow({ mailId, isFavorite, isSpam, onActionDone, hideFavoriteButton }) {
   const token = localStorage.getItem('token');
@@ -61,15 +62,36 @@ const handleFavoriteToggle = async () => {
   }
 };
 
+const handleMarkUnread = async () => {
+  console.log(`[MailRow] Marking mail ${mailId} as unread`);
+  try {
+    const response = await fetch(`${baseUrl}/${mailId}/isRead`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ isRead: false }),
+    });
+    console.log(`[MailRow] Mark-as-unread response status: ${response.status}`);
+    if (response.ok) {
+      onActionDone?.({ type: 'markAsUnread', mailId });
+    }
+  } catch (err) {
+    console.error('Error marking as unread:', err);
+  }
+};
 
 
   return (
     <div className="MailRow">
+      
       {!hideFavoriteButton && (
         <FavoriteMailButton isFavorite={isFavorite} onClick={handleFavoriteToggle} />
       )}
       <SpamMailButton isSpam={isSpam} onClick={handleSpamToggle} />
       <DeleteMailButton onClick={handleDelete} />
+      <MarkUnreadButton onClick={handleMarkUnread} />
     </div>
   );
 }

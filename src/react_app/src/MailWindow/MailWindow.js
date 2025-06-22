@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import './MailWindow.css';
-import { MdExpandMore, MdExpandLess, MdArrowBack, MdMoreVert, MdEdit } from 'react-icons/md';
+import { MdExpandMore, MdExpandLess, MdArrowBack, MdMoreVert, MdEdit, MdMarkEmailUnread } from 'react-icons/md';
 import MailRow from '../MailRow/MailRow';
 import '../CustomLabelMenu/NewCustomLabelWindow.css';
 
@@ -17,6 +17,18 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(null);
 
+  const markAsUnread = async () => {
+    await fetch(`http://localhost:9090/api/mails/${mailState.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ isRead: false }),
+    });
+    //update local state
+    setMail(prev => ({ ...prev, isRead: false }));
+  };
 
   // Load labels from server and set selectedLabels based on mail's current labels
   const loadLabels = () => {
@@ -109,11 +121,13 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
       setMail(prev => ({ ...prev, isSpam: false }));
     } else if (type === 'favoriteToggle') {
       setMail(prev => ({ ...prev, isFavorite }));
+    } else if (type === 'markAsUnread') {
+      setMail(prev => ({ ...prev, isRead: false }));
     }
   };
 
   const isToMe = mailState.receiverEmail === currentUserEmail;
-  
+
   const labelPopupRef = useRef(null);
 
   //Close the window when the user clicks outside it
@@ -146,6 +160,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
             mailId={mailState.id}
             isFavorite={mailState.isFavorite}
             isSpam={mailState.isSpam}
+            isRead={mailState.isRead}
             onActionDone={handleActionDone}
           />
         </div>
