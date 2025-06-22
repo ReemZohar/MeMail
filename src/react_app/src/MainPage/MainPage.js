@@ -49,6 +49,9 @@ export default function MainPage({ token }) {
   const isFavorite = searchParams.get("isFavorite") === "true" ? true : null;
   const sender = searchParams.get("sender") || null;
   const date = searchParams.get("date") || null;
+  const searchQuery = searchParams.get("search") || null;
+
+  const [searchResults, setSearchResults] = useState(null);
 
   const openCompose = () => {
     if (openComposes.length >= 2) return;
@@ -82,6 +85,8 @@ export default function MainPage({ token }) {
     if (folderName) {
       newParams.set("folder", folderName);
       if (isFav) newParams.set("isFavorite", "true");
+    } else if (isFav) {
+      newParams.set("isFavorite", "true");
     } else if (isCustomLabel) {
       newParams.set("labelId", id);
     }
@@ -119,7 +124,6 @@ export default function MainPage({ token }) {
       .catch(err => console.error(err));
   }, [userId, token]);
 
-  //close user window on outside click
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -138,6 +142,26 @@ export default function MainPage({ token }) {
     };
   }, [showUserWindow]);
 
+  useEffect(() => {
+    if (!searchQuery || !userId || !token) {
+      setSearchResults(null);
+      return;
+    }
+
+    fetch(`http://localhost:9090/api/mails/search/${encodeURIComponent(searchQuery)}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Search failed');
+        return res.json();
+      })
+      .then(setSearchResults)
+      .catch(err => {
+        console.error('Search error:', err);
+        setSearchResults(null);
+      });
+  }, [searchQuery, userId, token]);
+
   if (!userData) return null;
 
   return (
@@ -152,7 +176,13 @@ export default function MainPage({ token }) {
       />
 
       <div className="right-panel">
-        <TopPanel onUserClick={handleUserClick} userBtnRef={topPanelUserBtnRef} avatar={userData.avatar} />
+        <TopPanel
+          onUserClick={handleUserClick}
+          userBtnRef={topPanelUserBtnRef}
+          avatar={userData.avatar}
+          token={token}
+          onSearchResults={setSearchResults}
+        />
         <MailPlace
           token={token}
           currentUserEmail={currentUserEmail}
@@ -162,6 +192,7 @@ export default function MainPage({ token }) {
           labelId={labelId}
           sender={sender}
           date={date}
+          searchResults={searchResults}
         />
       </div>
 

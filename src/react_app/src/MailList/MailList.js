@@ -4,7 +4,7 @@ import { MdRefresh, MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import SelectedMailsAction from '../SelectedMailsAction/SelectedMailsAction';
 import './MailList.css';
 
-function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, onOpenMail, refreshVersion }) {
+function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, onOpenMail, mailsOverride }) {
   const [page, setPage] = useState(0);
   const [mails, setMails] = useState([]);
   const [selectedMails, setSelectedMails] = useState(new Set());
@@ -33,10 +33,15 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
     }
   };
 
-  // Add refreshVersion to dependency array - this triggers reload when changed
   useEffect(() => {
-    fetchMails();
-  }, [folder, isFavorite, sender, date, labelId, refreshVersion]);
+    if (mailsOverride) {
+      setMails(mailsOverride);
+      setPage(0);
+      setSelectedMails(new Set());
+    } else {
+      fetchMails();
+    }
+  }, [mailsOverride, folder, isFavorite, sender, date, labelId]);
 
   const handleMailDeleted = (mailId) => {
     setMails(prev => prev.filter(mail => mail.id !== mailId));
@@ -60,9 +65,9 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
   setSelectedMails(new Set());
   };
 
-  const handleMailFavoriteToggled = (mailId, favorite) => {
+  const handleMailFavoriteToggled = (mailId, isFavorite) => {
     setMails(prev =>
-      prev.map(mail => mail.id === mailId ? { ...mail, favorite } : mail)
+      prev.map(mail => (mail.id === mailId ? { ...mail, isFavorite } : mail))
     );
   };
 

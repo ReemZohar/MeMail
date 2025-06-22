@@ -37,13 +37,14 @@ function MailItem({ mail, isSelected, whenSelected, onMailDeleted, onMailMovedTo
   if (error) return <div>Error loading mail: {error}</div>;
   if (!mailState) return null;
 
-  const handleActionDone = ({ type, mailId, favorite }) => {
+  const handleActionDone = ({ type, mailId, isFavorite }) => {
     if (type === 'delete') {
       onMailDeleted(mailId);
     } else if (type === 'spam') {
       onMailMovedToSpam(mailId);
+    } else if (type === 'unspam') {
     } else if (type === 'favoriteToggle') {
-      onMailFavoriteToggled?.(mailId, favorite);
+      onMailFavoriteToggled?.(mailId, isFavorite);
     }
   };
 
@@ -111,8 +112,8 @@ function MailItem({ mail, isSelected, whenSelected, onMailDeleted, onMailMovedTo
           mailId={mailState.id}
           title={mailState.title}
           content={mailState.content}
-          isFavorite={mailState.favorite}
-          isSpam={mailState.spam}
+          isFavorite={mailState.isFavorite}
+          isSpam={mailState.isSpam}
           onActionDone={handleActionDone}
         />
       </div>
