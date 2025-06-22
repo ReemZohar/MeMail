@@ -4,7 +4,15 @@ import "./LoginCard.css";
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function LoginCard({ theme, onSubmit, emailInfo, passwordInfo }) {
+function LoginCard({
+    theme,
+    onSubmit,
+    emailInfo,
+    passwordInfo,
+    setEmailInfo,
+    setPassInfo,
+    onNext
+}) {
     const [step, setStep] = useState(1);
     const header = "Sign in";
     const msg = "with your MeMail Account. This account will be available to other MeMail apps in the browser.";
@@ -34,34 +42,45 @@ function LoginCard({ theme, onSubmit, emailInfo, passwordInfo }) {
                                 isValid={emailInfo.isValid}
                                 feedback={emailInfo.feedback}
                                 value={emailInfo.value}
-                                onChange={emailInfo.onChange}
+                                onChange={e => setEmailInfo({
+                                    ...emailInfo,
+                                    value: e.target.value
+                                })}
                             />
                             <div className="d-flex gap-2 mt-3">
-
-                                {/*<Link to="/register" className="btn btn-secondary">
-                                Create account
-                            </Link>*/}
 
                                 <Link to="/register" className="btn btn-light flex-grow-1 button-left-margin-white">
                                     Create account
                                 </Link>
-                                <button type="submit" className="btn btn-primary flex-grow-1 button-left-margin-blue ">
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary flex-grow-1 button-left-margin-blue "
+                                    onClick={onNext}
+                                >
                                     Next
                                 </button>
                             </div>
                         </form>
                     ) : (
-                        <form onSubmit={onSubmit}>
+                        <form>
                             <UserInformation.Password
                                 requiredInfo="Password"
                                 theme={theme}
                                 isValid={passwordInfo.isValid}
                                 feedback={passwordInfo.feedback}
                                 value={passwordInfo.value}
-                                onChange={passwordInfo.onChange}
+                                onChange={e => setPassInfo({
+                                    ...passwordInfo,
+                                    value: e.target.value
+                                })}
                             />
                             <div className="d-flex justify-content-end mt-3">
-                                <button type="submit" className="btn btn-primary button button-left-margin-blue " style={{ width: "50%" }}>
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary button button-left-margin-blue "
+                                    style={{ width: "50%" }}
+                                    onClick={onSubmit}
+                                >
                                     Login
                                 </button>
                             </div>
