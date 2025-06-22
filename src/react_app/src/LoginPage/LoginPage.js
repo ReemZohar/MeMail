@@ -48,7 +48,7 @@ function LoginPage({ theme, setToken }) {
             });
 
             const data = await res.json();
-            navigate('/mail?folder=inbox');
+
             if (!res.ok) {
                 setPasswordInfo(prev => ({
                     ...prev,
@@ -60,6 +60,7 @@ function LoginPage({ theme, setToken }) {
 
             localStorage.setItem('token', data.token);
             setToken(data.token); //Update token in App.js
+            navigate('/mail?folder=inbox'); //todo check path
         } catch (error) {
             console.error('Login error:', error);
             setPasswordInfo(prev => ({
@@ -76,8 +77,7 @@ function LoginPage({ theme, setToken }) {
             onSubmit={handleSubmit}
             emailInfo={{
                 ...emailInfo,
-                onChange: (e) => {
-                    const value = e.target.value;
+                onChange: (value) => {
                     const isValid = value.includes('@');
                     setEmailInfo({
                         value,
@@ -88,8 +88,7 @@ function LoginPage({ theme, setToken }) {
             }}
             passwordInfo={{
                 ...passwordInfo,
-                onChange: (e) => {
-                    const value = e.target.value;
+                onChange: (value) => {
                     const isValid = value.length >= 6;
                     setPasswordInfo({
                         value,

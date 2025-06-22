@@ -1,10 +1,13 @@
 import UserInformation from '../UserInformation/UserInformation';
+import LogoAndText from '../RegisterPage/RegisterCards/LogoAndText/LogoAndText';
 import "./LoginCard.css";
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function LoginCard({ theme, onSubmit, emailInfo, passwordInfo }) {
     const [step, setStep] = useState(1);
+    const header = "Sign in";
+    const msg = "with your MeMail Account. This account will be available to other MeMail apps in the browser.";
 
     const handleNext = (e) => {
         e.preventDefault();
@@ -16,38 +19,37 @@ function LoginCard({ theme, onSubmit, emailInfo, passwordInfo }) {
         <div className="container d-flex justify-content-center align-items-center full-height-center" data-bs-theme={theme}>
             <div className="login-card col-10 d-flex" data-bs-theme={theme}>
                 {/* Left side: text */}
-                <div className="login-left col-6 d-flex flex-column justify-content-center align-items-start">
-                    <h3>Sign in</h3>
-                    <p>with your Google Account. This account will be available to other Google apps in the browser.</p>
-                </div>
+                <LogoAndText header={header} msg={msg} />
+
+                <div className='col-1'></div>
 
                 {/* Right side: login form */}
                 <div className="login-right col-6">
                     {step === 1 ? (
                         <form onSubmit={handleNext}>
-                        <UserInformation
-                            requiredInfo="Email"
-                            theme={theme}
-                            type="email"
-                            isValid={emailInfo.isValid}
-                            feedback={emailInfo.feedback}
-                            value={emailInfo.value}
-                            onChange={emailInfo.onChange} 
-                        />
-                        <div className="d-flex gap-2 mt-3">
-                            
-                            {/*<Link to="/register" className="btn btn-secondary">
+                            <UserInformation
+                                requiredInfo="Email"
+                                theme={theme}
+                                type="email"
+                                isValid={emailInfo.isValid}
+                                feedback={emailInfo.feedback}
+                                value={emailInfo.value}
+                                onChange={emailInfo.onChange}
+                            />
+                            <div className="d-flex gap-2 mt-3">
+
+                                {/*<Link to="/register" className="btn btn-secondary">
                                 Create account
                             </Link>*/}
 
-                            <Link to="/register" className="btn btn-light flex-grow-1 button-left-margin-white">
-                            Create account
-                            </Link>
-                            <button type="submit" className="btn btn-primary flex-grow-1 button-left-margin-blue ">
-                                Next
-                            </button>
-                        </div>
-                    </form>
+                                <Link to="/register" className="btn btn-light flex-grow-1 button-left-margin-white">
+                                    Create account
+                                </Link>
+                                <button type="submit" className="btn btn-primary flex-grow-1 button-left-margin-blue ">
+                                    Next
+                                </button>
+                            </div>
+                        </form>
                     ) : (
                         <form onSubmit={onSubmit}>
                             <UserInformation.Password
@@ -59,7 +61,7 @@ function LoginCard({ theme, onSubmit, emailInfo, passwordInfo }) {
                                 onChange={passwordInfo.onChange}
                             />
                             <div className="d-flex justify-content-end mt-3">
-                                <button type="submit" className="btn btn-primary button button-left-margin-blue " style={{width: "50%"}}>
+                                <button type="submit" className="btn btn-primary button button-left-margin-blue " style={{ width: "50%" }}>
                                     Login
                                 </button>
                             </div>
