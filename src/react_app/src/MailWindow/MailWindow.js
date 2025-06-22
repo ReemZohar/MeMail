@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import './MailWindow.css';
 import { MdExpandMore, MdExpandLess, MdArrowBack, MdMoreVert, MdEdit, MdMarkEmailUnread } from 'react-icons/md';
 import MailRow from '../MailRow/MailRow';
+import NewMailWindow from '../NewMailWindow/NewMailWindow';
 import '../CustomLabelMenu/NewCustomLabelWindow.css';
 
 export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBack, token }) {
@@ -16,6 +17,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
   const [editedContent, setEditedContent] = useState(mailState.content);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(null);
+  const [isReplying, setIsReplying] = useState(false);
 
   const markAsUnread = async () => {
     await fetch(`http://localhost:9090/api/mails/${mailState.id}`, {
@@ -162,6 +164,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
             isSpam={mailState.isSpam}
             isRead={mailState.isRead}
             onActionDone={handleActionDone}
+            onReply={() => setIsReplying(true)}
           />
         </div>
 
@@ -218,6 +221,15 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
       </div>
 
       <hr />
+
+      {isReplying && (
+        <NewMailWindow
+          index={0}
+          receiver={mailState.senderEmail}
+          title={mailState.title}
+          onClose={() => setIsReplying(false)}
+        />
+      )}
 
       {isEditing ? (
         <>
