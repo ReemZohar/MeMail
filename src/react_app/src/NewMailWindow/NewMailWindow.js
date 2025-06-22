@@ -3,13 +3,13 @@ import './NewMailWindow.css';
 import { MdClose, MdAttachFile, MdInsertPhoto, MdMoreVert } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
-function NewMailWindow({ index = 0, onClose, title='', receiver='' }) {
+function NewMailWindow({ index = 0, onClose, title='', receiver='', content='' }) {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     receiver: receiver,
     title: receiver != '' ? 'RE: ' + title : title,
-    content: ''
+    content: receiver != '' ? '---\n' + receiver + ":\n" + content + "\n---\n" : content,
   });
 
   const [error, setError] = useState(null);

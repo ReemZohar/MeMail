@@ -227,6 +227,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
           index={0}
           receiver={mailState.senderEmail}
           title={mailState.title}
+          content={mailState.content}
           onClose={() => setIsReplying(false)}
         />
       )}
