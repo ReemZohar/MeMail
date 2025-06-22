@@ -5,6 +5,8 @@ import TopPanel from "../TopPanel/TopPanel";
 import NewMailWindow from "../NewMailWindow/NewMailWindow";
 import MailPlace from "../MailPlace/MailPlace";
 import UserWindow from "../UserWindow/UserWindow";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './MainPage.css';
 
 function parseJwt(token) {
@@ -43,7 +45,6 @@ export default function MainPage({ token }) {
   const userId = parsed?.id;
 
   const [searchParams] = useSearchParams();
-
   const folder = searchParams.get("folder") || null;
   const labelId = searchParams.get("labelId") || null;
   const isFavorite = searchParams.get("isFavorite") === "true" ? true : null;
@@ -55,33 +56,29 @@ export default function MainPage({ token }) {
 
   const openCompose = () => {
     if (openComposes.length >= 2) return;
-
     const id = Date.now();
     setOpenComposes(prev => [...prev, id]);
-
-    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
-    if (!hashParams.has("compose")) {
-      hashParams.set("compose", "new");
-      window.location.hash = hashParams.toString();
-    }
   };
 
-  const closeCompose = (idToClose) => {
-    setOpenComposes(prev => {
-      const updated = prev.filter(id => id !== idToClose);
-      if (updated.length === 0) {
-        const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
-        hashParams.delete("compose");
-        const newHash = hashParams.toString();
-        window.location.hash = newHash ? `#${newHash}` : "";
+  useEffect(() => {
+    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+    if (openComposes.length > 0) {
+      if (!hashParams.has("compose")) {
+        hashParams.set("compose", "new");
+        window.location.hash = hashParams.toString();
       }
-      return updated;
-    });
+    } else {
+      hashParams.delete("compose");
+      window.location.hash = hashParams.toString();
+    }
+  }, [openComposes]);
+
+  const closeCompose = (idToClose) => {
+    setOpenComposes(prev => prev.filter(id => id !== idToClose));
   };
 
   function handleLabelClick(id, isFav = false, folderName = null, isCustomLabel = false) {
     const newParams = new URLSearchParams();
-
     if (folderName) {
       newParams.set("folder", folderName);
       if (isFav) newParams.set("isFavorite", "true");
@@ -90,7 +87,6 @@ export default function MainPage({ token }) {
     } else if (isCustomLabel) {
       newParams.set("labelId", id);
     }
-
     navigate({ pathname: "/mail", search: `?${newParams.toString()}` });
   }
 
@@ -174,7 +170,6 @@ export default function MainPage({ token }) {
         isFavoriteActive={isFavorite}
         onComposeClick={openCompose}
       />
-
       <div className="right-panel">
         <TopPanel
           onUserClick={handleUserClick}
@@ -197,7 +192,12 @@ export default function MainPage({ token }) {
       </div>
 
       {openComposes.map((id, index) => (
-        <NewMailWindow key={id} index={index} onClose={() => closeCompose(id)} />
+        <NewMailWindow
+         key={id}
+        index={index}
+        onClose={() => closeCompose(id)}
+        token={token}
+      />
       ))}
 
       {showUserWindow && (
@@ -222,6 +222,9 @@ export default function MainPage({ token }) {
           </div>
         </div>
       )}
+
+      {/* Toast container - חובה שיהיה בתוך ה-return */}
+      <ToastContainer position="bottom-left" />
     </div>
   );
 }

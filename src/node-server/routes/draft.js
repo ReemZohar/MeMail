@@ -7,5 +7,6 @@ router.post('/', authenticateToken, draftController.createDraft);
 router.put('/:id', authenticateToken, draftController.updateDraft);
 router.get('/:id', authenticateToken, draftController.getDraftById);
 router.delete('/:id', authenticateToken, draftController.deleteDraft);
+router.get('/', authenticateToken, draftController.getAllDrafts);
 
 module.exports = router;
