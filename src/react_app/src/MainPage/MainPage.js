@@ -5,6 +5,8 @@ import TopPanel from "../TopPanel/TopPanel";
 import NewMailWindow from "../NewMailWindow/NewMailWindow";
 import MailPlace from "../MailPlace/MailPlace";
 import UserWindow from "../UserWindow/UserWindow";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './MainPage.css';
 
 function parseJwt(token) {
@@ -43,7 +45,6 @@ export default function MainPage({ token }) {
   const userId = parsed?.id;
 
   const [searchParams] = useSearchParams();
-
   const folder = searchParams.get("folder") || null;
   const labelId = searchParams.get("labelId") || null;
   const isFavorite = searchParams.get("isFavorite") === "true" ? true : null;
@@ -52,45 +53,39 @@ export default function MainPage({ token }) {
 
   const openCompose = () => {
     if (openComposes.length >= 2) return;
-
     const id = Date.now();
     setOpenComposes(prev => [...prev, id]);
+  };
 
+  useEffect(() => {
     const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
-    if (!hashParams.has("compose")) {
-      hashParams.set("compose", "new");
+    if (openComposes.length > 0) {
+      if (!hashParams.has("compose")) {
+        hashParams.set("compose", "new");
+        window.location.hash = hashParams.toString();
+      }
+    } else {
+      hashParams.delete("compose");
       window.location.hash = hashParams.toString();
     }
-  };
+  }, [openComposes]);
 
   const closeCompose = (idToClose) => {
-    setOpenComposes(prev => {
-      const updated = prev.filter(id => id !== idToClose);
-      if (updated.length === 0) {
-        const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
-        hashParams.delete("compose");
-        const newHash = hashParams.toString();
-        window.location.hash = newHash ? `#${newHash}` : "";
-      }
-      return updated;
-    });
+    setOpenComposes(prev => prev.filter(id => id !== idToClose));
   };
 
-function handleLabelClick(id, isFav = false, folderName = null, isCustomLabel = false) {
-  const newParams = new URLSearchParams();
-
-  if (folderName) {
-    newParams.set("folder", folderName);
-    if (isFav) newParams.set("isFavorite", "true");
-  } else if (isFav) {
-    newParams.set("isFavorite", "true");
-  } else if (isCustomLabel) {
-    newParams.set("labelId", id);
+  function handleLabelClick(id, isFav = false, folderName = null, isCustomLabel = false) {
+    const newParams = new URLSearchParams();
+    if (folderName) {
+      newParams.set("folder", folderName);
+      if (isFav) newParams.set("isFavorite", "true");
+    } else if (isFav) {
+      newParams.set("isFavorite", "true");
+    } else if (isCustomLabel) {
+      newParams.set("labelId", id);
+    }
+    navigate({ pathname: "/mail", search: `?${newParams.toString()}` });
   }
-
-  navigate({ pathname: "/mail", search: `?${newParams.toString()}` });
-}
-
 
   const handleUserClick = () => {
     if (showUserWindow) {
@@ -122,7 +117,6 @@ function handleLabelClick(id, isFav = false, folderName = null, isCustomLabel = 
       .catch(err => console.error(err));
   }, [userId, token]);
 
-  //close user window on outside click
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -153,7 +147,6 @@ function handleLabelClick(id, isFav = false, folderName = null, isCustomLabel = 
         isFavoriteActive={isFavorite}
         onComposeClick={openCompose}
       />
-
       <div className="right-panel">
         <TopPanel onUserClick={handleUserClick} userBtnRef={topPanelUserBtnRef} avatar={userData.avatar} />
         <MailPlace
@@ -169,7 +162,12 @@ function handleLabelClick(id, isFav = false, folderName = null, isCustomLabel = 
       </div>
 
       {openComposes.map((id, index) => (
-        <NewMailWindow key={id} index={index} onClose={() => closeCompose(id)} />
+        <NewMailWindow
+         key={id}
+        index={index}
+        onClose={() => closeCompose(id)}
+        token={token}
+      />
       ))}
 
       {showUserWindow && (
@@ -194,6 +192,9 @@ function handleLabelClick(id, isFav = false, folderName = null, isCustomLabel = 
           </div>
         </div>
       )}
+
+      {/* Toast container - חובה שיהיה בתוך ה-return */}
+      <ToastContainer position="bottom-left" />
     </div>
   );
 }

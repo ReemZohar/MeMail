@@ -27,3 +27,9 @@ exports.deleteDraft = (req, res) => {
   if (!success) return res.status(404).json({ error: 'Draft not found' });
   res.status(204).send();
 };
+
+exports.getAllDrafts = (req, res) => {
+  const sender = req.user.id;
+  const drafts = draftModel.getDraftsBySender(sender);
+  res.json(drafts);
+};
