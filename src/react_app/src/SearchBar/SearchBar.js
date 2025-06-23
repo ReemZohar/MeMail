@@ -32,8 +32,11 @@ function SearchBar({ token, onSearchResults }) {
     }
   };
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
+useEffect(() => {
+  const handler = setTimeout(() => {
+    const path = window.location.pathname;
+    const isViewingMail = /^\/mail\/\d+$/.test(path); //Don't search if the user is in MailWindow component
+    if (!isViewingMail) {
       if (query.trim()) {
         navigate(`/mail?search=${encodeURIComponent(query)}`);
         performSearch(query);
@@ -41,10 +44,10 @@ function SearchBar({ token, onSearchResults }) {
         navigate('/mail');
         onSearchResults(null);
       }
-    }, 300);
-
-    return () => clearTimeout(handler);
-  }, [query, navigate]);
+    }
+  }, 300);
+  return () => clearTimeout(handler);
+}, [query, navigate]);
 
   const clearInput = () => {
     setQuery('');

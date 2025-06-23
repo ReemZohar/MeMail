@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import './NewMailWindow.css';
-import { MdClose, MdAttachFile, MdInsertPhoto, MdMoreVert } from 'react-icons/md';
+import { MdClose, MdAttachFile, MdInsertPhoto, MdMoreVert, MdMinimize } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
-function NewMailWindow({ index = 0, onClose }) {
+function NewMailWindow({ index = 0, onClose, title='', receiver='', content='', token }) {
   const navigate = useNavigate();
-
+  
+  const receiverFmt = receiver ? '---\n' + receiver + ":\n" : "";
   const [formData, setFormData] = useState({
-    receiver: '',
-    title: '',
-    content: ''
+    receiver: receiver,
+    title: receiver != '' ? 'RE: ' + title : title,
+    content: title != '' ? receiverFmt + content + "\n---\n" : content,
   });
 
   const [error, setError] = useState(null);
@@ -22,7 +23,7 @@ function NewMailWindow({ index = 0, onClose }) {
   };
 
   const sendMail = async () => {
-    const token = localStorage.getItem('token');
+      const token = localStorage.getItem('token');
     try {
       const response = await fetch('http://localhost:9090/api/mails', {
         method: 'POST',
@@ -34,7 +35,7 @@ function NewMailWindow({ index = 0, onClose }) {
       });
 
       if (response.ok) {
-        onClose();
+        alert('Mail sent successfully');
         navigate('/mail?folder=inbox');
       } else {
         const error = await response.json();
@@ -56,17 +57,46 @@ function NewMailWindow({ index = 0, onClose }) {
     await sendMail();
   };
 
+  const handleClose = async () => {
+    const { receiver, title, content } = formData;
+
+    const isEmpty = !receiver && !title && !content;
+    if (isEmpty) {
+      onClose();
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:9090/api/draft', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        console.error('Failed to save draft');
+      }
+    } catch (err) {
+      console.error('Error saving draft:', err);
+    }
+
+    onClose();
+  };
+
   const rightOffset = 20 + index * 620;
 
   return (
     <div className="mail-popup shadow" style={{ right: `${rightOffset}px` }}>
       <div className="mail-header d-flex justify-content-between align-items-center">
         <span>New Message</span>
-        <MdClose
-          style={{ cursor: 'pointer' }}
-          size={20}
-          onClick={onClose}
-        />
+        <div style={{ display: 'flex', gap: '8px' }}>
+          {/* Optional minimize button (if you add logic later) */}
+          {/* <MdMinimize size={20} onClick={handleMinimize} style={{ cursor: 'pointer' }} /> */}
+          <MdClose size={20} onClick={handleClose} style={{ cursor: 'pointer' }} />
+        </div>
       </div>
       <form className="mail-form" onSubmit={handleSubmit}>
         <input
