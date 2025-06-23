@@ -13,15 +13,21 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
   const fetchMails = async () => {
     try {
       const params = new URLSearchParams();
-      if (folder) params.append('folder', folder);
+      if (folder && folder !== 'drafts') params.append('folder', folder);
       if (isFavorite !== undefined) params.append('isFavorite', isFavorite);
       if (sender) params.append('sender', sender);
       if (date) params.append('date', date);
       if (labelId) params.append('labelId', labelId);
 
-      const response = await fetch(`http://localhost:9090/api/mails?${params.toString()}`, {
+      const endpoint =
+        folder === 'drafts'
+          ? 'http://localhost:9090/api/draft'
+          : `http://localhost:9090/api/mails?${params.toString()}`;
+
+      const response = await fetch(endpoint, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
       if (!response.ok) throw new Error('Failed to fetch mails');
 
       const data = await response.json();

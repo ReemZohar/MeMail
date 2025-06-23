@@ -31,7 +31,9 @@ Label.CustomLabel = ({ name, isActive, onClick, theme, onMenuClick, isCollapsed 
   return (
     <div
       className={`label ${isActive ? 'active' : ''} ${theme === 'dark' ? 'dark' : 'light'}`}
-      onClick={onClick}
+      onClick={() => {
+        onClick?.();
+      }}
     >
       <div className="label-content">
         <span className="label-icon"><MdLabel size={18} /></span>
@@ -43,7 +45,7 @@ Label.CustomLabel = ({ name, isActive, onClick, theme, onMenuClick, isCollapsed 
           className="label-menu-button"
           onClick={(e) => {
             e.stopPropagation();
-            if (onMenuClick) onMenuClick(e);
+            onMenuClick?.(e);
           }}
         >
           <MdMoreVert size={20} />

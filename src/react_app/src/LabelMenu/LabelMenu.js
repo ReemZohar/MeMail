@@ -1,5 +1,6 @@
 import './LabelMenu.css';
 import { MdInbox, MdSend, MdOutlineDrafts, MdMail, MdReport, MdStar } from 'react-icons/md';
+import Label from '../Label/Label';
 
 function LabelMenu({ theme, onLabelClick, activeFolder, isCollapsed }) {
   const labels = [
@@ -14,20 +15,21 @@ function LabelMenu({ theme, onLabelClick, activeFolder, isCollapsed }) {
   return (
     <div className="labelMenu">
       {labels.map(label => (
-        <div
-          key={label.id}
-          className={`label-item ${activeFolder === label.id ? 'active' : ''}`}
-          onClick={() => {
-            if (label.id === 'favorite') {
-              onLabelClick(null, true, null, false);
-            } else {
-              onLabelClick(label.id, false, label.id, false);
-            }
-          }}
-        >
-          {label.icon}
-          {!isCollapsed && <span className="label-name">{label.name}</span>}
-        </div>
+<Label
+  key={label.id}
+  icon={label.icon}
+  name={label.name}
+  isActive={activeFolder === label.id}
+  theme={theme}
+onClick={() => {
+  if (label.id === 'favorite') {
+    onLabelClick('favorite', true, 'favorite', false);
+  } else {
+    onLabelClick(label.id, false, label.id, false);
+  }
+}}
+  showMenuButton={false}
+/>
       ))}
     </div>
   );
