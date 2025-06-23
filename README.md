@@ -67,3 +67,19 @@ curl -X GET "http://localhost:9090/api/mails/advanced?folder=inbox&isFavorite=tr
 Replace YOUR_TOKEN with your valid JWT.
 
 
+---
+
+##  User Operations
+
+### Registration and Login
+
+#### Create A New MeMail User
+#### Login To MeMail
+
+### Managing emails
+
+#### Create A New Mail
+#### Edit A Mail
+#### Mark/Remove mail as favorite
+#### Mark/Remove mail as spam
+#### Delete Mail
