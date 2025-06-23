@@ -89,7 +89,8 @@ useEffect(() => {
       {showAdvanced && (
         <div className="search-card-container">
           <AdvancedSearch
-            theme="light"
+            token={token}
+            onSearchResults={onSearchResults}
             fromVal={from}
             onChgFrom={e => setFrom(e.target.value)}
             toVal={to}
@@ -100,6 +101,7 @@ useEffect(() => {
             onChgInc={e => setIncludes(e.target.value)}
             notIncVal={excludes}
             onChgNotInc={e => setExcludes(e.target.value)}
+            setShowAdvanced={setShowAdvanced}
           />
         </div>
       )}
