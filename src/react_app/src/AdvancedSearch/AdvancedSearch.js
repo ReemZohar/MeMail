@@ -41,7 +41,6 @@ function AdvancedSearch({
         }
 
         const data = await res.json();
-        console.log('advanced search results:', data);
 
         //updates the search results
         onSearchResults(data);
