@@ -35,8 +35,10 @@ function NewMailWindow({ index = 0, onClose, title='', receiver='', content='', 
       });
 
       if (response.ok) {
-        alert('Mail sent successfully');
+        //alert('Mail sent successfully');
         navigate('/mail?folder=inbox');
+        onClose();
+
       } else {
         const error = await response.json();
         alert('Failed to send mail: ' + error.error);
