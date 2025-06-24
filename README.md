@@ -78,8 +78,18 @@ Replace YOUR_TOKEN with your valid JWT.
 
 ### Managing emails
 
-#### Create A New Mail
+#### Send A New Mail
+1. After login, find the "Compose" button on the top left of the screen, press it.
+   ![image](https://github.com/user-attachments/assets/53bab2a6-f7c0-49a0-95d2-01b781d99a5c)
+2. A new mail window will be opened - fill the relevant fields and write there the mail content. Then press the "Send" button.
+   ![image](https://github.com/user-attachments/assets/aaf6f068-707a-4323-adcd-23d722e6db9c)
+
+
 #### Edit A Mail
 #### Mark/Remove mail as favorite
 #### Mark/Remove mail as spam
 #### Delete Mail
+#### Label Mail As ...
+#### Remove Mail From Label
+#### Edit A Label
+#### Delete A Label
