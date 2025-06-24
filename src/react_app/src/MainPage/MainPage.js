@@ -5,8 +5,6 @@ import TopPanel from "../TopPanel/TopPanel";
 import NewMailWindow from "../NewMailWindow/NewMailWindow";
 import MailPlace from "../MailPlace/MailPlace";
 import UserWindow from "../UserWindow/UserWindow";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import './MainPage.css';
 
 function parseJwt(token) {
@@ -223,8 +221,6 @@ export default function MainPage({ token }) {
         </div>
       )}
 
-      {/* Toast container - חובה שיהיה בתוך ה-return */}
-      <ToastContainer position="bottom-left" />
     </div>
   );
 }
