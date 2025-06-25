@@ -1,13 +1,15 @@
 const userModel = require('../models/users'); // user handles user registration and retrieval
+const path = require('path');
+
 // Register a new user
-exports.registerUser = (req, res) => {
+exports.registerUser = (req, res, next) => {
   try {
     console.log("BODY:", req.body);
     console.log("FILE:", req.file);
     let avatarUrl;
     //user uploaded an avatar scenario
     if (req.file) {
-      avatarUrl = `/uploads/avatars/${req.file.filename}`;
+      avatarUrl = `http://localhost:9090/uploads/avatars/${req.file.filename}`;
     }
     //user chose an existing avatar scenario
     else if (req.body.avatar) {
@@ -103,7 +105,6 @@ exports.uploadAvatar = (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file received' });
   }
-  user.avatar = `/uploads/avatars/${req.file.filename}`;
-  res.json({ avatarUrl: user.avatar });
+  const avatarPath = `http://localhost:9090/uploads/avatars/${req.file.filename}`;
+  res.json({ avatarUrl: avatarPath });
 };
-
