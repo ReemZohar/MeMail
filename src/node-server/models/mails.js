@@ -3,6 +3,7 @@ const mails = []
 
 const { isBlacklisted } = require('./blacklist');
 const { add, remove } = require('./blacklist');
+const userModel = require('./users');
 
 const extractUrls = (text) => {
   const regex = /((?:(https?|ftp):\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(:\d+)?(\/[^\s]*)?)/gi;
@@ -47,7 +48,7 @@ const getAllMailsForUser = (userId, filters = {}) => {
   }
 
   if (filters.labelId !== undefined) {
-  userMails = userMails.filter(m => m.labels.includes(filters.labelId));
+    userMails = userMails.filter(m => m.labels.includes(filters.labelId));
   }
 
   if (filters.isSpam !== undefined) {
@@ -60,8 +61,16 @@ const getAllMailsForUser = (userId, filters = {}) => {
     userMails = userMails.filter(m => m.isFavorite === filters.isFavorite);
   }
 
-  if (filters.sender) {
-    userMails = userMails.filter(m => m.sender === filters.sender);
+  if (filters.sender !== undefined) {
+    const from = userModel.getUserByUsername(filters.sender);
+    if (!from) return [];
+    userMails = userMails.filter(m => Number(m.sender) === Number(from.id));
+  }
+
+  if (filters.receiver !== undefined) {
+    const to = userModel.getUserByUsername(filters.receiver);
+    if (!to) return [];
+    userMails = userMails.filter(m => Number(m.receiver) === Number(to.id));
   }
 
   if (filters.startDate && filters.endDate) {
@@ -85,7 +94,7 @@ const getAllMailsForUser = (userId, filters = {}) => {
     userMails = userMails.filter(m => !m.content.includes(filters.excludes));
   }
 
-  return userMails.sort((a, b) => b.time - a.time); 
+  return userMails.sort((a, b) => b.time - a.time);
 };
 
 

@@ -32,8 +32,11 @@ function SearchBar({ token, onSearchResults }) {
     }
   };
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
+useEffect(() => {
+  const handler = setTimeout(() => {
+    const path = window.location.pathname;
+    const isViewingMail = /^\/mail\/\d+$/.test(path); //Don't search if the user is in MailWindow component
+    if (!isViewingMail) {
       if (query.trim()) {
         navigate(`/mail?search=${encodeURIComponent(query)}`);
         performSearch(query);
@@ -41,10 +44,10 @@ function SearchBar({ token, onSearchResults }) {
         navigate('/mail');
         onSearchResults(null);
       }
-    }, 300);
-
-    return () => clearTimeout(handler);
-  }, [query, navigate]);
+    }
+  }, 300);
+  return () => clearTimeout(handler);
+}, [query, navigate]);
 
   const clearInput = () => {
     setQuery('');
@@ -86,7 +89,8 @@ function SearchBar({ token, onSearchResults }) {
       {showAdvanced && (
         <div className="search-card-container">
           <AdvancedSearch
-            theme="light"
+            token={token}
+            onSearchResults={onSearchResults}
             fromVal={from}
             onChgFrom={e => setFrom(e.target.value)}
             toVal={to}
@@ -97,6 +101,7 @@ function SearchBar({ token, onSearchResults }) {
             onChgInc={e => setIncludes(e.target.value)}
             notIncVal={excludes}
             onChgNotInc={e => setExcludes(e.target.value)}
+            setShowAdvanced={setShowAdvanced}
           />
         </div>
       )}

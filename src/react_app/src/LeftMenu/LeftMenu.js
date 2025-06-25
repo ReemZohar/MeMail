@@ -5,9 +5,10 @@ import LabelMenu from '../LabelMenu/LabelMenu';
 import CustomLabelMenu from '../CustomLabelMenu/CustomLabelMenu';
 import NewMailButton from '../NewMailButton/NewMailButton';
 
-function LeftMenu({ theme, onComposeClick, onLabelClick, activeFolder, activeLabelId, token }) {
+function LeftMenu({ theme, onComposeClick, onLabelClick, activeFolder, initialActiveLabelId, token }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [labels, setLabels] = useState([]);
+  const [activeLabelId, setActiveLabelId] = useState(initialActiveLabelId || null);
 
   useEffect(() => {
     if (!token) return;
@@ -24,10 +25,12 @@ function LeftMenu({ theme, onComposeClick, onLabelClick, activeFolder, activeLab
   };
 
   function handleFolderClick(folderName, isFavorite = false) {
+    setActiveLabelId(null);
     onLabelClick(null, isFavorite, folderName, false);
   }
 
   function handleCustomLabelClick(labelId) {
+    setActiveLabelId(labelId);
     onLabelClick(labelId, false, null, true);
   }
 
