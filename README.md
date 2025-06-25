@@ -92,12 +92,13 @@ Sends a new email by specifying the recipient, subject, and content. The mail is
 #### Edit A Mail
 Allows editing a draft or previously saved mail before sending or re-saving it.
 <img width="287" alt="image" src="https://github.com/user-attachments/assets/44eace62-cde0-454e-bc85-87b9bbf02fd9" />
+> ***Note:*** When a user edits an email, the updated version is visible only to them.
 
-#### Mark/Remove mail as favorite
+#### Mark/Remove Mail As Favorite
 Marks an email as a favorite for quick access, or removes it from the favorites list.
 <img width="266" alt="image" src="https://github.com/user-attachments/assets/9ea8e130-333d-458c-b3da-38c66f856ee3" />
 
-#### Mark/Remove mail as spam
+#### Mark/Remove Mail As Spam
 Flags an email as spam, moving it to the "Spam" folder and optionally adding the sender to the blacklist. It can also be unmarked.
 These actions remove/ adds all the URLs to black list.
 <img width="263" alt="image" src="https://github.com/user-attachments/assets/e9d6cf51-1155-45a7-b4de-772c86798a3d" />
@@ -106,18 +107,16 @@ These actions remove/ adds all the URLs to black list.
 removes an email from the user's mailbox
 <img width="290" alt="image" src="https://github.com/user-attachments/assets/fc349e6d-f8cd-448b-9082-92f86da01cb5" />
 
-#### Assign label to Mail
+#### Add A New Label
+
+#### Assign Label To Mail
 Add a specific label to an email to categorize or organize it for easier retrieval.
 
-#### Remove assigment of label from Mail 
+#### Remove Assigment Of Label From Mail 
 Detach a label from an email, removing its association with that category.
 
-
-
 #### Edit A Label
-Modify the name or color of an existing label to better suit your organizational preferences.
-
-
+Modify the name of an existing label to better suit your organizational preferences.
 
 #### Delete A Label
 Permanently remove a label from your account. Emails previously labeled will no longer have that label.
