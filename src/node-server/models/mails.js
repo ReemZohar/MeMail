@@ -116,10 +116,11 @@ const sendMail = async (title, content, sender, receiver) => {
 
   const urlsToCheck = [...extractUrls(title), ...extractUrls(content)];
 
+  let isSpam = false;
   for (const url of urlsToCheck) {
-    const blacklisted = await isBlacklisted(url);
-    if (blacklisted) {
-      return null;
+    if (await isBlacklisted(url)) {
+      isSpam = true;
+      break;
     }
   }
 
@@ -133,6 +134,7 @@ const sendMail = async (title, content, sender, receiver) => {
     folder: 'sent',
     isRead: false,
     isFavorite: false,
+    isSpam: isSpam,
     labels: [] // assign mail to lables
   };
 
@@ -141,6 +143,7 @@ const sendMail = async (title, content, sender, receiver) => {
     id: idCounter++,
     folder: 'inbox',
     isRead: false,
+    isSpam: isSpam,
     labels: [], // assign mail to lables
   };
 

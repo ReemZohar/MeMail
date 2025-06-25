@@ -52,9 +52,6 @@ exports.sendMail = async (req, res) => {
   }
 
   const mail = await mailModel.sendMail(title, content, senderUser.id, receiverUser.id);
-  if (!mail) {
-    return res.status(400).json({ error: 'Mail contains blacklisted URL' });
-  }
 
   // delete the draft if exist
   if (draftId) {
