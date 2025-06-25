@@ -36,16 +36,14 @@ function ChooseAvatarCard({
     if (!pickedFile) return;
     setFile(pickedFile);
     const url = URL.createObjectURL(pickedFile);
-    onSelectAvatar(url);
+    setAvatarPreview(url);
+    onSelectAvatar(pickedFile);
   };
 
   const handleAvatarClick = (url) => {
-    if (selectedAvatar === url) {
-      onSelectAvatar(null);
-    } else {
-      onSelectAvatar(url);
-      setAvatarPreview(null);
-    }
+    setFile(null);
+    setAvatarPreview(null);
+    onSelectAvatar(selectedAvatar === url ? null : url);
   };
 
   const handleNext = () => {
