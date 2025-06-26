@@ -260,10 +260,16 @@ const unmarkAsFavorite = (id, userId) => {
 const getAllMailsForLabel = (userId, labelId, filters = {}) => {
   if (labelId === undefined || labelId === null) return [];
 
-  let userMails = mails.filter(m => (m.sender === userId || m.receiver === userId));
+  // רק מיילים של המשתמש שבהם הוא השולח או המקבל
+  let userMails = mails.filter(m =>
+    (m.sender === userId && m.folder === 'sent') ||
+    (m.receiver === userId && m.folder !== 'sent') // כלומר inbox
+  );
 
+  // רק כאלה שמכילים את ה־labelId
   userMails = userMails.filter(m => m.labels.includes(labelId));
 
+  // סינונים כמו קודם
   if (filters.isSpam !== undefined) {
     userMails = userMails.filter(m => m.isSpam === filters.isSpam);
   } else {
@@ -309,6 +315,5 @@ const getAllMailsForLabel = (userId, labelId, filters = {}) => {
 
   return userMails.sort((a, b) => b.time - a.time);
 };
-
 
 module.exports = { markAsFavorite, unmarkAsFavorite, getAllMailsForUser, getSpamMailsForUser, markMailAsSpam, unmarkMailAsSpam, sendMail, getMailById, updateMail, deleteMail, searchMails, updateIsRead, getAllMailsForLabel }
