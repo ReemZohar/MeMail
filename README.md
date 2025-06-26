@@ -108,6 +108,9 @@ removes an email from the user's mailbox
 <img width="290" alt="image" src="https://github.com/user-attachments/assets/fc349e6d-f8cd-448b-9082-92f86da01cb5" />
 
 #### Add A New Label
+Add a new label for future mail assignments.
+![image](https://github.com/user-attachments/assets/d601f858-4ba0-44bf-a62f-6f791afd9561)
+
 
 #### Assign Label To Mail
 Add a specific label to an email to categorize or organize it for easier retrieval.
@@ -121,10 +124,25 @@ Modify the name of an existing label to better suit your organizational preferen
 #### Delete A Label
 Permanently remove a label from your account. Emails previously labeled will no longer have that label.
 
+#### Search for an email
+Allows searching for emails based on content, subject, sender, and receiver.
+You can also use advanced-search by clicking the filtering button.
+![image](https://github.com/user-attachments/assets/0be645a0-c2bf-4963-8087-305ac04f70be)
 
 
+### Another Features
 
+#### Dark Mode Button
+Located at the top-right corner of all screens, this toggles the program between light & dark modes.
+![image](https://github.com/user-attachments/assets/bb807361-dd37-41b0-a5b9-0fc6287f0b15)
 
+#### User Window
+In this window the user can see all his relevant information such as name, email address, and avatar.
+This window also contains a *log out button*.
+
+#### Log Out Button
+Located into the user window.
+![image](https://github.com/user-attachments/assets/77f6ad5c-6041-465a-a178-2fef80a11feb)
 
 
 
