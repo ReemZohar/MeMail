@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import './MailWindow.css';
+import './NewMailWindow.css';
 import { MdExpandMore, MdExpandLess, MdArrowBack, MdMoreVert, MdEdit, MdMarkEmailUnread } from 'react-icons/md';
 import MailRow from '../MailRow/MailRow';
 import NewMailWindow from '../NewMailWindow/NewMailWindow';
