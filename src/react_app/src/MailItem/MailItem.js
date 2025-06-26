@@ -45,6 +45,8 @@ function MailItem({ mail, isSelected, whenSelected, onMailDeleted, onMailMovedTo
     } else if (type === 'unspam') {
     } else if (type === 'favoriteToggle') {
       onMailFavoriteToggled?.(mailId, isFavorite);
+    } else if (type === 'markAsUnread') {
+      setMailState(prev => ({ ...prev, isRead: false }));
     }
   };
 
@@ -115,6 +117,7 @@ function MailItem({ mail, isSelected, whenSelected, onMailDeleted, onMailMovedTo
           isFavorite={mailState.isFavorite}
           isSpam={mailState.isSpam}
           onActionDone={handleActionDone}
+          isItem={true}
         />
       </div>
     </div>
