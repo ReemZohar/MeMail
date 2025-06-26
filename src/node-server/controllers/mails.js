@@ -36,10 +36,11 @@ exports.getAllMails = (req, res) => {
 };
 
 // Send a new mail
+// Send a new mail
 exports.sendMail = async (req, res) => {
-
   const { title, content, receiver, draftId } = req.body;
   const sender = req.user.id;
+  const files = req.files || [];
 
   if (!title || !content || !receiver) {
     return res.status(400).json({ error: 'Missing required fields' });
@@ -51,9 +52,38 @@ exports.sendMail = async (req, res) => {
     return res.status(404).json({ error: 'Sender or receiver not found' });
   }
 
-  const mail = await mailModel.sendMail(title, content, senderUser.id, receiverUser.id);
+  const attachments = files.map(file => ({
+    originalname: file.originalname,
+    mimetype: file.mimetype,
+    buffer: file.buffer,
+    size: file.size,
+  }));
 
-  // delete the draft if exist
+  let forwardedAttachments = [];
+  const raw = req.body.forwardedAttachments;
+
+  try {
+    if (raw) {
+      if (Array.isArray(raw)) {
+        forwardedAttachments = raw.map(att => JSON.parse(att));
+      } else {
+        forwardedAttachments = [JSON.parse(raw)];
+      }
+    }
+  } catch (err) {
+    console.error("Error parsing forwardedAttachments:", err);
+  }
+
+  const combined = [...attachments, ...forwardedAttachments];
+
+  const mail = await mailModel.sendMail(
+    title,
+    content,
+    senderUser.id,
+    receiverUser.id,
+    combined
+  );
+
   if (draftId) {
     const draftModel = require('../models/draft');
     draftModel.deleteDraft(draftId, senderUser.id);

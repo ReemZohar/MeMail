@@ -1,7 +1,6 @@
 let idCounter = 0;
 const drafts = [];
 
-// יצירת טיוטה חדשה
 const createDraft = (title, content, receiver, sender) => {
   const draft = {
     id: idCounter++,
@@ -15,7 +14,6 @@ const createDraft = (title, content, receiver, sender) => {
   return draft;
 };
 
-// עדכון טיוטה קיימת
 const updateDraft = (id, sender, title, content, receiver) => {
   const draft = drafts.find(d => d.id === parseInt(id) && d.sender === sender);
   if (!draft) return null;
@@ -26,11 +24,9 @@ const updateDraft = (id, sender, title, content, receiver) => {
   return draft;
 };
 
-// שליפה לפי ID
 const getDraftById = (id, sender) =>
   drafts.find(d => d.id === parseInt(id) && d.sender === sender);
 
-// מחיקת טיוטה
 const deleteDraft = (id, sender) => {
   const index = drafts.findIndex(d => d.id === parseInt(id) && d.sender === sender);
   if (index === -1) return false;
@@ -38,7 +34,6 @@ const deleteDraft = (id, sender) => {
   return true;
 };
 
-// ✅ שליפה של כל הטיוטות לפי השולח
 const getDraftsBySender = (sender) =>
   drafts.filter(d => d.sender === sender);
 
@@ -47,5 +42,5 @@ module.exports = {
   updateDraft,
   getDraftById,
   deleteDraft,
-  getDraftsBySender // ייצוא של הפונקציה החדשה
+  getDraftsBySender 
 };

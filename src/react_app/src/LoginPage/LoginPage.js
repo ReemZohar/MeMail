@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginCard from '../LoginCard/LoginCard';
+import DarkModeButton from '../DarkModeButton/DarkModeButton';
+import './LoginPage.css';
 
 function LoginPage({ theme, setToken }) {
     const navigate = useNavigate();
@@ -76,16 +78,22 @@ function LoginPage({ theme, setToken }) {
     };
 
     return (
-        <LoginCard
-            theme={theme}
-            onSubmit={handleSubmit}
-            emailInfo={emailInfo}
-            passwordInfo={passwordInfo}
-            setEmailInfo={setEmailInfo}
-            setPassInfo={setPasswordInfo}
-            onNext={handleNext}
-        />
-    );
+            <>
+      <div className="darkmode-top-right">
+        <DarkModeButton />
+      </div>
+
+      <LoginCard
+        theme={theme}
+        onSubmit={handleSubmit}
+        emailInfo={emailInfo}
+        passwordInfo={passwordInfo}
+        setEmailInfo={setEmailInfo}
+        setPassInfo={setPasswordInfo}
+        onNext={handleNext}
+      />
+    </>
+  );
 }
 
 export default LoginPage;

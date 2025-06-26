@@ -3,12 +3,16 @@ const router = express.Router();
 const mailsController = require('../controllers/mails');
 const labelsController = require('../controllers/labels');
 const authenticateToken = require('../middleware/auth');
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
+
+router.post('/', authenticateToken, upload.array('attachments'), mailsController.sendMail);
 
 // Get last 50 mails
 router.get('/', authenticateToken, mailsController.getAllMails);
 
 // Send a new mail
-router.post('/', authenticateToken, mailsController.sendMail);
+//router.post('/', authenticateToken, mailsController.sendMail);
 
 //advanced mail search
 router.get('/advanced', authenticateToken, mailsController.getAdvancedMails);
