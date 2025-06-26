@@ -27,13 +27,35 @@ function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
       }
 
       try {
-        const res = await fetch(`http://localhost:9090/api/mails/${selectedMailId}`, {
+        const endpoint = folderParam === 'drafts'
+          ? `http://localhost:9090/api/draft/${selectedMailId}`
+          : `http://localhost:9090/api/mails/${selectedMailId}`;
+
+        const res = await fetch(endpoint, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error('Failed to fetch mail');
 
         const data = await res.json();
-        setOpenedMail(data);
+
+        const enriched = folderParam === 'drafts'
+          ? {
+              ...data,
+              folder: 'drafts',
+              isRead: false,
+              isFavorite: false,
+              isSpam: false,
+              labels: [],
+              attachments: [],
+              senderEmail: currentUserEmail,
+              senderName: 'Me',
+              receiverEmail: data.receiver,
+              receiverName: data.receiver,
+              isDraft: true,
+            }
+          : data;
+
+        setOpenedMail(enriched);
       } catch (err) {
         console.error(err);
         setOpenedMail(null);
@@ -41,7 +63,7 @@ function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
     };
 
     fetchMail();
-  }, [selectedMailId, token]);
+  }, [selectedMailId, token, folderParam, currentUserEmail]);
 
   const handleOpenMail = (mail) => {
     const params = new URLSearchParams();
@@ -74,16 +96,16 @@ function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
     <div className="MailPlace">
       {!openedMail && (
         <div className="mail-list-wrapper">
-        <MailList
-          token={token}
-          folder={shouldSendIsFavorite && isFavoriteParam === false ? folderParam : (isFavoriteParam === true ? null : folderParam)}
-          isFavorite={isFavoriteParam === true ? true : undefined}
-          labelId={labelIdParam}
-          sender={sender}
-          date={date}
-          mailsOverride={searchResults}
-          onOpenMail={handleOpenMail}
-        />
+          <MailList
+            token={token}
+            folder={shouldSendIsFavorite && isFavoriteParam === false ? folderParam : (isFavoriteParam === true ? null : folderParam)}
+            isFavorite={isFavoriteParam === true ? true : undefined}
+            labelId={labelIdParam}
+            sender={sender}
+            date={date}
+            mailsOverride={searchResults}
+            onOpenMail={handleOpenMail}
+          />
         </div>
       )}
       {openedMail && (
@@ -91,7 +113,7 @@ function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
           <MailWindow
             mail={openedMail}
             currentUserEmail={currentUserEmail}
-            onMailDeleted={() => handleCloseMail()}
+            onMailDeleted={handleCloseMail}
             onBack={handleCloseMail}
             token={token}
           />
