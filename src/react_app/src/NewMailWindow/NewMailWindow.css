@@ -105,3 +105,62 @@ textarea.form-control {
   font-size: 13px;
   color: #555;
 }
+
+body[data-bs-theme="dark"] .mail-popup.right-align {
+  background: #121212;
+  color: #e0e0e0;
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.1);
+}
+
+body[data-bs-theme="dark"] .mail-header {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  border-bottom: 1px solid #333;
+}
+
+body[data-bs-theme="dark"] .close-btn {
+  color: #ccc;
+}
+body[data-bs-theme="dark"] .close-btn:hover {
+  color: #fff;
+}
+
+body[data-bs-theme="dark"] .form-control {
+  background-color: transparent;
+  color: #e0e0e0;
+  border-bottom: 1px solid #555;
+}
+
+body[data-bs-theme="dark"] textarea.form-control {
+  background-color: transparent;
+  color: #e0e0e0;
+  border-bottom: 1px solid #555;
+}
+
+body[data-bs-theme="dark"] .mail-actions {
+  background-color: #121212;
+}
+
+body[data-bs-theme="dark"] .btn-send {
+  background-color: #1a73e8;
+  color: #fff;
+}
+body[data-bs-theme="dark"] .btn-send:hover {
+  background-color: #1558b0;
+}
+
+body[data-bs-theme="dark"] .custom-file-upload {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+}
+body[data-bs-theme="dark"] .custom-file-upload:hover {
+  background-color: #2a2a2a;
+}
+
+body[data-bs-theme="dark"] .attached-files {
+  color: #bbb;
+}
+
+body[data-bs-theme="dark"] .mail-form {
+  background-color: #121212;
+}
