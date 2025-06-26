@@ -1,0 +1,19 @@
+.MailPlace {
+  display: flex;
+  height: 100vh;
+}
+
+[data-bs-theme="dark"] .MailPlace {
+  background-color: #1e1e1e;
+}
+
+.mail-list-wrapper {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.mail-window-wrapper {
+  flex: 1;
+  display: flex;
+  min-width: 0;
+}

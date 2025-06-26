@@ -19,7 +19,7 @@ function NewCustomLabelWindow({ title="New label", content="Please enter a new l
     <div className="window-overlay">
       <div className="window-content">
         <h4>{title}</h4>
-        <h5 style={{ fontSize: '14px' }}>{content}</h5>
+        <h5 className="label-content">{content}</h5>
         <input
           type="text"
           value={labelName}

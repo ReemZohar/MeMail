@@ -10,20 +10,23 @@ function authorizeOwnership(resource, userId, res) {
 }
 
 
-
-
 // Get the 50 most recent mails (sorted by time, newest first)
 exports.getAllMails = (req, res) => {
-  const userId = req.user.id; // from-JWT
+  const userId = req.user.id;
   const user = userModel.getUserById(userId);
   if (!user) return res.status(404).json({ error: 'User not found' });
 
-  const { folder, isSpam, isFavorite, sender, date } = req.query;
+  let { folder, isSpam, isFavorite, sender, date, labelId } = req.query;
+  if (folder === 'spam') {
+    isSpam = 'true'; 
+    folder = undefined;
+  }
 
   const filters = {
     folder,
     sender,
     date,
+    labelId: labelId ? Number(labelId) : undefined,
     isSpam: isSpam === 'true' ? true : isSpam === 'false' ? false : undefined,
     isFavorite: isFavorite === 'true' ? true : isFavorite === 'false' ? false : undefined
   };
@@ -33,10 +36,11 @@ exports.getAllMails = (req, res) => {
 };
 
 // Send a new mail
+// Send a new mail
 exports.sendMail = async (req, res) => {
-
   const { title, content, receiver, draftId } = req.body;
   const sender = req.user.id;
+  const files = req.files || [];
 
   if (!title || !content || !receiver) {
     return res.status(400).json({ error: 'Missing required fields' });
@@ -48,12 +52,38 @@ exports.sendMail = async (req, res) => {
     return res.status(404).json({ error: 'Sender or receiver not found' });
   }
 
-  const mail = await mailModel.sendMail(title, content, senderUser.id, receiverUser.id);
-  if (!mail) {
-    return res.status(400).json({ error: 'Mail contains blacklisted URL' });
+  const attachments = files.map(file => ({
+    originalname: file.originalname,
+    mimetype: file.mimetype,
+    buffer: file.buffer,
+    size: file.size,
+  }));
+
+  let forwardedAttachments = [];
+  const raw = req.body.forwardedAttachments;
+
+  try {
+    if (raw) {
+      if (Array.isArray(raw)) {
+        forwardedAttachments = raw.map(att => JSON.parse(att));
+      } else {
+        forwardedAttachments = [JSON.parse(raw)];
+      }
+    }
+  } catch (err) {
+    console.error("Error parsing forwardedAttachments:", err);
   }
 
-  // delete the draft if exist
+  const combined = [...attachments, ...forwardedAttachments];
+
+  const mail = await mailModel.sendMail(
+    title,
+    content,
+    senderUser.id,
+    receiverUser.id,
+    combined
+  );
+
   if (draftId) {
     const draftModel = require('../models/draft');
     draftModel.deleteDraft(draftId, senderUser.id);
@@ -77,6 +107,34 @@ exports.getMailById = (req, res) => {
 
   res.status(200).json(mail); // HTTP 200 OK
 };
+
+// Get a specific mail with all his fields by its ID
+exports.getEnhancedMailById = (req, res) => {
+  const id = parseInt(req.params.id);
+  const mail = mailModel.getMailById(id);
+
+  if (!mail) {
+    return res.status(404).json({ error: 'Mail not found' });
+  }
+
+  if (mail.sender !== req.user.id && mail.receiver !== req.user.id) {
+    return res.status(403).json({ error: 'Unauthorized' });
+  }
+
+  const senderUser = userModel.getUserById(mail.sender);
+  const receiverUser = userModel.getUserById(mail.receiver);
+
+  const enrichedMail = {
+    ...mail,
+    senderEmail: senderUser ? senderUser.username : null,
+    receiverEmail: receiverUser ? receiverUser.username : null,
+    senderName: senderUser ? senderUser.name : null,
+    receiverName: receiverUser ? receiverUser.name : null,
+  };
+
+  res.status(200).json(enrichedMail);
+};
+
 
 // Update an existing mail by ID (partial update for title/content)
 exports.updateMail = async (req, res) => {
@@ -207,22 +265,29 @@ exports.getAdvancedMails = (req, res) => {
     isSpam,
     isFavorite,
     sender,
-    date,
+    receiver,
     subject,
     includes,
-    excludes
+    excludes,
+    dateRange 
   } = req.query;
+
+  let startDate, endDate;
+  if (dateRange) {
+    [startDate, endDate] = dateRange.split(',').map(d => new Date(d));
+  }
 
   const filters = {
     folder,
-    // only set boolean filters if present
     isSpam: isSpam === 'true' ? true : isSpam === 'false' ? false : undefined,
     isFavorite: isFavorite === 'true' ? true : isFavorite === 'false' ? false : undefined,
-    sender: sender ? Number(sender) : undefined,
-    date,
+    sender,
+    receiver,
     subject,
     includes,
-    excludes 
+    excludes,
+    startDate,
+    endDate
   };
 
   const mails = mailModel.getAllMailsForUser(userId, filters);

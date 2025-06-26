@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import MailItem from '../MailItem/MailItem';
-import { MdRefresh, MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import SelectedMailsAction from '../SelectedMailsAction/SelectedMailsAction';
 import './MailList.css';
 
-function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, onOpenMail }) {
+function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, onOpenMail, mailsOverride }) {
   const [page, setPage] = useState(0);
   const [mails, setMails] = useState([]);
   const [selectedMails, setSelectedMails] = useState(new Set());
@@ -13,15 +12,21 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
   const fetchMails = async () => {
     try {
       const params = new URLSearchParams();
-      if (folder) params.append('folder', folder);
+      if (folder && folder !== 'drafts') params.append('folder', folder);
       if (isFavorite !== undefined) params.append('isFavorite', isFavorite);
       if (sender) params.append('sender', sender);
       if (date) params.append('date', date);
       if (labelId) params.append('labelId', labelId);
 
-      const response = await fetch(`http://localhost:9090/api/mails?${params.toString()}`, {
+      const endpoint =
+        folder === 'drafts'
+          ? 'http://localhost:9090/api/draft'
+          : `http://localhost:9090/api/mails?${params.toString()}`;
+
+      const response = await fetch(endpoint, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
       if (!response.ok) throw new Error('Failed to fetch mails');
 
       const data = await response.json();
@@ -34,8 +39,14 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
   };
 
   useEffect(() => {
-    fetchMails();
-  }, [folder, isFavorite, sender, date, labelId]);
+    if (mailsOverride) {
+      setMails(mailsOverride);
+      setPage(0);
+      setSelectedMails(new Set());
+    } else {
+      fetchMails();
+    }
+  }, [mailsOverride, folder, isFavorite, sender, date, labelId]);
 
   const handleMailDeleted = (mailId) => {
     setMails(prev => prev.filter(mail => mail.id !== mailId));
@@ -56,12 +67,12 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
   };
 
   const handleCancelSelection = () => {
-  setSelectedMails(new Set());
+    setSelectedMails(new Set());
   };
 
-  const handleMailFavoriteToggled = (mailId, favorite) => {
+  const handleMailFavoriteToggled = (mailId, isFavorite) => {
     setMails(prev =>
-      prev.map(mail => mail.id === mailId ? { ...mail, favorite } : mail)
+      prev.map(mail => (mail.id === mailId ? { ...mail, isFavorite } : mail))
     );
   };
 
@@ -162,25 +173,25 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
             <span className="tooltip-text">Select All</span>
           </div>
 
-            {hasSelection ? (
-              <SelectedMailsAction
+          {hasSelection ? (
+            <SelectedMailsAction
               inSpamFolder={folder === 'spam'}
               onSpamToggle={handleSpamToggleSelected}
               onDelete={() => performActionOnSelected('delete')}
               onCancel={handleCancelSelection}
             />
-            ) : (
-              <button onClick={handleRefresh} className="MailList-btn">
-                <MdRefresh size={20} />
-              </button>
-            )}
-            <span className="tooltip-text">{hasSelection ? 'Selected actions' : 'Refresh'}</span>
+          ) : (
+            <button onClick={handleRefresh} className="MailList-btn" aria-label="Refresh">
+              <i className="bi bi-arrow-clockwise" style={{ fontSize: 20 }}></i>
+            </button>
+          )}
+          <span className="tooltip-text">{hasSelection ? 'Selected actions' : 'Refresh'}</span>
         </div>
 
         <div className="MailList-pagination">
           <div className="tooltip-container">
-            <button onClick={handlePrev} disabled={page === 0} className="MailList-btn">
-              <MdNavigateBefore size={24} />
+            <button onClick={handlePrev} disabled={page === 0} className="MailList-btn" aria-label="Newer">
+              <i className="bi bi-chevron-left" style={{ fontSize: 24 }}></i>
             </button>
             <span className="tooltip-text">Newer</span>
           </div>
@@ -189,8 +200,9 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
               onClick={handleNext}
               disabled={(page + 1) * mailsPerPage >= sortedMails.length}
               className="MailList-btn"
+              aria-label="Older"
             >
-              <MdNavigateNext size={24} />
+              <i className="bi bi-chevron-right" style={{ fontSize: 24 }}></i>
             </button>
             <span className="tooltip-text">Older</span>
           </div>

@@ -25,13 +25,6 @@
   font-weight: bold;
 }
 
-.label-item {
-  display: flex;
-  align-items: center;
-  padding: 8px;
-  cursor: pointer;
-}
-
 .label-name {
   margin-left: 10px;
 }
@@ -41,8 +34,4 @@
 .leftMenu.collapsed .labels-title,
 .leftMenu.collapsed .addLabel-button {
   display: none;
-}
-
-[data-bs-theme="dark"] .label-item:hover {
-  color: #333;
 }

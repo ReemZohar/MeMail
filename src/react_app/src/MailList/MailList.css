@@ -1,3 +1,5 @@
+
+
 .MailList {
   flex-grow: 1;
   display: flex;
@@ -9,8 +11,6 @@
   max-height: 80vh;
   border-radius: 0;
   border: none;
-  flex-grow: 1;
-  min-width: 0;
 }
 
 .MailList-header {
@@ -66,6 +66,7 @@
   display: inline-flex;
   align-items: center;
   margin: 0;
+  margin-left: 4px;
 }
 
 .tooltip-text {
@@ -101,8 +102,10 @@
 
 [data-bs-theme="dark"] .MailList-header {
   background-color: #3a3a3a;
+  border-bottom: 1px solid #444;
 }
 
 [data-bs-theme="dark"] .MailList {
-  background-color: #3a3a3a;
+  background-color: #1e1e1e;
+  border: 1px solid #444;
 }

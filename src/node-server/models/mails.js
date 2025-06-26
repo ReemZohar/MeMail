@@ -3,6 +3,7 @@ const mails = []
 
 const { isBlacklisted } = require('./blacklist');
 const { add, remove } = require('./blacklist');
+const userModel = require('./users');
 
 const extractUrls = (text) => {
   const regex = /((?:(https?|ftp):\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(:\d+)?(\/[^\s]*)?)/gi;
@@ -46,6 +47,10 @@ const getAllMailsForUser = (userId, filters = {}) => {
     userMails = userMails.filter(m => m.folder === filters.folder);
   }
 
+  if (filters.labelId !== undefined) {
+    userMails = userMails.filter(m => m.labels.includes(filters.labelId));
+  }
+
   if (filters.isSpam !== undefined) {
     userMails = userMails.filter(m => m.isSpam === filters.isSpam);
   } else {
@@ -56,12 +61,25 @@ const getAllMailsForUser = (userId, filters = {}) => {
     userMails = userMails.filter(m => m.isFavorite === filters.isFavorite);
   }
 
-  if (filters.sender) {
-    userMails = userMails.filter(m => m.sender === filters.sender);
+  if (filters.sender !== undefined) {
+    const from = userModel.getUserByUsername(filters.sender);
+    if (!from) return [];
+    userMails = userMails.filter(m => Number(m.sender) === Number(from.id));
   }
 
-  if (filters.date) {
-    userMails = userMails.filter(m => new Date(m.time).toDateString() === new Date(filters.date).toDateString());
+  if (filters.receiver !== undefined) {
+    const to = userModel.getUserByUsername(filters.receiver);
+    if (!to) return [];
+    userMails = userMails.filter(m => Number(m.receiver) === Number(to.id));
+  }
+
+  if (filters.startDate && filters.endDate) {
+    const start = new Date(filters.startDate);
+    const end = new Date(filters.endDate);
+    userMails = userMails.filter(m => {
+      const mailDate = new Date(m.time);
+      return mailDate >= start && mailDate <= end;
+    });
   }
 
   if (filters.subject) {
@@ -76,8 +94,9 @@ const getAllMailsForUser = (userId, filters = {}) => {
     userMails = userMails.filter(m => !m.content.includes(filters.excludes));
   }
 
-  return userMails.sort((a, b) => b.time - a.time).slice(0, 50);
+  return userMails.sort((a, b) => b.time - a.time);
 };
+
 
 const getSpamMailsForUser = (userId) => {
   return mails
@@ -87,7 +106,10 @@ const getSpamMailsForUser = (userId) => {
 };
 
 
-const sendMail = async (title, content, sender, receiver) => {
+const fs = require('fs');
+const path = require('path');
+
+const sendMail = async (title, content, sender, receiver, attachments = []) => {
   const time = Date.now();
 
   const extractUrls = (text) => {
@@ -97,12 +119,35 @@ const sendMail = async (title, content, sender, receiver) => {
 
   const urlsToCheck = [...extractUrls(title), ...extractUrls(content)];
 
+  let isSpam = false;
   for (const url of urlsToCheck) {
-    const blacklisted = await isBlacklisted(url);
-    if (blacklisted) {
-      return null;
+    if (await isBlacklisted(url)) {
+      isSpam = true;
+      break;
     }
   }
+
+  const processedAttachments = attachments.map(file => {
+  if (!file.buffer) {
+    return {
+      originalname: file.originalname,
+      mimetype: file.mimetype,
+      size: file.size,
+      storedFilename: file.storedFilename,
+    };
+  }
+
+  const uniqueName = `${Date.now()}-${Math.random().toString(36).substring(2)}-${file.originalname}`;
+  const uploadPath = path.join(__dirname, '..', 'uploads', uniqueName);
+  fs.writeFileSync(uploadPath, file.buffer);
+
+  return {
+    originalname: file.originalname,
+    mimetype: file.mimetype,
+    size: file.size,
+    storedFilename: uniqueName,
+  };
+});
 
   const sent = {
     id: idCounter++,
@@ -114,22 +159,22 @@ const sendMail = async (title, content, sender, receiver) => {
     folder: 'sent',
     isRead: false,
     isFavorite: false,
-    labels: [] // assign mail to lables
+    isSpam: isSpam,
+    labels: [],
+    attachments: processedAttachments, 
   };
 
   const received = {
     ...sent,
     id: idCounter++,
     folder: 'inbox',
-    isRead: false,
-    labels: [], // assign mail to lables
   };
 
   mails.push(sent);
   mails.push(received);
 
   return sent;
-}
+};
 
 
 const getMailById = (id) => mails.find(m => m.id === id)
@@ -168,11 +213,14 @@ const searchMails = (query, userId, labelId = null) => {
   const lowerQuery = query.toLowerCase();
 
   return mails.filter(mail => {
+    const senderStr = String(mail.sender);
+    const receiverStr = String(mail.receiver);
+
     const matchesText =
       mail.title.toLowerCase().includes(lowerQuery) ||
       mail.content.toLowerCase().includes(lowerQuery) ||
-      mail.sender.toLowerCase().includes(lowerQuery) ||
-      mail.receiver.toLowerCase().includes(lowerQuery);
+      senderStr.toLowerCase().includes(lowerQuery) ||
+      receiverStr.toLowerCase().includes(lowerQuery);
 
     const isOwnedByUser =
       (mail.sender === userId && mail.folder === 'sent') ||
@@ -183,6 +231,7 @@ const searchMails = (query, userId, labelId = null) => {
     return matchesText && isOwnedByUser && hasLabel;
   });
 };
+
 const updateIsRead = (mailId, isRead) => {
   const mail = mails.find(m => m.id === mailId);
   if (!mail) return null;

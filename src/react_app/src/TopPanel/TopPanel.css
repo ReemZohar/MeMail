@@ -20,9 +20,11 @@
   display: flex;
   align-items: center;
   margin-left: 16px;
+  
 }
 
 .user-button {
+  margin-right: 8px;
   background: none;
   border: none;
   cursor: pointer;
@@ -37,9 +39,18 @@
   color: #1a73e8;
 }
 
+.avatar-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+}
+
 [data-bs-theme="dark"] .top-panel {
   background-color: #3a3a3a;
-  border-bottom: 1px solid #5a5a5a;
+  border-bottom: 1px solid #444;
+  border: 1px solid #444;
 }
 
 [data-bs-theme="dark"] .user-button {

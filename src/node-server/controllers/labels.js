@@ -1,5 +1,6 @@
 const labelModel = require('../models/labels'); // label handles label operations
 const userModel = require('../models/users');
+const mailModel = require('../models/mails');
 
 exports.createLabel = (req, res) => {
   const userId = req.user.id;
@@ -19,7 +20,7 @@ exports.createLabel = (req, res) => {
   }
 
   const label = labelModel.createLabel(name, userId);
-  res.status(201).location(`/api/labels/${label.id}`).send();
+  res.status(201).location(`/api/labels/${label.id}`).json(label);
 };
 
 exports.getAllLabels = (req, res) => {
@@ -62,7 +63,7 @@ exports.updateLabel = (req, res) => {
     res.status(204).send(); // HTTP 204 No Content
 };
 
-// Delete a label by ID
+//Delete a label by ID
 exports.deleteLabel = (req, res) => {
   const id = Number(req.params.id);
   const label = labelModel.getLabelById(id);
@@ -77,7 +78,7 @@ exports.deleteLabel = (req, res) => {
     return res.status(404).json({ error: 'Failed to delete label\n' });
   }
 
-  res.status(204).send(); // HTTP 204 No Content
+  res.status(204).send(); //HTTP 204 No Content
 };
 
 //remove lable from mail
@@ -94,7 +95,7 @@ exports.removeLabelFromMail = (req, res) => {
     return res.status(403).json({ error: 'Not authorized' });
   }
 
-  const updatedMail = mailModel.removeLabelFromMail(mailId, labelId);
+  const updatedMail = labelModel.removeLabelFromMail(mailId, labelId);
   if (!updatedMail) {
     return res.status(400).json({ error: 'Label not found on mail' });
   }
@@ -104,34 +105,38 @@ exports.removeLabelFromMail = (req, res) => {
 
 
 exports.addLabelToMail = (req, res) => {
-  const mailId = Number(req.params.id);
-  const { labelId } = req.body;
+  try {
+    const mailId = Number(req.params.id);
+    const { labelId } = req.body;
 
-  // basic check to make sure the lable exists
-  if (!labelId) {
-    return res.status(400).json({ error: 'labelId is required' });
+    if (!labelId) {
+      return res.status(400).json({ error: 'labelId is required' });
+    }
+
+    const mail = mailModel.getMailById(mailId);
+    if (!mail) {
+      return res.status(404).json({ error: 'Mail not found' });
+    }
+
+    if (mail.receiver !== req.user.id && mail.sender !== req.user.id) {
+      return res.status(403).json({ error: 'Not authorized to label this mail' });
+    }
+
+    const label = labelModel.getLabelById(labelId);
+    if (!label) {
+      return res.status(404).json({ error: 'Label not found' });
+    }
+
+    const updatedMail = labelModel.addLabelToMail(mailId, labelId);
+    if (!updatedMail) {
+      return res.status(500).json({ error: 'Failed to add label to mail' });
+    }
+
+    return res.status(200).json(updatedMail);
+  } catch (error) {
+    console.error('Error in addLabelToMail:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
-
-  const mail = mailModel.getMailById(mailId);
-  if (!mail) {
-    return res.status(404).json({ error: 'Mail not found' });
-  }
-
-  // check that the mail is of the user account
-  if (mail.receiver !== req.user.id && mail.sender !== req.user.id) {
-    return res.status(403).json({ error: 'Not authorized to label this mail' });
-  }
-
-  // check that lable exists
-  const label = labelModel.getLabelById(labelId);
-  if (!label) {
-    return res.status(404).json({ error: 'Label not found' });
-  }
-
-  // adding the lable to mail
-  const updatedMail = mailModel.addLabelToMail(mailId, labelId);
-  res.status(200).json(updatedMail);
-
 };
 
 function authorizeOwnership(resource, userId, res) {

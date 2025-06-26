@@ -33,9 +33,9 @@
 }
 
 .label.active {
-  background-color: #d3e3fd;
-  color: #1a73e8;
-  font-weight: 600;
+  background-color: #d3e3fd ;
+  color: #1a73e8 ;
+  font-weight: 600 ;
 }
 
 
@@ -44,10 +44,42 @@
 }
 
 .label .label-icon {
-  margin-right: 8px;
+  margin-right: 15px;
 }
 
 .label:hover,
 .label-item:hover {
   background-color: #f1f3f4;
+}
+
+[data-bs-theme="dark"] .label:hover {
+  background-color: #444444;
+  color: #ddd;
+}
+
+[data-bs-theme="dark"] .label:hover .label-text {
+  color: #ddd;
+}
+
+[data-bs-theme="dark"] .label:hover .label-icon {
+  color: #ddd;
+}
+
+[data-bs-theme="dark"] .label.active {
+  background-color: #1a3db7;
+  color: #a8c0ff;
+  font-weight: 600;
+}
+
+[data-bs-theme="dark"] .label:hover .label-menu-button {
+  color: #ccc;
+  display: inline;
+}
+
+.icon-dots {
+  font-size: 20px;
+}
+
+.icon-tag {
+  font-size: 18px;
 }

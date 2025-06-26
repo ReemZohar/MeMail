@@ -15,7 +15,7 @@
 }
 
 .customLabelMenu {
-  width: 240px;
+  width: 100%;
 }
 
 .customLabelMenu.collapsed {
@@ -138,4 +138,8 @@
 
 [data-bs-theme="dark"] .addCustomLabel-button:hover {
   color: #444;
+}
+
+.label-wrapper {
+  position: relative;
 }

@@ -11,7 +11,7 @@ function CustomLabelMenu({ theme, labels, onLabelClick, activeLabelId, isCollaps
 
   const addLabel = (labelName) => {
     if (!labelName.trim()) return;
-    fetch('/api/labels', {
+    fetch(`http://localhost:9090/api/labels`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -29,7 +29,7 @@ function CustomLabelMenu({ theme, labels, onLabelClick, activeLabelId, isCollaps
 
   const saveEditedLabel = (newName) => {
     if (!editLabelData || !newName.trim()) return;
-    fetch(`/api/labels/${editLabelData.id}`, {
+    fetch(`http://localhost:9090/api/labels/${editLabelData.id}`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -48,7 +48,7 @@ function CustomLabelMenu({ theme, labels, onLabelClick, activeLabelId, isCollaps
   };
 
   const deleteLabel = (id) => {
-    fetch(`/api/labels/${id}`, {
+    fetch(`http://localhost:9090/api/labels/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -70,61 +70,67 @@ function CustomLabelMenu({ theme, labels, onLabelClick, activeLabelId, isCollaps
     setOpenOptionsId(null);
   };
 
-  return (
-    <div className={`customLabelMenu ${theme}`}>
-      <div className="labels-header">
-        {!isCollapsed && <span className="labels-title">Labels</span>}
-        <button
-          className="addCustomLabel-button"
-          onClick={() => setIsWindowOpen(true)}
-          title="Add label"
-          aria-label="Add label"
-        >
-          +
-        </button>
-      </div>
-
-      {labels.map(label => (
-        <div key={label.id} className="label-item" style={{ position: 'relative' }}>
-          <Label.CustomLabel
-            theme={theme}
-            name={label.name}
-            isActive={label.id === activeLabelId}
-            onClick={() => onLabelClick(label.id, false, null, true)}
-            onMenuClick={() =>
-              setOpenOptionsId(prev => (prev === label.id ? null : label.id))
-            }
-            isCollapsed={isCollapsed}
-          />
-
-          {!isCollapsed && openOptionsId === label.id && (
-            <LabelOptionsMenu
-              onEdit={() => openEditLabel(label)}
-              onDelete={() => deleteLabel(label.id)}
-              onClose={() => setOpenOptionsId(null)}
-            />
-          )}
-        </div>
-      ))}
-
-      {isWindowOpen && (
-        <NewCustomLabelWindow
-          onSave={addLabel}
-          onCancel={() => setIsWindowOpen(false)}
-        />
-      )}
-
-      {editLabelData && (
-        <NewCustomLabelWindow
-          title="Edit label"
-          content="Label name:"
-          initialValue={editLabelData.name}
-          onSave={saveEditedLabel}
-          onCancel={() => setEditLabelData(null)}
-        />
-      )}
+return (
+  <div className={`customLabelMenu ${theme}`}>
+    <div className="labels-header">
+      {!isCollapsed && <span className="labels-title">Labels</span>}
+      <button
+        className="addCustomLabel-button"
+        onClick={() => setIsWindowOpen(true)}
+        title="Add label"
+        aria-label="Add label"
+      >
+        +
+      </button>
     </div>
-  );
+
+  <div className="labelMenu">
+    {labels.map(label => (
+      <div
+        key={label.id}
+        className="label-wrapper"
+      >
+        <Label.CustomLabel
+          theme={theme}
+          name={label.name}
+          isActive={label.id === activeLabelId}
+          onClick={() => onLabelClick(label.id, false, null, true)}
+          onMenuClick={() =>
+            setOpenOptionsId(prev => (prev === label.id ? null : label.id))
+          }
+          isCollapsed={isCollapsed}
+        />
+        {!isCollapsed && openOptionsId === label.id && (
+          <LabelOptionsMenu
+            onEdit={() => openEditLabel(label)}
+            onDelete={() => deleteLabel(label.id)}
+            onClose={() => setOpenOptionsId(null)}
+            className="label-options-menu"
+          />
+        )}
+      </div>
+    ))}
+  </div>
+
+    {isWindowOpen && (
+      <NewCustomLabelWindow
+        onSave={addLabel}
+        onCancel={() => setIsWindowOpen(false)}
+      />
+    )}
+
+    {editLabelData && (
+      <NewCustomLabelWindow
+        title="Edit label"
+        content="Label name:"
+        initialValue={editLabelData.name}
+        onSave={saveEditedLabel}
+        onCancel={() => setEditLabelData(null)}
+      />
+    )}
+  </div>
+);
+
 }
 
 export default CustomLabelMenu;

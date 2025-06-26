@@ -1,35 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MailRow from '../MailRow/MailRow';
 import './MailItem.css';
 
 function MailItem({ mail, isSelected, whenSelected, onMailDeleted, onMailMovedToSpam, onMailFavoriteToggled, onOpenMail }) {
-  const [folder, setFolder] = useState(mail.folder);
-  const [isFavorite, setIsFavorite] = useState(mail.favorite);
-  const [isSpam, setIsSpam] = useState(mail.spam);
-  const [isRead, setIsRead] = useState(mail.isRead ?? false);
+  const [mailState, setMailState] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isRead, setIsRead] = useState(false);
 
-  const handleActionDone = ({ type, mailId, favorite }) => {
+  // Load full mail details (including senderName etc.) from backend
+  useEffect(() => {
+    const fetchMailDetails = async () => {
+      try {
+        const res = await fetch(`http://localhost:9090/api/mails/${mail.id}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        if (!res.ok) {
+          throw new Error(`Failed to fetch mail: ${res.statusText}`);
+        }
+        const data = await res.json();
+        setMailState(data);
+        setIsRead(data.isRead ?? false);
+      } catch (e) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMailDetails();
+  }, [mail.id]);
+
+  if (loading) return <div>Loading mail...</div>;
+  if (error) return <div>Error loading mail: {error}</div>;
+  if (!mailState) return null;
+
+  const handleActionDone = ({ type, mailId, isFavorite }) => {
     if (type === 'delete') {
       onMailDeleted(mailId);
     } else if (type === 'spam') {
-      setFolder('spam');
       onMailMovedToSpam(mailId);
+    } else if (type === 'unspam') {
     } else if (type === 'favoriteToggle') {
-      setIsFavorite(favorite);
-      onMailFavoriteToggled?.(mailId, favorite);
+      onMailFavoriteToggled?.(mailId, isFavorite);
     }
   };
 
   const handleClick = async () => {
     if (!isRead) {
       try {
-        const res = await fetch(`http://localhost:9090/api/mails/${mail.id}/isRead`, {
+        const res = await fetch(`http://localhost:9090/api/mails/${mailState.id}/isRead`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
-          body: JSON.stringify({ isRead: true })
+          body: JSON.stringify({ isRead: true }),
         });
         if (res.ok) {
           setIsRead(true);
@@ -39,24 +67,22 @@ function MailItem({ mail, isSelected, whenSelected, onMailDeleted, onMailMovedTo
       }
     }
 
-    if (onOpenMail) {
-      onOpenMail(mail);
-    }
+    onOpenMail?.(mailState);
   };
 
-  if (folder === 'deleted') return null;
+  if (mailState.folder === 'deleted') return null;
 
-  const formattedDate = new Date(mail.date).toLocaleDateString(undefined, {
+  const formattedDate = new Date(mailState.time || mailState.date).toLocaleDateString(undefined, {
     year: 'numeric', month: 'short', day: 'numeric',
   });
 
-  const shortContent = mail.content && mail.content.length > 100
-    ? mail.content.slice(0, 100) + '...'
-    : mail.content || '';
+  const shortContent = mailState.content && mailState.content.length > 100
+    ? mailState.content.slice(0, 100) + '...'
+    : mailState.content || '';
 
   return (
     <div
-      className={`MailItem ${folder} ${isRead ? 'read' : 'unread'}`}
+      className={`MailItem ${mailState.folder} ${isRead ? 'read' : 'unread'}`}
       onClick={handleClick}
     >
       <div className="MailItem-left">
@@ -64,15 +90,17 @@ function MailItem({ mail, isSelected, whenSelected, onMailDeleted, onMailMovedTo
           type="checkbox"
           className="checkBox"
           checked={isSelected}
-          onChange={() => whenSelected(mail.id)}
+          onChange={() => whenSelected(mailState.id)}
           onClick={(e) => e.stopPropagation()}
         />
-        <div className="MailItem-sender" title={mail.sender}>{mail.sender}</div>
+        <div className="MailItem-sender" title={mailState.senderEmail}>
+          {mailState.senderName || mailState.senderEmail}
+        </div>
       </div>
 
       <div className="MailItem-center">
         <div className="MailItem-title-content">
-          <span className="MailItem-title">{mail.title}</span>
+          <span className="MailItem-title">{mailState.title}</span>
           <span className="MailItem-separator">–</span>
           <span className="MailItem-snippet">{shortContent}</span>
         </div>
@@ -81,11 +109,11 @@ function MailItem({ mail, isSelected, whenSelected, onMailDeleted, onMailMovedTo
       <div className="MailItem-right">
         <div className="MailItem-date">{formattedDate}</div>
         <MailRow
-          mailId={mail.id}
-          title={mail.title}
-          content={mail.content}
-          isFavorite={isFavorite}
-          isSpam={isSpam}
+          mailId={mailState.id}
+          title={mailState.title}
+          content={mailState.content}
+          isFavorite={mailState.isFavorite}
+          isSpam={mailState.isSpam}
           onActionDone={handleActionDone}
         />
       </div>

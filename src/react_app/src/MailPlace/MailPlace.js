@@ -2,21 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import MailList from '../MailList/MailList';
 import MailWindow from '../MailWindow/MailWindow';
+import './MailPlace.css';
 
-export default function MailPlace({
-  token,
-  currentUserEmail,
-  selectedMailId
-}) {
+function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
   const [openedMail, setOpenedMail] = useState(null);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const folder = searchParams.get("folder") || 'inbox';
-  const labelId = searchParams.get("labelId") || null;
-  const isFavorite = searchParams.get("isFavorite") === "true";
+  const folderParam = searchParams.get("folder") || 'inbox';
+  const labelIdParam = searchParams.get("labelId") || null;
+  const isFavoriteParamRaw = searchParams.get("isFavorite");
+  const isFavoriteParam = isFavoriteParamRaw === "true" ? true : (isFavoriteParamRaw === "false" ? false : undefined);
   const sender = searchParams.get("sender") || null;
   const date = searchParams.get("date") || null;
+
+  const foldersWithoutFavoriteFilter = ['inbox', 'sent', 'allmail'];
+  const shouldSendIsFavorite = isFavoriteParam === true || (isFavoriteParam === false && !foldersWithoutFavoriteFilter.includes(folderParam));
 
   useEffect(() => {
     const fetchMail = async () => {
@@ -27,11 +28,8 @@ export default function MailPlace({
 
       try {
         const res = await fetch(`http://localhost:9090/api/mails/${selectedMailId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
-
         if (!res.ok) throw new Error('Failed to fetch mail');
 
         const data = await res.json();
@@ -45,25 +43,27 @@ export default function MailPlace({
     fetchMail();
   }, [selectedMailId, token]);
 
-const handleOpenMail = (mail) => {
-  const params = new URLSearchParams();
-  if (folder) params.set("folder", folder);
-  if (isFavorite) params.set("isFavorite", "true");
-  if (labelId) params.set("labelId", labelId);
-  if (sender) params.set("sender", sender);
-  if (date) params.set("date", date);
+  const handleOpenMail = (mail) => {
+    const params = new URLSearchParams();
+    if (!shouldSendIsFavorite && folderParam) params.set("folder", folderParam);
+    if (shouldSendIsFavorite && isFavoriteParam === true) params.set("isFavorite", "true");
+    if (shouldSendIsFavorite && isFavoriteParam === false) params.set("isFavorite", "false");
+    if (labelIdParam) params.set("labelId", labelIdParam);
+    if (sender) params.set("sender", sender);
+    if (date) params.set("date", date);
 
-  navigate({
-    pathname: `/mail/${mail.id}`,
-    search: `?${params.toString()}`,
-  });
-};
+    navigate({
+      pathname: `/mail/${mail.id}`,
+      search: `?${params.toString()}`,
+    });
+  };
 
   const handleCloseMail = () => {
     const params = new URLSearchParams();
-    if (folder) params.set("folder", folder);
-    if (isFavorite) params.set("isFavorite", "true");
-    if (labelId) params.set("labelId", labelId);
+    if (!shouldSendIsFavorite && folderParam) params.set("folder", folderParam);
+    if (shouldSendIsFavorite && isFavoriteParam === true) params.set("isFavorite", "true");
+    if (shouldSendIsFavorite && isFavoriteParam === false) params.set("isFavorite", "false");
+    if (labelIdParam) params.set("labelId", labelIdParam);
     if (sender) params.set("sender", sender);
     if (date) params.set("date", date);
 
@@ -71,26 +71,34 @@ const handleOpenMail = (mail) => {
   };
 
   return (
-    <div className="mail-area-container" style={{ display: 'flex', height: '100vh' }}>
+    <div className="MailPlace">
       {!openedMail && (
-        <div className="mail-list-wrapper" style={{ flex: 1, overflowY: 'auto' }}>
-          <MailList
-            token={token}
-            folder={folder}
-            isFavorite={isFavorite}
-            labelId={labelId}
-            sender={sender}
-            date={date}
-            onOpenMail={handleOpenMail}
-          />
+        <div className="mail-list-wrapper">
+        <MailList
+          token={token}
+          folder={shouldSendIsFavorite && isFavoriteParam === false ? folderParam : (isFavoriteParam === true ? null : folderParam)}
+          isFavorite={isFavoriteParam === true ? true : undefined}
+          labelId={labelIdParam}
+          sender={sender}
+          date={date}
+          mailsOverride={searchResults}
+          onOpenMail={handleOpenMail}
+        />
         </div>
       )}
       {openedMail && (
-        <div className="mail-window-wrapper" style={{ flex: 1, overflowY: 'auto', borderLeft: '1px solid #ccc' }}>
-          <button onClick={handleCloseMail}>← Back to list</button>
-          <MailWindow mail={openedMail} currentUserEmail={currentUserEmail} onMailDeleted={() => handleCloseMail()} onBack={handleCloseMail} />
+        <div className="mail-window-wrapper">
+          <MailWindow
+            mail={openedMail}
+            currentUserEmail={currentUserEmail}
+            onMailDeleted={() => handleCloseMail()}
+            onBack={handleCloseMail}
+            token={token}
+          />
         </div>
       )}
     </div>
   );
 }
+
+export default MailPlace;

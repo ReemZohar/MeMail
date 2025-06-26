@@ -1,4 +1,4 @@
-.FavoriteMail-button {
+.reply-button {
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -12,17 +12,12 @@
   height: 32px;
 }
 
-.FavoriteMail-button:hover {
+.reply-button:hover {
   background-color: #f1f3f4;
 }
 
-.FavoriteMail-button i.favorite-icon {
-  font-size: 18px;
+.reply-button svg {
   color: #444;
-}
-
-.FavoriteMail-button i.bi-star-fill.favorite-icon {
-  color: gold;
 }
 
 .tooltip-container {
@@ -50,17 +45,4 @@
 .tooltip-container:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
-}
-
-[data-bs-theme="dark"] .FavoriteMail-button:hover {
-  background-color: #3a3a3a;
-}
-
-[data-bs-theme="dark"] .FavoriteMail-button i.favorite-icon {
-  color: #ddd;
-}
-
-[data-bs-theme="dark"] .tooltip-text {
-  background-color: #555;
-  color: #fff;
 }

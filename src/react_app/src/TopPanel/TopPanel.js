@@ -1,14 +1,14 @@
-import React from 'react';
 import SearchBar from '../SearchBar/SearchBar';
-import { MdAccountCircle } from 'react-icons/md';
+import DarkModeButton from '../DarkModeButton/DarkModeButton';
 import './TopPanel.css';
 
-function TopPanel({ onUserClick, userBtnRef }) {
+function TopPanel({ onUserClick, userBtnRef, avatar, token, onSearchResults }) {
   return (
     <div className="top-panel">
       <div className="top-panel-left">
-        <SearchBar />
+        <SearchBar token={token} onSearchResults={onSearchResults} />
       </div>
+
       <div className="top-panel-right">
         <button
           ref={userBtnRef}
@@ -16,8 +16,9 @@ function TopPanel({ onUserClick, userBtnRef }) {
           onClick={onUserClick}
           aria-label="User menu"
         >
-          <MdAccountCircle size={32} />
+          <img src={avatar} alt="Avatar" className="avatar-icon" />
         </button>
+        <DarkModeButton />
       </div>
     </div>
   );

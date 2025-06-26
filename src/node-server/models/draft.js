@@ -24,7 +24,8 @@ const updateDraft = (id, sender, title, content, receiver) => {
   return draft;
 };
 
-const getDraftById = (id, sender) => drafts.find(d => d.id === parseInt(id) && d.sender === sender);
+const getDraftById = (id, sender) =>
+  drafts.find(d => d.id === parseInt(id) && d.sender === sender);
 
 const deleteDraft = (id, sender) => {
   const index = drafts.findIndex(d => d.id === parseInt(id) && d.sender === sender);
@@ -33,4 +34,13 @@ const deleteDraft = (id, sender) => {
   return true;
 };
 
-module.exports = { createDraft, updateDraft, getDraftById, deleteDraft };
+const getDraftsBySender = (sender) =>
+  drafts.filter(d => d.sender === sender);
+
+module.exports = {
+  createDraft,
+  updateDraft,
+  getDraftById,
+  deleteDraft,
+  getDraftsBySender 
+};
