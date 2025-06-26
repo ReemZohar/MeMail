@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { MdDarkMode, MdLightMode } from 'react-icons/md';
 import './DarkModeButton.css';
 
 function DarkModeButton() {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') ||
-           (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   });
 
   useEffect(() => {
@@ -23,7 +22,7 @@ function DarkModeButton() {
       onClick={thereState}
       aria-label="dark/light mode"
     >
-      {theme === 'light' ? <MdDarkMode /> : <MdLightMode />}
+      {theme === 'light' ? <i className="bi bi-moon-fill"></i> : <i className="bi bi-sun-fill"></i>}
     </button>
   );
 }

@@ -1,4 +1,3 @@
-import { MdCreate } from "react-icons/md";
 import "./NewMailButton.css";
 
 export default function NewMailButton({ theme, isCollapsed, onClick }) {
@@ -9,7 +8,7 @@ export default function NewMailButton({ theme, isCollapsed, onClick }) {
       }`}
       onClick={onClick}
     >
-      <MdCreate size={20} className="newMail-icon" />
+      <i className="bi bi-pencil" style={{ fontSize: 20 }}></i>
       {!isCollapsed && <span className="text">Compose</span>}
     </button>
   );

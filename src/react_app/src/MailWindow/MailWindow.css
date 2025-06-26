@@ -510,3 +510,23 @@
   border: 1.5px solid #444;
   color: #fff;
 }
+
+.icon-back {
+  font-size: 24px;
+}
+
+.label-loading {
+  font-size: 14px;
+}
+
+.icon-chevron {
+  font-size: 18px;
+}
+
+.icon-more {
+  font-size: 20px;
+}
+
+  .icon-edit {
+  font-size: 22px;
+}

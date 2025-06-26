@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import { MdEdit, MdDelete } from 'react-icons/md';
 import './LabelOptionsMenu.css';
 
 function LabelOptionsMenu({ onEdit, onDelete, onClose }) {
@@ -20,14 +19,14 @@ function LabelOptionsMenu({ onEdit, onDelete, onClose }) {
 
   return (
     <div className="label-options-menu" ref={menuRef}>
-      <button className="option-btn" onClick={onEdit}>
-        <MdEdit style={{ verticalAlign: 'middle', marginRight: 6 }} />
-        Edit
-      </button>
-      <button className="option-btn delete" onClick={onDelete}>
-        <MdDelete style={{ verticalAlign: 'middle', marginRight: 6 }} />
-        Remove label
-      </button>
+       <button className="option-btn" onClick={onEdit}>
+      <i className="bi bi-pencil icon-with-margin"></i>
+      Edit
+    </button>
+    <button className="option-btn delete" onClick={onDelete}>
+      <i className="bi bi-trash icon-with-margin"></i>
+      Remove label
+    </button>
       <button className="option-btn close" onClick={onClose}>X</button>
     </div>
   );

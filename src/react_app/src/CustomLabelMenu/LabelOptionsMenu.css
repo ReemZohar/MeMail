@@ -58,3 +58,8 @@
     transform: translateY(0);
   }
 }
+
+.icon-with-margin {
+  vertical-align: middle;
+  margin-right: 6px;
+}

@@ -139,3 +139,7 @@
 [data-bs-theme="dark"] .addCustomLabel-button:hover {
   color: #444;
 }
+
+.label-wrapper {
+  position: relative;
+}

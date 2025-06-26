@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './NewMailWindow.css';
-import { MdClose, MdAttachFile, MdInsertPhoto, MdMoreVert, MdMinimize } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
 function NewMailWindow({ index = 0, onClose, title='', receiver='', content='', token }) {
@@ -9,8 +8,8 @@ function NewMailWindow({ index = 0, onClose, title='', receiver='', content='', 
   const receiverFmt = receiver ? '---\n' + receiver + ":\n" : "";
   const [formData, setFormData] = useState({
     receiver: receiver,
-    title: receiver != '' ? 'RE: ' + title : title,
-    content: title != '' ? receiverFmt + content + "\n---\n" : content,
+    title: receiver !== '' ? 'RE: ' + title : title,
+    content: title !== '' ? receiverFmt + content + "\n---\n" : content,
   });
 
   const [error, setError] = useState(null);
@@ -23,7 +22,7 @@ function NewMailWindow({ index = 0, onClose, title='', receiver='', content='', 
   };
 
   const sendMail = async () => {
-      const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     try {
       const response = await fetch('http://localhost:9090/api/mails', {
         method: 'POST',
@@ -35,7 +34,6 @@ function NewMailWindow({ index = 0, onClose, title='', receiver='', content='', 
       });
 
       if (response.ok) {
-        //alert('Mail sent successfully');
         navigate('/mail?folder=inbox');
         onClose();
 
@@ -94,10 +92,13 @@ function NewMailWindow({ index = 0, onClose, title='', receiver='', content='', 
     <div className="mail-popup shadow" style={{ right: `${rightOffset}px` }}>
       <div className="mail-header d-flex justify-content-between align-items-center">
         <span>New Message</span>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          {/* Optional minimize button (if you add logic later) */}
-          {/* <MdMinimize size={20} onClick={handleMinimize} style={{ cursor: 'pointer' }} /> */}
-          <MdClose size={20} onClick={handleClose} style={{ cursor: 'pointer' }} />
+        <div className="mail-header-icons">
+          {/* <i className="bi bi-dash icon" /> */}
+          <i
+            className="bi bi-x icon icon-close"
+            onClick={handleClose}
+            aria-label="Close"
+          />
         </div>
       </div>
       <form className="mail-form" onSubmit={handleSubmit}>
@@ -131,9 +132,9 @@ function NewMailWindow({ index = 0, onClose, title='', receiver='', content='', 
         <div className="mail-actions">
           <button type="submit" className="btn btn-send">Send</button>
           <div className="icon-bar">
-            <MdAttachFile size={20} />
-            <MdInsertPhoto size={20} />
-            <MdMoreVert size={20} />
+            <i className="bi bi-paperclip icon"></i>
+            <i className="bi bi-image icon"></i>
+            <i className="bi bi-three-dots-vertical icon"></i>
           </div>
         </div>
       </form>

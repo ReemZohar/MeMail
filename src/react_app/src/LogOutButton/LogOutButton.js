@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MdExitToApp } from 'react-icons/md';
 import './LogOutButton.css';
 
 function LogOutButton({ token }) {
@@ -33,15 +32,14 @@ function LogOutButton({ token }) {
   };
 
   return (
-<button
-  onClick={handleLogout}
-  className="logout-button"
-  type="button"
->
-  <MdExitToApp size={20} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
-  Logout
-</button>
-
+    <button
+      onClick={handleLogout}
+      className="logout-button"
+      type="button"
+    >
+      <i className="bi bi-box-arrow-right" style={{ marginRight: '8px', verticalAlign: 'middle', fontSize: 20 }}></i>
+      Logout
+    </button>
   );
 }
 

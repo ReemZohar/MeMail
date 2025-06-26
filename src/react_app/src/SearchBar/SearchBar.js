@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MdSearch, MdClose, MdTune } from 'react-icons/md';
 import AdvancedSearch from '../AdvancedSearch/AdvancedSearch';
 import './SearchBar.css';
 
@@ -32,22 +31,22 @@ function SearchBar({ token, onSearchResults }) {
     }
   };
 
-useEffect(() => {
-  const handler = setTimeout(() => {
-    const path = window.location.pathname;
-    const isViewingMail = /^\/mail\/\d+$/.test(path); //Don't search if the user is in MailWindow component
-    if (!isViewingMail) {
-      if (query.trim()) {
-        navigate(`/mail?search=${encodeURIComponent(query)}`);
-        performSearch(query);
-      } else {
-        navigate('/mail');
-        onSearchResults(null);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      const path = window.location.pathname;
+      const isViewingMail = /^\/mail\/\d+$/.test(path);
+      if (!isViewingMail) {
+        if (query.trim()) {
+          navigate(`/mail?search=${encodeURIComponent(query)}`);
+          performSearch(query);
+        } else {
+          navigate('/mail');
+          onSearchResults(null);
+        }
       }
-    }
-  }, 300);
-  return () => clearTimeout(handler);
-}, [query, navigate]);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [query, navigate]);
 
   const clearInput = () => {
     setQuery('');
@@ -62,7 +61,7 @@ useEffect(() => {
           onClick={() => performSearch(query)}
           aria-label="Search"
         >
-          <MdSearch className="search-icon" />
+          <i className="bi bi-search search-icon"></i>
         </button>
         <input
           type="text"
@@ -74,7 +73,7 @@ useEffect(() => {
         />
         {query && (
           <button className="clear-button" onClick={clearInput} aria-label="Clear search">
-            <MdClose size={20} />
+            <i className="bi bi-x" style={{ fontSize: 20 }}></i>
           </button>
         )}
         <button
@@ -82,7 +81,7 @@ useEffect(() => {
           onClick={() => setShowAdvanced(!showAdvanced)}
           aria-label="Advanced search"
         >
-          <MdTune size={20} />
+          <i className="bi bi-funnel" style={{ fontSize: 20 }}></i>
         </button>
       </div>
 

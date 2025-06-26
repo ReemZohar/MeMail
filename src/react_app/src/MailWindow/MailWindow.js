@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import './MailWindow.css';
-import { MdExpandMore, MdExpandLess, MdArrowBack, MdMoreVert, MdEdit, MdMarkEmailUnread } from 'react-icons/md';
 import MailRow from '../MailRow/MailRow';
 import NewMailWindow from '../NewMailWindow/NewMailWindow';
 import '../CustomLabelMenu/NewCustomLabelWindow.css';
@@ -156,8 +155,8 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
     <div className="mail-window">
       <div className="mail-header-bar">
         <div className="mail-header-left">
-          <button className="back-button" onClick={onBack}>
-            <MdArrowBack size={24} />
+          <button className="back-button" onClick={onBack} aria-label="Back">
+           <i className="bi bi-arrow-left icon-back"></i>
           </button>
           <MailRow
             mailId={mailState.id}
@@ -178,7 +177,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
                 aria-label="Edit mail"
                 className="buttons-trigger modern-three-dots"
               >
-                <MdEdit size={22} />
+                <i className="bi bi-pencil-square icon-edit"></i>
               </button>
               <span className="tooltip-text">Edit</span>
             </div>
@@ -192,7 +191,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
               aria-label="Label as"
               className="buttons-trigger modern-three-dots"
             >
-              <MdMoreVert size={20} />
+              <i className="bi bi-three-dots-vertical icon-more"></i>
             </button>
             <span className="tooltip-text">More</span>
           </div>
@@ -207,8 +206,12 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
           <span className="mail-to">
             {isToMe ? 'to me' : `to ${mailState.receiverEmail}`}
           </span>
-          <span className="details-toggle" onClick={toggleDetails}>
-            {showDetails ? <MdExpandLess size={18} /> : <MdExpandMore size={18} />}
+          <span className="details-toggle" onClick={toggleDetails} aria-label="Toggle details">
+            {showDetails ? (
+              <i className="bi bi-chevron-up icon-chevron"></i>
+            ) : (
+              <i className="bi bi-chevron-down icon-chevron"></i>
+            )}
           </span>
         </div>
 
@@ -322,9 +325,9 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
           </div>
           <div className="buttons-body">
             {isLoadingLabels ? (
-              <p style={{ fontSize: '14px' }}>Loading labels...</p>
+              <p className="label-loading">Loading labels...</p>
             ) : labels.length === 0 ? (
-              <p style={{ fontSize: '14px' }}>No labels found.</p>
+              <p className="label-loading">No labels found.</p>
             ) : (
               <form onSubmit={handleLabelApply}>
                 <ul className="buttons-list">

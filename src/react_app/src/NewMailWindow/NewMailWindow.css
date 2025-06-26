@@ -111,3 +111,22 @@
 [data-bs-theme="dark"] .icon-bar i:hover {
   color: #fff;
 }
+
+.mail-header-icons {
+  display: flex;
+  gap: 8px;
+}
+
+.icon {
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.icon:hover {
+  color: #202124;
+}
+
+[data-bs-theme="dark"] .icon:hover {
+  color: #fff;
+}
