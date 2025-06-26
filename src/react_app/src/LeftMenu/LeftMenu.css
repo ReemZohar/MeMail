@@ -25,11 +25,24 @@
 
 .menu-toggle-container {
   display: flex;
-  justify-content: flex-start;
+  align-items: center;
   padding: 8px 0;
+  position: relative;
+  min-width: 100px;
+}
+
+.menu-logo {
+  margin-top: 12px;
+  width: 200px;
+  height: auto;
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
 }
 
 .menu-toggle-button {
+  margin-left: 20px;
+  margin-top: 12px;
   background: none;
   border: none;
   cursor: pointer;
