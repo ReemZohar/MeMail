@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import './MailWindow.css';
+import { MdExpandMore, MdExpandLess, MdArrowBack, MdMoreVert, MdEdit, MdMarkEmailUnread } from 'react-icons/md';
 import MailRow from '../MailRow/MailRow';
 import NewMailWindow from '../NewMailWindow/NewMailWindow';
 import '../CustomLabelMenu/NewCustomLabelWindow.css';
@@ -159,7 +160,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
     <div className="mail-header-bar">
       <div className="mail-header-left">
         <button className="back-button" onClick={onBack}>
-          <i className="bi bi-arrow-left icon-md"></i>
+          <MdArrowBack size={24} />
         </button>
         <MailRow
           mailId={mailState.id}
@@ -180,7 +181,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
               aria-label="Edit mail"
               className="buttons-trigger modern-three-dots"
             >
-              <i className="bi bi-pencil icon-md"></i>
+              <MdEdit size={22} />
             </button>
             <span className="tooltip-text">Edit</span>
           </div>
@@ -194,7 +195,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
             aria-label="Label as"
             className="buttons-trigger modern-three-dots"
           >
-            <i className="bi bi-three-dots-vertical icon-md"></i>
+            <MdMoreVert size={20} />
           </button>
           <span className="tooltip-text">More</span>
         </div>
@@ -210,11 +211,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
           {isToMe ? 'to me' : `to ${mailState.receiverEmail}`}
         </span>
         <span className="details-toggle" onClick={toggleDetails}>
-          {showDetails ? (
-            <i className="bi bi-chevron-up icon-sm"></i>
-          ) : (
-            <i className="bi bi-chevron-down icon-sm"></i>
-          )}
+          {showDetails ? <MdExpandLess size={18} /> : <MdExpandMore size={18} />}
         </span>
       </div>
 
@@ -231,26 +228,27 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
     <hr />
 
     {isReplying && (
-      <NewMailWindow
-        index={0}
-        receiver={mailState.senderEmail}
-        title={mailState.title}
-        content={mailState.content}
-        attachments={mailState.attachments}
-        onClose={() => setIsReplying(false)}
-      />
-    )}
+  <NewMailWindow
+    index={0}
+    receiver={mailState.senderEmail}
+    title={mailState.title}
+    content={mailState.content}
+    attachments={mailState.attachments} 
+    onClose={() => setIsReplying(false)}
+  />
+)}
 
-    {isForwarding && (
-      <NewMailWindow
-        index={0}
-        title={'FWD: ' + mailState.title}
-        content={"---------- Forwarded message ---------\nFrom: " + mailState.senderEmail + "\n" +
-          mailState.content}
-        attachments={mailState.attachments}
-        onClose={() => setIsForwarding(false)}
-      />
-    )}
+{isForwarding && (
+  <NewMailWindow
+    index={0}
+    title={'FWD: ' + mailState.title}
+    content={"---------- Forwarded message ---------\nFrom: " + mailState.senderEmail + "\n" +
+      mailState.content}
+    attachments={mailState.attachments} 
+    onClose={() => setIsForwarding(false)}
+  />
+)}
+
 
     {isEditing ? (
       <>
@@ -317,7 +315,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
         <div className="mail-content">{mailState.content}</div>
 
         {mailState.attachments?.length > 0 && (
-          <div className="attachments-wrapper">
+          <div style={{ padding: '0 16px 16px' }}>
             <h5>Attachments:</h5>
             <ul>
               {mailState.attachments.map((att, index) => {
@@ -355,9 +353,9 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
         </div>
         <div className="buttons-body">
           {isLoadingLabels ? (
-            <p className="label-loading">Loading labels...</p>
+            <p style={{ fontSize: '14px' }}>Loading labels...</p>
           ) : labels.length === 0 ? (
-            <p className="label-empty">No labels found.</p>
+            <p style={{ fontSize: '14px' }}>No labels found.</p>
           ) : (
             <form onSubmit={handleLabelApply}>
               <ul className="buttons-list">

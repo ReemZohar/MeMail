@@ -1,333 +1,169 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './NewMailWindow.css';
-import { MdExpandMore, MdExpandLess, MdArrowBack, MdMoreVert, MdEdit, MdMarkEmailUnread } from 'react-icons/md';
-import MailRow from '../MailRow/MailRow';
-import NewMailWindow from '../NewMailWindow/NewMailWindow';
-import '../CustomLabelMenu/NewCustomLabelWindow.css';
+import { MdClose } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
-export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBack, token }) {
-  const [showDetails, setShowDetails] = useState(false);
-  const [mailState, setMail] = useState(mail);
-  const [labels, setLabels] = useState([]);
-  const [selectedLabels, setSelectedLabels] = useState([]);
-  const [showLabelSidebar, setShowLabelSidebar] = useState(false);
-  const [isLoadingLabels, setIsLoadingLabels] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedTitle, setEditedTitle] = useState(mailState.title);
-  const [editedContent, setEditedContent] = useState(mailState.content);
-  const [isSaving, setIsSaving] = useState(false);
+function NewMailWindow({ index = 0, onClose, title = '', receiver = '', content = '', token, attachments = [] }) {
+  const navigate = useNavigate();
+
+  const receiverFmt = receiver ? '---\n' + receiver + ":\n" : "";
+  const [formData, setFormData] = useState({
+    receiver: receiver,
+    title: receiver !== '' ? 'RE: ' + title : title,
+    content: title !== '' ? receiverFmt + content + "\n---\n" : content,
+  });
+
+  const [files, setFiles] = useState([]);
   const [error, setError] = useState(null);
-  const [isReplying, setIsReplying] = useState(false);
-  const [isForwarding, setIsForwarding] = useState(false);
 
-  const markAsUnread = async () => {
-    await fetch(`http://localhost:9090/api/mails/${mailState.id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ isRead: false }),
+  const handleChange = (e) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const handleFileChange = (e) => {
+    setFiles(Array.from(e.target.files));
+  };
+
+  const sendMail = async () => {
+    const token = localStorage.getItem('token');
+    const form = new FormData();
+    form.append('receiver', formData.receiver);
+    form.append('title', formData.title);
+    form.append('content', formData.content);
+
+    // Filter out files that are already in forwarded attachments
+    const forwardedNames = attachments.map(att => att.originalname);
+    const uniqueFiles = files.filter(file => !forwardedNames.includes(file.name));
+
+    uniqueFiles.forEach(file => form.append('attachments', file));
+
+    // Add forwarded attachments explicitly to server
+    attachments.forEach(att => {
+      form.append('forwardedAttachments', JSON.stringify(att));
     });
-    setMail(prev => ({ ...prev, isRead: false }));
-  };
 
-  const loadLabels = () => {
-    if (!token) return;
-    setIsLoadingLabels(true);
-    fetch('http://localhost:9090/api/labels', {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then(res => {
-        if (!res.ok) throw new Error("Failed to fetch labels");
-        return res.json();
-      })
-      .then(fetchedLabels => {
-        setLabels(fetchedLabels);
-        if (mailState.labels && Array.isArray(mailState.labels)) {
-          const mailLabelIds = mailState.labels.map(l => (typeof l === 'object' ? l.id : l));
-          setSelectedLabels(mailLabelIds);
-        } else {
-          setSelectedLabels([]);
-        }
-      })
-      .catch(err => {
-        console.error("Error loading labels:", err);
-        setLabels([]);
-        setSelectedLabels([]);
-      })
-      .finally(() => setIsLoadingLabels(false));
-  };
-
-  const handleLabelApply = (e) => {
-    e.preventDefault();
-    const currentLabelIds = mailState.labels ? mailState.labels.map(l => (typeof l === 'object' ? l.id : l)) : [];
-    const labelsToAdd = selectedLabels.filter(id => !currentLabelIds.includes(id));
-    const labelsToRemove = currentLabelIds.filter(id => !selectedLabels.includes(id));
-
-    const addPromises = labelsToAdd.map(labelId =>
-      fetch(`http://localhost:9090/api/mails/${mailState.id}/labels`, {
+    try {
+      const response = await fetch('http://localhost:9090/api/mails', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ labelId }),
-      })
-    );
+        body: form,
+      });
 
-    const removePromises = labelsToRemove.map(labelId =>
-      fetch(`http://localhost:9090/api/mails/${mailState.id}/labels/${labelId}`, {
-        method: 'DELETE',
+      if (response.ok) {
+        navigate('/mail?folder=inbox');
+        onClose();
+      } else {
+        const error = await response.json();
+        alert('Failed to send mail: ' + error.error);
+      }
+    } catch (err) {
+      alert('Error sending mail: ' + err.message);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.receiver || !formData.title || !formData.content) {
+      setError('All fields are required.');
+      return;
+    }
+
+    setError(null);
+    await sendMail();
+  };
+
+  const handleClose = async () => {
+    const { receiver, title, content } = formData;
+    const isEmpty = !receiver && !title && !content;
+    if (isEmpty) {
+      onClose();
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:9090/api/draft', {
+        method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-      })
-    );
-
-    Promise.all([...addPromises, ...removePromises])
-      .then(() => {
-        setShowLabelSidebar(false);
-        loadLabels();
-        setMail(prev => ({ ...prev, labels: selectedLabels }));
-      })
-      .catch(err => {
-        alert('Failed to update labels: ' + err.message);
+        body: JSON.stringify(formData),
       });
-  };
 
-  const toggleDetails = () => setShowDetails(prev => !prev);
-
-  const handleActionDone = ({ type, mailId, isFavorite }) => {
-    if (mailId !== mailState.id) return;
-
-    if (type === 'delete') {
-      onMailDeleted?.(mailId);
-    } else if (type === 'spam') {
-      setMail(prev => ({ ...prev, isSpam: true }));
-    } else if (type === 'unspam') {
-      setMail(prev => ({ ...prev, isSpam: false }));
-    } else if (type === 'favoriteToggle') {
-      setMail(prev => ({ ...prev, isFavorite }));
-    } else if (type === 'markAsUnread') {
-      setMail(prev => ({ ...prev, isRead: false }));
-    }
-  };
-
-  const isToMe = mailState.receiverEmail === currentUserEmail;
-  const labelPopupRef = useRef(null);
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (labelPopupRef.current && !labelPopupRef.current.contains(event.target)) {
-        setShowLabelSidebar(false);
+      if (!response.ok) {
+        console.error('Failed to save draft');
       }
+    } catch (err) {
+      console.error('Error saving draft:', err);
     }
 
-    if (showLabelSidebar) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [showLabelSidebar]);
-
-  const renderAttachments = () => {
-    if (!mailState.attachments || mailState.attachments.length === 0) return null;
-    return (
-      <div style={{ padding: '0 16px 16px' }}>
-        <h5>Attachments:</h5>
-        <ul>
-          {mailState.attachments.map((att, index) => {
-            const url = `http://localhost:9090/uploads/${att.storedFilename}`;
-            return (
-              <li key={index}>
-                <a href={url} download={att.originalname} target="_blank" rel="noopener noreferrer">
-                  {att.originalname}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    );
+    onClose();
   };
 
- return (
-  <div className="mail-window">
-    <div className="mail-header-bar">
-      <div className="mail-header-left">
-        <button className="back-button" onClick={onBack}>
-          <MdArrowBack size={24} />
-        </button>
-        <MailRow
-          mailId={mailState.id}
-          isFavorite={mailState.isFavorite}
-          isSpam={mailState.isSpam}
-          isRead={mailState.isRead}
-          onActionDone={handleActionDone}
-          onReply={() => setIsReplying(true)}
-          onFwd={() => setIsForwarding(true)}
-        />
+  const rightOffset = 20 + index * 620;
+  const forwardedNames = attachments.map(att => att.originalname);
+  const uniqueFiles = files.filter(file => !forwardedNames.includes(file.name));
+
+  return (
+    <div className="mail-popup right-align" style={{ right: `${rightOffset}px` }}>
+      <div className="mail-header">
+        <span>New Message</span>
+        <button className="close-btn" onClick={handleClose}><MdClose /></button>
       </div>
-
-      <div className="mail-header-right">
-        {mailState.senderEmail === currentUserEmail && (
-          <div className="tooltip-container">
-            <button
-              onClick={() => setIsEditing(true)}
-              aria-label="Edit mail"
-              className="buttons-trigger modern-three-dots"
-            >
-              <MdEdit size={22} />
-            </button>
-            <span className="tooltip-text">Edit</span>
-          </div>
-        )}
-        <div className="tooltip-container">
-          <button
-            onClick={() => {
-              loadLabels();
-              setShowLabelSidebar(true);
-            }}
-            aria-label="Label as"
-            className="buttons-trigger modern-three-dots"
-          >
-            <MdMoreVert size={20} />
-          </button>
-          <span className="tooltip-text">More</span>
-        </div>
-      </div>
-    </div>
-
-    <h2 className="mail-subject">{mailState.title}</h2>
-
-    <div className="mail-header-info">
-      <div className="mail-from-to">
-        <strong>{mailState.senderEmail}</strong>{' '}
-        <span className="mail-to">
-          {isToMe ? 'to me' : `to ${mailState.receiverEmail}`}
-        </span>
-        <span className="details-toggle" onClick={toggleDetails}>
-          {showDetails ? <MdExpandLess size={18} /> : <MdExpandMore size={18} />}
-        </span>
-      </div>
-
-      {showDetails && (
-        <div className="mail-details">
-          <div><strong>from:</strong> {mailState.senderEmail} &lt;{mailState.senderName}&gt;</div>
-          <div><strong>to:</strong> {mailState.receiverEmail} &lt;{mailState.receiverName}&gt;</div>
-          <div><strong>date:</strong> {new Date(mailState.date || mailState.time).toLocaleString()}</div>
-          <div><strong>subject:</strong> {mailState.title}</div>
-        </div>
-      )}
-    </div>
-
-    <hr />
-
-    {isReplying && (
-  <NewMailWindow
-    index={0}
-    receiver={mailState.senderEmail}
-    title={mailState.title}
-    content={mailState.content}
-    attachments={mailState.attachments} 
-    onClose={() => setIsReplying(false)}
-  />
-)}
-
-{isForwarding && (
-  <NewMailWindow
-    index={0}
-    title={'FWD: ' + mailState.title}
-    content={"---------- Forwarded message ---------\nFrom: " + mailState.senderEmail + "\n" +
-      mailState.content}
-    attachments={mailState.attachments} 
-    onClose={() => setIsForwarding(false)}
-  />
-)}
-
-
-    {isEditing ? (
-      <>
+      <form className="mail-form" onSubmit={handleSubmit}>
         <input
-          className="edit-title-input"
-          value={editedTitle}
-          onChange={(e) => setEditedTitle(e.target.value)}
+          className="form-control"
+          name="receiver"
+          placeholder="To"
+          value={formData.receiver}
+          onChange={handleChange}
+          required
+        />
+        <input
+          className="form-control"
+          name="title"
+          placeholder="Subject"
+          value={formData.title}
+          onChange={handleChange}
+          required
         />
         <textarea
-          className="edit-content-textarea"
-          value={editedContent}
-          onChange={(e) => setEditedContent(e.target.value)}
+          className="form-control"
+          name="content"
+          placeholder="Compose your message..."
+          value={formData.content}
+          onChange={handleChange}
+          required
         />
-        {error && <div className="edit-error">{error}</div>}
-        <div className="edit-actions-left">
-          <button
-            className="btn btn-light small-button"
-            onClick={() => setIsEditing(false)}
-            disabled={isSaving}
-          >
-            Cancel
-          </button>
-          <button
-            className="btn btn-primary small-button"
-            onClick={async () => {
-              setIsSaving(true);
-              setError(null);
-              try {
-                const res = await fetch(`http://localhost:9090/api/mails/${mailState.id}`, {
-                  method: 'PATCH',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                  },
-                  body: JSON.stringify({
-                    title: editedTitle,
-                    content: editedContent,
-                  }),
-                });
-                if (!res.ok) {
-                  const text = await res.text();
-                  throw new Error(text || 'Failed to update mail');
-                }
-                setMail((prev) => ({
-                  ...prev,
-                  title: editedTitle,
-                  content: editedContent,
-                }));
-                setIsEditing(false);
-              } catch (err) {
-                setError(err.message);
-              } finally {
-                setIsSaving(false);
-              }
-            }}
-            disabled={isSaving}
-          >
-            {isSaving ? 'Saving...' : 'Done'}
-          </button>
-        </div>
-      </>
-    ) : (
-      <>
-        <div className="mail-content">{mailState.content}</div>
 
-        {mailState.attachments?.length > 0 && (
-          <div style={{ padding: '0 16px 16px' }}>
-            <h5>Attachments:</h5>
+        <label className="custom-file-upload">
+          <input type="file" multiple onChange={handleFileChange} />
+          📎 Attach files
+        </label>
+
+        {uniqueFiles.length > 0 && (
+          <div className="attached-files">
+            {uniqueFiles.map((file, idx) => (
+              <div key={idx}>{file.name}</div>
+            ))}
+          </div>
+        )}
+
+        {/* Display forwarded attachments if any */}
+        {attachments.length > 0 && (
+          <div className="forwarded-attachments">
+            <p style={{ fontWeight: 'bold' }}>Forwarded attachments:</p>
             <ul>
-              {mailState.attachments.map((att, index) => {
+              {attachments.map((att, index) => {
                 const url = `http://localhost:9090/uploads/${att.storedFilename}`;
                 return (
                   <li key={index}>
-                    <a
-                      href={url}
-                      download={att.originalname}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href={url} download={att.originalname} target="_blank" rel="noopener noreferrer">
                       {att.originalname}
                     </a>
                   </li>
@@ -336,55 +172,15 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
             </ul>
           </div>
         )}
-      </>
-    )}
 
-    {showLabelSidebar && (
-      <div className="buttons" ref={labelPopupRef}>
-        <div className="buttons-header">
-          <h4>Label as</h4>
-          <button
-            className="buttons-close-button"
-            onClick={() => setShowLabelSidebar(false)}
-            aria-label="Close"
-          >
-            X
-          </button>
+        {error && <div className="text-danger mb-2">{error}</div>}
+
+        <div className="mail-actions">
+          <button type="submit" className="btn-send">Send</button>
         </div>
-        <div className="buttons-body">
-          {isLoadingLabels ? (
-            <p style={{ fontSize: '14px' }}>Loading labels...</p>
-          ) : labels.length === 0 ? (
-            <p style={{ fontSize: '14px' }}>No labels found.</p>
-          ) : (
-            <form onSubmit={handleLabelApply}>
-              <ul className="buttons-list">
-                {labels.map(label => (
-                  <li key={label.id}>
-                    <label className="buttons-label">
-                      <input
-                        type="checkbox"
-                        checked={selectedLabels.includes(label.id)}
-                        onChange={(e) => {
-                          const checked = e.target.checked;
-                          setSelectedLabels(prev =>
-                            checked
-                              ? [...prev, label.id]
-                              : prev.filter(id => id !== label.id)
-                          );
-                        }}
-                      />
-                      {label.name}
-                    </label>
-                  </li>
-                ))}
-              </ul>
-              <button type="submit" className="buttons-submit-button">Apply</button>
-            </form>
-          )}
-        </div>
-      </div>
-    )}
-  </div>
-);
+      </form>
+    </div>
+  );
 }
+
+export default NewMailWindow;
