@@ -11,21 +11,17 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
 
   const fetchMails = async () => {
     try {
-      let endpoint = '';
-
-      if (folder === 'drafts') {
-        endpoint = 'http://localhost:9090/api/draft';
-      } else if (labelId) {
-        endpoint = `http://localhost:9090/api/mails/label/${labelId}`;
-      } else {
-        const params = new URLSearchParams();
-        if (folder) params.append('folder', folder);
-        if (isFavorite !== undefined) params.append('isFavorite', isFavorite);
-        if (sender) params.append('sender', sender);
-        if (date) params.append('date', date);
-
-        endpoint = `http://localhost:9090/api/mails?${params.toString()}`;
-      }
+      const params = new URLSearchParams();
+      if (folder && folder !== 'drafts' && !labelId) params.append('folder', folder);
+      if (isFavorite !== undefined) params.append('isFavorite', isFavorite);
+      if (sender) params.append('sender', sender);
+      if (date) params.append('date', date);
+      if (labelId) params.append('labelId', labelId);
+      console.log(folder);
+      const endpoint =
+        folder === 'drafts'
+          ? 'http://localhost:9090/api/draft'
+          : `http://localhost:9090/api/mails?${params.toString()}`;
 
       const response = await fetch(endpoint, {
         headers: { Authorization: `Bearer ${token}` },
@@ -133,26 +129,30 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
     setSelectedMails(new Set());
   };
 
-  const performActionOnSelected = async (actionType) => {
-    const baseUrl = 'http://localhost:9090/api/mails';
-    for (const mailId of selectedMails) {
-      try {
-        let response;
-        if (actionType === 'delete') {
-          response = await fetch(`${baseUrl}/${mailId}`, {
-            method: 'DELETE',
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          if (response.status === 204) {
-            handleMailDeleted(mailId);
-          }
+const performActionOnSelected = async (actionType) => {
+  const isDraft = folder === 'drafts';
+  const baseUrl = isDraft
+    ? 'http://localhost:9090/api/draft'
+    : 'http://localhost:9090/api/mails';
+
+  for (const mailId of selectedMails) {
+    try {
+      let response;
+      if (actionType === 'delete') {
+        response = await fetch(`${baseUrl}/${mailId}`, {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (response.status === 204) {
+          handleMailDeleted(mailId);
         }
-      } catch (err) {
-        console.error(`Error performing ${actionType} on mail ${mailId}:`, err);
       }
+    } catch (err) {
+      console.error(`Error performing ${actionType} on mail ${mailId}:`, err);
     }
-    setSelectedMails(new Set());
-  };
+  }
+  setSelectedMails(new Set());
+};
 
   const sortedMails = [...mails].sort((a, b) => new Date(b.date) - new Date(a.date));
   const startIndex = page * mailsPerPage;
@@ -216,22 +216,24 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
       <div className="MailList-scroll">
         {displayedMails.map(mail => (
           <MailItem
-            key={mail.id}
-            mail={mail}
-            isSelected={selectedMails.has(mail.id)}
-            whenSelected={(id) => {
-              setSelectedMails(prev => {
-                const newSet = new Set(prev);
-                if (newSet.has(id)) newSet.delete(id);
-                else newSet.add(id);
-                return newSet;
-              });
-            }}
-            onMailDeleted={handleMailDeleted}
-            onMailMovedToSpam={handleMailMovedToSpam}
-            onMailFavoriteToggled={handleMailFavoriteToggled}
-            onOpenMail={onOpenMail}
-          />
+  key={mail.id}
+  mail={mail}
+  folder={folder} // <== הוספה חשובה
+  isSelected={selectedMails.has(mail.id)}
+  whenSelected={(id) => {
+    setSelectedMails(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) newSet.delete(id);
+      else newSet.add(id);
+      return newSet;
+    });
+  }}
+  onMailDeleted={handleMailDeleted}
+  onMailMovedToSpam={handleMailMovedToSpam}
+  onMailFavoriteToggled={handleMailFavoriteToggled}
+  onOpenMail={onOpenMail}
+/>
+
         ))}
       </div>
     </div>
