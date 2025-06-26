@@ -170,6 +170,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
           onActionDone={handleActionDone}
           onReply={() => setIsReplying(true)}
           onFwd={() => setIsForwarding(true)}
+          isItem={false}
         />
       </div>
 
