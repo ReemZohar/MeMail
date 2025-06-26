@@ -12,7 +12,7 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
   const fetchMails = async () => {
     try {
       const params = new URLSearchParams();
-      if (folder && folder !== 'drafts') params.append('folder', folder);
+      if (folder && folder !== 'drafts' && !labelId) params.append('folder', folder);
       if (isFavorite !== undefined) params.append('isFavorite', isFavorite);
       if (sender) params.append('sender', sender);
       if (date) params.append('date', date);
