@@ -1,4 +1,5 @@
 import SearchBar from '../SearchBar/SearchBar';
+import DarkModeButton from '../DarkModeButton/DarkModeButton';
 import './TopPanel.css';
 
 function TopPanel({ onUserClick, userBtnRef, avatar, token, onSearchResults }) {
@@ -7,6 +8,7 @@ function TopPanel({ onUserClick, userBtnRef, avatar, token, onSearchResults }) {
       <div className="top-panel-left">
         <SearchBar token={token} onSearchResults={onSearchResults} />
       </div>
+
       <div className="top-panel-right">
         <button
           ref={userBtnRef}
@@ -16,6 +18,7 @@ function TopPanel({ onUserClick, userBtnRef, avatar, token, onSearchResults }) {
         >
           <img src={avatar} alt="Avatar" className="avatar-icon" />
         </button>
+        <DarkModeButton />
       </div>
     </div>
   );

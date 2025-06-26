@@ -4,6 +4,7 @@ import ChooseDateCard from './RegisterCards/ChooseDateCard/ChooseDateCard'
 import ChooseMailCard from './RegisterCards/ChooseMailCard/ChooseMailCard'
 import ChoosePasswordCard from './RegisterCards/ChoosePasswordCard/ChoosePasswordCard'
 import ChooseAvatarCard from './RegisterCards/ChooseAvatarCard/ChooseAvatarCard'
+import DarkModeButton from '../DarkModeButton/DarkModeButton';
 import avatars from './avatars/avatars'
 import { useNavigate } from 'react-router-dom'
 
@@ -82,65 +83,85 @@ export default function RegisterPage({ theme }) {
     }
 
     //pick which card to show
-    switch (step) {
-        case 0:
-            return <ChooseNameCard
-                theme={theme}
-                valueFirst={data.firstName}
-                onChangeFirst={e => update('firstName')(e.target.value)}
-                valueSurname={data.surname}
-                onChangeSurname={e => update('surname')(e.target.value)}
-                onNext={next}
-            />
-
-        case 1:
-            return <ChooseDateCard
-                theme={theme}
-                dayValue={data.day}
-                onChangeDay={e => update('day')(e.target.value)}
-                monthValue={data.month}
-                onChangeMonth={e => update('month')(e.target.value)}
-                yearValue={data.year}
-                onChangeYear={e => update('year')(e.target.value)}
-                genderValue={data.gender}
-                onChangeGender={e => update('gender')(e.target.value)}
-                onNext={next}
-            />
-
-        case 2:
-            return <ChooseMailCard
-                theme={theme}
-                value={data.mail}
-                onChange={e => update('mail')(e.target.value)}
-                onNext={next}
-            />
-
-        case 3:
-            return <ChoosePasswordCard
-                theme={theme}
-                password={data.password}
-                onChangePassword={e => update('password')(e.target.value)}
-                confirmPassword={data.confirmPassword}
-                onChangeConfirm={e => update('confirmPassword')(e.target.value)}
-                onNext={next}
-            />
-
-        case 4:
-            return <ChooseAvatarCard
-                theme={theme}
-                selectedAvatar={data.avatar}
-                existingAvatars={avatars}
-                onSelectAvatar={(value) => {
-                    if (value instanceof File) {
-                        setData(d => ({ ...d, avatarFile: value, avatar: '' }));
-                    } else {
-                        setData(d => ({ ...d, avatar: value, avatarFile: null }));
-                    }
-                }}
-                onNext={handleSubmit}
-            />
-
-        default:
-            return null
-    }
+  switch (step) {
+    case 0:
+      return (
+        <>
+          <div className="darkmode-top-right"><DarkModeButton /></div>
+          <ChooseNameCard
+            theme={theme}
+            valueFirst={data.firstName}
+            onChangeFirst={e => update('firstName')(e.target.value)}
+            valueSurname={data.surname}
+            onChangeSurname={e => update('surname')(e.target.value)}
+            onNext={next}
+          />
+        </>
+      );
+    case 1:
+      return (
+        <>
+          <div className="darkmode-top-right"><DarkModeButton /></div>
+          <ChooseDateCard
+            theme={theme}
+            dayValue={data.day}
+            onChangeDay={e => update('day')(e.target.value)}
+            monthValue={data.month}
+            onChangeMonth={e => update('month')(e.target.value)}
+            yearValue={data.year}
+            onChangeYear={e => update('year')(e.target.value)}
+            genderValue={data.gender}
+            onChangeGender={e => update('gender')(e.target.value)}
+            onNext={next}
+          />
+        </>
+      );
+    case 2:
+      return (
+        <>
+          <div className="darkmode-top-right"><DarkModeButton /></div>
+          <ChooseMailCard
+            theme={theme}
+            value={data.mail}
+            onChange={e => update('mail')(e.target.value)}
+            onNext={next}
+          />
+        </>
+      );
+    case 3:
+      return (
+        <>
+          <div className="darkmode-top-right"><DarkModeButton /></div>
+          <ChoosePasswordCard
+            theme={theme}
+            password={data.password}
+            onChangePassword={e => update('password')(e.target.value)}
+            confirmPassword={data.confirmPassword}
+            onChangeConfirm={e => update('confirmPassword')(e.target.value)}
+            onNext={next}
+          />
+        </>
+      );
+    case 4:
+      return (
+        <>
+          <div className="darkmode-top-right"><DarkModeButton /></div>
+          <ChooseAvatarCard
+            theme={theme}
+            selectedAvatar={data.avatar}
+            existingAvatars={avatars}
+            onSelectAvatar={(value) => {
+              if (value instanceof File) {
+                setData(d => ({ ...d, avatarFile: value, avatar: '' }));
+              } else {
+                setData(d => ({ ...d, avatar: value, avatarFile: null }));
+              }
+            }}
+            onNext={handleSubmit}
+          />
+        </>
+      );
+    default:
+      return null;
+  }
 }
