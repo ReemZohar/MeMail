@@ -6,9 +6,11 @@ import MarkUnreadButton from '../MarkUnreadButton/MarkUnreadButton';
 import ReplyButton from '../ReplyButton/ReplyButton';
 import ForwardButton from '../ForwardButton/ForwardButton';
 
-function MailRow({ mailId, isFavorite, isSpam, onActionDone, hideFavoriteButton, onReply, onFwd, isItem = false }) {
+function MailRow({ mailId, isFavorite, isSpam, isDraft, onActionDone, hideFavoriteButton, onReply, onFwd, isItem = false }) {
   const token = localStorage.getItem('token');
-  const baseUrl = 'http://localhost:9090/api/mails';
+  const baseUrl = isDraft
+    ? 'http://localhost:9090/api/draft'
+    : 'http://localhost:9090/api/mails';
 
   const handleDelete = async () => {
     console.log(`[MailRow] Deleting mail with ID: ${mailId}`);
