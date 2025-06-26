@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './NewMailWindow.css';
-import { MdClose } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
 function NewMailWindow({ index = 0, onClose, title = '', receiver = '', content = '', token, attachments = [] }) {
@@ -113,7 +112,9 @@ function NewMailWindow({ index = 0, onClose, title = '', receiver = '', content 
     <div className="mail-popup right-align" style={{ right: `${rightOffset}px` }}>
       <div className="mail-header">
         <span>New Message</span>
-        <button className="close-btn" onClick={handleClose}><MdClose /></button>
+        <button className="close-btn" onClick={handleClose}>
+  <i className="bi bi-x-lg"></i>
+</button>
       </div>
       <form className="mail-form" onSubmit={handleSubmit}>
         <input
@@ -141,11 +142,10 @@ function NewMailWindow({ index = 0, onClose, title = '', receiver = '', content 
           required
         />
 
-        <label className="custom-file-upload">
+       <label className="custom-file-upload">
           <input type="file" multiple onChange={handleFileChange} />
-          📎 Attach files
+          <i className="bi bi-paperclip me-1"></i> Attach files
         </label>
-
         {uniqueFiles.length > 0 && (
           <div className="attached-files">
             {uniqueFiles.map((file, idx) => (

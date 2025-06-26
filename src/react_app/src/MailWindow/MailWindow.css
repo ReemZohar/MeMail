@@ -563,3 +563,7 @@
 [data-bs-theme="dark"] .attachment-item:hover {
   background-color: #3a3a3a;
 }
+
+.icons{
+    font-size: 18px;
+}

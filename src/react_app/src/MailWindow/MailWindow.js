@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import './MailWindow.css';
-import { MdExpandMore, MdExpandLess, MdArrowBack, MdMoreVert, MdEdit, MdMarkEmailUnread } from 'react-icons/md';
 import MailRow from '../MailRow/MailRow';
 import NewMailWindow from '../NewMailWindow/NewMailWindow';
 import '../CustomLabelMenu/NewCustomLabelWindow.css';
@@ -160,7 +159,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
     <div className="mail-header-bar">
       <div className="mail-header-left">
         <button className="back-button" onClick={onBack}>
-          <MdArrowBack size={24} />
+          <i className="bi bi-arrow-left"></i>
         </button>
         <MailRow
           mailId={mailState.id}
@@ -181,7 +180,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
               aria-label="Edit mail"
               className="buttons-trigger modern-three-dots"
             >
-              <MdEdit size={22} />
+              <i className="bi bi-pencil icons"></i>
             </button>
             <span className="tooltip-text">Edit</span>
           </div>
@@ -195,7 +194,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
             aria-label="Label as"
             className="buttons-trigger modern-three-dots"
           >
-            <MdMoreVert size={20} />
+            <i className="bi bi-three-dots-vertical icons"></i>
           </button>
           <span className="tooltip-text">More</span>
         </div>
@@ -211,7 +210,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
           {isToMe ? 'to me' : `to ${mailState.receiverEmail}`}
         </span>
         <span className="details-toggle" onClick={toggleDetails}>
-          {showDetails ? <MdExpandLess size={18} /> : <MdExpandMore size={18} />}
+          {showDetails ? <i className="bi bi-chevron-up icons"></i> : <i className="bi bi-chevron-down icons"></i>}
         </span>
       </div>
 
