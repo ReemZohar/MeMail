@@ -39,6 +39,11 @@ function LeftMenu({ theme, onComposeClick, onLabelClick, activeFolder, initialAc
         <button className="menu-toggle-button" onClick={toggleMenu}>
           <i className="bi bi-list" style={{ fontSize: 24 }}></i>
         </button>
+          <img 
+            src="/logo.png" 
+            alt="Logo" 
+            className="menu-logo"
+          />
       </div>
 
       <NewMailButton theme={theme} onClick={onComposeClick} isCollapsed={isCollapsed} />
