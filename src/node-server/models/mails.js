@@ -260,10 +260,16 @@ const unmarkAsFavorite = (id, userId) => {
 const getAllMailsForLabel = (userId, labelId, filters = {}) => {
   if (labelId === undefined || labelId === null) return [];
 
-  let userMails = mails.filter(m =>
-    (m.sender === userId && m.folder === 'sent') ||
-    (m.receiver === userId && m.folder !== 'sent')
-  );
+  let userMails = mails.filter(m => {
+    const isSender = m.sender === userId;
+    const isReceiver = m.receiver === userId;
+
+    if (filters.folder) {
+      return (isSender || isReceiver) && m.folder === filters.folder;
+    }
+
+    return (isSender && m.folder === 'sent') || (isReceiver && m.folder !== 'sent');
+  });
 
   userMails = userMails.filter(m => m.labels.includes(labelId));
 
