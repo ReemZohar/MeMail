@@ -11,17 +11,21 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
 
   const fetchMails = async () => {
     try {
-      const params = new URLSearchParams();
-      if (folder && folder !== 'drafts') params.append('folder', folder);
-      if (isFavorite !== undefined) params.append('isFavorite', isFavorite);
-      if (sender) params.append('sender', sender);
-      if (date) params.append('date', date);
-      if (labelId) params.append('labelId', labelId);
+      let endpoint = '';
 
-      const endpoint =
-        folder === 'drafts'
-          ? 'http://localhost:9090/api/draft'
-          : `http://localhost:9090/api/mails?${params.toString()}`;
+      if (folder === 'drafts') {
+        endpoint = 'http://localhost:9090/api/draft';
+      } else if (labelId) {
+        endpoint = `http://localhost:9090/api/mails/label/${labelId}`;
+      } else {
+        const params = new URLSearchParams();
+        if (folder) params.append('folder', folder);
+        if (isFavorite !== undefined) params.append('isFavorite', isFavorite);
+        if (sender) params.append('sender', sender);
+        if (date) params.append('date', date);
+
+        endpoint = `http://localhost:9090/api/mails?${params.toString()}`;
+      }
 
       const response = await fetch(endpoint, {
         headers: { Authorization: `Bearer ${token}` },

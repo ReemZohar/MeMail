@@ -360,3 +360,16 @@ exports.unmarkAsFavorite = (req, res) => {
     res.status(404).json({ error: "Mail not found or unauthorized." });
   }
 };
+
+exports.getMailsForLabel = (req, res) => {
+  const userId = req.user.id;
+  const labelId = Number(req.params.labelId);
+  const filters = req.query;
+
+  if (isNaN(labelId)) {
+    return res.status(400).json({ error: 'Invalid labelId' });
+  }
+
+  const mails = mailModel.getAllMailsForLabel(userId, labelId, filters);
+  res.status(200).json(mails);
+};

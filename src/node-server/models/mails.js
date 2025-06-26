@@ -257,4 +257,58 @@ const unmarkAsFavorite = (id, userId) => {
   return false;
 };
 
-module.exports = { markAsFavorite, unmarkAsFavorite, getAllMailsForUser, getSpamMailsForUser, markMailAsSpam, unmarkMailAsSpam, sendMail, getMailById, updateMail, deleteMail, searchMails, updateIsRead }
+const getAllMailsForLabel = (userId, labelId, filters = {}) => {
+  if (labelId === undefined || labelId === null) return [];
+
+  let userMails = mails.filter(m => (m.sender === userId || m.receiver === userId));
+
+  userMails = userMails.filter(m => m.labels.includes(labelId));
+
+  if (filters.isSpam !== undefined) {
+    userMails = userMails.filter(m => m.isSpam === filters.isSpam);
+  } else {
+    userMails = userMails.filter(m => m.isSpam !== true);
+  }
+
+  if (filters.isFavorite !== undefined) {
+    userMails = userMails.filter(m => m.isFavorite === filters.isFavorite);
+  }
+
+  if (filters.sender !== undefined) {
+    const from = userModel.getUserByUsername(filters.sender);
+    if (!from) return [];
+    userMails = userMails.filter(m => Number(m.sender) === Number(from.id));
+  }
+
+  if (filters.receiver !== undefined) {
+    const to = userModel.getUserByUsername(filters.receiver);
+    if (!to) return [];
+    userMails = userMails.filter(m => Number(m.receiver) === Number(to.id));
+  }
+
+  if (filters.startDate && filters.endDate) {
+    const start = new Date(filters.startDate);
+    const end = new Date(filters.endDate);
+    userMails = userMails.filter(m => {
+      const mailDate = new Date(m.time);
+      return mailDate >= start && mailDate <= end;
+    });
+  }
+
+  if (filters.subject) {
+    userMails = userMails.filter(m => m.title === filters.subject);
+  }
+
+  if (filters.includes) {
+    userMails = userMails.filter(m => m.content.includes(filters.includes));
+  }
+
+  if (filters.excludes) {
+    userMails = userMails.filter(m => !m.content.includes(filters.excludes));
+  }
+
+  return userMails.sort((a, b) => b.time - a.time);
+};
+
+
+module.exports = { markAsFavorite, unmarkAsFavorite, getAllMailsForUser, getSpamMailsForUser, markMailAsSpam, unmarkMailAsSpam, sendMail, getMailById, updateMail, deleteMail, searchMails, updateIsRead, getAllMailsForLabel }
