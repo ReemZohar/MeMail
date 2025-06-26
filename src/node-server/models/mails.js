@@ -260,16 +260,13 @@ const unmarkAsFavorite = (id, userId) => {
 const getAllMailsForLabel = (userId, labelId, filters = {}) => {
   if (labelId === undefined || labelId === null) return [];
 
-  // רק מיילים של המשתמש שבהם הוא השולח או המקבל
   let userMails = mails.filter(m =>
     (m.sender === userId && m.folder === 'sent') ||
-    (m.receiver === userId && m.folder !== 'sent') // כלומר inbox
+    (m.receiver === userId && m.folder !== 'sent')
   );
 
-  // רק כאלה שמכילים את ה־labelId
   userMails = userMails.filter(m => m.labels.includes(labelId));
 
-  // סינונים כמו קודם
   if (filters.isSpam !== undefined) {
     userMails = userMails.filter(m => m.isSpam === filters.isSpam);
   } else {
