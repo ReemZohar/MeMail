@@ -16,8 +16,13 @@
   background-color: #f1f3f4;
 }
 
-.FavoriteMail-button svg {
+.FavoriteMail-button i.favorite-icon {
+  font-size: 18px;
   color: #444;
+}
+
+.FavoriteMail-button i.bi-star-fill.favorite-icon {
+  color: gold;
 }
 
 .tooltip-container {
@@ -51,7 +56,7 @@
   background-color: #3a3a3a;
 }
 
-[data-bs-theme="dark"] .FavoriteMail-button svg {
+[data-bs-theme="dark"] .FavoriteMail-button i.favorite-icon {
   color: #ddd;
 }
 

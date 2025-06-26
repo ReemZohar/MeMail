@@ -1,5 +1,4 @@
 import './MarkUnreadButton.css';
-import { MdMarkEmailUnread } from 'react-icons/md';
 
 const MarkUnreadButton = ({ onClick }) => {
   return (
@@ -9,7 +8,7 @@ const MarkUnreadButton = ({ onClick }) => {
         onClick={onClick}
         aria-label="Mark as unread"
       >
-        <MdMarkEmailUnread size={20} />
+        <i className="bi bi-envelope-check" style={{ fontSize: 20 }}></i>
       </button>
       <span className="tooltip-text">Mark as unread</span>
     </div>

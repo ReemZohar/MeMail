@@ -1,5 +1,4 @@
 import './ForwardButton.css';
-import { MdForward } from 'react-icons/md';
 
 const ForwardButton = ({ onClick }) => {
   return (
@@ -9,7 +8,7 @@ const ForwardButton = ({ onClick }) => {
         onClick={onClick}
         aria-label="Forward"
       >
-        <MdForward size={20} />
+        <i className="bi bi-arrow-return-right forward-icon"></i>
       </button>
       <span className="tooltip-text">Forward</span>
     </div>

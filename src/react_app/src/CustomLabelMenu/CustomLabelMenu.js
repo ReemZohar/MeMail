@@ -88,7 +88,7 @@ return (
     {labels.map(label => (
       <div
         key={label.id}
-        style={{ position: 'relative' }}
+        className="label-wrapper"
       >
         <Label.CustomLabel
           theme={theme}

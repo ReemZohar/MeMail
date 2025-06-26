@@ -1,5 +1,4 @@
 import './Label.css';
-import { MdLabel, MdMoreVert } from 'react-icons/md';
 
 function Label({ icon, name, isActive, onClick, theme, showMenuButton = false }) {
   return (
@@ -19,7 +18,7 @@ function Label({ icon, name, isActive, onClick, theme, showMenuButton = false })
             e.stopPropagation();
           }}
         >
-          <MdMoreVert size={20} />
+          <i className="bi bi-three-dots-vertical icon-dots"></i>
         </button>
       )}
     </div>
@@ -36,7 +35,9 @@ Label.CustomLabel = ({ name, isActive, onClick, theme, onMenuClick, isCollapsed 
       }}
     >
       <div className="label-content">
-        <span className="label-icon"><MdLabel size={18} /></span>
+        <span className="label-icon">
+          <i className="bi bi-tag icon-tag"></i>
+        </span>
         {!isCollapsed && <span className="label-text">{name}</span>}
       </div>
 
@@ -48,7 +49,7 @@ Label.CustomLabel = ({ name, isActive, onClick, theme, onMenuClick, isCollapsed 
             onMenuClick?.(e);
           }}
         >
-          <MdMoreVert size={20} />
+          <i className="bi bi-three-dots-vertical icon-dots"></i>
         </button>
       )}
     </div>

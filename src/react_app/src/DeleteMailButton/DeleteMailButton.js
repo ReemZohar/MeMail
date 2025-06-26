@@ -1,12 +1,11 @@
 import React from 'react';
-import { MdDelete } from 'react-icons/md';
 import './DeleteMailButton.css';
 
 const DeleteMailButton = ({ onClick }) => {
   return (
     <div className="tooltip-container">
       <button className="deleteMail-button" onClick={onClick}>
-        <MdDelete size={18} />
+        <i className="bi bi-trash"></i>
       </button>
       <span className="tooltip-text">Delete</span>
     </div>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './LeftMenu.css';
-import { MdMenu } from 'react-icons/md';
 import LabelMenu from '../LabelMenu/LabelMenu';
 import CustomLabelMenu from '../CustomLabelMenu/CustomLabelMenu';
 import NewMailButton from '../NewMailButton/NewMailButton';
@@ -38,7 +37,7 @@ function LeftMenu({ theme, onComposeClick, onLabelClick, activeFolder, initialAc
     <div className={`leftMenu ${isCollapsed ? 'collapsed' : ''}`}>
       <div className="menu-toggle-container">
         <button className="menu-toggle-button" onClick={toggleMenu}>
-          <MdMenu size={24} />
+          <i className="bi bi-list" style={{ fontSize: 24 }}></i>
         </button>
       </div>
 

@@ -1,5 +1,3 @@
-import React from 'react';
-import { MdReport } from 'react-icons/md';
 import './SpamMailButton.css';
 
 const SpamMailButton = ({ onClick }) => {
@@ -10,7 +8,7 @@ const SpamMailButton = ({ onClick }) => {
         onClick={onClick}
         aria-label="Mark as spam"
       >
-        <MdReport size={20} />
+        <i className="bi bi-exclamation-triangle spam-icon"></i>
       </button>
       <span className="tooltip-text">Report spam</span>
     </div>

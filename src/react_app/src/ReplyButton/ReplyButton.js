@@ -1,4 +1,3 @@
-import { MdReply } from 'react-icons/md';
 import './ReplyButton.css';
 
 const ReplyButton = ({ onClick }) => {
@@ -9,7 +8,7 @@ const ReplyButton = ({ onClick }) => {
         onClick={onClick}
         aria-label="Reply"
       >
-        <MdReply size={20} />
+        <i className="bi bi-reply" style={{ fontSize: 20 }}></i>
       </button>
       <span className="tooltip-text">Reply</span>
     </div>

@@ -16,7 +16,8 @@
   background-color: #f1f3f4;
 }
 
-.spamMail-button svg {
+.spamMail-button i.spam-icon {
+  font-size: 18px;
   color: #444;
 }
 
