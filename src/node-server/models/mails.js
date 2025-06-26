@@ -106,7 +106,10 @@ const getSpamMailsForUser = (userId) => {
 };
 
 
-const sendMail = async (title, content, sender, receiver) => {
+const fs = require('fs');
+const path = require('path');
+
+const sendMail = async (title, content, sender, receiver, attachments = []) => {
   const time = Date.now();
 
   const extractUrls = (text) => {
@@ -124,6 +127,28 @@ const sendMail = async (title, content, sender, receiver) => {
     }
   }
 
+  const processedAttachments = attachments.map(file => {
+  if (!file.buffer) {
+    return {
+      originalname: file.originalname,
+      mimetype: file.mimetype,
+      size: file.size,
+      storedFilename: file.storedFilename,
+    };
+  }
+
+  const uniqueName = `${Date.now()}-${Math.random().toString(36).substring(2)}-${file.originalname}`;
+  const uploadPath = path.join(__dirname, '..', 'uploads', uniqueName);
+  fs.writeFileSync(uploadPath, file.buffer);
+
+  return {
+    originalname: file.originalname,
+    mimetype: file.mimetype,
+    size: file.size,
+    storedFilename: uniqueName,
+  };
+});
+
   const sent = {
     id: idCounter++,
     sender,
@@ -135,23 +160,21 @@ const sendMail = async (title, content, sender, receiver) => {
     isRead: false,
     isFavorite: false,
     isSpam: isSpam,
-    labels: [] // assign mail to lables
+    labels: [],
+    attachments: processedAttachments, 
   };
 
   const received = {
     ...sent,
     id: idCounter++,
     folder: 'inbox',
-    isRead: false,
-    isSpam: isSpam,
-    labels: [], // assign mail to lables
   };
 
   mails.push(sent);
   mails.push(received);
 
   return sent;
-}
+};
 
 
 const getMailById = (id) => mails.find(m => m.id === id)

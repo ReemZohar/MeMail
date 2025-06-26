@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './NewMailWindow.css';
-import { MdClose, MdAttachFile, MdInsertPhoto, MdMoreVert, MdMinimize } from 'react-icons/md';
+import { MdClose } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
-function NewMailWindow({ index = 0, onClose, title='', receiver='', content='', token }) {
+function NewMailWindow({ index = 0, onClose, title = '', receiver = '', content = '', token, attachments = [] }) {
   const navigate = useNavigate();
-  
+
   const receiverFmt = receiver ? '---\n' + receiver + ":\n" : "";
   const [formData, setFormData] = useState({
     receiver: receiver,
-    title: receiver != '' ? 'RE: ' + title : title,
-    content: title != '' ? receiverFmt + content + "\n---\n" : content,
+    title: receiver !== '' ? 'RE: ' + title : title,
+    content: title !== '' ? receiverFmt + content + "\n---\n" : content,
   });
 
+  const [files, setFiles] = useState([]);
   const [error, setError] = useState(null);
 
   const handleChange = (e) => {
@@ -22,23 +23,40 @@ function NewMailWindow({ index = 0, onClose, title='', receiver='', content='', 
     }));
   };
 
+  const handleFileChange = (e) => {
+    setFiles(Array.from(e.target.files));
+  };
+
   const sendMail = async () => {
-      const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    const form = new FormData();
+    form.append('receiver', formData.receiver);
+    form.append('title', formData.title);
+    form.append('content', formData.content);
+
+    // Filter out files that are already in forwarded attachments
+    const forwardedNames = attachments.map(att => att.originalname);
+    const uniqueFiles = files.filter(file => !forwardedNames.includes(file.name));
+
+    uniqueFiles.forEach(file => form.append('attachments', file));
+
+    // Add forwarded attachments explicitly to server
+    attachments.forEach(att => {
+      form.append('forwardedAttachments', JSON.stringify(att));
+    });
+
     try {
       const response = await fetch('http://localhost:9090/api/mails', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: form,
       });
 
       if (response.ok) {
-        //alert('Mail sent successfully');
         navigate('/mail?folder=inbox');
         onClose();
-
       } else {
         const error = await response.json();
         alert('Failed to send mail: ' + error.error);
@@ -61,7 +79,6 @@ function NewMailWindow({ index = 0, onClose, title='', receiver='', content='', 
 
   const handleClose = async () => {
     const { receiver, title, content } = formData;
-
     const isEmpty = !receiver && !title && !content;
     if (isEmpty) {
       onClose();
@@ -89,52 +106,77 @@ function NewMailWindow({ index = 0, onClose, title='', receiver='', content='', 
   };
 
   const rightOffset = 20 + index * 620;
+  const forwardedNames = attachments.map(att => att.originalname);
+  const uniqueFiles = files.filter(file => !forwardedNames.includes(file.name));
 
   return (
-    <div className="mail-popup shadow" style={{ right: `${rightOffset}px` }}>
-      <div className="mail-header d-flex justify-content-between align-items-center">
+    <div className="mail-popup right-align" style={{ right: `${rightOffset}px` }}>
+      <div className="mail-header">
         <span>New Message</span>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          {/* Optional minimize button (if you add logic later) */}
-          {/* <MdMinimize size={20} onClick={handleMinimize} style={{ cursor: 'pointer' }} /> */}
-          <MdClose size={20} onClick={handleClose} style={{ cursor: 'pointer' }} />
-        </div>
+        <button className="close-btn" onClick={handleClose}><MdClose /></button>
       </div>
       <form className="mail-form" onSubmit={handleSubmit}>
         <input
-          type="email"
-          name="receiver"
           className="form-control"
+          name="receiver"
           placeholder="To"
           value={formData.receiver}
           onChange={handleChange}
           required
         />
         <input
-          type="text"
-          name="title"
           className="form-control"
+          name="title"
           placeholder="Subject"
           value={formData.title}
           onChange={handleChange}
           required
         />
         <textarea
-          name="content"
           className="form-control"
+          name="content"
           placeholder="Compose your message..."
           value={formData.content}
           onChange={handleChange}
           required
         />
-        {error && <div className="text-danger mb-2">{error}</div>}
-        <div className="mail-actions">
-          <button type="submit" className="btn btn-send">Send</button>
-          <div className="icon-bar">
-            <MdAttachFile size={20} />
-            <MdInsertPhoto size={20} />
-            <MdMoreVert size={20} />
+
+        <label className="custom-file-upload">
+          <input type="file" multiple onChange={handleFileChange} />
+          📎 Attach files
+        </label>
+
+        {uniqueFiles.length > 0 && (
+          <div className="attached-files">
+            {uniqueFiles.map((file, idx) => (
+              <div key={idx}>{file.name}</div>
+            ))}
           </div>
+        )}
+
+        {/* Display forwarded attachments if any */}
+        {attachments.length > 0 && (
+          <div className="forwarded-attachments">
+            <p style={{ fontWeight: 'bold' }}>Forwarded attachments:</p>
+            <ul>
+              {attachments.map((att, index) => {
+                const url = `http://localhost:9090/uploads/${att.storedFilename}`;
+                return (
+                  <li key={index}>
+                    <a href={url} download={att.originalname} target="_blank" rel="noopener noreferrer">
+                      {att.originalname}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
+
+        {error && <div className="text-danger mb-2">{error}</div>}
+
+        <div className="mail-actions">
+          <button type="submit" className="btn-send">Send</button>
         </div>
       </form>
     </div>
