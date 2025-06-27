@@ -109,24 +109,28 @@ removes an email from the user's mailbox
 
 #### Add A New Label
 ![image](https://github.com/user-attachments/assets/d601f858-4ba0-44bf-a62f-6f791afd9561)
+
 Add a new label for future mail assignments.
 
 #### Edit / Delete A Label
 ![image](https://github.com/user-attachments/assets/2f1b0a95-622e-4b4f-ae5e-376b210e8eb5)
 ![image](https://github.com/user-attachments/assets/322632a0-1f09-4db7-868e-5777b26d174e)
+
 By clicking the 3-dots next to the label name, you can:
 * Modify the name of an existing label to better suit your organizational preferences.
 * Permanently remove a label from your account. Emails previously labeled will no longer have that label.
 
 #### Assign Label / Remove Assignment To Mail
-![image](https://github.com/user-attachments/assets/43cd6cad-a3b6-489f-aaf5-787b85de8ba3)
+![image](https://github.com/user-attachments/assets/43cd6cad-a3b6-489f-aaf5-787b85de8ba3)   
 ![image](https://github.com/user-attachments/assets/77537e96-ba04-49dd-98af-ce41a4e16544)
+
 By clicking the 3-dots located at the top-right corner of the mail window, you can:
 * Add a specific label to an email to categorize or organize it for easier retrieval.
 * Detach a label from an email, removing its association with that category.
 
 #### Search For A Mail
 ![image](https://github.com/user-attachments/assets/0be645a0-c2bf-4963-8087-305ac04f70be)
+
 Allows searching for emails based on content, subject, sender, and receiver.
 You can also use advanced-search by clicking the filtering button.
 
@@ -135,6 +139,7 @@ You can also use advanced-search by clicking the filtering button.
 
 #### Dark Mode Button
 ![image](https://github.com/user-attachments/assets/bb807361-dd37-41b0-a5b9-0fc6287f0b15)
+
 Located at the top-right corner of all screens, this toggles the program between light & dark modes.
 
 
@@ -144,6 +149,7 @@ This window also contains a *log out button*.
 
 #### Log Out Button
 ![image](https://github.com/user-attachments/assets/77f6ad5c-6041-465a-a178-2fef80a11feb)
+
 Located into the user window.
 
 
