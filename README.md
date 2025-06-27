@@ -79,6 +79,8 @@ Registers a new user by providing a unique username and password, creating an ac
 #### Login To MeMail
 Authenticates an existing user by verifying their credentials and returning a valid access token.
 
+
+
 ### Managing emails
 
 #### Send A New Mail
@@ -113,7 +115,7 @@ removes an email from the user's mailbox
 Add a new label for future mail assignments.
 
 #### Edit / Delete A Label
-![image](https://github.com/user-attachments/assets/2f1b0a95-622e-4b4f-ae5e-376b210e8eb5)
+![image](https://github.com/user-attachments/assets/2f1b0a95-622e-4b4f-ae5e-376b210e8eb5) 
 ![image](https://github.com/user-attachments/assets/322632a0-1f09-4db7-868e-5777b26d174e)
 
 By clicking the 3-dots next to the label name, you can:
@@ -121,7 +123,7 @@ By clicking the 3-dots next to the label name, you can:
 * Permanently remove a label from your account. Emails previously labeled will no longer have that label.
 
 #### Assign Label / Remove Assignment To Mail
-![image](https://github.com/user-attachments/assets/43cd6cad-a3b6-489f-aaf5-787b85de8ba3)   
+![image](https://github.com/user-attachments/assets/43cd6cad-a3b6-489f-aaf5-787b85de8ba3)  
 ![image](https://github.com/user-attachments/assets/77537e96-ba04-49dd-98af-ce41a4e16544)
 
 By clicking the 3-dots located at the top-right corner of the mail window, you can:
@@ -133,6 +135,7 @@ By clicking the 3-dots located at the top-right corner of the mail window, you c
 
 Allows searching for emails based on content, subject, sender, and receiver.
 You can also use advanced-search by clicking the filtering button.
+
 
 
 ### Another Features
