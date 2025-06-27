@@ -1,4 +1,6 @@
-#  Gmail-like REST API – Fullstack Project
+#  Gmail-like REST API – Fullstack Project  
+<img width="287" alt="image" src="https://github.com/user-attachments/assets/65777939-a69f-4417-8e78-cf3ad9d03896" />
+
 
 ##  System Overview
 
