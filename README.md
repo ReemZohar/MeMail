@@ -89,9 +89,7 @@ Sends a new email by specifying the recipient, subject, and content. The mail is
 ![image](https://github.com/user-attachments/assets/6612c9f1-87d9-4493-a1a1-7895e99e157d)
 
 1. After login, find the "Compose" button on the top left of the screen, press it.
-
-![image](https://github.com/user-attachments/assets/8b7361d8-a4b6-46ee-97ab-adbf85af01cf)
-
+<img width="287" alt="image" src="https://github.com/user-attachments/assets/8b7361d8-a4b6-46ee-97ab-adbf85af01cf" />
   
 2. A new mail window will be opened - fill the relevant fields and write there the mail content. Then press the "Send" button.
 
@@ -100,7 +98,7 @@ Sends a new email by specifying the recipient, subject, and content. The mail is
 #### Edit A Mail
 Allows editing a draft or previously saved mail before sending or re-saving it.
 <img width="287" alt="image" src="https://github.com/user-attachments/assets/44eace62-cde0-454e-bc85-87b9bbf02fd9" />
-<img width="287" alt="image" src="https://github.com/user-attachments/assets/7635309c-bc84-4466-8f8a-1d4ae489dd95" />
+<img width="287" alt="image" src="https://github.com/user-attachments/assets/41b04f56-ea02-4086-8425-06e5947ebb24" />
 
 > ***Note:*** When a user edits an email, the updated version is visible only to them.
 
