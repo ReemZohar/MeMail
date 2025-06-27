@@ -77,7 +77,7 @@ Replace YOUR_TOKEN with your valid JWT.
 ### Registration and Login
 
 #### Create A New MeMail User
-<img width="500" alt="image" src="https://github.com/user-attachments/assets/579a6b8d-e92e-46d6-94fa-a532f1258655" />
+<img width="500" height="300" alt="image" src="https://github.com/user-attachments/assets/579a6b8d-e92e-46d6-94fa-a532f1258655" />
 
 
 Registers a new user by providing a unique username and password, creating an account in the system.
