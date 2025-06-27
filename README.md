@@ -114,8 +114,8 @@ Marks an email as a favorite for quick access, or removes it from the favorites 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/e5ea489a-eb95-42c6-ac09-6e510086d72b" />
 
 
-Flags an email as spam, moving it to the "Spam" folder and optionally adding the sender to the blacklist. It can also be unmarked.
-These actions remove/ adds all the URLs to black list.
+Flags an email as spam, moving it to the "Spam" folder, it can also be unmarked. These actions remove/ adds all the URLs to black list.
+> ***Note:*** All future mails that will contain blacklisted URLs will go to spam automatically.
 
 #### Delete Mail
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/0663ab9b-67d1-4065-8a65-56262a947616" />
