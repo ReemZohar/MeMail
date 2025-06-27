@@ -1,6 +1,6 @@
  <img width="100" alt="image" src="https://github.com/user-attachments/assets/65777939-a69f-4417-8e78-cf3ad9d03896" />
  
-#   "MeMail" - Gmail-like REST API – Fullstack Project
+#   "Me-Mail" - Gmail-like REST API – Fullstack Project
 
 
 ##  System Overview
