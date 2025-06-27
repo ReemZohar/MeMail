@@ -6,8 +6,8 @@ This project implements a modular fullstack Gmail-like mail system with:
 -  A **C++ TCP Server** for blacklist validation (Bloom Filter logic).
 -  A **Node.js + Express REST API** to manage users, mails, labels, spam filtering, and favorites.
 -  A **React Frontend** simulating a Gmail-style user interface.
-
-The system uses the MVC architecture and allows real-time validation between the Node.js backend and the C++ server over TCP.
+- **Bootstrap** - A CSS framework for building responsive desktop websites
+> The system uses the MVC architecture and allows real-time validation between the Node.js backend and the C++ server over TCP.
 
 ---
 
@@ -163,7 +163,7 @@ You can also use advanced-search by clicking the filtering button.
 Located at the top-right corner of all screens, this toggles the program between light & dark modes.
 
 #### User Window
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/1d0920e0-5c33-438a-90cd-b5a47bf600d7" />
+<img width="250" alt="image" src="https://github.com/user-attachments/assets/1d0920e0-5c33-438a-90cd-b5a47bf600d7" />
 
 In this window the user can see all his relevant information such as name, email address, and avatar.
 This window also contains a *log out button*.
