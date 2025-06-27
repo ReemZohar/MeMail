@@ -76,14 +76,14 @@ Replace YOUR_TOKEN with your valid JWT.
 
 ### Registration and Login
 
-#### Create A New MeMail User
+#### Create A New MeMail User:
 <img width="750" height="300" alt="image" src="https://github.com/user-attachments/assets/579a6b8d-e92e-46d6-94fa-a532f1258655" />
 
 
 Registers a new user by providing a unique username and password, creating an account in the system.
 > To register, you can go to the following API: `http://localhost:3000/register`
 
-#### Login To MeMail
+#### Login To MeMail:
 <img width="500" alt="image" src="https://github.com/user-attachments/assets/5213b4b4-51d7-4c2e-ba85-2c49d4ea9461" />
 
 Authenticates an existing user by verifying their credentials and returning a valid access token.
@@ -94,7 +94,7 @@ Authenticates an existing user by verifying their credentials and returning a va
 
 ### Managing emails
 
-#### Send A New Mail
+#### Send A New Mail:
 Sends a new email by specifying the recipient, subject, and content. The mail is saved in the "Sent" folder.
 
 ![image](https://github.com/user-attachments/assets/6612c9f1-87d9-4493-a1a1-7895e99e157d)
@@ -106,20 +106,20 @@ Sends a new email by specifying the recipient, subject, and content. The mail is
 
 
 
-#### Edit A Mail
+#### Edit A Mail:
 <img width="120" alt="image" src="https://github.com/user-attachments/assets/f7cc5f1d-0840-4290-9910-84aa85ffff6b" />
 
 Allows editing a draft or previously saved mail before sending or re-saving it.
 
 > ***Note:*** When a user edits an email, the updated version is visible only to them.
 
-#### Mark / Remove Mail From Favorites
+#### Mark / Remove Mail From Favorites:
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/ada1c802-f139-436e-922d-6bea6aed678d" />
 
 Marks an email as a favorite for quick access, or removes it from the favorites list.
 
 
-#### Mark / Remove Mail As Spam
+#### Mark / Remove Mail As Spam:
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/e5ea489a-eb95-42c6-ac09-6e510086d72b" />
 
@@ -127,22 +127,22 @@ Marks an email as a favorite for quick access, or removes it from the favorites 
 Flags an email as spam, moving it to the "Spam" folder, it can also be unmarked. These actions remove/ adds all the URLs to black list.
 > ***Note:*** All future mails that will contain blacklisted URLs will go to spam automatically.
 
-#### Delete Mail
+#### Delete Mail:
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/0663ab9b-67d1-4065-8a65-56262a947616" />
 
 removes an email from the user's mailbox
 
-#### Mark Mail As Read / Unread
+#### Mark Mail As Read / Unread:
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/8cc4ff7b-e460-411d-9d44-f2266d9a5393" />
 
 For user's convenience.
 
-#### Add A New Label
+#### Add A New Label:
 ![image](https://github.com/user-attachments/assets/d601f858-4ba0-44bf-a62f-6f791afd9561)
 
 Add a new label for future mail assignments.
 
-#### Edit / Delete A Label
+#### Edit / Delete A Label:
 ![image](https://github.com/user-attachments/assets/2f1b0a95-622e-4b4f-ae5e-376b210e8eb5) 
 ![image](https://github.com/user-attachments/assets/322632a0-1f09-4db7-868e-5777b26d174e)
 
@@ -150,7 +150,7 @@ By clicking the 3-dots next to the label name, you can:
 * Modify the name of an existing label to better suit your organizational preferences.
 * Permanently remove a label from your account. Emails previously labeled will no longer have that label.
 
-#### Assign Label / Remove Assignment To Mail
+#### Assign Label / Remove Assignment To Mail:
 ![image](https://github.com/user-attachments/assets/43cd6cad-a3b6-489f-aaf5-787b85de8ba3) 
 ![image](https://github.com/user-attachments/assets/77537e96-ba04-49dd-98af-ce41a4e16544)
 
@@ -158,7 +158,7 @@ By clicking the 3-dots located at the top-right corner of the mail window, you c
 * Add a specific label to an email to categorize or organize it for easier retrieval.
 * Detach a label from an email, removing its association with that category.
 
-#### Search For A Mail
+#### Search For A Mail:
 ![image](https://github.com/user-attachments/assets/0be645a0-c2bf-4963-8087-305ac04f70be)
 
 Allows searching for emails based on content, subject, sender, and receiver.
@@ -169,18 +169,18 @@ You can also use advanced-search by clicking the filtering button.
 
 ### More Features
 
-#### Dark Mode Button
+#### Dark Mode Button:
 ![image](https://github.com/user-attachments/assets/bb807361-dd37-41b0-a5b9-0fc6287f0b15)
 
 Located at the top-right corner of all screens, this toggles the program between light & dark modes.
 
-#### User Window
+#### User Window:
 <img width="250" alt="image" src="https://github.com/user-attachments/assets/1d0920e0-5c33-438a-90cd-b5a47bf600d7" />
 
 In this window the user can see all his relevant information such as name, email address, and avatar.
 This window also contains a *log out button*.
 
-#### Log Out Button
+#### Log Out Button:
 ![image](https://github.com/user-attachments/assets/77f6ad5c-6041-465a-a178-2fef80a11feb)
 
 Located in the user window.
