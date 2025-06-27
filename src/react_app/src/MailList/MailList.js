@@ -218,7 +218,7 @@ const performActionOnSelected = async (actionType) => {
           <MailItem
   key={mail.id}
   mail={mail}
-  folder={folder} // <== הוספה חשובה
+  folder={folder}
   isSelected={selectedMails.has(mail.id)}
   whenSelected={(id) => {
     setSelectedMails(prev => {
