@@ -102,7 +102,7 @@ Allows editing a draft or previously saved mail before sending or re-saving it.
 
 > ***Note:*** When a user edits an email, the updated version is visible only to them.
 
-#### Mark/Remove Mail As Favorite
+#### Mark / Remove Mail From Favorites
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/ada1c802-f139-436e-922d-6bea6aed678d" />
 
 Marks an email as a favorite for quick access, or removes it from the favorites list.
