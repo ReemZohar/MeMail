@@ -177,7 +177,7 @@ You can also use advanced-search by clicking the filtering button.
 ### Left Menu
 ![image](https://github.com/user-attachments/assets/fda393ad-5ecd-4291-93ba-32762402ea6b)
 
-includes all the folders and labels so that the user will be able to see all the relevant mails in there.
+Includes all the folders and labels so that the user will be able to see all the relevant mails in there.
 
 #### Dark Mode Button:
 ![image](https://github.com/user-attachments/assets/bb807361-dd37-41b0-a5b9-0fc6287f0b15)
