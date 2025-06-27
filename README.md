@@ -155,15 +155,16 @@ You can also use advanced-search by clicking the filtering button.
 
 
 
-### Another Features
+### More Features
 
 #### Dark Mode Button
 ![image](https://github.com/user-attachments/assets/bb807361-dd37-41b0-a5b9-0fc6287f0b15)
 
 Located at the top-right corner of all screens, this toggles the program between light & dark modes.
 
-
 #### User Window
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/1d0920e0-5c33-438a-90cd-b5a47bf600d7" />
+
 In this window the user can see all his relevant information such as name, email address, and avatar.
 This window also contains a *log out button*.
 
