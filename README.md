@@ -68,11 +68,15 @@ curl -X GET "http://localhost:9090/api/mails/advanced?folder=inbox&isFavorite=tr
 ```
 
 Replace YOUR_TOKEN with your valid JWT.
+
+
 ---
 ## System Features
 * To use two users simultaneously, you need to log in to one as usual and the other in an incognito window.
 * The .env file is exposed here, although it should be hidden, for exercise purposes only.
 ---
+
+
 ##  User Operations
 
 ### Registration and Login
