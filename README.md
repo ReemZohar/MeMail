@@ -144,7 +144,7 @@ Add a new label for future mail assignments.
 
 #### Edit / Delete A Label:
 ![image](https://github.com/user-attachments/assets/2f1b0a95-622e-4b4f-ae5e-376b210e8eb5) 
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/322632a0-1f09-4db7-868e-5777b26d174e" />
+<img width="200" alt="image" src="https://github.com/user-attachments/assets/322632a0-1f09-4db7-868e-5777b26d174e" />
 
 By clicking the 3-dots next to the label name, you can:
 * Modify the name of an existing label to better suit your organizational preferences.
