@@ -98,7 +98,7 @@ Sends a new email by specifying the recipient, subject, and content. The mail is
 #### Edit A Mail
 Allows editing a draft or previously saved mail before sending or re-saving it.
 <img width="287" alt="image" src="https://github.com/user-attachments/assets/44eace62-cde0-454e-bc85-87b9bbf02fd9" />
-<img width="287" alt="image" src="https://github.com/user-attachments/assets/41b04f56-ea02-4086-8425-06e5947ebb24" />
+<img width="287" alt="image" src="https://github.com/user-attachments/assets/d2282c74-37cd-4b66-b8d8-84d3f786b7b4" />
 
 > ***Note:*** When a user edits an email, the updated version is visible only to them.
 
