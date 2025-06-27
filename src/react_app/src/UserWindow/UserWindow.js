@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import './UserWindow.css';
 import LogOutButton from '../LogOutButton/LogOutButton';
 
