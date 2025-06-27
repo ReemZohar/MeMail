@@ -143,7 +143,7 @@ removes an email from the user's mailbox
 For user's convenience.
 
 #### Add A New Label:
-![image](https://github.com/user-attachments/assets/d601f858-4ba0-44bf-a62f-6f791afd9561)
+![image](https://github.com/user-attachments/assets/8a90eb65-d807-4133-95e4-e6092519e6fe)
 
 Add a new label for future mail assignments.
 
