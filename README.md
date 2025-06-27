@@ -174,6 +174,11 @@ You can also use advanced-search by clicking the filtering button.
 
 ### More Features
 
+### Left Menu
+![image](https://github.com/user-attachments/assets/fda393ad-5ecd-4291-93ba-32762402ea6b)
+
+includes all the folders and labels so that the user will be able to see all the relevant mails in there.
+
 #### Dark Mode Button:
 ![image](https://github.com/user-attachments/assets/bb807361-dd37-41b0-a5b9-0fc6287f0b15)
 
@@ -191,6 +196,5 @@ This window also contains a *log out button*.
 Located in the user window.
 
 #### Drafts handling
-
-
-
+When a user starts composing an email and leaves the window, the email is saved as a draft.
+Later, the user can continue writing and finish the email, or alternatively delete the draft.
