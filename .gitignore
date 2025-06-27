@@ -1,15 +1,11 @@
-# ================================
 # Node.js related
-# ================================
 node_modules/
-.env
+#.env => should be there usually, but in our program instructions we were told to keep it visible.
 logs/
 *.log
 npm-debug.log*
 
-# ================================
 # C/C++ related
-# ================================
 *.o
 *.obj
 *.out
@@ -23,9 +19,7 @@ npm-debug.log*
 *.gcda
 *.gch
 
-# ================================
 # General OS/editor garbage
-# ================================
 .DS_Store
 Thumbs.db
 .vscode/
