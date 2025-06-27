@@ -81,6 +81,7 @@ Authenticates an existing user by verifying their credentials and returning a va
 
 
 
+
 ### Managing emails
 
 #### Send A New Mail
@@ -155,6 +156,7 @@ You can also use advanced-search by clicking the filtering button.
 
 
 
+
 ### More Features
 
 #### Dark Mode Button
@@ -171,7 +173,7 @@ This window also contains a *log out button*.
 #### Log Out Button
 ![image](https://github.com/user-attachments/assets/77f6ad5c-6041-465a-a178-2fef80a11feb)
 
-Located into the user window.
+Located in the user window.
 
 
 
