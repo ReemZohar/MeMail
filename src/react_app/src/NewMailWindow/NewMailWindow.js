@@ -86,19 +86,18 @@ function NewMailWindow({
   const { receiver, title, content } = formData;
   const isEmpty = !receiver && !title && !content;
 
-  // אם הטופס ריק – פשוט לסגור
   if (isEmpty) {
     onClose();
     return;
   }
 
-  // אם מדובר בטיוטה קיימת – לא נשלח שוב
+  //if exist draft - just close, not do post
   if (isDraft && draftId) {
     onClose();
     return;
   }
 
-  // אחרת (טיוטה חדשה), נשמור אותה
+  // else - new draft - save it
   try {
     const response = await fetch('http://localhost:9090/api/draft', {
       method: 'POST',
