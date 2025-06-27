@@ -9,79 +9,78 @@ import avatars from './avatars/avatars'
 import { useNavigate } from 'react-router-dom'
 
 export default function RegisterPage({ theme }) {
-    const [step, setStep] = useState(0);
-    const navigate = useNavigate();
+  const [step, setStep] = useState(0);
+  const navigate = useNavigate();
 
-    //object collects all fields expected by the server
-    const [data, setData] = useState({
-        firstName: '',
-        surname: '',
-        day: '',
-        month: '1',
-        year: '',
-        gender: '1',
-        mail: '',
-        password: '',
-        confirmPassword: '',
-        avatar: null,
-        avatarFile: null
-    })
+  //object collects all fields expected by the server
+  const [data, setData] = useState({
+    firstName: '',
+    surname: '',
+    day: '',
+    month: '1',
+    year: '',
+    gender: '1',
+    mail: '',
+    password: '',
+    confirmPassword: '',
+    avatar: null,
+    avatarFile: null
+  })
 
-    //converts the gender number selected to a name string
-    const defineGender = (gender) => {
-        const femInd = 1, maleInd = 2;
-        if (gender == femInd) {
-            return "Female";
-        }
-        else if (gender == maleInd) {
-            return "Male";
-        } else {
-            return "Rather not say";
-        }
+  //converts the gender number selected to a name string
+  const defineGender = (gender) => {
+    const femInd = "1", maleInd = "2";
+    if (String(gender) === femInd) {
+      return "Female";
+    }
+    else if (String(gender) === maleInd) {
+      return "Male";
+    } else {
+      return "Rather not say";
+    }
+  }
+
+  const next = () => setStep((s) => s + 1)
+
+  //helper to update any single field in data
+  const update = (field) => (value) => {
+    setData((d) => ({ ...d, [field]: value }))
+  }
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append('name', data.firstName);
+    formData.append('surname', data.surname);
+    formData.append('gender', defineGender(data.gender));
+    formData.append('day', data.day);
+    formData.append('month', data.month);
+    formData.append('year', data.year);
+    formData.append('username', data.mail);
+    formData.append('password', data.password);
+    formData.append('confirmPassword', data.confirmPassword);
+
+    if (data.avatarFile) {
+      //user uploaded an avatar scenario
+      formData.append('avatar', data.avatarFile);
+    } else {
+      //exisiting avatar was chosen scenario
+      formData.append('avatar', data.avatar);
     }
 
-    const next = () => setStep((s) => s + 1)
+    const res = await fetch('http://localhost:9090/api/users', {
+      method: 'POST',
+      body: formData
+    });
 
-    //helper to update any single field in data
-    const update = (field) => (value) => {
-        setData((d) => ({ ...d, [field]: value }))
+    if (res.ok) {
+      navigate('/login');
+    } else {
+      const err = await res.json();
+      console.error('Registration error', err);
     }
+  }
 
-    const handleSubmit = async () => {
-        const formData = new FormData();
-        formData.append('name', data.firstName);
-        formData.append('surname', data.surname);
-        formData.append('gender', defineGender(data.gender));
-        formData.append('day', data.day);
-        formData.append('month', data.month);
-        formData.append('year', data.year);
-        formData.append('username', data.mail);
-        formData.append('password', data.password);
-        formData.append('confirmPassword', data.confirmPassword);
-
-        if (data.avatarFile) {
-            //user uploaded an avatar scenario
-            formData.append('avatar', data.avatarFile);
-        } else {
-            //exisiting avatar was chosen scenario
-            formData.append('avatar', data.avatar);
-        }
-
-        const res = await fetch('http://localhost:9090/api/users', {
-            method: 'POST',
-            body: formData
-        });
-
-        if (res.ok) {
-            const user = await res.json();
-            navigate('/login');
-        } else {
-            const err = await res.json(); 
-            console.error('Registration error', err);
-        }
-    }
-
-    //pick which card to show
+  //pick which card to show
   switch (step) {
     case 0:
       return (

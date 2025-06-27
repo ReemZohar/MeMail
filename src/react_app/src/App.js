@@ -37,6 +37,7 @@ export default function App() {
     <Routes>
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage setToken={setToken} />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
       {token ? (
         <>
           <Route path="/login" element={<Navigate to='/mail?folder=inbox' replace />} />
