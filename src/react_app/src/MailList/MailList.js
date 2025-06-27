@@ -129,30 +129,30 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
     setSelectedMails(new Set());
   };
 
-const performActionOnSelected = async (actionType) => {
-  const isDraft = folder === 'drafts';
-  const baseUrl = isDraft
-    ? 'http://localhost:9090/api/draft'
-    : 'http://localhost:9090/api/mails';
+  const performActionOnSelected = async (actionType) => {
+    const isDraft = folder === 'drafts';
+    const baseUrl = isDraft
+      ? 'http://localhost:9090/api/draft'
+      : 'http://localhost:9090/api/mails';
 
-  for (const mailId of selectedMails) {
-    try {
-      let response;
-      if (actionType === 'delete') {
-        response = await fetch(`${baseUrl}/${mailId}`, {
-          method: 'DELETE',
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (response.status === 204) {
-          handleMailDeleted(mailId);
+    for (const mailId of selectedMails) {
+      try {
+        let response;
+        if (actionType === 'delete') {
+          response = await fetch(`${baseUrl}/${mailId}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (response.status === 204) {
+            handleMailDeleted(mailId);
+          }
         }
+      } catch (err) {
+        console.error(`Error performing ${actionType} on mail ${mailId}:`, err);
       }
-    } catch (err) {
-      console.error(`Error performing ${actionType} on mail ${mailId}:`, err);
     }
-  }
-  setSelectedMails(new Set());
-};
+    setSelectedMails(new Set());
+  };
 
   const sortedMails = [...mails].sort((a, b) => new Date(b.date) - new Date(a.date));
   const startIndex = page * mailsPerPage;
@@ -216,23 +216,23 @@ const performActionOnSelected = async (actionType) => {
       <div className="MailList-scroll">
         {displayedMails.map(mail => (
           <MailItem
-  key={mail.id}
-  mail={mail}
-  folder={folder} // <== הוספה חשובה
-  isSelected={selectedMails.has(mail.id)}
-  whenSelected={(id) => {
-    setSelectedMails(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(id)) newSet.delete(id);
-      else newSet.add(id);
-      return newSet;
-    });
-  }}
-  onMailDeleted={handleMailDeleted}
-  onMailMovedToSpam={handleMailMovedToSpam}
-  onMailFavoriteToggled={handleMailFavoriteToggled}
-  onOpenMail={onOpenMail}
-/>
+            key={mail.id}
+            mail={mail}
+            folder={folder} // <== הוספה חשובה
+            isSelected={selectedMails.has(mail.id)}
+            whenSelected={(id) => {
+              setSelectedMails(prev => {
+                const newSet = new Set(prev);
+                if (newSet.has(id)) newSet.delete(id);
+                else newSet.add(id);
+                return newSet;
+              });
+            }}
+            onMailDeleted={handleMailDeleted}
+            onMailMovedToSpam={handleMailMovedToSpam}
+            onMailFavoriteToggled={handleMailFavoriteToggled}
+            onOpenMail={onOpenMail}
+          />
 
         ))}
       </div>
