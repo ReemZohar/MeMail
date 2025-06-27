@@ -74,7 +74,6 @@ export default function RegisterPage({ theme }) {
 
         if (res.ok) {
             const user = await res.json();
-            console.log('registered', user);
             navigate('/login');
         } else {
             const err = await res.json(); 

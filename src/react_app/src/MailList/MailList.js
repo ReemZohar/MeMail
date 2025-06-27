@@ -17,7 +17,6 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
       if (sender) params.append('sender', sender);
       if (date) params.append('date', date);
       if (labelId) params.append('labelId', labelId);
-      console.log(folder);
       const endpoint =
         folder === 'drafts'
           ? 'http://localhost:9090/api/draft'
