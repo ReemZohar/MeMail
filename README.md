@@ -97,23 +97,28 @@ Sends a new email by specifying the recipient, subject, and content. The mail is
 
 #### Edit A Mail
 Allows editing a draft or previously saved mail before sending or re-saving it.
-<img width="287" alt="image" src="https://github.com/user-attachments/assets/44eace62-cde0-454e-bc85-87b9bbf02fd9" />
-<img width="287" alt="image" src="https://github.com/user-attachments/assets/d2282c74-37cd-4b66-b8d8-84d3f786b7b4" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/d2282c74-37cd-4b66-b8d8-84d3f786b7b4" />
 
 > ***Note:*** When a user edits an email, the updated version is visible only to them.
 
 #### Mark/Remove Mail As Favorite
+![image](https://github.com/user-attachments/assets/ada1c802-f139-436e-922d-6bea6aed678d)
+
 Marks an email as a favorite for quick access, or removes it from the favorites list.
-<img width="266" alt="image" src="https://github.com/user-attachments/assets/9ea8e130-333d-458c-b3da-38c66f856ee3" />
+
 
 #### Mark/Remove Mail As Spam
+
+![image](https://github.com/user-attachments/assets/e5ea489a-eb95-42c6-ac09-6e510086d72b)
+
+
 Flags an email as spam, moving it to the "Spam" folder and optionally adding the sender to the blacklist. It can also be unmarked.
 These actions remove/ adds all the URLs to black list.
-<img width="263" alt="image" src="https://github.com/user-attachments/assets/e9d6cf51-1155-45a7-b4de-772c86798a3d" />
 
 #### Delete Mail
+![image](https://github.com/user-attachments/assets/0663ab9b-67d1-4065-8a65-56262a947616)
+
 removes an email from the user's mailbox
-<img width="290" alt="image" src="https://github.com/user-attachments/assets/fc349e6d-f8cd-448b-9082-92f86da01cb5" />
 
 #### Add A New Label
 ![image](https://github.com/user-attachments/assets/d601f858-4ba0-44bf-a62f-6f791afd9561)
