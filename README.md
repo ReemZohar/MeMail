@@ -100,14 +100,14 @@ Sends a new email by specifying the recipient, subject, and content. The mail is
 ![image](https://github.com/user-attachments/assets/6612c9f1-87d9-4493-a1a1-7895e99e157d)
 
 1. After login, find the "Compose" button on the top left of the screen, press it.
-<img width="287" alt="image" src="https://github.com/user-attachments/assets/8b7361d8-a4b6-46ee-97ab-adbf85af01cf" />
+<img width="350" alt="image" src="https://github.com/user-attachments/assets/8b7361d8-a4b6-46ee-97ab-adbf85af01cf" />
   
 2. A new mail window will be opened - fill the relevant fields and write there the mail content. Then press the "Send" button.
 
 
 
 #### Edit A Mail
-<img width="150" alt="image" src="https://github.com/user-attachments/assets/f7cc5f1d-0840-4290-9910-84aa85ffff6b" />
+<img width="120" alt="image" src="https://github.com/user-attachments/assets/f7cc5f1d-0840-4290-9910-84aa85ffff6b" />
 
 Allows editing a draft or previously saved mail before sending or re-saving it.
 
