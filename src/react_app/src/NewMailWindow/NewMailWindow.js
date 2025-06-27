@@ -2,14 +2,24 @@ import React, { useState } from 'react';
 import './NewMailWindow.css';
 import { useNavigate } from 'react-router-dom';
 
-function NewMailWindow({ index = 0, onClose, title = '', receiver = '', content = '', token, attachments = [] }) {
+function NewMailWindow({
+  index = 0,
+  onClose,
+  title = '',
+  receiver = '',
+  content = '',
+  token,
+  attachments = [],
+  isDraft = false,
+    draftId = null // ← חדש
+
+}) {
   const navigate = useNavigate();
 
-  const receiverFmt = receiver ? '---\n' + receiver + ":\n" : "";
   const [formData, setFormData] = useState({
-    receiver: receiver,
-    title: receiver !== '' ? 'RE: ' + title : title,
-    content: title !== '' ? receiverFmt + content + "\n---\n" : content,
+    receiver,
+    title: isDraft ? title : (receiver ? 'RE: ' + title : title),
+    content: isDraft ? content : (title !== '' ? `---\n${receiver}:\n${content}\n---\n` : content),
   });
 
   const [files, setFiles] = useState([]);
@@ -33,13 +43,9 @@ function NewMailWindow({ index = 0, onClose, title = '', receiver = '', content 
     form.append('title', formData.title);
     form.append('content', formData.content);
 
-    // Filter out files that are already in forwarded attachments
     const forwardedNames = attachments.map(att => att.originalname);
     const uniqueFiles = files.filter(file => !forwardedNames.includes(file.name));
-
     uniqueFiles.forEach(file => form.append('attachments', file));
-
-    // Add forwarded attachments explicitly to server
     attachments.forEach(att => {
       form.append('forwardedAttachments', JSON.stringify(att));
     });
@@ -77,32 +83,41 @@ function NewMailWindow({ index = 0, onClose, title = '', receiver = '', content 
   };
 
   const handleClose = async () => {
-    const { receiver, title, content } = formData;
-    const isEmpty = !receiver && !title && !content;
-    if (isEmpty) {
-      onClose();
-      return;
-    }
+  const { receiver, title, content } = formData;
+  const isEmpty = !receiver && !title && !content;
 
-    try {
-      const response = await fetch('http://localhost:9090/api/draft', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        console.error('Failed to save draft');
-      }
-    } catch (err) {
-      console.error('Error saving draft:', err);
-    }
-
+  // אם הטופס ריק – פשוט לסגור
+  if (isEmpty) {
     onClose();
-  };
+    return;
+  }
+
+  // אם מדובר בטיוטה קיימת – לא נשלח שוב
+  if (isDraft && draftId) {
+    onClose();
+    return;
+  }
+
+  // אחרת (טיוטה חדשה), נשמור אותה
+  try {
+    const response = await fetch('http://localhost:9090/api/draft', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      console.error('Failed to save draft');
+    }
+  } catch (err) {
+    console.error('Error saving draft:', err);
+  }
+
+  onClose();
+};
 
   const rightOffset = 20 + index * 620;
   const forwardedNames = attachments.map(att => att.originalname);
@@ -113,8 +128,8 @@ function NewMailWindow({ index = 0, onClose, title = '', receiver = '', content 
       <div className="mail-header">
         <span>New Message</span>
         <button className="close-btn" onClick={handleClose}>
-  <i className="bi bi-x-lg"></i>
-</button>
+          <i className="bi bi-x-lg"></i>
+        </button>
       </div>
       <form className="mail-form" onSubmit={handleSubmit}>
         <input
@@ -142,10 +157,11 @@ function NewMailWindow({ index = 0, onClose, title = '', receiver = '', content 
           required
         />
 
-       <label className="custom-file-upload">
+        <label className="custom-file-upload">
           <input type="file" multiple onChange={handleFileChange} />
           <i className="bi bi-paperclip me-1"></i> Attach files
         </label>
+
         {uniqueFiles.length > 0 && (
           <div className="attached-files">
             {uniqueFiles.map((file, idx) => (
@@ -154,7 +170,6 @@ function NewMailWindow({ index = 0, onClose, title = '', receiver = '', content 
           </div>
         )}
 
-        {/* Display forwarded attachments if any */}
         {attachments.length > 0 && (
           <div className="forwarded-attachments">
             <p style={{ fontWeight: 'bold' }}>Forwarded attachments:</p>

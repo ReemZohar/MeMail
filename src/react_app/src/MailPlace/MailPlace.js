@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import MailList from '../MailList/MailList';
 import MailWindow from '../MailWindow/MailWindow';
+import NewMailWindow from '../NewMailWindow/NewMailWindow';
 import './MailPlace.css';
 
 function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
@@ -108,7 +109,24 @@ function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
           />
         </div>
       )}
-      {openedMail && (
+
+      {openedMail && openedMail.isDraft && (
+        <div className="mail-window-wrapper">
+          <NewMailWindow
+  token={token}
+  onClose={handleCloseMail}
+  title={openedMail.title}
+  receiver={openedMail.receiver}
+  content={openedMail.content}
+  attachments={openedMail.attachments || []}
+  isDraft={true}
+  draftId={openedMail.id} 
+
+/>
+        </div>
+      )}
+
+      {openedMail && !openedMail.isDraft && (
         <div className="mail-window-wrapper">
           <MailWindow
             mail={openedMail}
