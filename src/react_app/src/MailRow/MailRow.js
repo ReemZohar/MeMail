@@ -13,7 +13,6 @@ function MailRow({ mailId, isFavorite, isSpam, isDraft, onActionDone, hideFavori
     : 'http://localhost:9090/api/mails';
 
   const handleDelete = async () => {
-    console.log(`[MailRow] Deleting mail with ID: ${mailId}`);
     try {
       const response = await fetch(`${baseUrl}/${mailId}`, {
         method: 'DELETE',
@@ -21,7 +20,6 @@ function MailRow({ mailId, isFavorite, isSpam, isDraft, onActionDone, hideFavori
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(`[MailRow] Delete response status: ${response.status}`);
       if (response.status === 204) {
         onActionDone?.({ type: 'delete', mailId });
       }
@@ -32,13 +30,11 @@ function MailRow({ mailId, isFavorite, isSpam, isDraft, onActionDone, hideFavori
 
   const handleSpamToggle = async () => {
     const endpoint = isSpam ? 'unspam' : 'spam';
-    console.log(`[MailRow] Toggling spam on mail ${mailId}, action: ${endpoint}`);
     try {
       const response = await fetch(`${baseUrl}/${mailId}/${endpoint}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(`[MailRow] Spam toggle response status: ${response.status}`);
       if (response.ok) {
         onActionDone?.({ type: isSpam ? 'unspam' : 'spam', mailId });
       }
@@ -55,8 +51,6 @@ function MailRow({ mailId, isFavorite, isSpam, isDraft, onActionDone, hideFavori
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log('[FavoriteMailButton] Sending request to:', `${baseUrl}/${mailId}/${endpoint}`);
-      console.log('[FavoriteMailButton] Response status:', response.status);
 
       if (response.ok) {
         onActionDone?.({ type: 'favoriteToggle', mailId, isFavorite: !isFavorite });
@@ -67,7 +61,6 @@ function MailRow({ mailId, isFavorite, isSpam, isDraft, onActionDone, hideFavori
   };
 
   const handleMarkUnread = async () => {
-    console.log(`[MailRow] Marking mail ${mailId} as unread`);
     try {
       const response = await fetch(`${baseUrl}/${mailId}/isRead`, {
         method: 'PATCH',
@@ -77,7 +70,6 @@ function MailRow({ mailId, isFavorite, isSpam, isDraft, onActionDone, hideFavori
         },
         body: JSON.stringify({ isRead: false }),
       });
-      console.log(`[MailRow] Mark-as-unread response status: ${response.status}`);
       if (response.ok) {
         onActionDone?.({ type: 'markAsUnread', mailId });
       }

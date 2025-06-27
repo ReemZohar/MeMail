@@ -1,8 +1,7 @@
 let idCounter = 0 //counts the mails
 const mails = []
 
-const { isBlacklisted } = require('./blacklist');
-const { add, remove } = require('./blacklist');
+const { isBlacklisted, add, remove } = require('./blacklist');
 const userModel = require('./users');
 
 const extractUrls = (text) => {
@@ -112,11 +111,6 @@ const path = require('path');
 const sendMail = async (title, content, sender, receiver, attachments = []) => {
   const time = Date.now();
 
-  const extractUrls = (text) => {
-    const regex = /((?:(https?|ftp):\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(:\d+)?(\/[^\s]*)?)/gi;
-    return text.match(regex) || [];
-  };
-
   const urlsToCheck = [...extractUrls(title), ...extractUrls(content)];
 
   let isSpam = false;
@@ -182,11 +176,6 @@ const getMailById = (id) => mails.find(m => m.id === id)
 const updateMail = async (id, title, content) => {
   const mail = mails.find(m => m.id === id);
   if (!mail) return null;
-
-  const extractUrls = (text) => {
-    const regex = /((?:(https?|ftp):\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(:\d+)?(\/[^\s]*)?)/gi;
-    return text ? text.match(regex) || [] : [];
-  };
 
   const urlsToCheck = [...extractUrls(title), ...extractUrls(content)];
 

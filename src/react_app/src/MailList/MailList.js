@@ -17,7 +17,6 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
       if (sender) params.append('sender', sender);
       if (date) params.append('date', date);
       if (labelId) params.append('labelId', labelId);
-      console.log(folder);
       const endpoint =
         folder === 'drafts'
           ? 'http://localhost:9090/api/draft'
@@ -216,23 +215,23 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
       <div className="MailList-scroll">
         {displayedMails.map(mail => (
           <MailItem
-            key={mail.id}
-            mail={mail}
-            folder={folder} // <== הוספה חשובה
-            isSelected={selectedMails.has(mail.id)}
-            whenSelected={(id) => {
-              setSelectedMails(prev => {
-                const newSet = new Set(prev);
-                if (newSet.has(id)) newSet.delete(id);
-                else newSet.add(id);
-                return newSet;
-              });
-            }}
-            onMailDeleted={handleMailDeleted}
-            onMailMovedToSpam={handleMailMovedToSpam}
-            onMailFavoriteToggled={handleMailFavoriteToggled}
-            onOpenMail={onOpenMail}
-          />
+  key={mail.id}
+  mail={mail}
+  folder={folder}
+  isSelected={selectedMails.has(mail.id)}
+  whenSelected={(id) => {
+    setSelectedMails(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) newSet.delete(id);
+      else newSet.add(id);
+      return newSet;
+    });
+  }}
+  onMailDeleted={handleMailDeleted}
+  onMailMovedToSpam={handleMailMovedToSpam}
+  onMailFavoriteToggled={handleMailFavoriteToggled}
+  onOpenMail={onOpenMail}
+/>
 
         ))}
       </div>

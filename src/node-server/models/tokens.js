@@ -18,8 +18,4 @@ const isTokenBlacklisted = (token) => {
 };
 
 
-module.exports = {
-  blacklistToken,
-  isTokenBlacklisted,
-  login
-};
+module.exports = {  blacklistToken,  isTokenBlacklisted,  login};
