@@ -96,8 +96,9 @@ Sends a new email by specifying the recipient, subject, and content. The mail is
 
 
 #### Edit A Mail
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/f7cc5f1d-0840-4290-9910-84aa85ffff6b" />
+
 Allows editing a draft or previously saved mail before sending or re-saving it.
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/d2282c74-37cd-4b66-b8d8-84d3f786b7b4" />
 
 > ***Note:*** When a user edits an email, the updated version is visible only to them.
 
@@ -107,7 +108,7 @@ Allows editing a draft or previously saved mail before sending or re-saving it.
 Marks an email as a favorite for quick access, or removes it from the favorites list.
 
 
-#### Mark/Remove Mail As Spam
+#### Mark / Remove Mail As Spam
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/e5ea489a-eb95-42c6-ac09-6e510086d72b" />
 
@@ -119,6 +120,11 @@ These actions remove/ adds all the URLs to black list.
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/0663ab9b-67d1-4065-8a65-56262a947616" />
 
 removes an email from the user's mailbox
+
+#### Mark Mail As Read / Unread
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/8cc4ff7b-e460-411d-9d44-f2266d9a5393" />
+
+For user's convenience.
 
 #### Add A New Label
 ![image](https://github.com/user-attachments/assets/d601f858-4ba0-44bf-a62f-6f791afd9561)
