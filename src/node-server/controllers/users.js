@@ -4,8 +4,6 @@ const path = require('path');
 // Register a new user
 exports.registerUser = (req, res, next) => {
   try {
-    console.log("BODY:", req.body);
-    console.log("FILE:", req.file);
     let avatarUrl;
     //user uploaded an avatar scenario
     if (req.file) {
