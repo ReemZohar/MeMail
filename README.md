@@ -109,7 +109,7 @@ Marks an email as a favorite for quick access, or removes it from the favorites 
 
 #### Mark/Remove Mail As Spam
 
-![image](https://github.com/user-attachments/assets/e5ea489a-eb95-42c6-ac09-6e510086d72b)
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/e5ea489a-eb95-42c6-ac09-6e510086d72b" />
 
 
 Flags an email as spam, moving it to the "Spam" folder and optionally adding the sender to the blacklist. It can also be unmarked.
@@ -134,7 +134,7 @@ By clicking the 3-dots next to the label name, you can:
 * Permanently remove a label from your account. Emails previously labeled will no longer have that label.
 
 #### Assign Label / Remove Assignment To Mail
-![image](https://github.com/user-attachments/assets/43cd6cad-a3b6-489f-aaf5-787b85de8ba3)  
+![image](https://github.com/user-attachments/assets/43cd6cad-a3b6-489f-aaf5-787b85de8ba3) 
 ![image](https://github.com/user-attachments/assets/77537e96-ba04-49dd-98af-ce41a4e16544)
 
 By clicking the 3-dots located at the top-right corner of the mail window, you can:
