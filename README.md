@@ -43,7 +43,7 @@ cd Advanced-Programming---Gmail-Repository
 ```bash
 JWT_SECRET=your_jwt_secret_here
 ```
-Replace your_jwt_secret_here with a secure random string.
+> Replace your_jwt_secret_here with a secure random string.
 
 You can find an example .env file in the src/node-server/ directory named .env.example.
 Use it as a template to create your own .env file.
@@ -67,7 +67,7 @@ curl -X GET "http://localhost:9090/api/mails/advanced?folder=inbox&isFavorite=tr
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
-Replace YOUR_TOKEN with your valid JWT.
+> Replace YOUR_TOKEN with your valid JWT.
 
 
 ---
