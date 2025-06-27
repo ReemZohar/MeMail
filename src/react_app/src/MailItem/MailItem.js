@@ -10,8 +10,6 @@ function MailItem({ mail, folder, isSelected, whenSelected, onMailDeleted, onMai
 
   const isDraft = folder === 'drafts';
 
-  console.log(mail.folder)
-console.log(isDraft);
   // Load full mail details (including senderName etc.) from backend
   useEffect(() => {
     const fetchMailDetails = async () => {
@@ -62,7 +60,6 @@ console.log(isDraft);
   const handleClick = async () => {
     if (!isDraft && !isRead) {
       try {
-        console.log('check');
         const res = await fetch(`http://localhost:9090/api/mails/${mailState.id}/isRead`, {
           method: 'PATCH',
           headers: {

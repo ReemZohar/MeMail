@@ -26,8 +26,7 @@ function ChooseDateCard({
     if (theme === "dark") btnClass = "btn btn-secondary";
     else btnClass = "btn btn-primary";
 
-    //TODO: add implementation when creating the register page
-    const handleNext = () => {
+     const handleNext = () => {
         //one or more fields are empty scenario
         if (!dayValue || !monthValue || !yearValue) {
             setDateValid(false);
