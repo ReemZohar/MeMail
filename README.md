@@ -45,14 +45,14 @@ cd Advanced-Programming---Gmail-Repository
 docker compose up --build
 ```
 3. Open the client in your browser:
-Navigate to http://localhost:3000 to access the client application.
+Navigate to `http://localhost:3000` to access the client application.
 
 
 
 ### Ports
-- React App: http://localhost:3000
-- Node.js API: http://localhost:9090
-- C++ Bloom Server: localhost:7070 (TCP socket)
+- React App: `http://localhost:3000`
+- Node.js API: `http://localhost:9090`
+- C++ Bloom Server: `localhost:7070` (TCP socket)
 
 Example: Advanced Mail Search
 Use the following curl command to test advanced filtering
