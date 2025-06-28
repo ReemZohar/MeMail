@@ -74,6 +74,8 @@ curl -X GET "http://localhost:9090/api/mails/advanced?folder=inbox&isFavorite=tr
 ## System Features
 * To use two users simultaneously, you need to log in to one as usual and the other in an incognito window.
 * The .env file is exposed here, although it should be hidden, for exercise purposes only.
+* All mails that contain blacklisted URLs go to spam automatically.
+* When a user edits an email, the updated version is visible only to them.
 * You can't edit an email that's in the Spam folder. To edit it, you'll need to remove it from Spam first.
 ---
 
@@ -118,6 +120,7 @@ Sends a new email by specifying the recipient, subject, and content. The mail is
 Allows editing a draft or previously saved mail before sending or re-saving it.
 
 > ***Note:*** When a user edits an email, the updated version is visible only to them.
+> You can't edit an email that's in the Spam folder. To edit it, you'll need to remove it from Spam first.
 
 #### Mark / Remove Mail From Favorites:
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/ada1c802-f139-436e-922d-6bea6aed678d" />
