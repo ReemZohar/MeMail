@@ -22,12 +22,6 @@ function LabelMenu({ theme, onLabelClick, activeFolder}) {
       isFavorite: false,
     },
     {
-      id: 'allmail',
-      name: 'All Mail',
-      icon: <i className="bi bi-envelope"></i>,
-      isFavorite: false,
-    },
-    {
       id: 'favorite',
       name: 'Favorite',
       icon: <i className="bi bi-star"></i>,
