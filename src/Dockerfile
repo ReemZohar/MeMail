@@ -11,4 +11,4 @@ WORKDIR /src/build
 
 RUN cmake .. && make
 
-CMD ["./runProg"]
+CMD ["./runProg", "7070", "8", "1", "2"]

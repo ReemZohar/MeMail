@@ -28,10 +28,8 @@ const deleteLabel = (id) => {
     return true
 }
 const addLabelToMail = (mailId, labelId) => {
-  console.log(`addLabelToMail called with mailId=${mailId}, labelId=${labelId}`);
   const mail = mailModel.getMailById(mailId);
   if (!mail) {
-    console.log('Mail not found');
     return null;
   }
   if (!mail.labels) mail.labels = [];

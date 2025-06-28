@@ -87,29 +87,38 @@ function MailRow({ mailId, isFavorite, isSpam, isDraft, onActionDone, hideFavori
   };
 
   return (
-    <div>
-      {!isItem && <div className="MailRow">
-        <ReplyButton onClick={handleReply} />
-        <ForwardButton onClick={handleForward} />
-        {!hideFavoriteButton && (
-          <FavoriteMailButton isFavorite={isFavorite} onClick={handleFavoriteToggle} />
+  <div className="MailRow">
+    {isDraft ? (
+      <DeleteMailButton onClick={handleDelete} />
+    ) : (
+      <>
+        {!isItem && (
+          <>
+            <ReplyButton onClick={handleReply} />
+            <ForwardButton onClick={handleForward} />
+            {!hideFavoriteButton && (
+              <FavoriteMailButton isFavorite={isFavorite} onClick={handleFavoriteToggle} />
+            )}
+            <SpamMailButton isSpam={isSpam} onClick={handleSpamToggle} />
+            <DeleteMailButton onClick={handleDelete} />
+            <MarkUnreadButton onClick={handleMarkUnread} />
+          </>
         )}
-        <SpamMailButton isSpam={isSpam} onClick={handleSpamToggle} />
-        <DeleteMailButton onClick={handleDelete} />
-        <MarkUnreadButton onClick={handleMarkUnread} />
-      </div>}
-
-      {isItem && <div className="MailRow">
-        {!hideFavoriteButton && (
-          <FavoriteMailButton isFavorite={isFavorite} onClick={handleFavoriteToggle} />
+        {isItem && (
+          <>
+            {!hideFavoriteButton && (
+              <FavoriteMailButton isFavorite={isFavorite} onClick={handleFavoriteToggle} />
+            )}
+            <SpamMailButton isSpam={isSpam} onClick={handleSpamToggle} />
+            <DeleteMailButton onClick={handleDelete} />
+            <MarkUnreadButton onClick={handleMarkUnread} />
+          </>
         )}
-        <SpamMailButton isSpam={isSpam} onClick={handleSpamToggle} />
-        <DeleteMailButton onClick={handleDelete} />
-        <MarkUnreadButton onClick={handleMarkUnread} />
-      </div>}
-    </div>
+      </>
+    )}
+  </div>
+);
 
-  );
 }
 
 //MailRow without FavoriteButton
