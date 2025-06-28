@@ -1,11 +1,9 @@
-version: '3.8'
-
 services:
   cpp-server:
     build:
       context: ./src
       dockerfile: Dockerfile
-    container_name: cpp_server
+    container_name: cppserver
     ports:
       - "7070:7070"
     networks:
