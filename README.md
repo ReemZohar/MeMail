@@ -174,7 +174,7 @@ You can also use advanced-search by clicking the filtering button.
 
 ### More Features
 
-### Left Menu
+#### Left Menu:
 ![image](https://github.com/user-attachments/assets/fda393ad-5ecd-4291-93ba-32762402ea6b)
 
 Includes all the folders and labels so that the user will be able to see all the relevant mails in there.
