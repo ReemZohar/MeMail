@@ -200,7 +200,7 @@ This window also contains a *log out button*.
 
 Located in the user window.
 
-#### Drafts handling
+#### Drafts handling:
 ![image](https://github.com/user-attachments/assets/3e84dae2-d654-4f84-ad06-bea55d58d998)
 
 When a user starts composing an email and leaves the window, the email is saved as a draft.
