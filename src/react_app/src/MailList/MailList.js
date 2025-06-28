@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import MailItem from '../MailItem/MailItem';
 import SelectedMailsAction from '../SelectedMailsAction/SelectedMailsAction';
 import './MailList.css';
@@ -37,7 +37,7 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
     }
   }, [folder, isFavorite, sender, date, labelId, token]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (mailsOverride) {
       setMails(mailsOverride);
       setPage(0);

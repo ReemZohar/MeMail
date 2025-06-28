@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './DarkModeButton.css';
 
 function DarkModeButton() {
@@ -7,7 +7,7 @@ function DarkModeButton() {
       (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     document.body.setAttribute('data-bs-theme', theme);
     localStorage.setItem('theme', theme);
   }, [theme]);

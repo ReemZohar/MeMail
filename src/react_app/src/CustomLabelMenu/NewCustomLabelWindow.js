@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './NewCustomLabelWindow.css';
 
 function NewCustomLabelWindow({ title="New label", content="Please enter a new label name:", onSave, onCancel, initialValue = '' }) {
   const [labelName, setLabelName] = useState(initialValue);
 
-  useEffect(() => {
+  React.useEffect(() => {
     setLabelName(initialValue);
   }, [initialValue]);
 

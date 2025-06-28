@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import LogoAndText from "../LogoAndText/LogoAndText";
 import "../RegisterCard.css";
 import "./ChooseAvatarCard.css";
@@ -20,7 +20,7 @@ function ChooseAvatarCard({
   const [avatarValid, setAvatarValid] = useState(null);
   const [avatarFb, setAvatarFb] = useState("");
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!file) return;
     const url = URL.createObjectURL(file);
     setAvatarPreview(url);

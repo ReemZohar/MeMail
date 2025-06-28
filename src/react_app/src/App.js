@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import MainPage from './MainPage/MainPage';
 import LoginPage from './LoginPage/LoginPage';
@@ -25,7 +25,7 @@ export default function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const currentUserEmail = token ? parseJwt(token)?.username : null;
 
-  useEffect(() => {
+  React.useEffect(() => {
     const handleStorage = () => {
       setToken(localStorage.getItem('token'));
     };
