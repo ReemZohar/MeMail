@@ -1,22 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import MailRow from '../MailRow/MailRow';
 import './MailItem.css';
 
-function MailItem({ mail, isSelected, whenSelected, onMailDeleted, onMailMovedToSpam, onMailFavoriteToggled, onOpenMail }) {
+function MailItem({ mail, folder, isSelected, whenSelected, onMailDeleted, onMailMovedToSpam, onMailFavoriteToggled, onOpenMail }) {
   const [mailState, setMailState] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isRead, setIsRead] = useState(false);
 
+  const isDraft = folder === 'drafts';
+
   // Load full mail details (including senderName etc.) from backend
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchMailDetails = async () => {
       try {
-        const res = await fetch(`http://localhost:9090/api/mails/${mail.id}`, {
+        const endpoint = isDraft
+          ? `http://localhost:9090/api/draft/${mail.id}`
+          : `http://localhost:9090/api/mails/${mail.id}`;
+
+        const res = await fetch(endpoint, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
         });
+
         if (!res.ok) {
           throw new Error(`Failed to fetch mail: ${res.statusText}`);
         }
@@ -31,7 +38,7 @@ function MailItem({ mail, isSelected, whenSelected, onMailDeleted, onMailMovedTo
     };
 
     fetchMailDetails();
-  }, [mail.id]);
+  }, [mail.id, isDraft]);
 
   if (loading) return <div>Loading mail...</div>;
   if (error) return <div>Error loading mail: {error}</div>;
@@ -45,11 +52,13 @@ function MailItem({ mail, isSelected, whenSelected, onMailDeleted, onMailMovedTo
     } else if (type === 'unspam') {
     } else if (type === 'favoriteToggle') {
       onMailFavoriteToggled?.(mailId, isFavorite);
+    } else if (type === 'markAsUnread') {
+      setMailState(prev => ({ ...prev, isRead: false }));
     }
   };
 
   const handleClick = async () => {
-    if (!isRead) {
+    if (!isDraft && !isRead) {
       try {
         const res = await fetch(`http://localhost:9090/api/mails/${mailState.id}/isRead`, {
           method: 'PATCH',
@@ -114,7 +123,9 @@ function MailItem({ mail, isSelected, whenSelected, onMailDeleted, onMailMovedTo
           content={mailState.content}
           isFavorite={mailState.isFavorite}
           isSpam={mailState.isSpam}
+          isDraft={isDraft}
           onActionDone={handleActionDone}
+          isItem={true}
         />
       </div>
     </div>

@@ -1,6 +1,5 @@
 import "../RegisterCard.css"
 
-{/*provides a column with the app logo, a header and a message*/}
 function LogoAndText({header, msg}) {
     return (
         <div className="col-5">

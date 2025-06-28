@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import MailList from '../MailList/MailList';
 import MailWindow from '../MailWindow/MailWindow';
+import NewMailWindow from '../NewMailWindow/NewMailWindow';
 import './MailPlace.css';
 
 function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
@@ -19,7 +20,7 @@ function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
   const foldersWithoutFavoriteFilter = ['inbox', 'sent', 'allmail'];
   const shouldSendIsFavorite = isFavoriteParam === true || (isFavoriteParam === false && !foldersWithoutFavoriteFilter.includes(folderParam));
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchMail = async () => {
       if (!selectedMailId) {
         setOpenedMail(null);
@@ -27,13 +28,35 @@ function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
       }
 
       try {
-        const res = await fetch(`http://localhost:9090/api/mails/${selectedMailId}`, {
+        const endpoint = folderParam === 'drafts'
+          ? `http://localhost:9090/api/draft/${selectedMailId}`
+          : `http://localhost:9090/api/mails/${selectedMailId}`;
+
+        const res = await fetch(endpoint, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error('Failed to fetch mail');
 
         const data = await res.json();
-        setOpenedMail(data);
+
+        const enriched = folderParam === 'drafts'
+          ? {
+            ...data,
+            folder: 'drafts',
+            isRead: false,
+            isFavorite: false,
+            isSpam: false,
+            labels: [],
+            attachments: [],
+            senderEmail: currentUserEmail,
+            senderName: 'Me',
+            receiverEmail: data.receiver,
+            receiverName: data.receiver,
+            isDraft: true,
+          }
+          : data;
+
+        setOpenedMail(enriched);
       } catch (err) {
         console.error(err);
         setOpenedMail(null);
@@ -41,7 +64,7 @@ function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
     };
 
     fetchMail();
-  }, [selectedMailId, token]);
+  }, [selectedMailId, token, folderParam, currentUserEmail]);
 
   const handleOpenMail = (mail) => {
     const params = new URLSearchParams();
@@ -59,6 +82,7 @@ function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
   };
 
   const handleCloseMail = () => {
+    setOpenedMail(null);
     const params = new URLSearchParams();
     if (!shouldSendIsFavorite && folderParam) params.set("folder", folderParam);
     if (shouldSendIsFavorite && isFavoriteParam === true) params.set("isFavorite", "true");
@@ -74,24 +98,40 @@ function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
     <div className="MailPlace">
       {!openedMail && (
         <div className="mail-list-wrapper">
-        <MailList
-          token={token}
-          folder={shouldSendIsFavorite && isFavoriteParam === false ? folderParam : (isFavoriteParam === true ? null : folderParam)}
-          isFavorite={isFavoriteParam === true ? true : undefined}
-          labelId={labelIdParam}
-          sender={sender}
-          date={date}
-          mailsOverride={searchResults}
-          onOpenMail={handleOpenMail}
-        />
+          <MailList
+            token={token}
+            folder={shouldSendIsFavorite && isFavoriteParam === false ? folderParam : (isFavoriteParam === true ? null : folderParam)}
+            isFavorite={isFavoriteParam === true ? true : undefined}
+            labelId={labelIdParam}
+            sender={sender}
+            date={date}
+            mailsOverride={searchResults}
+            onOpenMail={handleOpenMail}
+          />
         </div>
       )}
-      {openedMail && (
+
+      {openedMail && openedMail.isDraft && (
+        <div className="mail-window-wrapper">
+          <NewMailWindow
+            token={token}
+            onClose={handleCloseMail}
+            title={openedMail.title}
+            receiver={openedMail.receiver}
+            content={openedMail.content}
+            attachments={openedMail.attachments || []}
+            isDraft={true}
+            draftId={openedMail.id}
+          />
+        </div>
+      )}
+
+      {openedMail && !openedMail.isDraft && (
         <div className="mail-window-wrapper">
           <MailWindow
             mail={openedMail}
             currentUserEmail={currentUserEmail}
-            onMailDeleted={() => handleCloseMail()}
+            onMailDeleted={handleCloseMail}
             onBack={handleCloseMail}
             token={token}
           />

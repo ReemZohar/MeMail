@@ -563,3 +563,22 @@
 [data-bs-theme="dark"] .attachment-item:hover {
   background-color: #3a3a3a;
 }
+
+.icons{
+    font-size: 18px;
+}
+.MailWindow-send-btn {
+  background-color: #1a73e8;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.MailWindow-send-btn:hover {
+  background-color: #155cb0;
+}
+

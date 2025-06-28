@@ -1,6 +1,6 @@
 const net = require('net');
 
-const SERVER_HOST = 'cppserver';
+const SERVER_HOST = 'cpp-server';
 const SERVER_PORT = 7070;
 
 class BlacklistClient {

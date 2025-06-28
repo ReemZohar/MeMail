@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import MailItem from '../MailItem/MailItem';
 import SelectedMailsAction from '../SelectedMailsAction/SelectedMailsAction';
 import './MailList.css';
@@ -9,15 +9,14 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
   const [selectedMails, setSelectedMails] = useState(new Set());
   const mailsPerPage = 50;
 
-  const fetchMails = async () => {
+  const fetchMails = React.useCallback(async () => {
     try {
       const params = new URLSearchParams();
-      if (folder && folder !== 'drafts') params.append('folder', folder);
+      if (folder && folder !== 'drafts' && !labelId) params.append('folder', folder);
       if (isFavorite !== undefined) params.append('isFavorite', isFavorite);
       if (sender) params.append('sender', sender);
       if (date) params.append('date', date);
       if (labelId) params.append('labelId', labelId);
-
       const endpoint =
         folder === 'drafts'
           ? 'http://localhost:9090/api/draft'
@@ -36,9 +35,9 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
     } catch (err) {
       console.error('Error loading mails:', err);
     }
-  };
+  }, [folder, isFavorite, sender, date, labelId, token]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (mailsOverride) {
       setMails(mailsOverride);
       setPage(0);
@@ -46,7 +45,7 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
     } else {
       fetchMails();
     }
-  }, [mailsOverride, folder, isFavorite, sender, date, labelId]);
+  }, [mailsOverride, fetchMails]);
 
   const handleMailDeleted = (mailId) => {
     setMails(prev => prev.filter(mail => mail.id !== mailId));
@@ -130,7 +129,11 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
   };
 
   const performActionOnSelected = async (actionType) => {
-    const baseUrl = 'http://localhost:9090/api/mails';
+    const isDraft = folder === 'drafts';
+    const baseUrl = isDraft
+      ? 'http://localhost:9090/api/draft'
+      : 'http://localhost:9090/api/mails';
+
     for (const mailId of selectedMails) {
       try {
         let response;
@@ -214,6 +217,7 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
           <MailItem
             key={mail.id}
             mail={mail}
+            folder={folder}
             isSelected={selectedMails.has(mail.id)}
             whenSelected={(id) => {
               setSelectedMails(prev => {
@@ -228,6 +232,7 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
             onMailFavoriteToggled={handleMailFavoriteToggled}
             onOpenMail={onOpenMail}
           />
+
         ))}
       </div>
     </div>

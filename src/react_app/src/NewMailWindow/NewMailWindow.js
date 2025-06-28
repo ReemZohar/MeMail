@@ -1,16 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './NewMailWindow.css';
-import { MdClose } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
-function NewMailWindow({ index = 0, onClose, title = '', receiver = '', content = '', token, attachments = [] }) {
+function NewMailWindow({
+  index = 0,
+  onClose,
+  title = '',
+  receiver = '',
+  content = '',
+  token,
+  attachments = [],
+  isDraft = false,
+    draftId = null 
+
+}) {
   const navigate = useNavigate();
 
-  const receiverFmt = receiver ? '---\n' + receiver + ":\n" : "";
   const [formData, setFormData] = useState({
-    receiver: receiver,
-    title: receiver !== '' ? 'RE: ' + title : title,
-    content: title !== '' ? receiverFmt + content + "\n---\n" : content,
+    receiver,
+    title: isDraft ? title : (receiver ? 'RE: ' + title : title),
+    content: isDraft ? content : (title !== '' ? `---\n${receiver}:\n${content}\n---\n` : content),
   });
 
   const [files, setFiles] = useState([]);
@@ -27,31 +36,23 @@ function NewMailWindow({ index = 0, onClose, title = '', receiver = '', content 
     setFiles(Array.from(e.target.files));
   };
 
-  const sendMail = async () => {
-    const token = localStorage.getItem('token');
-    const form = new FormData();
-    form.append('receiver', formData.receiver);
-    form.append('title', formData.title);
-    form.append('content', formData.content);
+const sendMail = async () => {
+  const token = localStorage.getItem('token');
 
-    // Filter out files that are already in forwarded attachments
-    const forwardedNames = attachments.map(att => att.originalname);
-    const uniqueFiles = files.filter(file => !forwardedNames.includes(file.name));
-
-    uniqueFiles.forEach(file => form.append('attachments', file));
-
-    // Add forwarded attachments explicitly to server
-    attachments.forEach(att => {
-      form.append('forwardedAttachments', JSON.stringify(att));
-    });
-
+  if (isDraft && draftId) {
     try {
       const response = await fetch('http://localhost:9090/api/mails', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-        body: form,
+        body: JSON.stringify({
+          receiver: formData.receiver,
+          title: formData.title,
+          content: formData.content,
+          draftId: draftId,
+        }),
       });
 
       if (response.ok) {
@@ -62,9 +63,43 @@ function NewMailWindow({ index = 0, onClose, title = '', receiver = '', content 
         alert('Failed to send mail: ' + error.error);
       }
     } catch (err) {
-      alert('Error sending mail: ' + err.message);
+      alert('Error sending draft mail: ' + err.message);
     }
-  };
+    return;
+  }
+
+  const form = new FormData();
+  form.append('receiver', formData.receiver);
+  form.append('title', formData.title);
+  form.append('content', formData.content);
+
+  const forwardedNames = attachments.map(att => att.originalname);
+  const uniqueFiles = files.filter(file => !forwardedNames.includes(file.name));
+  uniqueFiles.forEach(file => form.append('attachments', file));
+  attachments.forEach(att => {
+    form.append('forwardedAttachments', JSON.stringify(att));
+  });
+
+  try {
+    const response = await fetch('http://localhost:9090/api/mails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: form,
+    });
+
+    if (response.ok) {
+      navigate('/mail?folder=inbox');
+      onClose();
+    } else {
+      const error = await response.json();
+      alert('Failed to send mail: ' + error.error);
+    }
+  } catch (err) {
+    alert('Error sending mail: ' + err.message);
+  }
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -77,33 +112,57 @@ function NewMailWindow({ index = 0, onClose, title = '', receiver = '', content 
     await sendMail();
   };
 
-  const handleClose = async () => {
-    const { receiver, title, content } = formData;
-    const isEmpty = !receiver && !title && !content;
-    if (isEmpty) {
-      onClose();
-      return;
-    }
+const handleClose = async () => {
+  const { receiver, title, content } = formData;
+  const isEmpty = !receiver && !title && !content;
 
+  if (isEmpty) {
+    onClose();
+    return;
+  }
+
+  if (isDraft && draftId) {
     try {
-      const response = await fetch('http://localhost:9090/api/draft', {
-        method: 'POST',
+      const response = await fetch(`http://localhost:9090/api/draft/${draftId}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ receiver, title, content }),
       });
 
       if (!response.ok) {
-        console.error('Failed to save draft');
+        console.error('Failed to update draft');
+      } else {
       }
     } catch (err) {
-      console.error('Error saving draft:', err);
+      console.error('Error updating draft:', err);
     }
 
     onClose();
-  };
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:9090/api/draft', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      console.error('Failed to save draft');
+    }
+  } catch (err) {
+    console.error('Error saving draft:', err);
+  }
+
+  onClose();
+};
 
   const rightOffset = 20 + index * 620;
   const forwardedNames = attachments.map(att => att.originalname);
@@ -113,7 +172,9 @@ function NewMailWindow({ index = 0, onClose, title = '', receiver = '', content 
     <div className="mail-popup right-align" style={{ right: `${rightOffset}px` }}>
       <div className="mail-header">
         <span>New Message</span>
-        <button className="close-btn" onClick={handleClose}><MdClose /></button>
+        <button className="close-btn" onClick={handleClose}>
+          <i className="bi bi-x-lg"></i>
+        </button>
       </div>
       <form className="mail-form" onSubmit={handleSubmit}>
         <input
@@ -143,7 +204,7 @@ function NewMailWindow({ index = 0, onClose, title = '', receiver = '', content 
 
         <label className="custom-file-upload">
           <input type="file" multiple onChange={handleFileChange} />
-          📎 Attach files
+          <i className="bi bi-paperclip me-1"></i> Attach files
         </label>
 
         {uniqueFiles.length > 0 && (
@@ -154,7 +215,6 @@ function NewMailWindow({ index = 0, onClose, title = '', receiver = '', content 
           </div>
         )}
 
-        {/* Display forwarded attachments if any */}
         {attachments.length > 0 && (
           <div className="forwarded-attachments">
             <p style={{ fontWeight: 'bold' }}>Forwarded attachments:</p>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdvancedSearch from '../AdvancedSearch/AdvancedSearch';
 import './SearchBar.css';
@@ -14,7 +14,7 @@ function SearchBar({ token, onSearchResults }) {
 
   const navigate = useNavigate();
 
-  const performSearch = async (q) => {
+  const performSearch = React.useCallback(async (q) => {
     if (!q.trim()) {
       onSearchResults(null);
       return;
@@ -29,9 +29,9 @@ function SearchBar({ token, onSearchResults }) {
     } catch (err) {
       console.error('Search error:', err);
     }
-  };
+  }, [token, onSearchResults]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const handler = setTimeout(() => {
       const path = window.location.pathname;
       const isViewingMail = /^\/mail\/\d+$/.test(path);
@@ -46,7 +46,7 @@ function SearchBar({ token, onSearchResults }) {
       }
     }, 300);
     return () => clearTimeout(handler);
-  }, [query, navigate]);
+  }, [query, navigate, performSearch, onSearchResults]);
 
   const clearInput = () => {
     setQuery('');

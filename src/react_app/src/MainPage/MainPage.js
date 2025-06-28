@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import LeftMenu from "../LeftMenu/LeftMenu";
 import TopPanel from "../TopPanel/TopPanel";
@@ -58,7 +58,7 @@ export default function MainPage({ token }) {
     setOpenComposes(prev => [...prev, id]);
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
     if (openComposes.length > 0) {
       if (!hashParams.has("compose")) {
@@ -105,7 +105,7 @@ export default function MainPage({ token }) {
     setShowUserWindow(false);
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!userId || !token) return;
     fetch(`http://localhost:9090/api/users/${userId}`, {
       headers: { Authorization: `Bearer ${token}` }
@@ -118,7 +118,7 @@ export default function MainPage({ token }) {
       .catch(err => console.error(err));
   }, [userId, token]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     function handleClickOutside(event) {
       if (
         showUserWindow &&
@@ -136,7 +136,7 @@ export default function MainPage({ token }) {
     };
   }, [showUserWindow]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!searchQuery || !userId || !token) {
       setSearchResults(null);
       return;

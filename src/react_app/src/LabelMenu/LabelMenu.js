@@ -1,7 +1,7 @@
 import './LabelMenu.css';
 import Label from '../Label/Label';
 
-function LabelMenu({ theme, onLabelClick, activeFolder, isCollapsed }) {
+function LabelMenu({ theme, onLabelClick, activeFolder}) {
   const labels = [
     {
       id: 'inbox',

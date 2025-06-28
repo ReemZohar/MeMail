@@ -43,5 +43,6 @@ router.post('/:id/unfavorite', authenticateToken, mailsController.unmarkAsFavori
 //Label functionality
 router.post('/:id/labels', authenticateToken, labelsController.addLabelToMail);
 router.delete('/:id/labels/:labelId', authenticateToken, labelsController.removeLabelFromMail);
+router.get('/label/:labelId', authenticateToken, mailsController.getMailsForLabel);
 
 module.exports = router;

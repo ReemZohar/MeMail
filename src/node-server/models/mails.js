@@ -1,8 +1,7 @@
 let idCounter = 0 //counts the mails
 const mails = []
 
-const { isBlacklisted } = require('./blacklist');
-const { add, remove } = require('./blacklist');
+const { isBlacklisted, add, remove } = require('./blacklist');
 const userModel = require('./users');
 
 const extractUrls = (text) => {
@@ -112,11 +111,6 @@ const path = require('path');
 const sendMail = async (title, content, sender, receiver, attachments = []) => {
   const time = Date.now();
 
-  const extractUrls = (text) => {
-    const regex = /((?:(https?|ftp):\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(:\d+)?(\/[^\s]*)?)/gi;
-    return text.match(regex) || [];
-  };
-
   const urlsToCheck = [...extractUrls(title), ...extractUrls(content)];
 
   let isSpam = false;
@@ -182,11 +176,6 @@ const getMailById = (id) => mails.find(m => m.id === id)
 const updateMail = async (id, title, content) => {
   const mail = mails.find(m => m.id === id);
   if (!mail) return null;
-
-  const extractUrls = (text) => {
-    const regex = /((?:(https?|ftp):\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(:\d+)?(\/[^\s]*)?)/gi;
-    return text ? text.match(regex) || [] : [];
-  };
 
   const urlsToCheck = [...extractUrls(title), ...extractUrls(content)];
 
@@ -257,4 +246,66 @@ const unmarkAsFavorite = (id, userId) => {
   return false;
 };
 
-module.exports = { markAsFavorite, unmarkAsFavorite, getAllMailsForUser, getSpamMailsForUser, markMailAsSpam, unmarkMailAsSpam, sendMail, getMailById, updateMail, deleteMail, searchMails, updateIsRead }
+const getAllMailsForLabel = (userId, labelId, filters = {}) => {
+  if (labelId === undefined || labelId === null) return [];
+
+  let userMails = mails.filter(m => {
+    const isSender = m.sender === userId;
+    const isReceiver = m.receiver === userId;
+
+    if (filters.folder) {
+      return (isSender || isReceiver) && m.folder === filters.folder;
+    }
+
+    return (isSender && m.folder === 'sent') || (isReceiver && m.folder !== 'sent');
+  });
+
+  userMails = userMails.filter(m => m.labels.includes(labelId));
+
+  if (filters.isSpam !== undefined) {
+    userMails = userMails.filter(m => m.isSpam === filters.isSpam);
+  } else {
+    userMails = userMails.filter(m => m.isSpam !== true);
+  }
+
+  if (filters.isFavorite !== undefined) {
+    userMails = userMails.filter(m => m.isFavorite === filters.isFavorite);
+  }
+
+  if (filters.sender !== undefined) {
+    const from = userModel.getUserByUsername(filters.sender);
+    if (!from) return [];
+    userMails = userMails.filter(m => Number(m.sender) === Number(from.id));
+  }
+
+  if (filters.receiver !== undefined) {
+    const to = userModel.getUserByUsername(filters.receiver);
+    if (!to) return [];
+    userMails = userMails.filter(m => Number(m.receiver) === Number(to.id));
+  }
+
+  if (filters.startDate && filters.endDate) {
+    const start = new Date(filters.startDate);
+    const end = new Date(filters.endDate);
+    userMails = userMails.filter(m => {
+      const mailDate = new Date(m.time);
+      return mailDate >= start && mailDate <= end;
+    });
+  }
+
+  if (filters.subject) {
+    userMails = userMails.filter(m => m.title === filters.subject);
+  }
+
+  if (filters.includes) {
+    userMails = userMails.filter(m => m.content.includes(filters.includes));
+  }
+
+  if (filters.excludes) {
+    userMails = userMails.filter(m => !m.content.includes(filters.excludes));
+  }
+
+  return userMails.sort((a, b) => b.time - a.time);
+};
+
+module.exports = { markAsFavorite, unmarkAsFavorite, getAllMailsForUser, getSpamMailsForUser, markMailAsSpam, unmarkMailAsSpam, sendMail, getMailById, updateMail, deleteMail, searchMails, updateIsRead, getAllMailsForLabel }

@@ -37,10 +37,5 @@ const deleteDraft = (id, sender) => {
 const getDraftsBySender = (sender) =>
   drafts.filter(d => d.sender === sender);
 
-module.exports = {
-  createDraft,
-  updateDraft,
-  getDraftById,
-  deleteDraft,
-  getDraftsBySender 
+module.exports = {  createDraft,  updateDraft,  getDraftById,  deleteDraft,  getDraftsBySender 
 };

@@ -1,15 +1,6 @@
 const mailModel = require('../models/mails'); // mail holds the in-memory model
 const userModel = require('../models/users');
 
-function authorizeOwnership(resource, userId, res) {
-  if (resource.userId !== userId) {
-    res.status(403).json({ error: 'Unauthorized' });
-    return false;
-  }
-  return true;
-}
-
-
 // Get the 50 most recent mails (sorted by time, newest first)
 exports.getAllMails = (req, res) => {
   const userId = req.user.id;
@@ -35,7 +26,6 @@ exports.getAllMails = (req, res) => {
   res.status(200).json(mails);
 };
 
-// Send a new mail
 // Send a new mail
 exports.sendMail = async (req, res) => {
   const { title, content, receiver, draftId } = req.body;
@@ -359,4 +349,17 @@ exports.unmarkAsFavorite = (req, res) => {
   } else {
     res.status(404).json({ error: "Mail not found or unauthorized." });
   }
+};
+
+exports.getMailsForLabel = (req, res) => {
+  const userId = req.user.id;
+  const labelId = Number(req.params.labelId);
+  const filters = req.query;
+
+  if (isNaN(labelId)) {
+    return res.status(400).json({ error: 'Invalid labelId' });
+  }
+
+  const mails = mailModel.getAllMailsForLabel(userId, labelId, filters);
+  res.status(200).json(mails);
 };

@@ -6,9 +6,13 @@ COPY . /src
 
 WORKDIR /src
 
-RUN mkdir build
-WORKDIR /src/build
+RUN mkdir -p build
 
+WORKDIR /src/build
 RUN cmake .. && make
 
-CMD ["./runProg"]
+RUN cp runProg /src/runProg
+
+WORKDIR /src
+
+CMD ["./runProg", "7070", "8", "1", "2"]

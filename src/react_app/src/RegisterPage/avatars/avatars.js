@@ -5,4 +5,6 @@ import a4 from "./avatar4.svg";
 import a5 from "./avatar5.svg";
 import a6 from "./avatar6.svg";
 
-export default [a1, a2, a3, a4, a5, a6];
+const avatars = [a1, a2, a3, a4, a5, a6];
+
+export default avatars;
