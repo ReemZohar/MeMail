@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import './MailWindow.css';
 import MailRow from '../MailRow/MailRow';
 import NewMailWindow from '../NewMailWindow/NewMailWindow';

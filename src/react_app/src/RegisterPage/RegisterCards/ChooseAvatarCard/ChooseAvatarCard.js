@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import LogoAndText from "../LogoAndText/LogoAndText";
 import "../RegisterCard.css";
 import "./ChooseAvatarCard.css";
