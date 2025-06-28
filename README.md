@@ -120,6 +120,7 @@ Sends a new email by specifying the recipient, subject, and content. The mail is
 Allows editing a draft or previously saved mail before sending or re-saving it.
 
 > ***Note:*** When a user edits an email, the updated version is visible only to them.
+> 
 > You can't edit an email that's in the Spam folder. To edit it, you'll need to remove it from Spam first.
 
 #### Mark / Remove Mail From Favorites:
