@@ -39,7 +39,6 @@ function NewMailWindow({
 const sendMail = async () => {
   const token = localStorage.getItem('token');
 
-  // אם מדובר בטיוטה → שליחה בפורמט JSON
   if (isDraft && draftId) {
     try {
       const response = await fetch('http://localhost:9090/api/mails', {
@@ -69,7 +68,6 @@ const sendMail = async () => {
     return;
   }
 
-  // אחרת — מייל חדש רגיל עם קבצים
   const form = new FormData();
   form.append('receiver', formData.receiver);
   form.append('title', formData.title);

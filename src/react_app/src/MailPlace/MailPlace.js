@@ -82,7 +82,7 @@ function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
   };
 
   const handleCloseMail = () => {
-    setOpenedMail(null); // ← כדי לעצור רינדור כפול רגעית
+    setOpenedMail(null);
     const params = new URLSearchParams();
     if (!shouldSendIsFavorite && folderParam) params.set("folder", folderParam);
     if (shouldSendIsFavorite && isFavoriteParam === true) params.set("isFavorite", "true");
