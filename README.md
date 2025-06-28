@@ -39,27 +39,11 @@ git clone https://github.com/liany2/Advanced-Programming---Gmail-Repository
 cd Advanced-Programming---Gmail-Repository
 ```
 
-2. Create a .env file inside the src/node-server/ directory:
-```bash
-JWT_SECRET=your_jwt_secret_here
-```
-> ***Note:*** Replace your_jwt_secret_here with a secure random string.
-
-You can find an example .env file in the src/node-server/ directory named .env.example.
-Use it as a template to create your own .env file.
-
-
-3. Build and start all services with Docker Compose:
+2. Build and start all services with Docker Compose:
 
 ```bash
 docker compose up --build
 ```
-
-* running without building:
-```bash
-docker compose start
-```
-
 
 ### Ports
 - React App: http://localhost:3000
