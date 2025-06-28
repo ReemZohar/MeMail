@@ -3,7 +3,7 @@ services:
     build:
       context: ./src
       dockerfile: Dockerfile
-    container_name: cppserver
+    container_name: cpp_server
     ports:
       - "7070:7070"
     networks:
