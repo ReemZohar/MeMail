@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import MailList from '../MailList/MailList';
 import MailWindow from '../MailWindow/MailWindow';
@@ -20,7 +20,7 @@ function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
   const foldersWithoutFavoriteFilter = ['inbox', 'sent', 'allmail'];
   const shouldSendIsFavorite = isFavoriteParam === true || (isFavoriteParam === false && !foldersWithoutFavoriteFilter.includes(folderParam));
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchMail = async () => {
       if (!selectedMailId) {
         setOpenedMail(null);
@@ -41,19 +41,19 @@ function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
 
         const enriched = folderParam === 'drafts'
           ? {
-              ...data,
-              folder: 'drafts',
-              isRead: false,
-              isFavorite: false,
-              isSpam: false,
-              labels: [],
-              attachments: [],
-              senderEmail: currentUserEmail,
-              senderName: 'Me',
-              receiverEmail: data.receiver,
-              receiverName: data.receiver,
-              isDraft: true,
-            }
+            ...data,
+            folder: 'drafts',
+            isRead: false,
+            isFavorite: false,
+            isSpam: false,
+            labels: [],
+            attachments: [],
+            senderEmail: currentUserEmail,
+            senderName: 'Me',
+            receiverEmail: data.receiver,
+            receiverName: data.receiver,
+            isDraft: true,
+          }
           : data;
 
         setOpenedMail(enriched);

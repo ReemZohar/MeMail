@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import MailRow from '../MailRow/MailRow';
 import './MailItem.css';
 
@@ -11,7 +11,7 @@ function MailItem({ mail, folder, isSelected, whenSelected, onMailDeleted, onMai
   const isDraft = folder === 'drafts';
 
   // Load full mail details (including senderName etc.) from backend
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchMailDetails = async () => {
       try {
         const endpoint = isDraft

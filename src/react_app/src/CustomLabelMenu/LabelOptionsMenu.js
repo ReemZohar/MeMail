@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import './LabelOptionsMenu.css';
 
 function LabelOptionsMenu({ onEdit, onDelete, onClose }) {
   const menuRef = useRef(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     function handleClickOutside(event) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         onClose();

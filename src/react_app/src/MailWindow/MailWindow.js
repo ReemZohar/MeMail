@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import './MailWindow.css';
 import MailRow from '../MailRow/MailRow';
 import NewMailWindow from '../NewMailWindow/NewMailWindow';
@@ -104,7 +104,7 @@ export default function MailWindow({ mail, currentUserEmail, onMailDeleted, onBa
   const isToMe = mailState.receiverEmail === currentUserEmail;
   const labelPopupRef = useRef(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     function handleClickOutside(event) {
       if (labelPopupRef.current && !labelPopupRef.current.contains(event.target)) {
         setShowLabelSidebar(false);

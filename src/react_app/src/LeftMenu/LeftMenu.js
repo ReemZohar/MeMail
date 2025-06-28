@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './LeftMenu.css';
 import LabelMenu from '../LabelMenu/LabelMenu';
 import CustomLabelMenu from '../CustomLabelMenu/CustomLabelMenu';
@@ -9,7 +9,7 @@ function LeftMenu({ theme, onComposeClick, onLabelClick, activeFolder, initialAc
   const [labels, setLabels] = useState([]);
   const [activeLabelId, setActiveLabelId] = useState(initialActiveLabelId || null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!token) return;
     fetch(`http://localhost:9090/api/labels`, {
       headers: { Authorization: "Bearer " + token }

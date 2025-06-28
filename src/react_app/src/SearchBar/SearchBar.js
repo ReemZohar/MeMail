@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdvancedSearch from '../AdvancedSearch/AdvancedSearch';
 import './SearchBar.css';
@@ -31,7 +31,7 @@ function SearchBar({ token, onSearchResults }) {
     }
   }, [token, onSearchResults]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const handler = setTimeout(() => {
       const path = window.location.pathname;
       const isViewingMail = /^\/mail\/\d+$/.test(path);
