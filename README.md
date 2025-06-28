@@ -65,7 +65,7 @@ curl -X GET "http://localhost:9090/api/mails/advanced?folder=inbox&isFavorite=tr
 
 
 
-### Compiling & Running Examples (with WSL):
+### Compiling & Running Documentation (via WSL):
 ![image](https://github.com/user-attachments/assets/76b95638-0fe7-45ea-b6f8-08e484468a1c)
 
 ![image](https://github.com/user-attachments/assets/6b61dea9-5a69-45ba-8d7f-667f2ee4af30)
