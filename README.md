@@ -32,19 +32,12 @@ To simplify deployment and development, the system supports Docker Compose with 
 - react-app: Frontend UI built with React.
 
 ### Setup
-1. Clone the repository and navigate into it:
-
-```bash
-git clone https://github.com/liany2/Advanced-Programming---Gmail-Repository
-cd Advanced-Programming---Gmail-Repository
-```
-
-2. Build and start all services with Docker Compose:
+1. Build and start all services with Docker Compose:
 
 ```bash
 docker compose up --build
 ```
-3. Open the client in your browser:
+2. Open the client in your browser:
 Navigate to `http://localhost:3000` to access the client application.
 
 
