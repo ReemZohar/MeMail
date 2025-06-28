@@ -9,7 +9,7 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
   const [selectedMails, setSelectedMails] = useState(new Set());
   const mailsPerPage = 50;
 
-  const fetchMails = async () => {
+  const fetchMails = React.useCallback(async () => {
     try {
       const params = new URLSearchParams();
       if (folder && folder !== 'drafts' && !labelId) params.append('folder', folder);
@@ -35,7 +35,7 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
     } catch (err) {
       console.error('Error loading mails:', err);
     }
-  };
+  }, [folder, isFavorite, sender, date, labelId, token]);
 
   useEffect(() => {
     if (mailsOverride) {
@@ -45,7 +45,7 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
     } else {
       fetchMails();
     }
-  }, [mailsOverride, folder, isFavorite, sender, date, labelId]);
+  }, [mailsOverride, fetchMails]);
 
   const handleMailDeleted = (mailId) => {
     setMails(prev => prev.filter(mail => mail.id !== mailId));
@@ -215,23 +215,23 @@ function MailList({ folder = 'inbox', isFavorite, sender, date, token, labelId, 
       <div className="MailList-scroll">
         {displayedMails.map(mail => (
           <MailItem
-  key={mail.id}
-  mail={mail}
-  folder={folder}
-  isSelected={selectedMails.has(mail.id)}
-  whenSelected={(id) => {
-    setSelectedMails(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(id)) newSet.delete(id);
-      else newSet.add(id);
-      return newSet;
-    });
-  }}
-  onMailDeleted={handleMailDeleted}
-  onMailMovedToSpam={handleMailMovedToSpam}
-  onMailFavoriteToggled={handleMailFavoriteToggled}
-  onOpenMail={onOpenMail}
-/>
+            key={mail.id}
+            mail={mail}
+            folder={folder}
+            isSelected={selectedMails.has(mail.id)}
+            whenSelected={(id) => {
+              setSelectedMails(prev => {
+                const newSet = new Set(prev);
+                if (newSet.has(id)) newSet.delete(id);
+                else newSet.add(id);
+                return newSet;
+              });
+            }}
+            onMailDeleted={handleMailDeleted}
+            onMailMovedToSpam={handleMailMovedToSpam}
+            onMailFavoriteToggled={handleMailFavoriteToggled}
+            onOpenMail={onOpenMail}
+          />
 
         ))}
       </div>

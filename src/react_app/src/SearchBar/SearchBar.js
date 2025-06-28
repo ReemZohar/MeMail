@@ -14,7 +14,7 @@ function SearchBar({ token, onSearchResults }) {
 
   const navigate = useNavigate();
 
-  const performSearch = async (q) => {
+  const performSearch = React.useCallback(async (q) => {
     if (!q.trim()) {
       onSearchResults(null);
       return;
@@ -29,7 +29,7 @@ function SearchBar({ token, onSearchResults }) {
     } catch (err) {
       console.error('Search error:', err);
     }
-  };
+  }, [token, onSearchResults]);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -46,7 +46,7 @@ function SearchBar({ token, onSearchResults }) {
       }
     }, 300);
     return () => clearTimeout(handler);
-  }, [query, navigate]);
+  }, [query, navigate, performSearch, onSearchResults]);
 
   const clearInput = () => {
     setQuery('');
