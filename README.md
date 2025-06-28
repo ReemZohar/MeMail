@@ -200,3 +200,7 @@ Located in the user window.
 
 When a user starts composing an email and leaves the window, the email is saved as a draft.
 Later, the user can continue writing and finish the email, or alternatively delete the draft.
+
+***
+
+-------
