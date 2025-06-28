@@ -1,4 +1,4 @@
- <img width="100" alt="image" src="https://github.com/user-attachments/assets/65777939-a69f-4417-8e78-cf3ad9d03896" />
+  <img width="100" alt="image" src="https://github.com/user-attachments/assets/65777939-a69f-4417-8e78-cf3ad9d03896" />
  
 #   "Me-Mail" - Gmail-like REST API – Fullstack Project
 
@@ -160,7 +160,7 @@ By clicking the 3-dots located at the top-right corner of the mail window, you c
 #### Search For A Mail:
 ![image](https://github.com/user-attachments/assets/0be645a0-c2bf-4963-8087-305ac04f70be)
 
-Allows searching for emails based on content, subject, sender, and receiver.
+Allows searching for emails based on content and subject.
 You can also use advanced-search by clicking the filtering button.
 
 
