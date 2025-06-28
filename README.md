@@ -1,417 +1,207 @@
-#  Gmail-like REST API – Assignment 3
-
-## System Overview
-This project implements a modular, `RESTful` backend in `Node.js` and `Express` that simulates a Gmail-like interface. It integrates with a C++ server from Assignment 2 using TCP sockets for real-time blacklist validation.
-
-The project is built using the MVC architecture and exposes a full-featured API for managing users, authentication, emails, labels, and blacklist entries.
-
-The project was built to be as similar as possible to real email apps and how they usually work.
+  <img width="100" alt="image" src="https://github.com/user-attachments/assets/65777939-a69f-4417-8e78-cf3ad9d03896" />
+ 
+#   "Me-Mail" - Gmail-like REST API – Fullstack Project
 
 
-> **Notes:**
-> 1. The C++ server must be compiled and executed independently, using the specifications from Assignment 2. The Node.js server opens a TCP socket connection to it and expects it to support commands like `POST <url>`, `GET <url>`, and `DELETE <url>`. Both components are running and configured to the same port.
->
-> 2. The TCP server from Exercise 2 was "locked" in a branch named "Sprint2" that can be excecuted independently.
+##  System Overview
 
----
-
-## Sprint Features
-- Modular route handling via Express
-- In-memory data storage (no database) via the model
-- Full CRUD API for labels, mails, and users
-- URL-based blacklist filtering through TCP communication with C++ server
-- Error handling and proper HTTP status codes
-- JSON is the standard format for all API requests/responses
-- SOLID principles and modular code structure maintained
----
-### TCP Server (C++)
-1. Explanation:
-  * Receives and handles commands via TCP socket from the client.
-  * Delegates logic to `ActionFactory` using `IAction` classes (`AddURLToBL`, `CheckURLInBL`, `DeleteURLFromBL`).
-  * Maintains the blacklist in-memory and on disk.
-
-2. Files:
-  * `Server.cpp/h`: Socket handling, request loop
-  * `BloomFilter.cpp/h`: Core blacklist logic
-  * `ActionFactory.cpp/h`: Dispatches actions
-> **Note:** This project uses IPv4.
-
-### HTML Server (Node.js)
-1. Explanation:
-* A multi-threaded web server built with Node.js using the MVC architecture.
-* Exposes a RESTful API for managing users, tokens, emails, labels, and blacklist URLs.
-* Communicates with the C++ TCP server over a persistent socket to validate URLs in emails.
-* Supports user registration, login, email operations, labeling, searching, and blacklist management.
-
-2. Files:
-* `App.js`: Entry point that starts the Node.js server and establishes TCP connection to the C++ server.
-* `routes/`: Defines route handlers for /api/users, /api/mails, /api/labels, /api/blacklist, and /api/tokens.
-* `controllers/`: Implements business logic for each route
-* `models/`: In-memory data structures and helper functions to manage users, mails, and labels.
-* `models/blacklist.js`: Manages communication with the TCP server to check/add/delete blacklist URLs.
-
----
-## API Endpoints
-
-### Users
-- `POST /api/users` – Register new user
-- `GET /api/users/:id` – Retrieve user data by ID
-
-### Tokens
-- `POST /api/tokens` – Authenticate user, returns `{ id: <userId> }`
-
-### Mails
-- `GET /api/mails` – Get 50 latest mails
-- `POST /api/mails` – Send mail (validates links via blacklist)
-- `GET /api/mails/:id` – Get specific mail
-- `PATCH /api/mails/:id` – Update mail
-- `DELETE /api/mails/:id` – Delete mail
-- `GET /api/mails/search/:query` – Search by title/content/sender/receiver
-
-### Labels
-- `GET /api/labels` – List all labels
-- `POST /api/labels` – Create label
-- `GET /api/labels/:id` – Get label
-- `PATCH /api/labels/:id` – Update label
-- `DELETE /api/labels/:id` – Delete label
-
-### Blacklist (via C++ Socket Server)
-- `POST /api/blacklist` – Add URL to blacklist
-- `DELETE /api/blacklist` – Remove URL from blacklist (via request body)
+This project implements a modular fullstack Gmail-like mail system with:
+-  A **C++ TCP Server** for blacklist validation (Bloom Filter logic).
+-  A **Node.js + Express REST API** to manage users, mails, labels, spam filtering, and favorites.
+-  A **React Frontend** simulating a Gmail-style user interface.
+- **Bootstrap** - A CSS framework for building responsive desktop websites
+> The system uses the MVC architecture and allows real-time validation between the Node.js backend and the C++ server over TCP.
 
 ---
 
-## Integration with Assignment 2 (C++ Server)
-- TCP socket client (Node) communicates with a multithreaded C++ server
-- C++ server supports:
-  - `POST <url>` – Add URL
-  - `GET <url>` – Check if blacklisted
-  - `DELETE <url>` – Remove from blacklist
-- All blacklist functionality in the Node server delegates to this system
-- The Node service assumes the C++ server is listening on localhost:<PORT> and that the port matches the one configured in blacklistService.js. You must launch the C++ server before running the Node backend.
----
-
-## Running Instructions
-**Build and run C++ Server with Docker:**
-
-```bash
-docker network create network
-cd src
-docker build -t program .
-docker run -it --name cppserver --network network -p 7070:7070 -v "$(realpath ../data):/data" program ./runProg 7070 <bloom filter size> <hash> <hash> ...
-```
-
-**Build and run Node.js Server with Docker:**
-
-```bash
-cd src/node-server
-docker build -t node-server .
-docker run -it --name nodejs --network network -p 9090:9090 node-server
-```
-
-#### For Example:
-*C++ server*
-```bash
-docker network create network
-cd src
-docker build -t program .
-docker run -it --name cppserver --network network -p 7070:7070 -v "$(realpath ../data):/data" program ./runProg 7070 8 1 2
-```
-
-*Node.js server*
-```bash
-cd src/node-server
-docker build -t node-server .
-docker run -it --name nodejs --network network -p 9090:9090 node-server
-```
-
-*Example explanation:*  
- In this example, the Node.js server listens for connections on port **9090**, The C++ server listens to port **7070** the Bloom filter will be initialized with a size of **8**, and the standard hash functions used are: **1** and **2**.
-
-
-
-> **Note:**
-> 1. Please make sure to start the **server** before the **client**, so that the server is ready and listening for incoming requests. And then open a new terminal to put commands in curl format.
-> 2. Please pay attention to run the C++ server on port 7070 because the node.js sends the requests to this port.
-
-**Build and run tests from exercise 1+2:**
-```bash
-cd src
-docker build -t url-bl-checker .
-docker run -it --rm url-bl-checker ./runTests
-```
+##  Features
+- JWT-based user authentication.
+- Mail creation, deletion, draft saving, spam marking, and favorites.
+- Blacklist support with automatic updates from the C++ server.
+- Custom routing in React using React Router.
+- Drafts and real-time spam filtering logic.
+- Advanced filters on backend (`/api/mails?isSpam=true&isFavorite=false`, etc).
 
 ---
 
-## Developer Info
-- Project: Advanced Programming – Assignment 3
-- GitHub: https://github.com/liany2/Advanced-Programming---Gmail-Repository
+## Running with Docker Compose
+To simplify deployment and development, the system supports Docker Compose with three services:
+
+- cpp-server: C++ TCP server for Bloom filter operations.
+- node-server: RESTful API written in Node.js/Express.
+- react-app: Frontend UI built with React.
+
+### Setup
+1. Clone the repository and navigate into it:
+
+```bash
+git clone https://github.com/liany2/Advanced-Programming---Gmail-Repository
+cd Advanced-Programming---Gmail-Repository
+```
+
+2. Build and start all services with Docker Compose:
+
+```bash
+docker compose up --build
+```
+3. Open the client in your browser:
+Navigate to `http://localhost:3000` to access the client application.
+
+
+
+### Ports
+- React App: `http://localhost:3000`
+- Node.js API: `http://localhost:9090`
+- C++ Bloom Server: `localhost:7070` (TCP socket)
+
+Example: Advanced Mail Search
+Use the following curl command to test advanced filtering
+```bash
+curl -X GET "http://localhost:9090/api/mails/advanced?folder=inbox&isFavorite=true&sender=1&startDate=2025-06-01&endDate=2025-06-30" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+> ***Note:*** Replace YOUR_TOKEN with your valid JWT.
+
+
+
+### Compiling & Running Documentation (via WSL):
+![image](https://github.com/user-attachments/assets/76b95638-0fe7-45ea-b6f8-08e484468a1c)
+
+![image](https://github.com/user-attachments/assets/6b61dea9-5a69-45ba-8d7f-667f2ee4af30)
 
 ---
-## Example curl
-The node.js server will get the request via curl format:
-
-```bash
-curl -X <command> <URL> \
-  -H "Content-Type: application/json" \
-  -d '{"key1": "value1", "key2": "value2" ...}'
-```
-For example:
-```bash
-curl -X DELETE http://localhost:3000/api/blacklist \
-  -H "Content-Type: application/json" \
-  -d '{"url": "http://malicious.com"}'
-```
-> **Note:** Full examples of using curl can be found under the section: "Running Examples (text)".
-
+## System Features
+* To use two users simultaneously, you need to log in to one as usual and the other in an incognito window.
+* The .env file is exposed here, although it should be hidden, for exercise purposes only.
+* All mails that contain blacklisted URLs go to spam automatically.
+* When a user edits an email, the updated version is visible only to them.
+* You can't edit an email that's in the Spam folder. To edit it, you'll need to remove it from Spam first.
 ---
 
-## Documentation (via Kali-Linux):
-### 1.  Running Examples (pictures):
-  * *Example 1:*
-    ![valid ex 1](https://github.com/user-attachments/assets/c644001d-47ad-4245-9976-5c03b9c4d6c0)
 
+##  User Operations
 
-    ![valid ex 2](https://github.com/user-attachments/assets/cd4e6af5-28d3-4a5e-aa79-91a98ca5ece8)
+### Registration and Login
 
+#### Create A New MeMail User:
+<img width="750" height="300" alt="image" src="https://github.com/user-attachments/assets/579a6b8d-e92e-46d6-94fa-a532f1258655" />
 
-    ![valid ex 3](https://github.com/user-attachments/assets/f794f897-329a-49b5-9b50-50974d235a07)
 
+Registers a new user by providing a unique username and password, creating an account in the system.
+> To register, you can go to the following API: `http://localhost:3000/register`
 
+#### Login To MeMail:
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/5213b4b4-51d7-4c2e-ba85-2c49d4ea9461" />
 
-  * *Example 2 - Mails Operations:*
-    ![mails check 1](https://github.com/user-attachments/assets/212cbb90-4347-4299-b404-11f95d603592)
-    Sending a mail with all required fields. Status 201 Created confirms success.
+Authenticates an existing user by verifying their credentials and returning a valid access token.
+> To log in, you can go to the following API: `http://localhost:3000/login`
 
 
-    ![mails check 2](https://github.com/user-attachments/assets/279755ae-f879-4c3e-9d25-09da19a65190)
-    Fetching a specific mail by ID. Status 200 OK confirms the mail exists and was retrieved.
 
 
-    ![mails check 3- patch](https://github.com/user-attachments/assets/be78dfb2-65ac-4230-825e-940789bbf8e6)
-    Updating an existing mail (title/content). Status 204 No Content confirms the update succeeded.
-     > Just like in a real email system, the update is applied only for the user who performed it.
+### Managing emails
 
+#### Send A New Mail:
+Sends a new email by specifying the recipient, subject, and content. The mail is saved in the "Sent" folder.
 
-    ![mails check 4 - DELETE](https://github.com/user-attachments/assets/5370577f-b9e0-44c9-8685-6a6de48de152)
-    Deleting a mail by ID. Status 204 No Content indicates successful deletion.
-      > Just like in a real email system, the deletion is applied only for the user who performed it.
+![image](https://github.com/user-attachments/assets/6612c9f1-87d9-4493-a1a1-7895e99e157d)
 
+1. After login, find the "Compose" button on the top left of the screen, press it.
+<img width="350" alt="image" src="https://github.com/user-attachments/assets/8b7361d8-a4b6-46ee-97ab-adbf85af01cf" />
+  
+2. A new mail window will be opened - fill the relevant fields and write there the mail content. Then press the "Send" button.
 
-    ![mails check 5 - search](https://github.com/user-attachments/assets/a353755a-8213-40ae-9ce6-b7a38643206a)
 
 
-    ![mails check 6 - search](https://github.com/user-attachments/assets/e37a0d80-a038-426a-8190-0ceb9ba040cf)
-    Search query. Status 200 OK with relevant results.
+#### Edit A Mail:
+<img width="120" alt="image" src="https://github.com/user-attachments/assets/f7cc5f1d-0840-4290-9910-84aa85ffff6b" />
 
+Allows editing a draft or previously saved mail before sending or re-saving it.
 
-  * *Example 3 - Labels Operations:*
-    ![labels 1](https://github.com/user-attachments/assets/aa8a3f52-2307-4e4d-81f2-1a4c53a4c7f6)
-    Creating a label for a user. Status 201 Created with a Location header for the new label.
+> ***Note:*** When a user edits an email, the updated version is visible only to them.
+> 
+> You can't edit an email that's in the Spam folder. To edit it, you'll need to remove it from Spam first.
 
+#### Mark / Remove Mail From Favorites:
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/ada1c802-f139-436e-922d-6bea6aed678d" />
 
-    ![labels 2-PATCH](https://github.com/user-attachments/assets/1311d63b-13b0-4929-ae9c-ec4968e11252)
-    Updating a label name. Status 204 No Content confirms a successful update.
+Marks an email as a favorite for quick access, or removes it from the favorites list.
 
 
-    ![labels 3-DELETE](https://github.com/user-attachments/assets/edf56b58-2288-415e-a4bb-a556f5290bd7)
+#### Mark / Remove Mail As Spam:
 
-    Deleting a label. Status 204 No Content confirms successful deletion.
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/e5ea489a-eb95-42c6-ac09-6e510086d72b" />
 
 
-  * *Example 4 - Blacklist Operations:*
-    ![adding url to blacklist and send mail](https://github.com/user-attachments/assets/e10965e6-1a00-4e39-b25e-f3a808b0e803)
-    Adding a URL to the blacklist and then trying to send a mail containing it. Status 400 Bad Request due to blacklisted content.
+Flags an email as spam, moving it to the "Spam" folder, it can also be unmarked. These actions remove/ adds all the URLs to black list.
+> ***Note:*** All future mails that will contain blacklisted URLs will go to spam automatically.
 
+#### Delete Mail:
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/0663ab9b-67d1-4065-8a65-56262a947616" />
 
-    ![delete URL from blacklist and send a new mail](https://github.com/user-attachments/assets/aeba4f4b-7e9d-4b55-9ca3-4115e1c7a58e)
-    Removing the URL from the blacklist and sending the mail again. Status 201 Created confirms success.
+removes an email from the user's mailbox
 
+#### Mark Mail As Read / Unread:
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/8cc4ff7b-e460-411d-9d44-f2266d9a5393" />
 
-    ![blacklist cont](https://github.com/user-attachments/assets/b00307af-7a07-42fb-826d-48db2d7bf32b)
+For user's convenience.
 
+#### Add A New Label:
+![image](https://github.com/user-attachments/assets/8a90eb65-d807-4133-95e4-e6092519e6fe)
 
-    Continuation: mail successfully sent after URL was removed from the blacklist.
+Add a new label for future mail assignments.
 
+#### Edit / Delete A Label:
+![image](https://github.com/user-attachments/assets/2f1b0a95-622e-4b4f-ae5e-376b210e8eb5) 
+<img width="200" alt="image" src="https://github.com/user-attachments/assets/322632a0-1f09-4db7-868e-5777b26d174e" />
 
- * *Example 5 – Edge Cases:*
-   ![edge cases 1](https://github.com/user-attachments/assets/ee6bc648-5dc5-4ad1-afe0-3f34fd494ba9)
-   Sending mail with missing fields (e.g., no content or title). Status 400 Bad Request.
+By clicking the 3-dots next to the label name, you can:
+* Modify the name of an existing label to better suit your organizational preferences.
+* Permanently remove a label from your account. Emails previously labeled will no longer have that label.
 
+#### Assign Label / Remove Assignment To Mail:
+![image](https://github.com/user-attachments/assets/43cd6cad-a3b6-489f-aaf5-787b85de8ba3) 
+![image](https://github.com/user-attachments/assets/77537e96-ba04-49dd-98af-ce41a4e16544)
 
-   ![edge cases 2](https://github.com/user-attachments/assets/37f1ec4d-c728-4d9b-8fb7-320bd90d7525)
-   Sending mail with non-existing sender or receiver. Status 404 Not Found.
+By clicking the 3-dots located at the top-right corner of the mail window, you can:
+* Add a specific label to an email to categorize or organize it for easier retrieval.
+* Detach a label from an email, removing its association with that category.
 
+#### Search For A Mail:
+![image](https://github.com/user-attachments/assets/0be645a0-c2bf-4963-8087-305ac04f70be)
 
-   ![edge cases 3](https://github.com/user-attachments/assets/e6b7f11b-2e48-4e49-9694-bf0fcb913ecf)
-   Sending mail with a blacklisted URL. Status 400 Bad Request.
+Allows searching for emails based on content and subject.
+You can also use advanced-search by clicking the filtering button.
 
 
-   ![edge cases 4](https://github.com/user-attachments/assets/92cb2969-6fae-4b87-a581-35fd3b4b1a26)
-   Again, sending mail with invalid user IDs. Status 404 Not Found.
 
 
-   ![edge cases 5](https://github.com/user-attachments/assets/f6e41d79-6442-4db1-8bba-31119ac8d97d)
-   Another test with missing required fields. Status 400 Bad Request.
+### More Features
 
+#### Left Menu:
+![image](https://github.com/user-attachments/assets/fda393ad-5ecd-4291-93ba-32762402ea6b)
 
-### 2. Running Examples (text):
-#### Create user
-```bash
-curl -i -X POST http://localhost:9090/api/users \
--H "Content-Type: application/json" \
--d '{"username": "noa", "password": "1234", "name": "Noa"}'
-```
-##### → 201 Created
-```bash
-curl -i -X POST http://localhost:9090/api/users \
--H "Content-Type: application/json" \
--d '{"username": "lian", "password": "1234", "name": "Lian"}'
-```
-##### → 201 Created
-
-
-#### Send mail
-```bash
-curl -X POST http://localhost:9090/api/mails -H "Content-Type: application/json" \
--d '{"title": "Hi", "content": "Hello", "sender": "1", "receiver": "2"}'
-```
-##### → 201 Created
-
-#### Get mail by ID
-```bash
-curl -X GET http://localhost:9090/api/mails/1
-```
-##### → 200 OK with mail JSON
-
-#### Get all mails
-```bash
-curl -X GET http://localhost:9090/api/mails -H "user-id: 1"
-```
-##### → 200 OK with mail list
-
-
-  * *Example 2 - Mails Operations:*
-#### Send mail
-```bash
-curl -X POST http://localhost:9090/api/mails -H "Content-Type: application/json" \
--d '{"title": "Mail", "content": "Body", "sender": "1", "receiver": "2"}'
-```
-##### → 201 Created
-
-#### Get mail by ID
-```bash
-curl -X GET http://localhost:9090/api/mails/1
-```
-##### → 200 OK
-
-#### Patch mail
-```bash
-curl -X PATCH http://localhost:9090/api/mails/1 -H "Content-Type: application/json" \
--d '{"title": "Updated Title"}'
-```
-##### → 204 No Content
-
-#### Delete mail
-```bash
-curl -X DELETE http://localhost:9090/api/mails/1
-```
-##### → 204 No Content
-
-#### Search mails
-```bash
-curl -X GET http://localhost:9090/api/mails/search/hello
-```
-##### → 200 OK with results
-
-```bash
-curl -X GET http://localhost:9090/api/mails/search/world
-```
-##### → 200 OK with results
-
-
-  * *Example 3 - Labels Operations:*
-#### Create label
-```bash
-curl -X POST http://localhost:9090/api/labels -H "Content-Type: application/json" \
--H "user-id: 1" -d '{"name": "Work"}'
-```
-##### → 201 Created with Location header
-
-#### Update label
-```bash
-curl -X PATCH http://localhost:9090/api/labels/1 -H "Content-Type: application/json" \
--d '{"name": "Updated Label"}'
-```
-##### → 204 No Content
-
-#### Delete label
-```bash
-curl -X DELETE http://localhost:9090/api/labels/1
-```
-##### → 204 No Content
-
-
-  * *Example 4 - Blacklist Operations:*
-#### Add URL to blacklist
-```bash
-curl -X POST http://localhost:9090/api/blacklist -H "Content-Type: application/json" \
--d '{"url": "http://bad.com"}'
-```
-##### → 201 Created
-
-#### Try sending mail with blacklisted URL
-```bash
-curl -X POST http://localhost:9090/api/mails -H "Content-Type: application/json" \
--d '{"title": "Spam", "content": "Visit http://bad.com", "sender": "1", "receiver": "2"}'
-```
-##### → 400 Bad Request – Mail contains blacklisted URL
-
-#### Remove URL from blacklist
-```bash
-curl -X DELETE http://localhost:9090/api/blacklist -H "Content-Type: application/json" \
--d '{"url": "http://bad.com"}'
-```
-##### → 204 No Content
-
-#### Retry sending mail with removed URL
-```bash
-curl -X POST http://localhost:9090/api/mails -H "Content-Type: application/json" \
--d '{"title": "Spam", "content": "Visit http://bad.com", "sender": "1", "receiver": "2"}'
-```
-##### → 201 Created
-
-
- * *Example 5 – Edge Cases:*
-#### Missing fields
-```bash
-curl -X POST http://localhost:9090/api/mails -H "Content-Type: application/json" -d '{}'
-```
-##### → 400 Bad Request – Missing required fields
-
-#### Invalid user
-```bash
-curl -X POST http://localhost:9090/api/mails -H "Content-Type: application/json" \
--d '{"title": "Hello", "content": "test", "sender": "999", "receiver": "2"}'
-```
-##### → 404 Not Found – Sender or receiver not found
-
-#### Blacklisted URL (again)
-```bash
-curl -X POST http://localhost:9090/api/mails -H "Content-Type: application/json" \
--d '{"title": "Hey", "content": "http://bad.com", "sender": "1", "receiver": "2"}'
-```
-##### → 400 Bad Request – Mail contains blacklisted URL
-
-
-### 3. Tests Pass:
-![tests run](https://github.com/user-attachments/assets/334c1e02-06d7-4e3c-8d3e-99d1730e4c52)
-
-### 4. Building & Running C++ server:
-  ![building+running Ex2 c++ server](https://github.com/user-attachments/assets/88d178c3-8945-47f7-bb34-b2800e2d2c0d)
-
-### 5. Building & Running Node.js server:
-![building+running Ex3 node js server](https://github.com/user-attachments/assets/a7bd48d8-cc22-4ac8-9dd4-f1bd5024b7ec)
-
-
----
+Includes all the folders and labels so that the user will be able to see all the relevant mails in there.
+
+#### Dark Mode Button:
+![image](https://github.com/user-attachments/assets/bb807361-dd37-41b0-a5b9-0fc6287f0b15)
+
+Located at the top-right corner of all screens, this toggles the program between light & dark modes.
+
+#### User Window:
+<img width="250" alt="image" src="https://github.com/user-attachments/assets/1d0920e0-5c33-438a-90cd-b5a47bf600d7" />
+
+In this window the user can see all his relevant information such as name, email address, and avatar.
+This window also contains a *log out button*.
+
+#### Log Out Button:
+![image](https://github.com/user-attachments/assets/77f6ad5c-6041-465a-a178-2fef80a11feb)
+
+Located in the user window.
+
+#### Drafts handling:
+![image](https://github.com/user-attachments/assets/3e84dae2-d654-4f84-ad06-bea55d58d998)
+
+When a user starts composing an email and leaves the window, the email is saved as a draft.
+Later, the user can continue writing and finish the email, or alternatively delete the draft.
