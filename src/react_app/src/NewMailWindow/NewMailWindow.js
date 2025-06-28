@@ -11,7 +11,7 @@ function NewMailWindow({
   token,
   attachments = [],
   isDraft = false,
-    draftId = null // ← חדש
+    draftId = null 
 
 }) {
   const navigate = useNavigate();
@@ -36,27 +36,24 @@ function NewMailWindow({
     setFiles(Array.from(e.target.files));
   };
 
-  const sendMail = async () => {
-    const token = localStorage.getItem('token');
-    const form = new FormData();
-    form.append('receiver', formData.receiver);
-    form.append('title', formData.title);
-    form.append('content', formData.content);
+const sendMail = async () => {
+  const token = localStorage.getItem('token');
 
-    const forwardedNames = attachments.map(att => att.originalname);
-    const uniqueFiles = files.filter(file => !forwardedNames.includes(file.name));
-    uniqueFiles.forEach(file => form.append('attachments', file));
-    attachments.forEach(att => {
-      form.append('forwardedAttachments', JSON.stringify(att));
-    });
-
+  // אם מדובר בטיוטה → שליחה בפורמט JSON
+  if (isDraft && draftId) {
     try {
       const response = await fetch('http://localhost:9090/api/mails', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-        body: form,
+        body: JSON.stringify({
+          receiver: formData.receiver,
+          title: formData.title,
+          content: formData.content,
+          draftId: draftId,
+        }),
       });
 
       if (response.ok) {
@@ -67,9 +64,44 @@ function NewMailWindow({
         alert('Failed to send mail: ' + error.error);
       }
     } catch (err) {
-      alert('Error sending mail: ' + err.message);
+      alert('Error sending draft mail: ' + err.message);
     }
-  };
+    return;
+  }
+
+  // אחרת — מייל חדש רגיל עם קבצים
+  const form = new FormData();
+  form.append('receiver', formData.receiver);
+  form.append('title', formData.title);
+  form.append('content', formData.content);
+
+  const forwardedNames = attachments.map(att => att.originalname);
+  const uniqueFiles = files.filter(file => !forwardedNames.includes(file.name));
+  uniqueFiles.forEach(file => form.append('attachments', file));
+  attachments.forEach(att => {
+    form.append('forwardedAttachments', JSON.stringify(att));
+  });
+
+  try {
+    const response = await fetch('http://localhost:9090/api/mails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: form,
+    });
+
+    if (response.ok) {
+      navigate('/mail?folder=inbox');
+      onClose();
+    } else {
+      const error = await response.json();
+      alert('Failed to send mail: ' + error.error);
+    }
+  } catch (err) {
+    alert('Error sending mail: ' + err.message);
+  }
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -82,7 +114,7 @@ function NewMailWindow({
     await sendMail();
   };
 
-  const handleClose = async () => {
+const handleClose = async () => {
   const { receiver, title, content } = formData;
   const isEmpty = !receiver && !title && !content;
 
@@ -91,13 +123,29 @@ function NewMailWindow({
     return;
   }
 
-  //if exist draft - just close, not do post
   if (isDraft && draftId) {
+    try {
+      const response = await fetch(`http://localhost:9090/api/draft/${draftId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ receiver, title, content }),
+      });
+
+      if (!response.ok) {
+        console.error('Failed to update draft');
+      } else {
+      }
+    } catch (err) {
+      console.error('Error updating draft:', err);
+    }
+
     onClose();
     return;
   }
 
-  // else - new draft - save it
   try {
     const response = await fetch('http://localhost:9090/api/draft', {
       method: 'POST',

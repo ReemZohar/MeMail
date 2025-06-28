@@ -82,6 +82,7 @@ function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
   };
 
   const handleCloseMail = () => {
+    setOpenedMail(null); // ← כדי לעצור רינדור כפול רגעית
     const params = new URLSearchParams();
     if (!shouldSendIsFavorite && folderParam) params.set("folder", folderParam);
     if (shouldSendIsFavorite && isFavoriteParam === true) params.set("isFavorite", "true");
@@ -113,16 +114,15 @@ function MailPlace({ token, currentUserEmail, selectedMailId, searchResults }) {
       {openedMail && openedMail.isDraft && (
         <div className="mail-window-wrapper">
           <NewMailWindow
-  token={token}
-  onClose={handleCloseMail}
-  title={openedMail.title}
-  receiver={openedMail.receiver}
-  content={openedMail.content}
-  attachments={openedMail.attachments || []}
-  isDraft={true}
-  draftId={openedMail.id} 
-
-/>
+            token={token}
+            onClose={handleCloseMail}
+            title={openedMail.title}
+            receiver={openedMail.receiver}
+            content={openedMail.content}
+            attachments={openedMail.attachments || []}
+            isDraft={true}
+            draftId={openedMail.id}
+          />
         </div>
       )}
 
