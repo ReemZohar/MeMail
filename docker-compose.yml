@@ -6,6 +6,8 @@ services:
     container_name: cpp_server
     ports:
       - "7070:7070"
+    volumes:
+      - ./data:/data
     networks:
       - gmail-net
 
