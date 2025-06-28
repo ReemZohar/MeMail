@@ -55,6 +55,12 @@ Use it as a template to create your own .env file.
 docker compose up --build
 ```
 
+* running without building:
+```bash
+docker compose start
+```
+
+
 ### Ports
 - React App: http://localhost:3000
 - Node.js API: http://localhost:9090
