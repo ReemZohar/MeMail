@@ -74,6 +74,7 @@ curl -X GET "http://localhost:9090/api/mails/advanced?folder=inbox&isFavorite=tr
 ## System Features
 * To use two users simultaneously, you need to log in to one as usual and the other in an incognito window.
 * The .env file is exposed here, although it should be hidden, for exercise purposes only.
+* You can't edit an email that's in the Spam folder. To edit it, you'll need to remove it from Spam first.
 ---
 
 
