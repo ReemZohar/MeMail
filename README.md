@@ -44,6 +44,10 @@ cd Advanced-Programming---Gmail-Repository
 ```bash
 docker compose up --build
 ```
+3. Open the client in your browser:
+Navigate to http://localhost:3000 to access the client application.
+
+
 
 ### Ports
 - React App: http://localhost:3000
